@@ -15,7 +15,9 @@ using namespace cinder::app;
 
 Rectf ModuleController::area;
 Rectf ModuleController::areaSelector;
-vector<TreeRef> ModuleController::selected;
+set<ModuleRef> ModuleController::selected;
+ModuleRef ModuleController::current;
+
 Module ModuleController::moduleTree;
 bool ModuleController::selecting;
 ColorA ModuleController::BG_FILL = ColorA(55 * 0.00392157f, 40 * 0.00392157f, 50 * 0.00392157f);
@@ -25,7 +27,7 @@ ModuleController::ModuleController():InteractionManager([this](cinder::ivec2 loc
     return this->area.contains(location);
 }){
     ModuleController::area = Rectf(0.f, 0.f, getWindowWidth()-300, getWindowHeight());
-    Module::go(&ModuleController::moduleTree);
+    ModuleController::go(&ModuleController::moduleTree);
     
     this->on("dragStart", [this](ogre::MouseEvent event){
         InteractionManager::occupy = this;
@@ -33,7 +35,7 @@ ModuleController::ModuleController():InteractionManager([this](cinder::ivec2 loc
         this->on("drag", [this](ogre::MouseEvent event){
             this->areaSelector.x2 = event.position.x;
             this->areaSelector.y2 = event.position.y;
-            selected = ModuleController::getSelected();
+            ModuleController::setSelected(ModuleController::getInside(this->areaSelector));
             return false;
         })->on("dragStop", [this](ogre::MouseEvent event){
             InteractionManager::occupy = nullptr;
@@ -46,17 +48,16 @@ ModuleController::ModuleController():InteractionManager([this](cinder::ivec2 loc
     });
     
     this->on("backspace", [](ogre::MouseEvent event){
-        Module::gotoParent();
+        ModuleController::gotoParent();
         return false;
     })->on("one", [](ogre::MouseEvent event){
         int x = round(event.position.x / (float)GRID_SIZE.x) * GRID_SIZE.x;
         int y = round(event.position.y / (float)GRID_SIZE.y) * GRID_SIZE.y;
-        Module::addNode()->area.offsetCenterTo(ivec2(x, y));
+        ModuleController::addNode()->area.offsetCenterTo(ivec2(x, y));
         return false;
-    })->on("resize", [this](ogre::MouseEvent event){
+    });
+    getWindow()->getSignalResize().connect( []() {
         ModuleController::area = Rectf(0.f, 0.f, getWindowWidth()-300, getWindowHeight());
-        InteractionManager::isResize = false;
-        return false;
     });
 }
 
@@ -80,30 +81,53 @@ void ModuleController::draw(){
         gl::drawLine(vec2(ModuleController::area.getY1(), i), vec2(ModuleController::area.getWidth(), i));
     }
     
-    Module::current->forSubTree([this](TreeRef node){
-        ModuleRef module = static_cast<Module *>(node);
+    ModuleController::current->forSubTree([](ModuleRef module){
         module->draw();
     });
-    /*if(selecting){
-        ofSetColor(ofColor(255, 255, 255, 20));
-        ofDrawRectangle(selector.x, selector.y, selector.z-selector.x, selector.w-selector.y);
-    }*/
+    
     gl::color( ColorA(1, 1, 1, 0.3) );
     gl::drawSolidRect(this->areaSelector);
     gl::color( ColorA(1, 1, 1, 0.8) );
     gl::drawStrokedRect(this->areaSelector, 1);
 }
 
-vector<TreeRef> ModuleController::getSelected(){
-    vector<TreeRef> tmpSelect = vector<TreeRef>();
-    auto it = Module::current->nodes.begin();
-    while(it != Module::current->nodes.end()){
-        ModuleRef module = dynamic_cast<ModuleRef>(it->second);
-        module->selected = module->area.intersects(ModuleController::areaSelector);
-        if(module->selected){
-            tmpSelect.push_back(it->second);
+set<ModuleRef> ModuleController::getInside(Rectf area){
+    Rectf cArea = area.canonicalized();
+    set<ModuleRef> tmpSelect;
+    ModuleController::current->forInside([&](ModuleRef module){
+        if(cArea.intersects(module->area)){
+            tmpSelect.insert(module);
         }
-        it++;
-    }
+    });
     return tmpSelect;
+}
+
+void ModuleController::setSelected(set<ModuleRef> selected){
+    ModuleController::moduleTree.forSubTree([&](ModuleRef node){
+        node->selected = selected.find(node) != selected.end();
+    }, true, true);
+    ModuleController::selected.clear();
+    ModuleController::selected = selected;
+}
+
+void ModuleController::go(ModuleRef node){
+    //ModuleController::unselect();
+    ModuleController::current = node;
+    ModuleController::current->forSubTree([](ModuleRef module){
+        module->enableInteraction();
+    });
+}
+
+void ModuleController::gotoParent(){
+    if(ModuleController::current->id>0){
+        ModuleController::current->forSubTree([](ModuleRef module){
+            module->disableInteraction();
+        });
+        ModuleController::go(dynamic_cast<ModuleRef>(ModuleController::current->parent));
+    }
+}
+
+ModuleRef ModuleController::addNode(){
+    
+    return ModuleController::current->add()->enableInteraction();
 }

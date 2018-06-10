@@ -11,40 +11,39 @@ using namespace std;
 using namespace cinder;
 
 
-ModuleRef Module::current;
 
-ColorA Module::BG_FILL = ColorA(234 * 0.00392157f, 234 * 0.00392157f, 234 * 0.00392157f);
-ColorA Module::BG_FILL_SELECTED = ColorA::white();
+ColorA Module::BG_FILL = ColorA(234 * 0.00392157f, 234 * 0.00392157f, 234 * 0.00392157f, 0.5);
+ColorA Module::BG_FILL_SELECTED = ColorA(234 * 0.00392157f, 234 * 0.00392157f, 234 * 0.00392157f, 0.7);
 ColorA Module::TXT_FILL = ColorA::black();
 
-Module::Module():Tree(), InteractionManager([this](cinder::ivec2 location){
-    return this->area.contains(location);
-}){
-    this->area = Rectf(100, 100, 320, 240);
-    
-    //plugs = new PlugWrapper(this);
-    //for(int i = 0 , l = ofRandom(1, 4) ; i < l ; i++){
-    //    plugs->add(false)->enableInteraction();
-    //}
-    //for(int i = 0 , l = ofRandom(1, 4) ; i < l ; i++){
-    //    plugs->add(true)->enableInteraction();
-    //}
-}
+Module::Module()
+    :Tree(),
+    InteractionManager([this](cinder::ivec2 location){
+        return this->area.contains(location);
+    }){
+        this->area = Rectf(0, 0, 280, 160);
+        
+        connectorWrapper = new ConnectorWrapper(this);
+        for(int i = 0 , l = 13 ; i < l ; i++){
+            connectorWrapper->add(false)->enableInteraction();
+        }
+        for(int i = 0 , l = Rand::randInt(1, 10) ; i < l ; i++){
+            connectorWrapper->add(true)->enableInteraction();
+        }
+    }
 ModuleRef Module::enableInteraction(){
     this->visible = true;
+    
     this->on("mouseDoubleClick", [this](ogre::MouseEvent event){
         InteractionManager::stopPropagation = true;
         this->parent->forSubTree([](TreeRef node){
             dynamic_cast<ModuleRef>(node)->disableInteraction();
         });
-        Module::go(this);
+        ModuleController::setSelected(set<ModuleRef>());
+        ModuleController::go(this);
         return false;
     });
-    /*
-    this->plugs->forSubTree([](PlugRef plug){
-        plug->enableInteraction();
-    });
-     */
+    
     this->on("dragStart", [this](ogre::MouseEvent event){
         InteractionManager::occupy = this;
         this->on("drag", [this](ogre::MouseEvent event){
@@ -61,45 +60,27 @@ ModuleRef Module::enableInteraction(){
         });
         return false;
     });
+    
+    connectorWrapper->enableInteraction();
+    
     return this;
 }
 
 ModuleRef Module::disableInteraction(){
     this->visible = false;
     this->off();
-    //this->plugs->forSubTree([](PlugRef plug){
-    //    plug->disableInteraction();
-    //});
+    connectorWrapper->disableInteraction();
     return this;
 }
 
 
-void Module::go(ModuleRef node){
-    //ModuleController::unselect();
-    Module::current = node;
-    Module::current->forSubTree([](TreeRef node){
-        dynamic_cast<ModuleRef>(node)->enableInteraction();
-    });
-}
-
-void Module::gotoParent(){
-    if(Module::current->id>0){
-        Module::current->forSubTree([](TreeRef node){
-            dynamic_cast<ModuleRef>(node)->disableInteraction();
-        });
-        Module::go(dynamic_cast<ModuleRef>(Module::current->parent));
-    }
-}
-
-ModuleRef Module::addNode(){
-    return Module::current->add()->enableInteraction();
-}
 
 ModuleRef Module::add(){
     return dynamic_cast<ModuleRef>(this->push(new Module()));
 }
 
 void Module::update(){
+    if(connectorWrapper)connectorWrapper->update();
     if(this->visible){
         //plugs->update();
         InteractionManager::update();
@@ -107,10 +88,12 @@ void Module::update(){
 }
 
 void Module::draw(){
+    
     gl::color( selected ? Module::BG_FILL_SELECTED : Module::BG_FILL );
     gl::drawSolidRect( this->area );
     gl::color( ColorA::black() );
     gl::drawStrokedRect(this->area, 1);
+    if(connectorWrapper)connectorWrapper->draw();
     
     /*ofSetColor(selected ? Module::BGFILLSELECTED : Module::BGFILL);
     ofDrawRectangle(position, size.x, size.y);
@@ -120,13 +103,40 @@ void Module::draw(){
     plugs->draw();*/
 }
 
+ModuleRef Module::forInside(ModuleFnc action){
+    auto it = this->nodes.begin();
+    while(it != this->nodes.end()){
+        action(dynamic_cast<ModuleRef>(it->second));
+        it++;
+    }
+    return this;
+}
+
+ModuleRef Module::forSubTree(ModuleFnc action, bool recursive, bool inclusive){
+    if(inclusive){
+        action(this);
+    }
+    auto it = this->nodes.begin();
+    while(it != this->nodes.end()){
+        ModuleRef m = dynamic_cast<ModuleRef>(it->second);
+        if(!recursive || !inclusive){
+            action(m);
+        }
+        if(recursive){
+            m->forSubTree(action, recursive, inclusive);
+        }
+        it++;
+    }
+    return this;
+}
+
+
 void Module::print(){
-    this->forSubTree([](TreeRef node){
-        for(int i = 0 ; i < node->level ; i ++){
+    this->forSubTree([](ModuleRef module){
+        for(int i = 0 ; i < module->level ; i ++){
             cout<<"\t";
         }
-        ModuleRef current = dynamic_cast<ModuleRef>(node);
-        cout<<node->id<<" : "<<node->uniqueID<<" "<<current->area.getCenter()<<endl;
+        cout<<module->id<<" : "<<module->uniqueID<<" "<<module->area.getCenter()<<endl;
     }, true, true);
 }
 

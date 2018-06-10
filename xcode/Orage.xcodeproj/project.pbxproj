@@ -18,11 +18,15 @@
 		00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
 		30C89E26A38F4CF0A0B0E71C /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 28965F2FE58849709C8C7B7D /* CinderApp.icns */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
+		883E041120CD9EE000B73030 /* Connector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 883E040F20CD9EE000B73030 /* Connector.cpp */; };
 		886C3EBE20CB4AC700E9282D /* InteractionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 886C3EBD20CB4AC700E9282D /* InteractionManager.cpp */; };
 		88CB4D7720C7F045000A41F1 /* ModuleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88CB4D7520C7F045000A41F1 /* ModuleController.cpp */; };
 		88CB4D8520C8686E000A41F1 /* hashids.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88CB4D8320C8686E000A41F1 /* hashids.cpp */; };
 		88CB4D8920C868A9000A41F1 /* Tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88CB4D8720C868A9000A41F1 /* Tree.cpp */; };
 		88CB4D8D20C86C79000A41F1 /* Module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88CB4D8B20C86C79000A41F1 /* Module.cpp */; };
+		88CEA4EB20CD95F500B8DE63 /* UIController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88CEA4E920CD95F500B8DE63 /* UIController.cpp */; };
+		88CEA4EE20CD9B6800B8DE63 /* ConnectorWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88CEA4EC20CD9B6800B8DE63 /* ConnectorWrapper.cpp */; };
+		88E97EE120CC62F9008E0FC1 /* Slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E97EDF20CC62F9008E0FC1 /* Slider.cpp */; };
 		8C300D287DC6459184BFC233 /* OrageApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B7878E2A6E74C14B0B95C8D /* OrageApp.cpp */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -45,6 +49,8 @@
 		3B7878E2A6E74C14B0B95C8D /* OrageApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = OrageApp.cpp; path = ../src/OrageApp.cpp; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		63AECE3799ED40B28CCC923D /* Orage_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = Orage_Prefix.pch; sourceTree = "<group>"; };
+		883E040F20CD9EE000B73030 /* Connector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Connector.cpp; path = Connector/Connector.cpp; sourceTree = "<group>"; };
+		883E041020CD9EE000B73030 /* Connector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Connector.hpp; path = Connector/Connector.hpp; sourceTree = "<group>"; };
 		886C3EBD20CB4AC700E9282D /* InteractionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InteractionManager.cpp; path = Interactions/InteractionManager.cpp; sourceTree = "<group>"; };
 		88CB4D7520C7F045000A41F1 /* ModuleController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ModuleController.cpp; path = Module/ModuleController.cpp; sourceTree = "<group>"; };
 		88CB4D7620C7F045000A41F1 /* ModuleController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = ModuleController.hpp; path = Module/ModuleController.hpp; sourceTree = "<group>"; };
@@ -56,6 +62,13 @@
 		88CB4D8820C868A9000A41F1 /* Tree.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Tree.hpp; path = Tree/Tree.hpp; sourceTree = "<group>"; };
 		88CB4D8B20C86C79000A41F1 /* Module.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Module.cpp; path = Module/Module.cpp; sourceTree = "<group>"; };
 		88CB4D8C20C86C79000A41F1 /* Module.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Module.hpp; path = Module/Module.hpp; sourceTree = "<group>"; };
+		88CEA4E920CD95F500B8DE63 /* UIController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UIController.cpp; path = UI/UIController.cpp; sourceTree = "<group>"; };
+		88CEA4EA20CD95F500B8DE63 /* UIController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = UIController.hpp; path = UI/UIController.hpp; sourceTree = "<group>"; };
+		88CEA4EC20CD9B6800B8DE63 /* ConnectorWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectorWrapper.cpp; path = Connector/ConnectorWrapper.cpp; sourceTree = "<group>"; };
+		88CEA4ED20CD9B6800B8DE63 /* ConnectorWrapper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = ConnectorWrapper.hpp; path = Connector/ConnectorWrapper.hpp; sourceTree = "<group>"; };
+		88E97EDF20CC62F9008E0FC1 /* Slider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Slider.cpp; path = UI/Slider.cpp; sourceTree = "<group>"; };
+		88E97EE020CC62F9008E0FC1 /* Slider.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Slider.hpp; path = UI/Slider.hpp; sourceTree = "<group>"; };
+		88E97EE420CD7809008E0FC1 /* Tools.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Tools.hpp; path = Tools/Tools.hpp; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Orage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Orage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7F4F37B179748B3BFB96B80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,6 +110,9 @@
 				88CB4D7820C7F071000A41F1 /* Module */,
 				88CB4D7C20C7F095000A41F1 /* Interactions */,
 				88CB4D8A20C868AD000A41F1 /* Tree */,
+				88E97EE220CC631D008E0FC1 /* UI */,
+				88E97EE620CD780F008E0FC1 /* Tools */,
+				88CEA4EF20CD9B6E00B8DE63 /* Connector */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -190,8 +206,8 @@
 		88CB4D7C20C7F095000A41F1 /* Interactions */ = {
 			isa = PBXGroup;
 			children = (
-				886C3EBD20CB4AC700E9282D /* InteractionManager.cpp */,
 				88CB4D7E20C7F0C0000A41F1 /* MouseEvent.hpp */,
+				886C3EBD20CB4AC700E9282D /* InteractionManager.cpp */,
 				88CB4D8120C7F4BA000A41F1 /* InteractionManager.hpp */,
 			);
 			name = Interactions;
@@ -213,6 +229,36 @@
 				88CB4D8820C868A9000A41F1 /* Tree.hpp */,
 			);
 			name = Tree;
+			sourceTree = "<group>";
+		};
+		88CEA4EF20CD9B6E00B8DE63 /* Connector */ = {
+			isa = PBXGroup;
+			children = (
+				88CEA4EC20CD9B6800B8DE63 /* ConnectorWrapper.cpp */,
+				88CEA4ED20CD9B6800B8DE63 /* ConnectorWrapper.hpp */,
+				883E040F20CD9EE000B73030 /* Connector.cpp */,
+				883E041020CD9EE000B73030 /* Connector.hpp */,
+			);
+			name = Connector;
+			sourceTree = "<group>";
+		};
+		88E97EE220CC631D008E0FC1 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				88E97EDF20CC62F9008E0FC1 /* Slider.cpp */,
+				88E97EE020CC62F9008E0FC1 /* Slider.hpp */,
+				88CEA4E920CD95F500B8DE63 /* UIController.cpp */,
+				88CEA4EA20CD95F500B8DE63 /* UIController.hpp */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		88E97EE620CD780F008E0FC1 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				88E97EE420CD7809008E0FC1 /* Tools.hpp */,
+			);
+			name = Tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -281,7 +327,11 @@
 			files = (
 				88CB4D8520C8686E000A41F1 /* hashids.cpp in Sources */,
 				88CB4D8D20C86C79000A41F1 /* Module.cpp in Sources */,
+				88CEA4EE20CD9B6800B8DE63 /* ConnectorWrapper.cpp in Sources */,
 				8C300D287DC6459184BFC233 /* OrageApp.cpp in Sources */,
+				88CEA4EB20CD95F500B8DE63 /* UIController.cpp in Sources */,
+				883E041120CD9EE000B73030 /* Connector.cpp in Sources */,
+				88E97EE120CC62F9008E0FC1 /* Slider.cpp in Sources */,
 				88CB4D7720C7F045000A41F1 /* ModuleController.cpp in Sources */,
 				886C3EBE20CB4AC700E9282D /* InteractionManager.cpp in Sources */,
 				88CB4D8920C868A9000A41F1 /* Tree.cpp in Sources */,

@@ -17,6 +17,7 @@ class InteractionManager {
     bool wasPress;
     bool wasDown;
     bool wasUp;
+    float scrolled;
     
     std::map<std::string, action> actions;
     
@@ -36,7 +37,7 @@ class InteractionManager {
         
         void update();
         
-        bool trigger(std::string type);
+        bool trigger(std::string type, float value = 0.0f);
         InteractionManager * on(std::string type, action fnc);
         void off(std::string type);
         void off();
@@ -50,16 +51,17 @@ class InteractionManager {
         static bool isPress;
         static bool isDown;
         static bool isUp;
-        static bool isResize;
+        static float scrolling;
         
         static float pressTime;
         static float clickTime;
-        
+        static unsigned char modifier;
         static cinder::ivec2 mousePosition;
         static cinder::ivec2 pressedPosition;
         static std::set<int> currentKeys;
         
         static void init();
+        static void reset();
 };
 typedef std::function<bool(cinder::ivec2 location)> TestHover;
 typedef std::function<void(ogre::MouseEvent)> action;
