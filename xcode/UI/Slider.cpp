@@ -18,19 +18,22 @@ ColorA Slider::BG_FILL = ColorA(234 * 0.00392157f, 234 * 0.00392157f, 234 * 0.00
 ColorA Slider::FG_FILL = ColorA(234 * 0.00392157f, 234 * 0.00392157f, 234 * 0.00392157f);
 ColorA Slider::BG_STROKE = ColorA(234 * 0.00392157f, 234 * 0.00392157f, 234 * 0.00392157f);
 ColorA Slider::TXT_FILL = ColorA::black();
-Rectf Slider::MARGINS = Rectf(5, 5, 5, 5);
+Rectf Slider::MARGINS = Rectf(50, 20, 5, 5);
 
-Slider::Slider(string name, ivec2 position, ivec2 size)
+Slider::Slider(Address * address, ivec2 size)
     :wrapper(0, 0, size.x, size.y),
     core(0, 0, size.x, max(7, size.y-13)),
-    name(name),
+    address(address),
+    name(address->toString()),
     InteractionManager([this](cinder::ivec2 location){
         Rectf r = this->wrapper;
         r.offset(UIController::area.getUpperLeft());
         return  r.contains(location);
     }){
         wrapper.canonicalize();
-        wrapper.offset(position);
+        wrapper.offset(Slider::MARGINS.getUpperLeft());
+        wrapper.offset(ivec2(0, (int)address->number * (size.y + Slider::MARGINS.y1)));
+        
         this->on("scroll", [this](ogre::MouseEvent event){
             this->value += 0.01f * event.value;
             if(event.isShiftDown()){
@@ -98,8 +101,8 @@ void Slider::draw(){
     color( BG_STROKE );
     drawStrokedRect(this->core, 1);
     color(Slider::TXT_FILL);
-    drawString(name, this->core.getUpperLeft() + vec2(0, this->core.getHeight()) + vec2(0, Slider::MARGINS.y1));
-    drawStringRight(Tools::floatToString(this->getRangedValue(), Slider::precision), this->core.getLowerRight() + vec2(0, Slider::MARGINS.y1));
+    drawString(name, this->core.getUpperLeft() + vec2(0, this->core.getHeight()) + vec2(0, Slider::MARGINS.y2));
+    drawStringRight(Tools::floatToString(this->getRangedValue(), Slider::precision), this->core.getLowerRight() + vec2(0, Slider::MARGINS.y2));
     popMatrices();
     popMatrices();
 }

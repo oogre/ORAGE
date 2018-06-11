@@ -17,11 +17,12 @@ ColorA Connector::BG_FILL = ColorA(222 * 0.00392157f, 222 * 0.00392157f, 222 * 0
 ColorA Connector::BG_FILL_SELECTED = ColorA(255 * 0.00392157f, 0 * 0.00392157f, 0 * 0.00392157f);
 ColorA Connector::BG_STROKE = ColorA(0 * 0.00392157f, 0 * 0.00392157f, 0 * 0.00392157f);
 Rectf Connector::MARGINS = Rectf(2.5, 2.5, 1, -2);
-
+float Connector::defaultValue = 0.f;
 Connector::Connector(ModuleRef parent, int n)
     :parent(parent),
     number(n),
     focus(false),
+    value(&Connector::defaultValue),
     InteractionManager([this](cinder::ivec2 location){
         Rectf r = this->area;
         r.offset(this->parent->area.getUpperLeft());
@@ -61,20 +62,20 @@ void Connector::draw(){
     translate(vec2(1, -1) * Connector::MARGINS.getLowerRight());
     color(this->focus ? BG_FILL_SELECTED : BG_FILL);
     drawSolidRect(this->area);
+    color(BG_STROKE);
+    drawSolidRect( this->area + Rectf(0, 5, ((*value)-1) * this->area.getWidth(), this->area.getHeight()-5));
     popMatrices();
 }
 
 Input::Input(ModuleRef parent, int n)
     :Connector(parent, n){
-        //this->address = genAddress(parent->uniqueID, n);
-        address = parent->uniqueID + splitter + to_string(this->number);
+        address = { parent->uniqueID, splitter, n };
     }
 
 Output::Output(ModuleRef parent, int n)
     :Connector(parent, n){
-        //this->address = genAddress(parent->uniqueID, n);
         area.offset(vec2(0, parent->area.getHeight()));
-        address = parent->uniqueID + splitter + to_string(this->number);
+        address = { parent->uniqueID, splitter, n };
     }
 
 

@@ -29,6 +29,8 @@ ModuleController::ModuleController():InteractionManager([this](cinder::ivec2 loc
     ModuleController::area = Rectf(0.f, 0.f, getWindowWidth()-300, getWindowHeight());
     ModuleController::go(&ModuleController::moduleTree);
     
+   
+    
     this->on("dragStart", [this](ogre::MouseEvent event){
         InteractionManager::occupy = this;
         this->areaSelector.set(event.position.x, event.position.y, event.position.x, event.position.y);

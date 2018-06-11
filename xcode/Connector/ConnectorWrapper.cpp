@@ -10,7 +10,7 @@ using namespace std;
 using namespace cinder;
 
 ConnectorWrapper::ConnectorWrapper(ModuleRef parent):parent(parent){
-    
+    uiCnt = new UIController();
 }
 
 void ConnectorWrapper::each(ConnectorFnc action){
@@ -41,7 +41,7 @@ ConnectorRef ConnectorWrapper::add(bool isOutput){
     }else{
         inputs.push_back(new Input(this->parent, (int)inputs.size()));
         connectors.push_back(inputs.back());
-        uiCnt.addSlider(inputs.back()->address, ivec2(20, 20 + (int)inputs.size() * 40));// address >>> struct >> MOVE postion inside SLider
+        inputs.back()->value = uiCnt->addSlider(&(inputs.back()->address));        
     }
     return connectors.back();
 }
@@ -50,15 +50,13 @@ void ConnectorWrapper::update(){
     this->each([](ConnectorRef connector){
         connector->update();
     });
-    if(this->parent->selected){
-        uiCnt.update();
-    }
+    uiCnt->update();
 }
 void ConnectorWrapper::draw(){
     this->each([](ConnectorRef connector){
         connector->draw();
     });
     if(this->parent->selected){
-        uiCnt.draw();
+        uiCnt->draw();
     }
 }

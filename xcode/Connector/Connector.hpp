@@ -12,6 +12,18 @@
 class Input;
 class Output;
 class Module;
+class Connector;
+
+struct Address {
+    std::string parentUniqueId;
+    std::string type;
+    int number;
+    std::string toString() {
+        return parentUniqueId + " " + type + std::to_string(number);
+    }
+};
+
+
 class Connector : public InteractionManager{
     typedef Module * ModuleRef;
     typedef Connector * ConnectorRef;
@@ -21,15 +33,17 @@ class Connector : public InteractionManager{
     static cinder::ColorA BG_STROKE;
     static cinder::Rectf MARGINS;
     
+    static float defaultValue;
     cinder::Rectf area;
     ModuleRef parent;
     std::string splitter = "-";
     public :
         friend Input;
         friend Output;
+        float * value;
         int number ;
         bool focus;
-        std::string address;
+        Address address;
         Connector(ModuleRef parent, int n);
         virtual ~Connector(){}
         void update();

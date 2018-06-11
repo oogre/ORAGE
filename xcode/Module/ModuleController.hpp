@@ -26,7 +26,7 @@ class ModuleController : public InteractionManager {
         static cinder::ivec2 GRID_SIZE;
     
         static Module moduleTree;
-        static void setSelected(std::set<ModuleRef> selected);
+        static void setSelected(std::set<ModuleRef> selected = std::set<ModuleRef>());
         static void go(ModuleRef node);
         static void gotoParent();
         static ModuleRef addNode();

@@ -38,8 +38,8 @@ void UIController::draw(){
 }
 
 
-float * UIController::addSlider(string name, ivec2 position, ivec2 size){
-    sliders.push_back(new Slider(name, position, size));
+float * UIController::addSlider(Address * address, ivec2 size){
+    sliders.push_back(new Slider(address, size));
     return &(sliders.back()->valueRanged);
 }
 

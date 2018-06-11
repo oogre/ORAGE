@@ -11,7 +11,9 @@
 #include "MouseEvent.hpp"
 #include "InteractionManager.hpp"
 #include "UIController.hpp"
+#include "Connector.hpp"
 
+struct Address;
 class Slider : public InteractionManager{
     typedef Slider * SliderRef;
     
@@ -21,15 +23,15 @@ class Slider : public InteractionManager{
     static cinder::ColorA BG_STROKE;
     static cinder::Rectf MARGINS;
     cinder::Rectf wrapper;
-    cinder::vec2 range = cinder::vec2(-1, 1);
+    cinder::vec2 range = cinder::vec2(0, 1);
     cinder::Rectf core;
     std::string name;
-    
+    Address * address;
     float value = 0.5f;
     
     const static int precision = 3;
     public :
-        Slider(std::string name, cinder::ivec2 position = cinder::ivec2(0, 100), cinder::ivec2 size = cinder::ivec2(200, 20));
+        Slider(Address * address, cinder::ivec2 size = cinder::ivec2(200, 20));
         virtual ~Slider(){}
         void setValue(float v);
         float getValue(bool based = false);

@@ -11,6 +11,7 @@
 #include "UIController.hpp"
 
 class Connector;
+class UIController;
 class ConnectorWrapper{
     typedef Module * ModuleRef;
     typedef Connector * ConnectorRef;
@@ -22,7 +23,7 @@ class ConnectorWrapper{
     std::vector<ConnectorRef> inputs;
     std::vector<ConnectorRef> outputs;
     std::vector<ConnectorRef> connectors;
-    UIController uiCnt;
+    UIController * uiCnt;
     public :
         ConnectorWrapper(ModuleRef parent);
         virtual ~ConnectorWrapper(){}

@@ -37,8 +37,16 @@ ModuleRef Module::enableInteraction(){
         return false;
     });
     
+    this->on("mousePressed", [this](ogre::MouseEvent event){
+        set<ModuleRef> selected;
+        selected.insert(this);
+        ModuleController::setSelected(selected);
+        return false;
+    });
+    
     this->on("dragStart", [this](ogre::MouseEvent event){
         InteractionManager::occupy = this;
+        
         this->on("drag", [this](ogre::MouseEvent event){
             this->area.offsetCenterTo(event.position);
             return false;
