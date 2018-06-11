@@ -7,6 +7,7 @@
 
 #pragma once
 #include "MouseEvent.hpp"
+#include "Tools.hpp"
 
 class InteractionManager {
     typedef std::function<bool(cinder::ivec2 location)> TestHover;

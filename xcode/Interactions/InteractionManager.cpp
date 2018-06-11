@@ -68,33 +68,12 @@ void InteractionManager::init(){
         scrolling += event.getWheelIncrement();
     });
     getWindow()->getSignalKeyUp().connect( []( cinder::app::KeyEvent event ) {
-        if(event.isShiftDown()) InteractionManager::modifier |= ogre::MouseEvent::ShiftDown;
-        else                    InteractionManager::modifier &= ~ogre::MouseEvent::ShiftDown;
-        if(event.isAltDown()) InteractionManager::modifier |= ogre::MouseEvent::AltDown;
-        else                    InteractionManager::modifier &= ~ogre::MouseEvent::AltDown;
-        if(event.isControlDown()) InteractionManager::modifier |= ogre::MouseEvent::ControlDown;
-        else                    InteractionManager::modifier &= ~ogre::MouseEvent::ControlDown;
-        if(event.isMetaDown()) InteractionManager::modifier |= ogre::MouseEvent::MetaDown;
-        else                    InteractionManager::modifier &= ~ogre::MouseEvent::MetaDown;
-        if(event.isAccelDown()) InteractionManager::modifier |= ogre::MouseEvent::AccelDown;
-        else                    InteractionManager::modifier &= ~ogre::MouseEvent::AccelDown;
-        
+        InteractionManager::modifier = Tools::processModifier(InteractionManager::modifier, event);
         isDown = false;
         currentKeys.erase(event.getCode());
     });
     getWindow()->getSignalKeyDown().connect( []( cinder::app::KeyEvent event ) {
-        if(event.isShiftDown()) InteractionManager::modifier |= ogre::MouseEvent::ShiftDown;
-        else                    InteractionManager::modifier &= ~ogre::MouseEvent::ShiftDown;
-        if(event.isAltDown()) InteractionManager::modifier |= ogre::MouseEvent::AltDown;
-        else                    InteractionManager::modifier &= ~ogre::MouseEvent::AltDown;
-        if(event.isControlDown()) InteractionManager::modifier |= ogre::MouseEvent::ControlDown;
-        else                    InteractionManager::modifier &= ~ogre::MouseEvent::ControlDown;
-        if(event.isMetaDown()) InteractionManager::modifier |= ogre::MouseEvent::MetaDown;
-        else                    InteractionManager::modifier &= ~ogre::MouseEvent::MetaDown;
-        if(event.isAccelDown()) InteractionManager::modifier |= ogre::MouseEvent::AccelDown;
-        else                    InteractionManager::modifier &= ~ogre::MouseEvent::AccelDown;
-        
-        
+        InteractionManager::modifier = Tools::processModifier(InteractionManager::modifier, event);
         currentKeys.insert(event.getCode());
         isDown = true;
     });

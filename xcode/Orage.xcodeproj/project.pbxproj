@@ -107,12 +107,12 @@
 			children = (
 				88CB4D8620C86875000A41F1 /* hashids */,
 				3B7878E2A6E74C14B0B95C8D /* OrageApp.cpp */,
-				88CB4D7820C7F071000A41F1 /* Module */,
-				88CB4D7C20C7F095000A41F1 /* Interactions */,
 				88CB4D8A20C868AD000A41F1 /* Tree */,
+				88CB4D7820C7F071000A41F1 /* Module */,
+				88CEA4EF20CD9B6E00B8DE63 /* Connector */,
 				88E97EE220CC631D008E0FC1 /* UI */,
 				88E97EE620CD780F008E0FC1 /* Tools */,
-				88CEA4EF20CD9B6E00B8DE63 /* Connector */,
+				88CB4D7C20C7F095000A41F1 /* Interactions */,
 			);
 			name = Source;
 			sourceTree = "<group>";

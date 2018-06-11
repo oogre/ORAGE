@@ -23,11 +23,13 @@ class Connector : public InteractionManager{
     
     cinder::Rectf area;
     ModuleRef parent;
+    std::string splitter = "-";
     public :
         friend Input;
         friend Output;
-    
+        int number ;
         bool focus;
+        std::string address;
         Connector(ModuleRef parent, int n);
         virtual ~Connector(){}
         void update();
@@ -41,7 +43,7 @@ typedef Connector * ConnectorRef;
 class Input : public Connector {
     typedef Module * ModuleRef;
     //typedef Wire * WireRef;
-    //virtual std::string genAddress(std::string parentId, int input, std::string spliter = "$") override;
+    std::string splitter = "$";
     public :
     //WireRef connectedWire = nullptr;
     Input(ModuleRef parent, int n);
@@ -53,7 +55,7 @@ typedef Input * InputRef;
 class Output : public Connector {
     typedef Module * ModuleRef;
     //typedef Wire * WireRef;
-    //virtual std::string genAddress(std::string parentId, int input, std::string spliter = "$") override;
+    std::string splitter = "&";
     public :
     //WireRef connectedWire = nullptr;
     Output(ModuleRef parent, int n);

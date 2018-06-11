@@ -11,7 +11,7 @@
 using namespace std;
 using namespace cinder;
 using namespace cinder::app;
-//using namespace glm;
+using namespace cinder::gl;
 
 Rectf ModuleController::area;
 Rectf ModuleController::areaSelector;
@@ -69,26 +69,26 @@ void ModuleController::update(){
 }
 
 void ModuleController::draw(){
-    gl::color( ModuleController::BG_FILL );
-    gl::drawSolidRect( this->area );
+    color( ModuleController::BG_FILL );
+    drawSolidRect( this->area );
     
     for(int i = ModuleController::area.getX1() ; i < ModuleController::area.getWidth() ; i += GRID_SIZE.x){
-        gl::color( ModuleController::BG_STROKE);
-        gl::drawLine(vec2(i, ModuleController::area.getX1()), vec2(i, ModuleController::area.getHeight()));
+        color( ModuleController::BG_STROKE);
+        drawLine(vec2(i, ModuleController::area.getX1()), vec2(i, ModuleController::area.getHeight()));
     }
     for(int i = ModuleController::area.getY1() ; i < ModuleController::area.getHeight() ; i += GRID_SIZE.y){
-        gl::color( ModuleController::BG_STROKE);
-        gl::drawLine(vec2(ModuleController::area.getY1(), i), vec2(ModuleController::area.getWidth(), i));
+        color( ModuleController::BG_STROKE);
+        drawLine(vec2(ModuleController::area.getY1(), i), vec2(ModuleController::area.getWidth(), i));
     }
     
     ModuleController::current->forSubTree([](ModuleRef module){
         module->draw();
     });
     
-    gl::color( ColorA(1, 1, 1, 0.3) );
-    gl::drawSolidRect(this->areaSelector);
-    gl::color( ColorA(1, 1, 1, 0.8) );
-    gl::drawStrokedRect(this->areaSelector, 1);
+    color( ColorA(1, 1, 1, 0.3) );
+    drawSolidRect(this->areaSelector);
+    color( ColorA(1, 1, 1, 0.8) );
+    drawStrokedRect(this->areaSelector, 1);
 }
 
 set<ModuleRef> ModuleController::getInside(Rectf area){
@@ -128,6 +128,14 @@ void ModuleController::gotoParent(){
 }
 
 ModuleRef ModuleController::addNode(){
-    
-    return ModuleController::current->add()->enableInteraction();
+    ModuleRef module = ModuleController::current->add();
+    module->connectorWrapper = new ConnectorWrapper(module);
+    for(int i = 0 , l = 13 ; i < l ; i++){
+        module->connectorWrapper->add(false)->enableInteraction();
+    }
+    for(int i = 0 , l = Rand::randInt(1, 10) ; i < l ; i++){
+        module->connectorWrapper->add(true)->enableInteraction();
+    }
+    module->enableInteraction();
+    return module;
 }

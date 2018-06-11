@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace cinder;
+using namespace cinder::gl;
 
 
 
@@ -22,14 +23,6 @@ Module::Module()
         return this->area.contains(location);
     }){
         this->area = Rectf(0, 0, 280, 160);
-        
-        connectorWrapper = new ConnectorWrapper(this);
-        for(int i = 0 , l = 13 ; i < l ; i++){
-            connectorWrapper->add(false)->enableInteraction();
-        }
-        for(int i = 0 , l = Rand::randInt(1, 10) ; i < l ; i++){
-            connectorWrapper->add(true)->enableInteraction();
-        }
     }
 ModuleRef Module::enableInteraction(){
     this->visible = true;
@@ -80,20 +73,20 @@ ModuleRef Module::add(){
 }
 
 void Module::update(){
-    if(connectorWrapper)connectorWrapper->update();
+    
     if(this->visible){
-        //plugs->update();
+        connectorWrapper->update();
         InteractionManager::update();
     }
 }
 
 void Module::draw(){
     
-    gl::color( selected ? Module::BG_FILL_SELECTED : Module::BG_FILL );
-    gl::drawSolidRect( this->area );
-    gl::color( ColorA::black() );
-    gl::drawStrokedRect(this->area, 1);
-    if(connectorWrapper)connectorWrapper->draw();
+    color( selected ? Module::BG_FILL_SELECTED : Module::BG_FILL );
+    drawSolidRect( this->area );
+    color( ColorA::black() );
+    drawStrokedRect(this->area, 1);
+    connectorWrapper->draw();
     
     /*ofSetColor(selected ? Module::BGFILLSELECTED : Module::BGFILL);
     ofDrawRectangle(position, size.x, size.y);

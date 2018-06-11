@@ -23,12 +23,12 @@ class Module : public  Tree, public InteractionManager{
     static cinder::ColorA BG_FILL_SELECTED;
     static cinder::ColorA TXT_FILL;
     
-    ConnectorWrapperRef connectorWrapper;
+    
     public :
         Module();
         virtual ~Module(){}
         cinder::Rectf area;
-    
+        ConnectorWrapperRef connectorWrapper;
         bool visible = false;
         bool selected = false;
         void print();

@@ -21,13 +21,16 @@ ColorA Slider::TXT_FILL = ColorA::black();
 Rectf Slider::MARGINS = Rectf(5, 5, 5, 5);
 
 Slider::Slider(string name, ivec2 position, ivec2 size)
-    :wrapper(getWindowWidth() - 220, position.y, size.x, size.y),
+    :wrapper(0, 0, size.x, size.y),
     core(0, 0, size.x, max(7, size.y-13)),
     name(name),
     InteractionManager([this](cinder::ivec2 location){
-        return  Rectf(this->wrapper.x1, this->wrapper.y1, this->wrapper.x1 + this->wrapper.x2, this->wrapper.y1 + this->wrapper.y2).contains(location);
+        Rectf r = this->wrapper;
+        r.offset(UIController::area.getUpperLeft());
+        return  r.contains(location);
     }){
-        
+        wrapper.canonicalize();
+        wrapper.offset(position);
         this->on("scroll", [this](ogre::MouseEvent event){
             this->value += 0.01f * event.value;
             if(event.isShiftDown()){
@@ -37,22 +40,22 @@ Slider::Slider(string name, ivec2 position, ivec2 size)
             return false;
         })->on("mousePressed", [this](ogre::MouseEvent event){
             if(!event.isShiftDown()){
-                this->value = (event.position.x - this->wrapper.getX1()) / (float)this->core.x2;
+                this->value = (event.position.x - this->wrapper.getX1() - UIController::area.getUpperLeft().x) / (float)this->core.x2;
             }
             return false;
         })->on("dragStart", [this](ogre::MouseEvent event){
             InteractionManager::occupy = this;
             this->on("drag", [this](ogre::MouseEvent event){
                 if(event.isShiftDown()){
-                    if(event.position.x < this->wrapper.getX1()){
-                        event.position.x = this->wrapper.getX1() + this->core.getX2();
+                    if(event.position.x < this->wrapper.getX1() + UIController::area.getUpperLeft().x){
+                        event.position.x = this->wrapper.getX1() + UIController::area.getUpperLeft().x + this->core.getX2();
                         Tools::setMousePos(event.position);
-                    }else if(event.position.x > this->wrapper.getX1() + this->core.getX2()){
-                        event.position.x = this->wrapper.getX1();
+                    }else if(event.position.x > this->wrapper.getX1() + this->core.getX2() + UIController::area.getUpperLeft().x){
+                        event.position.x = this->wrapper.getX1() + UIController::area.getUpperLeft().x;
                         Tools::setMousePos(event.position);
                     }
                 }
-                this->value = (event.position.x - this->wrapper.getX1()) / (float)this->core.x2;
+                this->value = (event.position.x - this->wrapper.getX1() - UIController::area.getUpperLeft().x) / (float)this->core.x2;
                 this->value = constrain(this->value, 0.0f, 1.0f);
                 return false;
             })->on("dragStop", [this](ogre::MouseEvent event){
@@ -80,19 +83,23 @@ float Slider::getRangedValue(){
 
 void Slider::update(){
     InteractionManager::update();
+    valueRanged = getRangedValue();
 }
 
 void Slider::draw(){
     pushMatrices();
+    translate(UIController::area.getUpperLeft());
+    pushMatrices();
     translate(this->wrapper.getUpperLeft());
     color( BG_FILL );
-    drawSolidRect( Rectf(this->core.x1, this->core.y1, this->core.x1 + this->core.x2, this->core.y1 + this->core.y2) );
+    drawSolidRect(this->core);
     color( FG_FILL );
-    drawSolidRect( Rectf(this->core.x1, this->core.y1, this->core.x1 + value * this->core.x2, this->core.y1 + this->core.y2));
+    drawSolidRect( this->core + Rectf(0, 0, (value-1) * this->core.getWidth(), 0));
     color( BG_STROKE );
-    drawStrokedRect(Rectf(this->core.x1, this->core.y1, this->core.x1 + this->core.x2, this->core.y1 + this->core.y2), 1);
+    drawStrokedRect(this->core, 1);
     color(Slider::TXT_FILL);
-    drawString(name, vec2(this->core.x1, this->core.y1 + this->core.y2 + Slider::MARGINS.x1));
-    drawStringRight(Tools::floatToString(this->getRangedValue(), Slider::precision), vec2(this->core.x2, this->core.y1 + this->core.y2 + Slider::MARGINS.x1));
+    drawString(name, this->core.getUpperLeft() + vec2(0, this->core.getHeight()) + vec2(0, Slider::MARGINS.y1));
+    drawStringRight(Tools::floatToString(this->getRangedValue(), Slider::precision), this->core.getLowerRight() + vec2(0, Slider::MARGINS.y1));
+    popMatrices();
     popMatrices();
 }

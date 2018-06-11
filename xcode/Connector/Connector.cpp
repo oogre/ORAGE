@@ -10,7 +10,7 @@
 
 using namespace std;
 using namespace cinder;
-
+using namespace cinder::gl;
 
 vec2 Connector::size = vec2(15, -6);
 ColorA Connector::BG_FILL = ColorA(222 * 0.00392157f, 222 * 0.00392157f, 222 * 0.00392157f);
@@ -20,6 +20,8 @@ Rectf Connector::MARGINS = Rectf(2.5, 2.5, 1, -2);
 
 Connector::Connector(ModuleRef parent, int n)
     :parent(parent),
+    number(n),
+    focus(false),
     InteractionManager([this](cinder::ivec2 location){
         Rectf r = this->area;
         r.offset(this->parent->area.getUpperLeft());
@@ -29,13 +31,12 @@ Connector::Connector(ModuleRef parent, int n)
         area = Rectf(0, 0, size.x, size.y);
         area.canonicalize();
         area.offset(vec2(Connector::MARGINS.x1 + n * Connector::MARGINS.y1 + n * (size.x + Connector::MARGINS.y1), 0));
-        this->focus = false;
-        
     }
 
 ConnectorRef Connector::enableInteraction(){
     this->on("mouseEnter", [this](ogre::MouseEvent event){
         this->focus = true;
+        //cout<<this->address<<endl;
         return true;
     });
     this->on("mouseLeave", [this](ogre::MouseEvent event){
@@ -55,21 +56,25 @@ void Connector::update(){
 }
 
 void Connector::draw(){
-    gl::pushMatrices();
-    gl::translate(this->parent->area.getUpperLeft());
-    gl::translate(vec2(1, -1) * Connector::MARGINS.getLowerRight());
-    gl::color(this->focus ? BG_FILL_SELECTED : BG_FILL);
-    gl::drawSolidRect(this->area);
-    gl::popMatrices();
+    pushMatrices();
+    translate(this->parent->area.getUpperLeft());
+    translate(vec2(1, -1) * Connector::MARGINS.getLowerRight());
+    color(this->focus ? BG_FILL_SELECTED : BG_FILL);
+    drawSolidRect(this->area);
+    popMatrices();
 }
 
-Input::Input(ModuleRef parent, int n) : Connector(parent, n){
-    //this->address = genAddress(parent->uniqueID, n);
-}
+Input::Input(ModuleRef parent, int n)
+    :Connector(parent, n){
+        //this->address = genAddress(parent->uniqueID, n);
+        address = parent->uniqueID + splitter + to_string(this->number);
+    }
 
-Output::Output(ModuleRef parent, int n) : Connector(parent, n){
-    //this->address = genAddress(parent->uniqueID, n);
-    area.offset(vec2(0, parent->area.getHeight()));
-}
+Output::Output(ModuleRef parent, int n)
+    :Connector(parent, n){
+        //this->address = genAddress(parent->uniqueID, n);
+        area.offset(vec2(0, parent->area.getHeight()));
+        address = parent->uniqueID + splitter + to_string(this->number);
+    }
 
 

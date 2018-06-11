@@ -8,6 +8,7 @@
 
 #include "Module.hpp"
 #include "Connector.hpp"
+#include "UIController.hpp"
 
 class Connector;
 class ConnectorWrapper{
@@ -21,7 +22,7 @@ class ConnectorWrapper{
     std::vector<ConnectorRef> inputs;
     std::vector<ConnectorRef> outputs;
     std::vector<ConnectorRef> connectors;
-    
+    UIController uiCnt;
     public :
         ConnectorWrapper(ModuleRef parent);
         virtual ~ConnectorWrapper(){}
