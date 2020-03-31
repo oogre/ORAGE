@@ -2,10 +2,12 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include <fstream>
+#include <boost/filesystem.hpp>
 
 #include "Orage.h"
 #include "UI.h"
 
+namespace fs = boost::filesystem;
 
 using namespace ci;
 using namespace ci::app;
@@ -20,17 +22,18 @@ enum TEST{
 
     
 class ORAGEApp : public App {
-    bool debug = false;
     bool keyIsDown = false;
-    SuperCanvasRef mUi;
+    SuperCanvasRef  mUi;
     OrageRef        orage;
     double          lastclick = 0.0;
     ivec2           mMouseLoc;
     Rectf           mMouseSelector;
     bool            mMouseDrag = false;
     gl::Context   * mMainWinCtx;
-    std::vector<std::string> fileExtension = std::vector<std::string>(1, "orage");
-    std::string orageFilePath = "~/Orage";
+    
+    std::vector<std::string> fileExtension = std::vector<std::string>(1, "rage");
+    std::string orageFilePath = getDocumentsDirectory().generic_string() + "/ORAGE";
+    
   public:
     static void prepareSettings( Settings *settings );
     void setup() override;
@@ -49,20 +52,13 @@ class ORAGEApp : public App {
 void ORAGEApp::prepareSettings( Settings *settings )
 {
     settings->setWindowSize( 720, 640 );
-    //settings->setWindowPos(0, 0);
-   // settings->setFullScreen(true, FullScreenOptions().display(FullScreenOptions().getDisplay()));
 }
 
 void ORAGEApp::setup()
 {
-    if(debug){
-        
-        
-        mUi =SuperCanvas::create("HELLO");
-        
-        return ;
+    if(!fs::exists( orageFilePath )){
+        fs::create_directories(orageFilePath);
     }
-    
     
     mMainWinCtx = gl::Context::getCurrent();
     gl::clear(ColorAT<float>(0, 0, 0, 0));
@@ -71,18 +67,11 @@ void ORAGEApp::setup()
 
 void ORAGEApp::update()
 {
-    if(debug){
-        return ;
-    }
     
 }
 
 void ORAGEApp::draw()
 {
-    if(debug){
-        return ;
-    }
-    
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
     }
@@ -93,9 +82,6 @@ void ORAGEApp::draw()
 }
 
 void ORAGEApp::mouseMove( MouseEvent event ) {
-    if(debug){
-        return ;
-    }
     
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
@@ -103,10 +89,6 @@ void ORAGEApp::mouseMove( MouseEvent event ) {
     mMouseLoc = event.getPos();
 }
 void ORAGEApp::mouseDown( MouseEvent event ) {
-    if(debug){
-        
-        return ;
-    }
     
     if(mMainWinCtx != gl::Context::getCurrent()){
         if(getElapsedSeconds()  - lastclick < 0.2){
@@ -115,52 +97,30 @@ void ORAGEApp::mouseDown( MouseEvent event ) {
         lastclick = getElapsedSeconds();
         return;
     }
-    /*
-    ModuleRef clicked = orage->isOnModule(event.getPos());
-    if(clicked){
-        mMouseDrag = false;
-        if(event.isRightDown()){
-            orage->openGroupMenu(event.getPos());
-        }else{
-
-        }
-    }
-    else{*/
+    
         if(event.isRightDown()){
             orage->openContextMenu(event.getPos());
-            //orage->resetSelectModule();
             mMouseDrag = false;
         }else{
-            //mMouseDrag = true;
             mMouseSelector.y1 = mMouseSelector.y2 = event.getY();
             mMouseSelector.x1 = mMouseSelector.x2 = event.getX();
         }
-    //}
     
     if(event.isLeftDown()){
         orage->closeContextMenu();
-        //orage->closeGroupMenu();
     }
 }
 void ORAGEApp::mouseUp( MouseEvent event ) {
-    if(debug){
-        return ;
-    }
-    
-    
+   
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
     }
     if(mMouseDrag){
-        //orage->selectModuleByArea(mMouseSelector);
     }
     mMouseDrag = false;
 };
 
 void ORAGEApp::mouseDrag( MouseEvent event ) {
-    if(debug){
-        return ;
-    }
     
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
@@ -174,9 +134,6 @@ void ORAGEApp::keyUp( KeyEvent event){
         return;
     }
     keyIsDown = false;
-    if(debug){
-        return ;
-    }
     
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
@@ -193,7 +150,6 @@ void ORAGEApp::keyDown( KeyEvent event){
         orage->tapTempo();
     }
     if(event.getChar() == 's'){
-        cout<<"SAVE"<<endl;
         JsonTree obj = JsonTree::makeObject();
         
         obj.pushBack(orage->getData());
@@ -207,7 +163,6 @@ void ORAGEApp::keyDown( KeyEvent event){
         }
     }
     if(event.getChar() == 'o'){
-        std::vector<std::string> extensions(1, "orage");
         fs::path path = getOpenFilePath(orageFilePath, fileExtension);
         if( ! path.empty() ) {
             JsonTree content = JsonTree( loadFile(path) );
@@ -249,10 +204,6 @@ void ORAGEApp::keyDown( KeyEvent event){
         }
     }
     
-    if(debug){
-        return ;
-    }
-    
     
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
@@ -261,11 +212,6 @@ void ORAGEApp::keyDown( KeyEvent event){
 }
 
 void ORAGEApp::fileDrop( FileDropEvent event ){
-    if(debug){
-        return ;
-    }
-    
-    
     cout<<event.getFile(0)<<endl;
     orage->fileDrop(event);
 }
