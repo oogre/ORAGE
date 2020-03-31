@@ -11,31 +11,59 @@ Here is the source code and documentation of ORAGE.
 * [Licence](#licence)
 
 ## Introduction
-__ORAGE is a live visual modular synthetizer__</br>
-I build it for playing live visual performances. Take a look at my [youtube channel](https://www.youtube.com/channel/UCZ0oXcxj3lE8kQSSsniIZ6w) to see it in action. 
+__ORAGE is a live visual modular synthetizer__</br></br>
+As visual artist and developper, I think a part of my creativity comes from my shortcomings. Therefore, build my own visual softwares has always been obvious.
+This tool is in fact the «whathousand» iteration of that idea to create that kind of software.
+</br></br>
+[TO DO -- description] c++(cinder)
+</br></br>
+Take a look at [ORAGE TV](https://www.youtube.com/channel/UCZ0oXcxj3lE8kQSSsniIZ6w) to see it in action.
 ## Inspiration
-I'm inspired by analogic video synth as [LZX](https://lzxindustries.net/), node programming visual generators as [cables.gl](https://cables.gl/home), digital video synth as [Lumen](https://lumen-app.com/), glitch production softwares as [signal culture](http://signalculture.org/), and many others... <br/> Last but not least, I've been mainly inspired by my bandmate [Harold Osica](https://www.facebook.com/osicamusic).
+I'm inspired by analogic video synth as [LZX](https://lzxindustries.net/),<br/>
+node programming visual generators as [cables.gl](https://cables.gl/home),<br/>digital video synth as [Lumen](https://lumen-app.com/),<br/>
+glitch production softwares as [signal culture](http://signalculture.org/),<br/>, 
+this amazing tutorial [the book of shaders](https://thebookofshaders.com)<br/> and many others... <br/> Last but not least, I've been mainly inspired by my bandmate [Harold Osica](https://www.facebook.com/osicamusic).
 ## State of art
-### Matte
+### Matte 
+[TO DO -- description]
 ### Oscillator
+[TO DO -- description]
 ### Cloud
+[TO DO -- description]
 ### Mosher
+[TO DO -- description]
 ### Spliter
+[TO DO -- description]
 ### Crossfader
+[TO DO -- description]
 ### Tile
+[TO DO -- description]
 ### Freezer
+[TO DO -- description]
 ### ColorAdjustement
+[TO DO -- description]
 ### TintCorrector
+[TO DO -- description]
 ### Delay
+[TO DO -- description]
 ### Resize
+[TO DO -- description]
 ### Blur
+[TO DO -- description]
 ### Kaleidoscope
+[TO DO -- description]
 ### Lfos
-### Random.h
+[TO DO -- description]
+### Random
+[TO DO -- description]
 ### ProcessCV
+[TO DO -- description]
 ### SyphonInput
+[TO DO -- description]
 ### Player
+[TO DO -- description]
 ### Output
+[TO DO -- description]
 
 ## Installation
 Currently available only on OSX(10.13.6). <br/>
