@@ -8,8 +8,6 @@
 
 #include "LastNoteExtractor.h"
 
-
-
 using namespace ogre;
 using namespace cinder;
 using namespace cinder::gl;

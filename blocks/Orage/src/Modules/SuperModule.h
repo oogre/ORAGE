@@ -14,47 +14,32 @@
 #include "Wires.h"
 #include "Tools.h"
 
-#include "Oscillator.h"
 #include "Matte.h"
+#include "Oscillator.h"
 #include "Cloud.h"
-#include "PixelSorting.h"
+
+
+#include "Mosher.h"
+#include "Spliter.h"
+#include "Crossfader.h"
 
 #include "Tile.h"
-#include "Spliter.h"
+#include "Freezer.h"
 #include "ColorAdjustement.h"
 #include "TintCorrector.h"
 
-#include "Mosher.h"
-#include "Crossfader.h"
-
-#include "Output.h"
-
-#include "SyphonInput.h"
-
-#include "Freezer.h"
 #include "Delay.h"
 #include "Resize.h"
 #include "Blur.h"
-#include "Player.h"
-
 #include "Kaleidoscope.h"
-
-//#include "KeyMixer.h"
-//#include "CellNoise.h"
 
 #include "Lfos.h"
 #include "Random.hpp"
-#include "Boids.hpp"
-//#include "FFT.h"
 #include "ProcessCV.h"
 
-#include "PianoInput.h"
-#include "HandSplitter.h"
-#include "PositionExtractor.h"
-#include "NoteDisplay.h"
-#include "DynamicAnalyser.h"
-#include "LastNoteExtractor.h"
-#include "ClusterAnalyser.h"
+#include "SyphonInput.h"
+#include "Player.h"
+#include "Output.h"
 
 using namespace reza::ui;
 using namespace ci;

@@ -35,13 +35,6 @@ namespace ogre {
                 (*it).reset();
                 it = modules.erase(it);
             }else{
-                //cout<<(*it)->modules.size()<<endl;
-                /*
-                    auto it2 = (*it)->modules.begin();
-                for(; it2 != groupedModules.end() ; it2 ++){
-                    (*it2)->update();
-                    }
-                    */
                 it ++;
             }
         }

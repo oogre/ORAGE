@@ -16,8 +16,7 @@ using namespace std;
 
 
 
-Orage::Orage(string name, /*AppCocoaView * parent, */gl::Context * mMainWinCtx){
-    //this->parent = parent;
+Orage::Orage(string name, gl::Context * mMainWinCtx){
     this->mMainWinCtx = mMainWinCtx;
     selectedModules = SuperModule::create();
 }
@@ -78,11 +77,6 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         auto m = this->addSpliter(pos, data);
         return m->id;
     }
-    if (type == "PixelSorting")
-    {
-        auto m = this->addPixelSorting(pos, data);
-        return m->id;
-    }
     if (type == "Cloud")
     {
         auto m = this->addCloud(pos, data);
@@ -136,11 +130,6 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
     if (type == "Lfos")
     {
         auto m = this->addLfos(pos, data);
-        return m->id;
-    }
-    if (type == "Boids")
-    {
-        auto m = this->addBoids(pos, data);
         return m->id;
     }
     if (type == "ProcessCV")
@@ -206,12 +195,6 @@ TintCorrectorRef Orage::addTintCorrector(vec2 origin, JsonTree data){
     return ref;
 }
 
-PixelSortingRef Orage::addPixelSorting(vec2 origin, JsonTree data){
-    PixelSortingRef ref = PixelSorting::create("Pixel Sorting", origin, mMainWinCtx, data);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
 
 CloudRef Orage::addCloud(vec2 origin, JsonTree data){
     CloudRef ref = Cloud::create("Cloud", origin, mMainWinCtx, data);
@@ -268,8 +251,6 @@ KaleidoscopeRef Orage::addKaleidoscope(vec2 origin, JsonTree data){
     return ref;
 }
 
-
-
 PlayerRef Orage::addPlayer(vec2 origin, JsonTree data){
     PlayerRef ref = Player::create("Player", origin, mMainWinCtx, data);
     ref->setup();
@@ -291,130 +272,14 @@ LfosRef Orage::addLfos(vec2 origin, JsonTree data){
     return ref;
 }
 
-BoidsRef Orage::addBoids(vec2 origin, JsonTree data){
-    BoidsRef ref = Boids::create("BOIDS", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-
 ProcessCVRef Orage::addProcessCV(vec2 origin, JsonTree data){
     ProcessCVRef ref = ProcessCV::create("PROCESS CV", origin, mMainWinCtx);
     ref->setup();
     modules.push_back(ref);
     return ref;
 }
-/*
-FftRef Orage::addFft(vec2 origin){
-    FftRef ref = Fft::create("FFT", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}*/
-/*
-KeyMixerRef Orage::addKeyMixer(vec2 origin){
-    KeyMixerRef ref = KeyMixer::create("KeyMixer", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-
-
-CellNoiseRef Orage::addCellNoise(vec2 origin){
-    CellNoiseRef ref = CellNoise::create("CellNoise", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-
-TrailRef Orage::addTrail(vec2 origin){
-    TrailRef ref = Trail::create("Trail", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-
-*/
-/*
-PianoInputRef Orage::addPianoInput(vec2 origin){
-    if(!PianoInput::singleton){
-        PianoInputRef ref = PianoInput::create("Piano In", origin, mMainWinCtx);
-        ref->setup();
-        modules.push_back(ref);
-    }
-    return PianoInput::singleton;
-}
-
-HandSplitterRef Orage::addHandSplitter(vec2 origin){
-    HandSplitterRef ref = HandSplitter::create("Hand Splitter", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-PositionExtractorRef Orage::addPositionExtractor(vec2 origin){
-    PositionExtractorRef ref = PositionExtractor::create("Position Extractor", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-NoteDisplayRef Orage::addNoteDisplayKeyboard(vec2 origin){
-    NoteDisplayRef ref = NoteDisplay::create<Config::NOTE_LEN>("Note Keyboard", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-
-NoteDisplayRef Orage::addNoteDisplayOctave(vec2 origin){
-    NoteDisplayRef ref = NoteDisplay::create<Config::OCTAVE_LEN>("Note Octave", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-
-DynamicAnalyserRef Orage::addDynamicAnalyser(vec2 origin){
-    DynamicAnalyserRef ref = DynamicAnalyser::create("Dynamic Analyser", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-
-LastNoteExtractorRef Orage::addLastNoteExtractor(vec2 origin){
-    LastNoteExtractorRef ref = LastNoteExtractor::create("Note Hitory", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-
-ClusterAnalyserRef Orage::addClusterAnalyser(vec2 origin){
-    ClusterAnalyserRef ref = ClusterAnalyser::create("Cluster Analyser", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
-
-*/
-
 
 void Orage::setup(){
-    /*
-    groupMenu = SuperCanvas::create("group menu");
-    groupMenu->setSize(vec2(ModuleCommon::WIDTH, 300));
-    groupMenu->addButton("Group", false)->setCallback(
-                                                        [this](bool a) {
-                                                            if(a){
-                                                                
-                                                                SuperModuleRef g = SuperModule::create();
-                                                                g->modules = selectedModules->modules;
-                                                                groupedModules.push_back(g);
-
-                                                                selectedModules->clear([this](ModuleRef it) {
-                                                                    it->selected = false;
-                                                                });
-                                                            }
-                                                        });
-    groupMenu->setVisible(false);
-    */
-    
     contextMenu = SuperCanvas::create("context menu");
     contextMenu->setSize(vec2(ModuleCommon::WIDTH, 300));
     
@@ -521,14 +386,6 @@ void Orage::setup(){
                                                                addKaleidoscope(contextMenu->getOrigin());
                                                            }
                                                        });
-    /*
-    contextMenu->addButton("Pixel Sorting", false)->setCallback(
-                                                       [this](bool a) {
-                                                           if(a){
-                                                               addPixelSorting(contextMenu->getOrigin());
-                                                           }
-                                                       });
-     */
     contextMenu->addSpacer();
     
     contextMenu->addButton("LFO", false)->setCallback(
@@ -544,82 +401,14 @@ void Orage::setup(){
                                                               addRandom(contextMenu->getOrigin());
                                                           }
                                                       });
-     /*
-    contextMenu->addButton("BOID", false)->setCallback(
-                                                      [this](bool a) {
-                                                          if(a){
-                                                              addBoids(contextMenu->getOrigin());
-                                                          }
-                                                      });
-   */
+    
     contextMenu->addButton("PROCESS CV", false)->setCallback(
                                                       [this](bool a) {
                                                           if(a){
                                                               addProcessCV(contextMenu->getOrigin());
                                                           }
                                                       });
-    
-    /*
-    
-    contextMenu->addButton("FFT", false)->setCallback(
-                                                      [this](bool a) {
-                                                          if(a){
-                                                              addFft(contextMenu->getOrigin());
-                                                          }
-                                                      });*/
-    /*
-    contextMenu->addSpacer();
-    
-    contextMenu->addButton("Piano In", false)->setCallback(
-                                                        [this](bool a) {
-                                                            if(a){
-                                                                addPianoInput(contextMenu->getOrigin());
-                                                            }
-                                                        });
-    contextMenu->addButton("Piano Splitter", false)->setCallback(
-                                                        [this](bool a) {
-                                                            if(a){
-                                                                addHandSplitter(contextMenu->getOrigin());
-                                                            }
-                                                        });
-    contextMenu->addButton("Data extractor", false)->setCallback(
-                                                        [this](bool a) {
-                                                            if(a){
-                                                                addPositionExtractor(contextMenu->getOrigin());
-                                                            }
-                                                        });
-    contextMenu->addButton("Display Note", false)->setCallback(
-                                                        [this](bool a) {
-                                                            if(a){
-                                                                addNoteDisplayKeyboard(contextMenu->getOrigin());
-                                                            }
-                                                        });
-    contextMenu->addButton("Display Octave", false)->setCallback(
-                                                                 [this](bool a) {
-                                                                     if(a){
-                                                                         addNoteDisplayOctave(contextMenu->getOrigin());
-                                                                     }
-                                                                 });
-    contextMenu->addButton("Dynamic Analyser", false)->setCallback(
-                                                                   [this](bool a) {
-                                                                       if(a){
-                                                                           addDynamicAnalyser(contextMenu->getOrigin());
-                                                                       }
-                                                                   });
-    contextMenu->addButton("Note History", false)->setCallback(
-                                                               [this](bool a) {
-                                                                   if(a){
-                                                                       addLastNoteExtractor(contextMenu->getOrigin());
-                                                                   }
-                                                               });
-    
-    contextMenu->addButton("Cluster Analyser", false)->setCallback(
-                                                               [this](bool a) {
-                                                                   if(a){
-                                                                       addClusterAnalyser(contextMenu->getOrigin());
-                                                                   }
-                                                               });
-    */
+   
     contextMenu->addSpacer();
     
     contextMenu->addButton("Syphon", false)->setCallback(
@@ -635,6 +424,7 @@ void Orage::setup(){
                                                                  addPlayer(contextMenu->getOrigin());
                                                              }
                                                          });
+    
     contextMenu->addButton("Output", false)->setCallback(
                                                          [this](bool a) {
                                                              if(a){
@@ -642,12 +432,8 @@ void Orage::setup(){
                                                              }
                                                          });
     
-    
     contextMenu->setVisible(false);
     
-    
-    //addPianoInput(vec2(0, 0));
-
     addOutput(vec2(0, 0));
     
 }
@@ -664,24 +450,11 @@ void Orage::update(){
             it ++;
         }
     }
-    /*
-    selectedModules->update();
-    
-    auto it2 = groupedModules.begin();
-    for(; it2 != groupedModules.end() ; it2 ++){
-        (*it2)->update();
-    }*/
     contextMenu->update();
-    //groupMenu->update();
-    
 }
 
 
 void Orage::draw(bool selectorActive, Rectf selector){
-    if(debug){
-        //gl::draw(debug, Area(0, 0, 100, 100));
-    }
-    
     auto it = modules.begin();
     auto end = modules.end();
     for(; it != end ; it ++){
@@ -689,16 +462,6 @@ void Orage::draw(bool selectorActive, Rectf selector){
         (*it)->mUi->draw();
     }
     contextMenu->draw();
-    //groupMenu->draw();
-    
-    /*
-    if(selectorActive){
-        gl::color(1.0, 0.9, 0.8, 0.3);
-        gl::drawSolidRect( selector );
-        gl::color(1.0, 0.9, 0.8, 0.9);
-        gl::drawStrokedRect( selector );
-    }
-     */
 }
 
 ModuleRef Orage::isOnModule(vec2 location){

@@ -22,7 +22,6 @@
 
 //#include "cinder/audio/audio.h"
 namespace ogre {
-    
     typedef std::shared_ptr<class Orage> OrageRef;
     
     class Orage/* : public Canvas */{
@@ -58,40 +57,11 @@ namespace ogre {
             ResizeRef addResize(vec2 origin, JsonTree data = JsonTree());
             BlurRef addBlur(vec2 origin, JsonTree data = JsonTree());
             PlayerRef addPlayer(vec2 origin, JsonTree data = JsonTree());
-            PixelSortingRef addPixelSorting(vec2 origin, JsonTree data = JsonTree());
-        
-            KaleidoscopeRef addKaleidoscope(vec2 origin, JsonTree data = JsonTree());
-        
-        
-        
+           KaleidoscopeRef addKaleidoscope(vec2 origin, JsonTree data = JsonTree());
             OutputRef addOutput(vec2 origin, JsonTree data = JsonTree());
-        
             LfosRef addLfos(vec2 origin, JsonTree data = JsonTree());
             RandomRef addRandom(vec2 origin, JsonTree data = JsonTree());
-            BoidsRef addBoids(vec2 origin, JsonTree data = JsonTree());
             ProcessCVRef addProcessCV(vec2 origin, JsonTree data = JsonTree());
-           // FftRef addFft(vec2 origin);
-
-            /*
-                PianoInputRef addPianoInput(vec2 origin);
-            HandSplitterRef addHandSplitter(vec2 origin);
-            PositionExtractorRef addPositionExtractor(vec2 origin);
-            NoteDisplayRef addNoteDisplayKeyboard(vec2 origin);
-            NoteDisplayRef addNoteDisplayOctave(vec2 origin);
-            DynamicAnalyserRef addDynamicAnalyser(vec2 origin);
-            LastNoteExtractorRef addLastNoteExtractor(vec2 origin);
-            ClusterAnalyserRef addClusterAnalyser(vec2 origin);
-             */
-            /*
-            
-            
-            
-            KeyMixerRef addKeyMixer(vec2 origin);
-            
-            
-            CellNoiseRef addCellNoise(vec2 origin);
-            
-            TrailRef addTrail(vec2 origin);*/
         
             JsonTree getData(){
                 JsonTree obj = JsonTree::makeArray("modules");
