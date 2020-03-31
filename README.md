@@ -1,5 +1,6 @@
 # ORAGE
 Here is the source code and documentation of ORAGE.
+[![IMAGE ALT TEXT HERE](./doc/pictures/pic.05.jpg)](./doc/pictures/pic.05.jpg)
 
 * [Introduction](#introduction)
 * [Inspiration](#inspiration)
