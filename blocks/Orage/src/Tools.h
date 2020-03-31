@@ -80,34 +80,6 @@ namespace ogre {
             return s;
         }
         
-        /*
-        SliderfRef addXYSlider(CanvasRef mUi, string name, vec2 * data, int width = 0 ){
-            Wires * _w = &wires;
-            
-            width = (int) (width != 0 ? width : mUi->getWidth() - 18 - mUi->mPadding.mRight - 2 * mUi->mPadding.mLeft);
-            
-            
-            XYPadRef s = XYPad::create( name, data, XYPad::Format().label(false));
-            //s->setSize( vec2( width, 12 ) );
-            
-            
-            ButtonRef b = Button::create( name+" InputCV", false, Button::Format().label(false));
-            b->setSize( vec2( 20, 20 ) );
-            b->setCallback(
-                           [s, b, _w, mUi](bool a) {
-                               if(a){
-                                   _w->clickOnLinker(mUi->getName(), s, b);
-                               }
-                           });
-            b->setColorFillHighlight(ColorA::black());
-            b->setColorFill(ColorA::black());
-            mUi->addSubViewDown(s);
-            mUi->addSubViewRight(b);
-            mUi->addSubViewSouthOf(r, name);
-            return s;
-        }*/
-
-        
         string to_roman(unsigned int value)
         {
             struct romandata_t { unsigned int value; char const* numeral; };
