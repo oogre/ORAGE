@@ -21,7 +21,7 @@ Take a look at [ORAGE TV](https://www.youtube.com/channel/UCZ0oXcxj3lE8kQSSsniIZ
 ## Inspiration
 I'm inspired by analogic video synth as [LZX](https://lzxindustries.net/),<br/>
 node programming visual generators as [cables.gl](https://cables.gl/home),<br/>digital video synth as [Lumen](https://lumen-app.com/),<br/>
-glitch production softwares as [signal culture](http://signalculture.org/),<br/>, 
+glitch production softwares as [signal culture](http://signalculture.org/),<br/> 
 this amazing tutorial [the book of shaders](https://thebookofshaders.com)<br/> and many others... <br/> Last but not least, I've been mainly inspired by my bandmate [Harold Osica](https://www.facebook.com/osicamusic).
 ## State of art
 ### Matte 
@@ -69,7 +69,9 @@ this amazing tutorial [the book of shaders](https://thebookofshaders.com)<br/> a
 Currently available only on OSX(10.13.6). <br/>
 [Download](https://github.com/oogre/ORAGE/raw/master/Orage.app.zip)
 ## Contributes
-This software is written in C++([cinder](https://github.com/cinder/Cinder))
-The user interface is build thanks to [UI](https://github.com/rezaali/Cinder-UI) cinder block from [Reza Ali](https://www.syedrezaali.com/) 
+This software is written in C++([cinder](https://github.com/cinder/Cinder))<br/>
+The user interface is build thanks to [UI](https://github.com/rezaali/Cinder-UI) cinder block from [Reza Ali](https://www.syedrezaali.com/)<br/>
+Let me know your [ideas, needs or issues](./issues)<br/>
+Fork this repository and feel free to propose new functionalities or upgrade.<br/>
 ## Licence
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
