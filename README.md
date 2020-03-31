@@ -71,7 +71,7 @@ Currently available only on OSX(10.13.6). <br/>
 ## Contributes
 This software is written in C++([cinder](https://github.com/cinder/Cinder))<br/>
 The user interface is build thanks to [UI](https://github.com/rezaali/Cinder-UI) cinder block from [Reza Ali](https://www.syedrezaali.com/)<br/>
-Let me know your [ideas, needs or issues](./issues)<br/>
+Let me know your [ideas, needs or issues](https://github.com/oogre/ORAGE/issues)<br/>
 Fork this repository and feel free to propose new functionalities or upgrade.<br/>
 ## Licence
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
