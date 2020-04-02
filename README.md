@@ -26,18 +26,37 @@ this amazing tutorial [the book of shaders](https://thebookofshaders.com)<br/> a
 ## State of art
 ### Matte 
 [![Matte Module](./doc/modules/Matte.jpg)](./doc/modules/Matte.jpg)<br/>
-YPbPr is converted from the RGB video signal, which is split into three components: Y, PB, and PR. This color space has been choosen to have a better control on brightness and tint. 
-Y : Luma (brightness or luminance) information. 
-Pb : the difference between blue and luma.
-Pr : the difference between red and luma.
+YPbPr is converted from the RGB video signal, which is split into three components: Y, PB, and PR. This color space has been choosen to have a better granularity control on brightness and tint. <br/>
+* __Input__ : None
+* __Output__ : Unicolor video output signal.
+* __Y__ : Luma (brightness or luminance) information. 
+* __Pb__ : the difference between blue and luma.
+* __Pr__ : the difference between red and luma.
 ```
     R = Y + 1.574f * Pr
     G = Y - 0.187f * Pb - 0.469f * Pr
     B = Y + 1.856f * Pb
 ```
+
 ### Oscillator
 [![Oscillator Module](./doc/modules/Oscillator.jpg)](./doc/modules/Oscillator.jpg)<br/>
-[TO DO -- description]
+* __Input__ : 
+    - __A__ : Mod intensity video input signal.
+    - __B__ : Color video input signal.
+* __Output__ : 
+    - __A__ : Oscillator video output signal.
+    - __B__ : Trailed video output signal.
+* __Hz__ : Frequency of the oscillation.
+* __Sync__ : Synchronisation of the frequency on Horizontal/Vertical axes
+* __Dx__ : Offset the phase of the oscillation.
+* __Dy__ : Offset the Intensity of the oscillation.
+* __Mod__ : Offset the phase of the oscillation depending on __Input A__.
+* __Trail__ : A curious way to keep trace of lasts states of the oscillator
+* __Sine__ : Intensity of the Sinus wave.
+* __Saw__ : Intensity of the Saw wave.
+* __Tri__ : Intensity of the Triangular wave.
+* __Noise__ : Intensity of the Noise wave.
+* __Exp__ : A curious way to contrast the signal of the oscillator.
 ### Cloud
 [![Oscillator Module](./doc/modules/Oscillator.jpg)](./doc/modules/Oscillator.jpg)<br/>
 [TO DO -- description]
