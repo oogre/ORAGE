@@ -30,36 +30,36 @@ this amazing tutorial [the book of shaders](https://thebookofshaders.com)<br/> a
 1. #### Matte 
 [![Matte Module](./doc/modules/Matte.jpg)](./doc/modules/Matte.jpg)<br/>
 YPbPr is converted from the RGB video signal, which is split into three components: Y, PB, and PR. <br/>This color space has been choosen to have a better granularity control on brightness and tint. <br/>
-    - __Input__ : None
-    - __Output__ : Unicolor video output signal.
-    - __Y__ : Luma (brightness or luminance) information. 
-    - __Pb__ : the difference between blue and luma.
-    - __Pr__ : the difference between red and luma.
+   - __Input__ : None
+   - __Output__ : Unicolor video output signal.
+   - __Y__ : Luma (brightness or luminance) information. 
+   - __Pb__ : the difference between blue and luma.
+   - __Pr__ : the difference between red and luma.
 ```
-    R = Y + 1.574f * Pr
-    G = Y - 0.187f * Pb - 0.469f * Pr
-    B = Y + 1.856f * Pb
+   R = Y + 1.574f * Pr
+   G = Y - 0.187f * Pb - 0.469f * Pr
+   B = Y + 1.856f * Pb
 ```
 
 2. #### Oscillator
 [![Oscillator Module](./doc/modules/Oscillator.jpg)](./doc/modules/Oscillator.jpg)<br/>
-    - __Input__ : 
-        - __A__ : __Mod__ intensity video input signal.
-        - __B__ : Color video input signal.
-    - __Output__ : 
-        - __A__ : Oscillator video output signal.
-        - __B__ : Trailed video output signal.
-    - __Hz__ : Frequency of the oscillation.
-    - __Sync__ : Synchronisation of the frequency on Horizontal/Vertical axes.
-    - __Dx__ : Offset the phase of the oscillation.
-    - __Dy__ : Offset the Intensity of the oscillation.
-    - __Mod__ : Offset the phase of the oscillation depending on __Input A__.
-    - __Trail__ : A curious way to keep trace of lasts states of the oscillator.
-    - __Sine__ : Intensity of the Sinus wave.
-    - __Saw__ : Intensity of the Saw wave.
-    - __Tri__ : Intensity of the Triangular wave.
-    - __Noise__ : Intensity of the Noise wave.
-    - __Exp__ : A curious way to contrast the signal of the oscillator.
+   - __Input__ : 
+      - __A__ : __Mod__ intensity video input signal.
+      - __B__ : Color video input signal.
+   - __Output__ : 
+      - __A__ : Oscillator video output signal.
+      - __B__ : Trailed video output signal.
+   - __Hz__ : Frequency of the oscillation.
+   - __Sync__ : Synchronisation of the frequency on Horizontal/Vertical axes.
+   - __Dx__ : Offset the phase of the oscillation.
+   - __Dy__ : Offset the Intensity of the oscillation.
+   - __Mod__ : Offset the phase of the oscillation depending on __Input A__.
+   - __Trail__ : A curious way to keep trace of lasts states of the oscillator.
+   - __Sine__ : Intensity of the Sinus wave.
+   - __Saw__ : Intensity of the Saw wave.
+   - __Tri__ : Intensity of the Triangular wave.
+   - __Noise__ : Intensity of the Noise wave.
+   - __Exp__ : A curious way to contrast the signal of the oscillator.
 3. #### Cloud
 [![Cloud Module](./doc/modules/Cloud.jpg)](./doc/modules/Cloud.jpg)<br/>
 [TO DO -- description]
@@ -67,13 +67,13 @@ YPbPr is converted from the RGB video signal, which is split into three componen
 ### Filters
 4. #### Mosher
 [![Mosher Module](./doc/modules/Mosher.jpg)](./doc/modules/Mosher.jpg)<br/>
-    - __Input__ : 
-        - __A__ : video input signal to filter.
-        - __B__ : video input signal to callibrate the filter.
-    - __Output__ : Scaled video output signal.
-    - __Gain__ : Zoom intensity.
-    - __X__ : Offset the horizontal position of the anchor point of the zoom.
-    - __Y__ : Offset the vertical position of the anchor point of the zoom.
+   - __Input__ : 
+      - __A__ : video input signal to filter.
+      - __B__ : video input signal to callibrate the filter.
+   - __Output__ : Scaled video output signal.
+   - __Gain__ : Zoom intensity.
+   - __X__ : Offset the horizontal position of the anchor point of the zoom.
+   - __Y__ : Offset the vertical position of the anchor point of the zoom.
 5. #### Spliter
 [![Spliter Module](./doc/modules/Spliter.jpg)](./doc/modules/Spliter.jpg)<br/>
 [TO DO -- description]
