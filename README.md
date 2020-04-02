@@ -26,7 +26,19 @@ this amazing tutorial [the book of shaders](https://thebookofshaders.com)<br/> a
 ## State of art
 ### Matte 
 [![Matte Module](./doc/modules/Matte.jpg)](./doc/modules/Matte.jpg)
-[TO DO -- description]
+YPbPr is converted from the RGB video signal, which is split into three components: Y, PB, and PR. This color space has been choosen to have a better control on brightness and tint. 
+Y : Luma (brightness or luminance) information. 
+```
+    Y = 0.2126 R + 0.7152 G + 0.0722 B
+```
+Pb : the difference between blue and luma
+```
+    Pb = (B − Y)
+```
+Pr : the difference between red and luma (R − Y).
+```
+    Pr = (R − Y)
+```
 ### Oscillator
 [![Oscillator Module](./doc/modules/Oscillator.jpg)](./doc/modules/Oscillator.jpg)
 [TO DO -- description]
@@ -66,7 +78,7 @@ this amazing tutorial [the book of shaders](https://thebookofshaders.com)<br/> a
 [![Kaleidoscope Module](./doc/modules/Kaleidoscope.jpg)](./doc/modules/Kaleidoscope.jpg)[TO DO -- description]
 [TO DO -- description]
 ### Lfos
-[![Lfo Module](./doc/modules/Lfos.jpg)](./doc/modules/Lfo.jpg)[TO DO -- description]
+[![Lfo Module](./doc/modules/Lfo.jpg)](./doc/modules/Lfo.jpg)[TO DO -- description]
 [TO DO -- description]
 ### Random
 [![Random Module](./doc/modules/Random.jpg)](./doc/modules/Random.jpg)[TO DO -- description]
