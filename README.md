@@ -71,12 +71,17 @@ YPbPr is converted from the RGB video signal, which is split into three componen
       - __A__ : video input signal to filter.
       - __B__ : video input signal to callibrate the filter.
    - __Output__ : Scaled video output signal.
-   - __Gain__ : Zoom intensity.
-   - __X__ : Offset the horizontal position of the anchor point of the zoom.
-   - __Y__ : Offset the vertical position of the anchor point of the zoom.
+   - __Gain__ : Scale factor.
+   - __X__ : Offset the horizontal position of the anchor point.
+   - __Y__ : Offset the vertical position of the anchor point.
 5. #### Spliter
 [![Spliter Module](./doc/modules/Spliter.jpg)](./doc/modules/Spliter.jpg)<br/>
-[TO DO -- description]
+- __Input__ : 
+      - __A__ : video input signal to filter.
+      - __B__ : video input signal to filter.
+   - __Output__ : 
+      - __A__ : max(Input A - Input B, 0).
+      - __B__ : max(Input B - Input A, 0).
 6. #### Crossfader
 [![Crossfader Module](./doc/modules/Crossfader.jpg)](./doc/modules/Crossfader.jpg)<br/>
 [TO DO -- description]

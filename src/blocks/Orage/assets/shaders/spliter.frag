@@ -13,6 +13,9 @@ layout (location = 1) out vec4 oFragColor1;
 
 void main()
 {
-    oFragColor0 = vec4( BlendMultiply(texture(tex0, vTexCoord0).rgb, texture(tex1, vTexCoord0).rgb), 1.0 );
-    oFragColor1 = vec4( BlendMultiply(BlendDifference( 1 , texture(tex1, vTexCoord0).rgb), texture(tex0, vTexCoord0).rgb), 1.0 );
+    //oFragColor0 = vec4( BlendMultiply(texture(tex0, vTexCoord0).rgb, texture(tex1, vTexCoord0).rgb), 1.0 );
+    //oFragColor1 = vec4( BlendMultiply(BlendDifference( 1 , texture(tex1, vTexCoord0).rgb), texture(tex0, vTexCoord0).rgb), 1.0 );
+
+    oFragColor0 = vec4( BlendAdd(texture(tex0, vTexCoord0).rgb, texture(tex1, vTexCoord0).rgb), 1.0 );
+    oFragColor1 = vec4( BlendDifference(BlendDifference( 1 , texture(tex1, vTexCoord0).rgb), texture(tex0, vTexCoord0).rgb), 1.0 );
 }
