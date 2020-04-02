@@ -41,28 +41,34 @@ YPbPr is converted from the RGB video signal, which is split into three componen
 ### Oscillator
 [![Oscillator Module](./doc/modules/Oscillator.jpg)](./doc/modules/Oscillator.jpg)<br/>
 * __Input__ : 
-    - __A__ : Mod intensity video input signal.
+    - __A__ : __Mod__ intensity video input signal.
     - __B__ : Color video input signal.
 * __Output__ : 
     - __A__ : Oscillator video output signal.
     - __B__ : Trailed video output signal.
 * __Hz__ : Frequency of the oscillation.
-* __Sync__ : Synchronisation of the frequency on Horizontal/Vertical axes
+* __Sync__ : Synchronisation of the frequency on Horizontal/Vertical axes.
 * __Dx__ : Offset the phase of the oscillation.
 * __Dy__ : Offset the Intensity of the oscillation.
 * __Mod__ : Offset the phase of the oscillation depending on __Input A__.
-* __Trail__ : A curious way to keep trace of lasts states of the oscillator
+* __Trail__ : A curious way to keep trace of lasts states of the oscillator.
 * __Sine__ : Intensity of the Sinus wave.
 * __Saw__ : Intensity of the Saw wave.
 * __Tri__ : Intensity of the Triangular wave.
 * __Noise__ : Intensity of the Noise wave.
 * __Exp__ : A curious way to contrast the signal of the oscillator.
 ### Cloud
-[![Oscillator Module](./doc/modules/Oscillator.jpg)](./doc/modules/Oscillator.jpg)<br/>
+[![Cloud Module](./doc/modules/Cloud.jpg)](./doc/modules/Cloud.jpg)<br/>
 [TO DO -- description]
 ### Mosher
 [![Mosher Module](./doc/modules/Mosher.jpg)](./doc/modules/Mosher.jpg)<br/>
-[TO DO -- description]
+* __Input__ : 
+    - __A__ : video input signal to filter.
+    - __B__ : video input signal to callibrate the filter.
+* __Output__ : Scaled video output signal.
+* __Gain__ : Zoom intensity.
+* __X__ : Offset the horizontal position of the anchor point of the zoom.
+* __Y__ : Offset the vertical position of the anchor point of the zoom.
 ### Spliter
 [![Spliter Module](./doc/modules/Spliter.jpg)](./doc/modules/Spliter.jpg)<br/>
 [TO DO -- description]
