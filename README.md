@@ -27,9 +27,9 @@ this amazing tutorial [the book of shaders](https://thebookofshaders.com)<br/> a
 
 ## State of art
 ### Synthetizers 
-* #### Matte 
+1. #### Matte 
 [![Matte Module](./doc/modules/Matte.jpg)](./doc/modules/Matte.jpg)<br/>
-YPbPr is converted from the RGB video signal, which is split into three components: Y, PB, and PR. This color space has been choosen to have a better granularity control on brightness and tint. <br/>
+YPbPr is converted from the RGB video signal, which is split into three components: Y, PB, and PR. <br/>This color space has been choosen to have a better granularity control on brightness and tint. <br/>
     - __Input__ : None
     - __Output__ : Unicolor video output signal.
     - __Y__ : Luma (brightness or luminance) information. 
@@ -41,14 +41,14 @@ YPbPr is converted from the RGB video signal, which is split into three componen
     B = Y + 1.856f * Pb
 ```
 
-* #### Oscillator
+2. #### Oscillator
 [![Oscillator Module](./doc/modules/Oscillator.jpg)](./doc/modules/Oscillator.jpg)<br/>
     - __Input__ : 
-        + __A__ : __Mod__ intensity video input signal.
-        + __B__ : Color video input signal.
+        - __A__ : __Mod__ intensity video input signal.
+        - __B__ : Color video input signal.
     - __Output__ : 
-        + __A__ : Oscillator video output signal.
-        + __B__ : Trailed video output signal.
+        - __A__ : Oscillator video output signal.
+        - __B__ : Trailed video output signal.
     - __Hz__ : Frequency of the oscillation.
     - __Sync__ : Synchronisation of the frequency on Horizontal/Vertical axes.
     - __Dx__ : Offset the phase of the oscillation.
@@ -60,72 +60,72 @@ YPbPr is converted from the RGB video signal, which is split into three componen
     - __Tri__ : Intensity of the Triangular wave.
     - __Noise__ : Intensity of the Noise wave.
     - __Exp__ : A curious way to contrast the signal of the oscillator.
-* #### Cloud
+3. #### Cloud
 [![Cloud Module](./doc/modules/Cloud.jpg)](./doc/modules/Cloud.jpg)<br/>
 [TO DO -- description]
 
 ### Filters
-* #### Mosher
+4. #### Mosher
 [![Mosher Module](./doc/modules/Mosher.jpg)](./doc/modules/Mosher.jpg)<br/>
     - __Input__ : 
-        + __A__ : video input signal to filter.
-        + __B__ : video input signal to callibrate the filter.
+        - __A__ : video input signal to filter.
+        - __B__ : video input signal to callibrate the filter.
     - __Output__ : Scaled video output signal.
     - __Gain__ : Zoom intensity.
     - __X__ : Offset the horizontal position of the anchor point of the zoom.
     - __Y__ : Offset the vertical position of the anchor point of the zoom.
-* #### Spliter
+5. #### Spliter
 [![Spliter Module](./doc/modules/Spliter.jpg)](./doc/modules/Spliter.jpg)<br/>
 [TO DO -- description]
-* #### Crossfader
+6. #### Crossfader
 [![Crossfader Module](./doc/modules/Crossfader.jpg)](./doc/modules/Crossfader.jpg)<br/>
 [TO DO -- description]
-* #### Tile
+7. #### Tile
 [![Tile Module](./doc/modules/Tile.jpg)](./doc/modules/Tile.jpg)<br/>
 [TO DO -- description]
-* #### Freezer
+8. #### Freezer
 [![Freezer Module](./doc/modules/Freezer.jpg)](./doc/modules/Freezer.jpg)<br/>
 [TO DO -- description]
-* #### Color Adjustement
+9. #### Color Adjustement
 [![ColorAdjustement Module](./doc/modules/ColorAdjustement.jpg)](./doc/modules/ColorAdjustement.jpg)<br/>
 [TO DO -- description]
-* #### Tint Corrector
+10. #### Tint Corrector
 [![TintCorrector Module](./doc/modules/TintCorrector.jpg)](./doc/modules/TintCorrector.jpg)<br/>
 [TO DO -- description]
-* #### Delay
+11. #### Delay
 [![Delay Module](./doc/modules/Delay.jpg)](./doc/modules/Delay.jpg)<br/>
 [TO DO -- description]
-* #### Resize
+12. #### Resize
 [![Resize Module](./doc/modules/Resize.jpg)](./doc/modules/Resize.jpg)<br/>
 [TO DO -- description]
-* #### Blur
+13. #### Blur
 [![Blur Module](./doc/modules/Blur.jpg)](./doc/modules/Blur.jpg)<br/>
 [TO DO -- description]
-* #### Kaleidoscope
+14. #### Kaleidoscope
 [![Kaleidoscope Module](./doc/modules/Kaleidoscope.jpg)](./doc/modules/Kaleidoscope.jpg)<br/>
 [TO DO -- description]
 
 ### Controllers
-* #### Lfos
+15. #### Lfos
 [![Lfo Module](./doc/modules/Lfo.jpg)](./doc/modules/Lfo.jpg)<br/>
 [TO DO -- description]
-* #### Random
+16. #### Random
 [![Random Module](./doc/modules/Random.jpg)](./doc/modules/Random.jpg)<br/>
 [TO DO -- description]
-* #### ProcessCV
+17. #### ProcessCV
 [![ProcessCV Module](./doc/modules/ProcessCV.jpg)](./doc/modules/ProcessCV.jpg)<br/>
 [TO DO -- description]
 
 ### Players
-* #### SyphonInput
+18. #### SyphonInput
 [![SyphonInput Module](./doc/modules/SyphonInput.jpg)](./doc/modules/SyphonInput.jpg)<br/>
 [TO DO -- description]
-* #### Player
+19. #### Player
 [![Player Module](./doc/modules/Player.jpg)](./doc/modules/Player.jpg)<br/>
 [TO DO -- description]
 
 ### Outputs
-* #### Output
+20. #### Output
 [![Output Module](./doc/modules/Output.jpg)](./doc/modules/Output.jpg)<br/>
 [TO DO -- description]
 
