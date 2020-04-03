@@ -47,9 +47,15 @@ void main()
         oColor = vec4( BlendPhoenix(texture(tex0, vertTexCoord0).rgb * alpha0, texture(tex1, vertTexCoord0).rgb * alpha1), 1.0 );
     }
     else if (blend<12.0) {
-        oColor = vec4( BlendLinearDodge(texture(tex0, vertTexCoord0).rgb * alpha0, texture(tex1, vertTexCoord0).rgb * alpha1), 1.0 );
+        vec3 A = texture(tex0, vertTexCoord0).rgb * alpha0;
+        vec3 B = texture(tex1, vertTexCoord0).rgb * alpha1;
+        vec3 C = step(A, vec3(0.5)) * (2.0 * A * B) + (vec3(1.0)-step(A, vec3(0.5))) * (1.0 - 2.0 * (1.0 - A) * (1.0 - B));
+        oColor = vec4(C, 1.0 );
     }
     else{
-        oColor = vec4( BlendLinearBurn(texture(tex0, vertTexCoord0).rgb * alpha0, texture(tex1, vertTexCoord0).rgb * alpha1), 1.0 );
+        vec3 A = texture(tex0, vertTexCoord0).rgb * alpha0;
+        vec3 B = texture(tex1, vertTexCoord0).rgb * alpha1;
+        vec3 C = step(B, vec3(1.0)) * B + (vec3(1.0) - step(B, vec3(1.0))) * min(A * A / (1.0 - B), 1.0) ;
+       // oColor = vec4( BlendHardMix(texture(tex0, vertTexCoord0).rgb * alpha0, texture(tex1, vertTexCoord0).rgb * alpha1), 1.0 );
     }
 }

@@ -172,7 +172,12 @@ vec3 ContrastSaturationBrightness(vec3 color, float brt, float sat, float con)
 #define BlendColorBurnf(base, blend) 	((blend == 0.0) ? blend : max((1.0 - ((1.0 - base) / blend)), 0.0))
 #define BlendVividLightf(base, blend) 	((blend < 0.5) ? BlendColorBurnf(base, (2.0 * blend)) : BlendColorDodgef(base, (2.0 * (blend - 0.5))))
 #define BlendPinLightf(base, blend) 	((blend < 0.5) ? BlendDarkenf(base, (2.0 * blend)) : BlendLightenf(base, (2.0 *(blend - 0.5))))
-#define BlendHardMixf(base, blend) 	((BlendVividLightf(base, blend) < 0.5) ? 0.0 : 1.0)
+#define BlendHardMixf(base, blend)         ((BlendVividLightf(base, blend) < 0.5) ? 0.0 : 1.0)
+
+
+//#define BlendHardMix2(base, blend)      step(vec3(1), vec3(0.5))
+
+
 #define BlendReflectf(base, blend) 		((blend == 1.0) ? blend : min(base * base / (1.0 - blend), 1.0))
 
 
@@ -206,7 +211,7 @@ vec3 ContrastSaturationBrightness(vec3 color, float brt, float sat, float con)
 #define BlendLinearLight(base, blend) 	Blend(base, blend, BlendLinearLightf)
 #define BlendVividLight(base, blend) 	Blend(base, blend, BlendVividLightf)
 #define BlendPinLight(base, blend) 		Blend(base, blend, BlendPinLightf)
-#define BlendHardMix(base, blend) 		Blend(base, blend, BlendHardMixf)
+#define BlendHardMix(base, blend) 		BlendHardMix2(base, blend)
 #define BlendReflect(base, blend) 		Blend(base, blend, BlendReflectf)
 #define BlendGlow(base, blend) 		BlendReflect(blend, base)
 #define BlendPhoenix(base, blend) 		(min(base, blend) - max(base, blend) + vec3(1.0))

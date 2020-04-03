@@ -76,7 +76,7 @@ YPbPr is converted from the RGB video signal, which is split into three componen
    - __Y__ : Offset the vertical position of the anchor point.
 5. #### Spliter
 [![Spliter Module](./doc/modules/Spliter.jpg)](./doc/modules/Spliter.jpg)<br/>
-- __Input__ : 
+   - __Input__ : 
       - __A__ : video input signal to filter.
       - __B__ : video input signal to filter.
    - __Output__ : 
@@ -84,7 +84,29 @@ YPbPr is converted from the RGB video signal, which is split into three componen
       - __B__ : max(Input B - Input A, 0).
 6. #### Crossfader
 [![Crossfader Module](./doc/modules/Crossfader.jpg)](./doc/modules/Crossfader.jpg)<br/>
-[TO DO -- description]
+   - __Input__ : 
+      - __A__ : video input signal to filter.
+      - __B__ : video input signal to filter.
+   - __Output__ : Mixed video output signal.
+   - __Blend__ : Select filters : 
+       - Add : min(A + B, 1)
+       - Normal : A
+       - Lighten : max(A, B)
+       - Darken : min(A, B)
+       - Multiply : A x B
+       - Average : (A + B) / 2
+       - Substract : max(A + B - 1, 0)
+       - Difference : abs(A - B)
+       - Negation : (1 - abs(1 - A - B))
+       - Exclusion : A + B - 2.0 * A * B
+       - Phoenix : (min(A, B) - max(A, B) + 1)
+       - Overlay : (A < 0.5 ? (2.0 * A * B) : (1.0 - 2.0 * (1.0 - A) * (1.0 - B)))
+       - HardMix : ((BlendVividLight(A, B) < 0.5) ? 0.0 : 1.0)
+           - BlendVividLight : ((B < 0.5) ? BlendColorBurnf(A, (2.0 * B)) : BlendColorDodgef(A, (2.0 * (B - 0.5))))
+           - BlendColorBurnf : ((B == 0.0) ? B : max((1.0 - ((1.0 - A) / B)), 0.0))
+           - BlendColorDodgef : ((B == 1.0) ? B : min(A / (1.0 - B), 1.0))
+   - __Crossfade__ : Mix Inputs __A__ · __B__
+
 7. #### Tile
 [![Tile Module](./doc/modules/Tile.jpg)](./doc/modules/Tile.jpg)<br/>
 [TO DO -- description]
@@ -136,7 +158,7 @@ YPbPr is converted from the RGB video signal, which is split into three componen
 
 ## Installation
 Currently available only on OSX(10.13.6). <br/>
-[Download](https://github.com/oogre/ORAGE/raw/master/Orage.app.zip)
+[Download](https://github.com/oogre/ORAGE/releases)
 ## Contributes
 This software is written in C++([cinder](https://github.com/cinder/Cinder))<br/>
 The user interface is build thanks to [UI](https://github.com/rezaali/Cinder-UI) cinder block from [Reza Ali](https://www.syedrezaali.com/)<br/>
