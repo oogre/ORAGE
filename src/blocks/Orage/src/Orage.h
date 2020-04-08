@@ -57,9 +57,10 @@ namespace ogre {
             ResizeRef addResize(vec2 origin, JsonTree data = JsonTree());
             BlurRef addBlur(vec2 origin, JsonTree data = JsonTree());
             PlayerRef addPlayer(vec2 origin, JsonTree data = JsonTree());
-           KaleidoscopeRef addKaleidoscope(vec2 origin, JsonTree data = JsonTree());
+            KaleidoscopeRef addKaleidoscope(vec2 origin, JsonTree data = JsonTree());
             OutputRef addOutput(vec2 origin, JsonTree data = JsonTree());
             LfosRef addLfos(vec2 origin, JsonTree data = JsonTree());
+            OscRef addOsc(vec2 origin, JsonTree data = JsonTree());
             RandomRef addRandom(vec2 origin, JsonTree data = JsonTree());
             ProcessCVRef addProcessCV(vec2 origin, JsonTree data = JsonTree());
         
@@ -71,6 +72,17 @@ namespace ogre {
                     it ++;
                 }
                 return obj;
+            }
+        
+            ModuleRef getModuleById(int id){
+                auto it = this->modules.begin();
+                for(; it != this->modules.end() ; ){
+                    if((*it)->id == id){
+                        return ModuleRef(*it);
+                    }
+                    it ++;
+                }
+                return nullptr;
             }
         
             int injectModule(string type, vec2 pos, JsonTree data = JsonTree());

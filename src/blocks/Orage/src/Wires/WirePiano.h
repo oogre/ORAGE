@@ -24,7 +24,7 @@ namespace ogre {
     class WirePiano : public Wire{
         NotesetRef * slave;
         NotesetRef * master;
-        WirePiano(NotesetRef * slave, NotesetRef * master, ButtonRef slaveBtn, ButtonRef masterBtn, int id_slave, int id_master) : Wire(slaveBtn, masterBtn, id_slave, id_master){
+        WirePiano(NotesetRef * slave, NotesetRef * master, ViewRef slaveBtn, ViewRef masterBtn, int id_slave, int id_master) : Wire(slaveBtn, masterBtn, id_slave, id_master){
             this->slave = slave;
             this->master = master;
             *slave = *master;
@@ -36,7 +36,7 @@ namespace ogre {
             *slave = nullptr;
         }
         typedef std::shared_ptr<class WirePiano> WirePianoRef;
-        static WirePianoRef create(NotesetRef * slave, NotesetRef * master, ButtonRef slaveBtn, ButtonRef masterBtn, int id_slave, int id_master)
+        static WirePianoRef create(NotesetRef * slave, NotesetRef * master, ViewRef slaveBtn, ViewRef masterBtn, int id_slave, int id_master)
         {
             return WirePianoRef(new WirePiano(slave, master, slaveBtn, masterBtn, id_slave, id_master));
         }

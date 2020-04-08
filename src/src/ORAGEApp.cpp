@@ -12,6 +12,8 @@ namespace fs = boost::filesystem;
 using namespace ci;
 using namespace ci::app;
 using namespace ogre;
+using namespace std;
+
 
 
 class ORAGEApp : public App {
@@ -24,8 +26,8 @@ class ORAGEApp : public App {
     bool            mMouseDrag = false;
     gl::Context   * mMainWinCtx;
     
-    std::vector<std::string> fileExtension = std::vector<std::string>(1, "rage");
-    std::string orageFilePath = getDocumentsDirectory().generic_string() + "/ORAGE";
+    vector<string> fileExtension = vector<string>(1, "rage");
+    string orageFilePath = getDocumentsDirectory().generic_string() + "/ORAGE";
     
   public:
     static void prepareSettings( Settings *settings ){
@@ -58,6 +60,9 @@ class ORAGEApp : public App {
     void fileDrop( FileDropEvent event ) override;
     void keyUp( KeyEvent event) override;
     void keyDown( KeyEvent event) override;
+    
+    void save();
+    void open();
 };
 
 
@@ -108,10 +113,9 @@ void ORAGEApp::mouseDrag( MouseEvent event ) {
 };
 
 void ORAGEApp::keyUp( KeyEvent event){
-    if(!keyIsDown){
-        return;
+    if(event.getChar() == ' '){
+        orage->tapTempo();
     }
-    keyIsDown = false;
     
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
@@ -120,64 +124,17 @@ void ORAGEApp::keyUp( KeyEvent event){
 }
 
 void ORAGEApp::keyDown( KeyEvent event){
-    if(keyIsDown){
-        return;
-    }
-    keyIsDown = true;
-    if(event.getChar() == ' '){
-        orage->tapTempo();
-    }
-    if(event.getChar() == 's'){
-        JsonTree obj = JsonTree::makeObject();
-        
-        obj.pushBack(orage->getData());
-        obj.pushBack(wires.getData());
-        
-        fs::path path = getSaveFilePath(orageFilePath, fileExtension);
-        if( ! path.empty() ) {
-            std::ofstream oStream(path.generic_string());
-            oStream << obj.serialize();
-            oStream.close();
+    if(event.isMetaDown()){
+        switch(event.getChar()){
+            case 's':
+                save();
+                break;
+            case 'o':
+                open();
+                break;
         }
     }
-    if(event.getChar() == 'o'){
-        fs::path path = getOpenFilePath(orageFilePath, fileExtension);
-        if( ! path.empty() ) {
-            JsonTree content = JsonTree( loadFile(path) );
-            map<int, int> idDictionnary;
-            if( content.hasChild( "modules" ) ){
-                for( const auto &module : content["modules"] ) {
-                    if( !module.hasChild("type") ||
-                        !module.hasChild("id") ||
-                        module.getChild("id").getValue<int>() == 1
-                    ) continue;
-                    std::string type = module.getChild("type").getValue<std::string>();
-                    vec2 pos(
-                        module.getChild("pos.x").getValue<int>(),
-                        module.getChild("pos.y").getValue<int>()
-                    );
-                    int id = 0;
-                    if(module.hasChild( "data" )){
-                        id = orage->injectModule(type, pos, module.getChild("data"));
-                        
-                    }else{
-                        id = orage->injectModule(type, pos);
-                    }
-                    idDictionnary[module.getChild("id").getValue<int>()] = id;
-                }
-            }
-            auto it = idDictionnary.begin();
-            while(it != idDictionnary.end()){
-                std::cout << (*it).first << " : ";
-                std::cout << (*it).second << std::endl;
-                it++;
-            }
-            
-            if( content.hasChild( "wires" ) ){
-                
-            }
-        }
-    }
+    
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
     }
@@ -185,8 +142,98 @@ void ORAGEApp::keyDown( KeyEvent event){
 }
 
 void ORAGEApp::fileDrop( FileDropEvent event ){
-    std::cout<<event.getFile(0)<<std::endl;
+    cout<<event.getFile(0)<<endl;
     orage->fileDrop(event);
+}
+
+void ORAGEApp::save(){
+    JsonTree obj = JsonTree::makeObject();
+    obj.pushBack(orage->getData());
+    obj.pushBack(wires.getData());
+    fs::path path = getSaveFilePath(orageFilePath, fileExtension);
+    if( ! path.empty() ) {
+        ofstream oStream(path.generic_string());
+        oStream << obj.serialize();
+        oStream.close();
+    }
+}
+
+void ORAGEApp::open(){
+    fs::path path = getOpenFilePath(orageFilePath, fileExtension);
+    if( ! path.empty() ) {
+        JsonTree content = JsonTree( loadFile(path) );
+        map<int, int> idDictionnary;
+        if( content.hasChild( "modules" ) ){
+            for( const auto &module : content["modules"] ) {
+                if( !module.hasChild("type") ||
+                   !module.hasChild("id") ||
+                   module.getChild("id").getValue<int>() == 1
+                   ) continue;
+                string type = module.getChild("type").getValue<string>();
+                vec2 pos(
+                         module.getChild("pos.x").getValue<int>(),
+                         module.getChild("pos.y").getValue<int>()
+                         );
+                int id = 0;
+                if(module.hasChild( "data" )){
+                    id = orage->injectModule(type, pos, module.getChild("data"));
+                    
+                }else{
+                    id = orage->injectModule(type, pos);
+                }
+                idDictionnary[module.getChild("id").getValue<int>()] = id;
+            }
+        }
+        auto it = idDictionnary.begin();
+        while(it != idDictionnary.end()){
+            cout << (*it).first << " : ";
+            cout << (*it).second << endl;
+            it++;
+        }
+        
+        if( content.hasChild( "wires" ) ){
+            for( const auto &wire : content["wires"] ) {
+                
+                if( !wire.hasChild("module_master_id") ||
+                   !wire.hasChild("module_slave_id") ||
+                   !wire.hasChild("wire_input_name") ||
+                   !wire.hasChild("wire_output_name")
+                   ){
+                    cout<<"NON VALID WIRE"<<endl;
+                    continue;
+                    
+                }
+                int masterID = idDictionnary[wire.getChild("module_master_id").getValue<int>()];
+                int slaveID = idDictionnary[wire.getChild("module_slave_id").getValue<int>()];
+                string outputName = wire.getChild("wire_output_name").getValue<string>();
+                string inputName = wire.getChild("wire_input_name").getValue<string>();
+                ModuleRef master = orage->getModuleById(masterID);
+                ModuleRef slave = orage->getModuleById(slaveID);
+                cout<<"master : "<<master->name<<" - output : "<<outputName<<endl;
+                cout<<"slave : "<<slave->name<<" - input : "<<inputName<<endl;
+                
+                
+                ModuleVideoRef vMaster = dynamic_pointer_cast<ModuleVideo>(master);
+                ModuleVideoRef vSlave = dynamic_pointer_cast<ModuleVideo>(slave);
+                
+                if(vMaster && vSlave){
+                    gl::Texture2dRef * tMaster = vMaster->getOutputTexture(outputName[0]);
+                    gl::Texture2dRef * tSlave = vSlave->getInputTexture(inputName[0]);
+                    
+                    wires.clickOnVideoLinker(slave->name, tSlave, slave->mUi->getSubView(inputName), true, slaveID);
+                    wires.clickOnVideoLinker(master->name, tMaster, master->mUi->getSubView(outputName), false, masterID);
+                }else{
+                    SliderfRef input = dynamic_pointer_cast<Sliderf>(slave->mUi->getSubView(inputName.substr(0,inputName.size()-8)));
+                    SliderfRef output = dynamic_pointer_cast<Sliderf>(master->mUi->getSubView(outputName.substr(0,outputName.size()-8)));
+                    
+                    if(input && output){
+                        wires.clickOnLinker(slave->name, input, slave->mUi->getSubView(inputName), slaveID);
+                        wires.clickOnLinker(master->name, output, master->mUi->getSubView(outputName), masterID);
+                    }
+                }
+            }
+        }
+    }
 }
 
 CINDER_APP( ORAGEApp, RendererGl, &ORAGEApp::prepareSettings )

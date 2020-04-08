@@ -21,7 +21,8 @@ namespace ogre {
 class WireVideo : public Wire{
     gl::Texture2dRef * slave;
     gl::Texture2dRef * master;
-    WireVideo(gl::Texture2dRef * slave, gl::Texture2dRef * master, ButtonRef slaveBtn, ButtonRef masterBtn, int id_slave, int id_master) : Wire(slaveBtn, masterBtn, id_slave, id_master){
+    WireVideo(gl::Texture2dRef * slave, gl::Texture2dRef * master, ViewRef slaveBtn, ViewRef masterBtn, int id_slave, int id_master)
+        : Wire(slaveBtn, masterBtn, id_slave, id_master){
         this->slave = slave;
         this->master = master;
         *slave = *master;
@@ -33,7 +34,7 @@ class WireVideo : public Wire{
         *slave = nullptr;
     }
     typedef std::shared_ptr<class WireVideo> WireVideoRef;
-    static WireVideoRef create(gl::Texture2dRef * slave, gl::Texture2dRef * master, ButtonRef slaveBtn, ButtonRef masterBtn, int id_slave, int id_master)
+    static WireVideoRef create(gl::Texture2dRef * slave, gl::Texture2dRef * master, ViewRef slaveBtn, ViewRef masterBtn, int id_slave, int id_master)
     {
         return WireVideoRef(new WireVideo(slave, master, slaveBtn, masterBtn, id_slave, id_master));
     }

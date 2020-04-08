@@ -63,12 +63,6 @@ namespace ogre {
         void loadMovieFile( const fs::path &path );
         void addActiveMovie( qtime::MovieGlRef movie );
         void fileDrop( FileDropEvent event ) override;
-        /*
-         
-        void loadMovieUrl( const std::string &urlString );
-        
-        
-         */
     };
     
     typedef std::shared_ptr<class Player> PlayerRef;

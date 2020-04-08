@@ -66,6 +66,7 @@ namespace ogre {
         sY->setColorBack(c);
         sPb->setColorBack(c);
         sPr->setColorBack(c);
+        mUi->setColorBack(ColorAT<float>(vec4(c.r, c.g, c.b, .4f)));
 
         gl::pushMatrices();
         gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );

@@ -20,6 +20,8 @@ using namespace ci::app;
 using namespace std;
 
 namespace ogre {
+    class ModuleCommon;
+    typedef std::shared_ptr<class ModuleCommon> ModuleRef;
     class Wires{
         static boost::dynamic_bitset<> status;
         static boost::dynamic_bitset<> statusVideo;
@@ -35,22 +37,22 @@ namespace ogre {
         
         SliderfRef _master = nullptr;
         
-        ButtonRef _slaveBtn = nullptr;
-        ButtonRef _masterBtn = nullptr;
+        ViewRef _slaveBtn = nullptr;
+        ViewRef _masterBtn = nullptr;
         
         int id_slave = 0;int id_master = 0;
         
         std::pair<string,string> videoNames = std::make_pair("", "");;
         gl::Texture2dRef * _slaveVideo = nullptr;
         gl::Texture2dRef * _masterVideo = nullptr;
-        ButtonRef _slaveBtnVideo = nullptr;
-        ButtonRef _masterBtnVideo = nullptr;
+        ViewRef _slaveBtnVideo = nullptr;
+        ViewRef _masterBtnVideo = nullptr;
         
         std::pair<string,string> pianoNames = std::make_pair("", "");;
         NotesetRef * _slavePiano = nullptr;
         NotesetRef * _masterPiano = nullptr;
-        ButtonRef _slaveBtnPiano = nullptr;
-        ButtonRef _masterBtnPiano = nullptr;
+        ViewRef _slaveBtnPiano = nullptr;
+        ViewRef _masterBtnPiano = nullptr;
 
         
         
@@ -121,7 +123,7 @@ namespace ogre {
                 return ref;
             }
         
-            void setCVSlave(string name, SliderfRef slave, ButtonRef btn, int moduleId){
+            void setCVSlave(string name, SliderfRef slave, ViewRef btn, int moduleId){
                 if(slave != _slave && slave != _master && slave != nullptr && btn != nullptr){
                     cvNames.first = name +" "+ btn->getName();
                     status |= SLAVE_STATUS;
@@ -136,7 +138,7 @@ namespace ogre {
                 }
             }
         
-            void setCVMaster(string name, SliderfRef master, ButtonRef btn, int moduleId){
+            void setCVMaster(string name, SliderfRef master, ViewRef btn, int moduleId){
                 if(master != _master && master != _slave && master != nullptr && btn != nullptr){
                     cvNames.second = name +" "+ btn->getName();
                     status |= MASTER_STATUS;
@@ -150,7 +152,7 @@ namespace ogre {
                    reset();
                 }
             }
-            void clickOnLinker(string name, SliderfRef slider, ButtonRef btn, int moduleId){
+            void clickOnLinker(string name, SliderfRef slider, ViewRef btn, int moduleId){
                 switch(status.to_ulong()){
                     case 0:
                         setCVSlave(name, slider, btn, moduleId);
@@ -166,6 +168,13 @@ namespace ogre {
         
             WireRef addVideoWire(){
                 if(!_slaveBtnVideo || ! _masterBtnVideo || !_slaveVideo || !_masterVideo || _slaveBtnVideo == _masterBtnVideo){
+                    std::cout
+                    << (!_slaveBtnVideo)   << " "
+                    << (!_masterBtnVideo)  << " "
+                    << (!_slaveVideo)      << " "
+                    << (!_masterVideo)     << " "
+                    << (_slaveBtnVideo == _masterBtnVideo)
+                    << std::endl;
                     return reset();
                 }
                 resetCV();
@@ -177,7 +186,7 @@ namespace ogre {
                 return ref;
             }
 
-            void setVideoSlave(string name, gl::Texture2dRef * slave, ButtonRef btn, int moduleId){
+            void setVideoSlave(string name, gl::Texture2dRef * slave, ViewRef btn, int moduleId){
                     statusVideo |= SLAVE_STATUS;
                     _slaveVideo = slave;
                     id_slave = moduleId;
@@ -188,7 +197,7 @@ namespace ogre {
                     cvAndVideoWiresBuilder = Wire::create(btn);
             }
         
-            void setVideoMaster(string name, gl::Texture2dRef * master, ButtonRef btn, int moduleId){
+            void setVideoMaster(string name, gl::Texture2dRef * master, ViewRef btn, int moduleId){
                     statusVideo |= MASTER_STATUS;
                     _masterVideo = master;
                     id_master = moduleId;
@@ -199,7 +208,7 @@ namespace ogre {
                     cvAndVideoWiresBuilder = Wire::create(btn);
             }
         
-        void clickOnVideoLinker(string name, gl::Texture2dRef * tex, ButtonRef btn, bool input, int moduleId){
+        void clickOnVideoLinker(string name, gl::Texture2dRef * tex, ViewRef btn, bool input, int moduleId){
             if(input){
                 setVideoSlave(name, tex, btn, moduleId);
             }
@@ -224,7 +233,7 @@ namespace ogre {
             return ref;
         }
         
-        void setPianoSlave(string name, NotesetRef * slave, ButtonRef btn, int moduleId){
+        void setPianoSlave(string name, NotesetRef * slave, ViewRef btn, int moduleId){
             statusPiano |= SLAVE_STATUS;
             _slavePiano = slave;
             id_slave = moduleId;
@@ -236,7 +245,7 @@ namespace ogre {
             cvAndVideoWiresBuilder = Wire::create(btn);
         }
         
-        void setPianoMaster(string name, NotesetRef * master, ButtonRef btn, int moduleId){
+        void setPianoMaster(string name, NotesetRef * master, ViewRef btn, int moduleId){
             statusPiano |= MASTER_STATUS;
             _masterPiano = master;
             id_master = moduleId;
@@ -247,7 +256,7 @@ namespace ogre {
             cvAndVideoWiresBuilder = Wire::create(btn);
         }
         
-        void clickOnPianoLinker(string name, NotesetRef * noteset, ButtonRef btn, bool input, int modulId){
+        void clickOnPianoLinker(string name, NotesetRef * noteset, ViewRef btn, bool input, int modulId){
             
             if(input){
                 setPianoSlave(name, noteset, btn, modulId);
@@ -265,10 +274,10 @@ namespace ogre {
             auto it = cvAndVideoWires.begin(), end = cvAndVideoWires.end();
             for(;it != end ; it++){
                 JsonTree sub = JsonTree::makeObject();
-                sub.addChild(JsonTree("module.slave.id", (*it).second->id_slave));
-                sub.addChild(JsonTree("module.master.id", (*it).second->id_master));
-                sub.addChild(JsonTree("wire.input.name", (*it).second->slaveBtn->getName()));
-                sub.addChild(JsonTree("wire.output.name", (*it).second->masterBtn->getName()));
+                sub.addChild(JsonTree("module_slave_id", (*it).second->id_slave));
+                sub.addChild(JsonTree("module_master_id", (*it).second->id_master));
+                sub.addChild(JsonTree("wire_input_name", (*it).second->slaveBtn->getName()));
+                sub.addChild(JsonTree("wire_output_name", (*it).second->masterBtn->getName()));
                 obj.addChild(sub);
             }
             return obj;

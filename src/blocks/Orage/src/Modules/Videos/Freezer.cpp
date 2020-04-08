@@ -130,7 +130,7 @@ namespace ogre {
         tools.addSlider(mUi, "white", this->id, &(data.white), 0, 1.0f);
         
         
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Freezer::setupShader(){

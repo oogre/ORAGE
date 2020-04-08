@@ -132,6 +132,11 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         auto m = this->addLfos(pos, data);
         return m->id;
     }
+    if (type == "Osc")
+    {
+        auto m = this->addOsc(pos, data);
+        return m->id;
+    }
     if (type == "ProcessCV")
     {
         auto m = this->addProcessCV(pos, data);
@@ -272,6 +277,13 @@ LfosRef Orage::addLfos(vec2 origin, JsonTree data){
     return ref;
 }
 
+OscRef Orage::addOsc(vec2 origin, JsonTree data){
+    OscRef ref = Osc::create("Osc", origin, mMainWinCtx, data);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
+
 ProcessCVRef Orage::addProcessCV(vec2 origin, JsonTree data){
     ProcessCVRef ref = ProcessCV::create("PROCESS CV", origin, mMainWinCtx);
     ref->setup();
@@ -392,6 +404,13 @@ void Orage::setup(){
                                                       [this](bool a) {
                                                           if(a){
                                                               addLfos(contextMenu->getOrigin());
+                                                          }
+                                                      });
+    
+    contextMenu->addButton("OSC", false)->setCallback(
+                                                      [this](bool a) {
+                                                          if(a){
+                                                              addOsc(contextMenu->getOrigin());
                                                           }
                                                       });
     

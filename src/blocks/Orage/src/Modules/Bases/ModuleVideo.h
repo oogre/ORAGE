@@ -49,8 +49,21 @@ namespace ogre {
         virtual void setup() override;
         virtual void update() override;
         
+        gl::Texture2dRef * getInputTexture(char id){
+            if(inputs.find(id) == inputs.end()){
+                return nullptr;
+            }
+            return &(inputs[id]);
+        }
         
+        gl::Texture2dRef * getOutputTexture(char id){
+            if(outputs.find(id) == outputs.end()){
+                return nullptr;
+            }
+            return &(outputs[id]);
+        }
     };
+    typedef std::shared_ptr<class ModuleVideo> ModuleVideoRef;
 }
 
 #endif /* ModuleVideo_hpp */

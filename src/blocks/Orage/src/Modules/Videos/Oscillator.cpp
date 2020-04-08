@@ -145,9 +145,8 @@ void Oscillator::setupUI(){
     mUi->addSpacer(false);
     
     mUi->addToggle("Reverse", &data.reverse);
-    
 
-    mUi->setMinified(false);
+    mUi->setMinified(true);
 }
 
     void Oscillator::setupShader(){

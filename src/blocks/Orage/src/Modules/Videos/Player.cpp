@@ -101,20 +101,9 @@ namespace ogre {
                 mMovies.back()->setRate(f);
             }
         });
-        mUi->setMinified(false);
+        mUi->setMinified(true);
     }
     
-    /*
-    void Player::loadMovieUrl( const string &urlString )
-    {
-        try {
-            mLoadingMovies.push_back( qtime::MovieLoader::create( Url( urlString ) ) );
-        }
-        catch( ci::Exception &exc ) {
-            console() << "Exception caught trying to load the movie from URL: " << urlString << ", what: " << exc.what() << std::endl;
-        }
-    }
-    */
     void Player::loadMovieFile( const fs::path &moviePath )
     {
         qtime::MovieGlRef movie;

@@ -41,6 +41,9 @@ namespace ogre {
 
         float timer;
         if(data.active){
+            
+            mUi->setColorBack(ColorAT<float>(vec4(data.saw, data.saw, data.saw, .4f)));
+            
             timer = (getElapsedSeconds()  - oldTime ) * data.BPM * 0.0166667f;
             oldTime = getElapsedSeconds();
             

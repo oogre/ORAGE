@@ -34,6 +34,7 @@
 #include "Kaleidoscope.h"
 
 #include "Lfos.h"
+#include "Osc.h"
 #include "Random.hpp"
 #include "ProcessCV.h"
 

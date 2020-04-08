@@ -24,7 +24,8 @@ class WireCV : public Wire{
     SliderfRef slave;
     SliderfRef master;
     
-    WireCV(SliderfRef slave, SliderfRef master, ButtonRef slaveBtn, ButtonRef masterBtn, int id_slave, int id_master) : Wire(slaveBtn, masterBtn, id_slave, id_master){
+    WireCV(SliderfRef slave, SliderfRef master, ViewRef slaveBtn, ViewRef masterBtn, int id_slave, int id_master)
+    : Wire(slaveBtn, masterBtn, id_slave, id_master){
         this->slave = slave;
         this->master = master;
         master->setSlave(slave);
@@ -38,7 +39,7 @@ class WireCV : public Wire{
         slave->removeSlave(master);
     }
     typedef std::shared_ptr<class WireCV> WireCVRef;
-    static WireCVRef create(SliderfRef slave, SliderfRef master, ButtonRef slaveBtn, ButtonRef masterBtn, int id_slave, int id_master)
+    static WireCVRef create(SliderfRef slave, SliderfRef master, ViewRef slaveBtn, ViewRef masterBtn, int id_slave, int id_master)
     {
         return WireCVRef(new WireCV(slave, master, slaveBtn, masterBtn, id_slave, id_master));
     }

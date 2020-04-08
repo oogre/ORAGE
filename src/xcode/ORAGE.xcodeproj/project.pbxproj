@@ -47,6 +47,18 @@
 		8033B0DAC6694F96BFD18A35 /* Dialer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5190331EDD4B5E843BD167 /* Dialer.cpp */; };
 		85D4B4812CA545008D1F624C /* Wires.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CEC55F32821410B87FEE541 /* Wires.cpp */; };
 		8800562B1EF1C4090045248C /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880056291EF1C4090045248C /* Player.cpp */; };
+		88187B1124376BF20008F678 /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AEF24376BF20008F678 /* OscSender.cpp */; };
+		88187B1224376BF20008F678 /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AF324376BF20008F678 /* OscOutboundPacketStream.cpp */; };
+		88187B1324376BF20008F678 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AF524376BF20008F678 /* OscTypes.cpp */; };
+		88187B1424376BF20008F678 /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AFB24376BF20008F678 /* OscReceivedElements.cpp */; };
+		88187B1524376BF20008F678 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AFC24376BF20008F678 /* OscPrintReceivedElements.cpp */; };
+		88187B1624376BF30008F678 /* OscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187B0024376BF20008F678 /* OscMessage.cpp */; };
+		88187B1724376BF30008F678 /* OscListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187B0124376BF20008F678 /* OscListener.cpp */; };
+		88187B1824376BF30008F678 /* OscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187B0324376BF20008F678 /* OscBundle.cpp */; };
+		88187B1924376BF30008F678 /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187B0624376BF20008F678 /* NetworkingUtils.cpp */; };
+		88187B1A24376BF30008F678 /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187B0724376BF20008F678 /* UdpSocket.cpp */; };
+		88187B1B24376BF30008F678 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187B0C24376BF20008F678 /* IpEndpointName.cpp */; };
+		88187B2024376C3F0008F678 /* Osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187B1E24376C3F0008F678 /* Osc.cpp */; };
 		881A13611EEC1822003FF906 /* Resize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 881A135F1EEC1822003FF906 /* Resize.cpp */; };
 		881A13641EEC4157003FF906 /* Blur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 881A13621EEC4157003FF906 /* Blur.cpp */; };
 		88283FFE2433F6B000881911 /* WirePiano.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88283FFD2433F6B000881911 /* WirePiano.cpp */; };
@@ -196,6 +208,37 @@
 		858C69A657054A6F81797937 /* CocoaWindowCanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CocoaWindowCanvas.h; path = ../blocks/UIslave/src/CocoaWindowCanvas.h; sourceTree = "<group>"; };
 		880056291EF1C4090045248C /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = ../blocks/Orage/src/Modules/Videos/Player.cpp; sourceTree = "<group>"; };
 		8800562A1EF1C4090045248C /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../blocks/Orage/src/Modules/Videos/Player.h; sourceTree = "<group>"; };
+		88187AEE24376BF20008F678 /* OscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscSender.h; sourceTree = "<group>"; };
+		88187AEF24376BF20008F678 /* OscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscSender.cpp; sourceTree = "<group>"; };
+		88187AF024376BF20008F678 /* OscListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscListener.h; sourceTree = "<group>"; };
+		88187AF124376BF20008F678 /* OscBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscBundle.h; sourceTree = "<group>"; };
+		88187AF324376BF20008F678 /* OscOutboundPacketStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscOutboundPacketStream.cpp; sourceTree = "<group>"; };
+		88187AF424376BF20008F678 /* OscPacketListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscPacketListener.h; sourceTree = "<group>"; };
+		88187AF524376BF20008F678 /* OscTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscTypes.cpp; sourceTree = "<group>"; };
+		88187AF624376BF20008F678 /* OscPrintReceivedElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscPrintReceivedElements.h; sourceTree = "<group>"; };
+		88187AF724376BF20008F678 /* MessageMappingOscPacketListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageMappingOscPacketListener.h; sourceTree = "<group>"; };
+		88187AF824376BF20008F678 /* OscHostEndianness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscHostEndianness.h; sourceTree = "<group>"; };
+		88187AF924376BF20008F678 /* OscException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscException.h; sourceTree = "<group>"; };
+		88187AFA24376BF20008F678 /* OscOutboundPacketStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscOutboundPacketStream.h; sourceTree = "<group>"; };
+		88187AFB24376BF20008F678 /* OscReceivedElements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscReceivedElements.cpp; sourceTree = "<group>"; };
+		88187AFC24376BF20008F678 /* OscPrintReceivedElements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscPrintReceivedElements.cpp; sourceTree = "<group>"; };
+		88187AFD24376BF20008F678 /* OscReceivedElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscReceivedElements.h; sourceTree = "<group>"; };
+		88187AFE24376BF20008F678 /* OscTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscTypes.h; sourceTree = "<group>"; };
+		88187AFF24376BF20008F678 /* OscMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscMessage.h; sourceTree = "<group>"; };
+		88187B0024376BF20008F678 /* OscMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscMessage.cpp; sourceTree = "<group>"; };
+		88187B0124376BF20008F678 /* OscListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscListener.cpp; sourceTree = "<group>"; };
+		88187B0224376BF20008F678 /* OscArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscArg.h; sourceTree = "<group>"; };
+		88187B0324376BF20008F678 /* OscBundle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscBundle.cpp; sourceTree = "<group>"; };
+		88187B0624376BF20008F678 /* NetworkingUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkingUtils.cpp; sourceTree = "<group>"; };
+		88187B0724376BF20008F678 /* UdpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UdpSocket.cpp; sourceTree = "<group>"; };
+		88187B0824376BF20008F678 /* UdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpSocket.h; sourceTree = "<group>"; };
+		88187B0924376BF20008F678 /* TimerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerListener.h; sourceTree = "<group>"; };
+		88187B0A24376BF20008F678 /* PacketListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketListener.h; sourceTree = "<group>"; };
+		88187B0B24376BF20008F678 /* IpEndpointName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IpEndpointName.h; sourceTree = "<group>"; };
+		88187B0C24376BF20008F678 /* IpEndpointName.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IpEndpointName.cpp; sourceTree = "<group>"; };
+		88187B0D24376BF20008F678 /* NetworkingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkingUtils.h; sourceTree = "<group>"; };
+		88187B1E24376C3F0008F678 /* Osc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Osc.cpp; path = ../blocks/Orage/src/Modules/Controllers/Osc.cpp; sourceTree = "<group>"; };
+		88187B1F24376C3F0008F678 /* Osc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Osc.h; path = ../blocks/Orage/src/Modules/Controllers/Osc.h; sourceTree = "<group>"; };
 		881A135F1EEC1822003FF906 /* Resize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Resize.cpp; path = ../blocks/Orage/src/Modules/Videos/Resize.cpp; sourceTree = "<group>"; };
 		881A13601EEC1822003FF906 /* Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Resize.h; path = ../blocks/Orage/src/Modules/Videos/Resize.h; sourceTree = "<group>"; };
 		881A13621EEC4157003FF906 /* Blur.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blur.cpp; path = ../blocks/Orage/src/Modules/Videos/Blur.cpp; sourceTree = "<group>"; };
@@ -323,6 +366,7 @@
 		01B97315FEAEA392516A2CEA /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				88187AEC24376BF20008F678 /* OSC */,
 				88A889611EDC308D007F4B0C /* Syphon */,
 				378C77393A164F4C9C491399 /* Orage */,
 				1FC68A66DF344901A505DDAE /* UIslave */,
@@ -483,6 +527,75 @@
 			name = Videos;
 			sourceTree = "<group>";
 		};
+		88187AEC24376BF20008F678 /* OSC */ = {
+			isa = PBXGroup;
+			children = (
+				88187AED24376BF20008F678 /* src */,
+			);
+			name = OSC;
+			path = ../blocks/OSC;
+			sourceTree = "<group>";
+		};
+		88187AED24376BF20008F678 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				88187AEE24376BF20008F678 /* OscSender.h */,
+				88187AEF24376BF20008F678 /* OscSender.cpp */,
+				88187AF024376BF20008F678 /* OscListener.h */,
+				88187AF124376BF20008F678 /* OscBundle.h */,
+				88187AF224376BF20008F678 /* osc */,
+				88187AFF24376BF20008F678 /* OscMessage.h */,
+				88187B0024376BF20008F678 /* OscMessage.cpp */,
+				88187B0124376BF20008F678 /* OscListener.cpp */,
+				88187B0224376BF20008F678 /* OscArg.h */,
+				88187B0324376BF20008F678 /* OscBundle.cpp */,
+				88187B0424376BF20008F678 /* ip */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		88187AF224376BF20008F678 /* osc */ = {
+			isa = PBXGroup;
+			children = (
+				88187AF324376BF20008F678 /* OscOutboundPacketStream.cpp */,
+				88187AF424376BF20008F678 /* OscPacketListener.h */,
+				88187AF524376BF20008F678 /* OscTypes.cpp */,
+				88187AF624376BF20008F678 /* OscPrintReceivedElements.h */,
+				88187AF724376BF20008F678 /* MessageMappingOscPacketListener.h */,
+				88187AF824376BF20008F678 /* OscHostEndianness.h */,
+				88187AF924376BF20008F678 /* OscException.h */,
+				88187AFA24376BF20008F678 /* OscOutboundPacketStream.h */,
+				88187AFB24376BF20008F678 /* OscReceivedElements.cpp */,
+				88187AFC24376BF20008F678 /* OscPrintReceivedElements.cpp */,
+				88187AFD24376BF20008F678 /* OscReceivedElements.h */,
+				88187AFE24376BF20008F678 /* OscTypes.h */,
+			);
+			path = osc;
+			sourceTree = "<group>";
+		};
+		88187B0424376BF20008F678 /* ip */ = {
+			isa = PBXGroup;
+			children = (
+				88187B0524376BF20008F678 /* posix */,
+				88187B0824376BF20008F678 /* UdpSocket.h */,
+				88187B0924376BF20008F678 /* TimerListener.h */,
+				88187B0A24376BF20008F678 /* PacketListener.h */,
+				88187B0B24376BF20008F678 /* IpEndpointName.h */,
+				88187B0C24376BF20008F678 /* IpEndpointName.cpp */,
+				88187B0D24376BF20008F678 /* NetworkingUtils.h */,
+			);
+			path = ip;
+			sourceTree = "<group>";
+		};
+		88187B0524376BF20008F678 /* posix */ = {
+			isa = PBXGroup;
+			children = (
+				88187B0624376BF20008F678 /* NetworkingUtils.cpp */,
+				88187B0724376BF20008F678 /* UdpSocket.cpp */,
+			);
+			path = posix;
+			sourceTree = "<group>";
+		};
 		88283FFF2433F6F500881911 /* Piano */ = {
 			isa = PBXGroup;
 			children = (
@@ -565,6 +678,8 @@
 				88B0FED21F06647900EBAD22 /* ProcessCV.cpp */,
 				888984BC2060028400488193 /* Random.cpp */,
 				888984BD2060028400488193 /* Random.hpp */,
+				88187B1E24376C3F0008F678 /* Osc.cpp */,
+				88187B1F24376C3F0008F678 /* Osc.h */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -756,6 +871,7 @@
 				881A13641EEC4157003FF906 /* Blur.cpp in Sources */,
 				16CEEB7C7A93428393AD75B3 /* ModuleBase.cpp in Sources */,
 				0E69470472344AAAB3DFA3E0 /* ModulePiano.cpp in Sources */,
+				88187B1A24376BF30008F678 /* UdpSocket.cpp in Sources */,
 				10C1F35EBF6D4729840FBA04 /* ModuleVideo.cpp in Sources */,
 				882840152433F6F500881911 /* Config.cpp in Sources */,
 				88B0FED41F06647900EBAD22 /* ProcessCV.cpp in Sources */,
@@ -768,8 +884,10 @@
 				27BB6DB74AB6426E954584E4 /* Matte.cpp in Sources */,
 				34523FE39AA34443871C0728 /* Mosher.cpp in Sources */,
 				88A889701EDC308D007F4B0C /* syphonClient.mm in Sources */,
+				88187B1B24376BF30008F678 /* IpEndpointName.cpp in Sources */,
 				AC8D5313C89F4A1F831CE152 /* Oscillator.cpp in Sources */,
 				13B87B07196A47B8A2AFDF76 /* Spliter.cpp in Sources */,
+				88187B1324376BF20008F678 /* OscTypes.cpp in Sources */,
 				E0DF72E0445C443C937226B6 /* Tile.cpp in Sources */,
 				882840142433F6F500881911 /* PositionExtractor.cpp in Sources */,
 				65EE9F225C0D475FA29AA34D /* BSplineEditor.cpp in Sources */,
@@ -779,6 +897,7 @@
 				E10B865398834EE3983AAD40 /* Button.cpp in Sources */,
 				A8EA15C5111844118A8CBCA3 /* Canvas.cpp in Sources */,
 				0E89D1AA74D748009BDDDCFA /* ColorPicker.cpp in Sources */,
+				88187B1824376BF30008F678 /* OscBundle.cpp in Sources */,
 				B4B8E112BE134443BBEADD3D /* Colors.cpp in Sources */,
 				882840122433F6F500881911 /* NoteDisplay.cpp in Sources */,
 				B67EBE3BE0F34B378C2F93B4 /* Control.cpp in Sources */,
@@ -790,7 +909,9 @@
 				EFFE2EDBA66C4F33B8C1F899 /* Envelope.cpp in Sources */,
 				882840172433F6F500881911 /* HandSplitter.cpp in Sources */,
 				88A8897B1EDC47D7007F4B0C /* Freezer.cpp in Sources */,
+				88187B2024376C3F0008F678 /* Osc.cpp in Sources */,
 				CCB791BF727648BEAF944C2C /* Fps.cpp in Sources */,
+				88187B1124376BF20008F678 /* OscSender.cpp in Sources */,
 				3D5FD6442C1442BEBBD13C06 /* Globals.cpp in Sources */,
 				88A8896F1EDC308D007F4B0C /* SyphonNameboundClient.m in Sources */,
 				B3C1979E48F14B3BBA4B766C /* Graph.cpp in Sources */,
@@ -800,21 +921,27 @@
 				4C0CAE91E0914873B0ECDBB4 /* QuaternionOrderer.cpp in Sources */,
 				4F033FAA39434E0580FC90FD /* Radio.cpp in Sources */,
 				C48D6AA6B1A546FA96BE6187 /* Range.cpp in Sources */,
+				88187B1424376BF20008F678 /* OscReceivedElements.cpp in Sources */,
 				67EA672D4B4946B1921A7825 /* Responder.cpp in Sources */,
 				8896F6B31FB231A800E9630A /* Kaleidoscope.cpp in Sources */,
 				882840182433F6F500881911 /* Structs.cpp in Sources */,
 				882840132433F6F500881911 /* ClusterAnalyser.cpp in Sources */,
 				BDDC05F87FB74584AC294398 /* Slider.cpp in Sources */,
+				88187B1724376BF30008F678 /* OscListener.cpp in Sources */,
 				D89202520FBC4A20988D7E0F /* Spacer.cpp in Sources */,
 				8800562B1EF1C4090045248C /* Player.cpp in Sources */,
+				88187B1924376BF30008F678 /* NetworkingUtils.cpp in Sources */,
+				88187B1524376BF20008F678 /* OscPrintReceivedElements.cpp in Sources */,
 				EE5AFF62F8204B76AD8893E3 /* Spectrum.cpp in Sources */,
 				888AD3B51ECC828C00179240 /* SuperModule.cpp in Sources */,
 				58B3C05F56494F6A8890AF64 /* SuperCanvas.cpp in Sources */,
 				5A01B83A828443BF9AA18E7E /* TextInput.cpp in Sources */,
 				B5129B57B3EB4BBEB67A8B4F /* TextureView.cpp in Sources */,
+				88187B1624376BF30008F678 /* OscMessage.cpp in Sources */,
 				EC96CDB13A674A99BDDA73D0 /* Toggle.cpp in Sources */,
 				88A889711EDC308D007F4B0C /* syphonServer.mm in Sources */,
 				3814E508078C40A8BD3DBE5D /* View.cpp in Sources */,
+				88187B1224376BF20008F678 /* OscOutboundPacketStream.cpp in Sources */,
 				30382403A518433F8FBE96EC /* Waveform.cpp in Sources */,
 				9AC02B2DEE2745F0AED3D7A9 /* WindowCanvas.cpp in Sources */,
 				6248CC197E1B480BA467BF8A /* XYPad.cpp in Sources */,
@@ -899,7 +1026,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src ../blocks/OSC/src";
 			};
 			name = Debug;
 		};
@@ -915,7 +1042,7 @@
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src ../blocks/OSC/src";
 			};
 			name = Release;
 		};

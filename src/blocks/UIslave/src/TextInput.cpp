@@ -234,6 +234,7 @@ void TextInput::mouseDrag( ci::app::MouseEvent &event )
 void TextInput::keyDown( ci::app::KeyEvent &event )
 {
 	if( mClicked ) {
+        
 		if( event.getCode() == KeyEvent::KEY_v && event.isMetaDown() ) {
 			if( Clipboard::hasString() ) {
 				setValue( Clipboard::getString() );
@@ -273,7 +274,7 @@ void TextInput::keyDown( ci::app::KeyEvent &event )
 				deleteCharacter();
 			} break;
 
-			case KeyEvent::KEY_UNKNOWN:
+			//case KeyEvent::KEY_UNKNOWN:
 			case KeyEvent::KEY_TAB:
 			case KeyEvent::KEY_CLEAR:
 			case KeyEvent::KEY_KP0:
@@ -286,10 +287,6 @@ void TextInput::keyDown( ci::app::KeyEvent &event )
 			case KeyEvent::KEY_KP7:
 			case KeyEvent::KEY_KP8:
 			case KeyEvent::KEY_KP9:
-			case KeyEvent::KEY_KP_DIVIDE:
-			case KeyEvent::KEY_KP_MULTIPLY:
-			case KeyEvent::KEY_KP_PLUS:
-			case KeyEvent::KEY_KP_EQUALS:
 			case KeyEvent::KEY_UP:
 			case KeyEvent::KEY_DOWN:
 			case KeyEvent::KEY_INSERT:
@@ -335,6 +332,7 @@ void TextInput::keyDown( ci::app::KeyEvent &event )
 			case KeyEvent::KEY_POWER:
 			case KeyEvent::KEY_EURO:
 			case KeyEvent::KEY_UNDO:
+                cout<<event.getChar()<<endl;
 				break;
 
 			case KeyEvent::KEY_KP_ENTER:

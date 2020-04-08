@@ -37,7 +37,7 @@ void ModuleBase<DataType>::setupInput(){
     string moduleName = this->name;
     
     for( ; it != end ; it ++){
-        ButtonRef b = Button::create( "Input "+to_string(it->first), false, Button::Format().label(false));
+        ButtonRef b = Button::create(string(1, it->first)+"Input", false, Button::Format().label(false));
         b->setSize( vec2( 15, 15 ) );
         inputBtns.push_back(b);
         if(it == inputs.begin()){
@@ -57,7 +57,7 @@ void ModuleBase<DataType>::setupOutput(){
     string moduleName = this->name;
     for( ; it != end ; it ++){
 
-        ButtonRef b = Button::create( "Output "+to_string(it->first), false, Button::Format().label(false));
+        ButtonRef b = Button::create(string(1, it->first)+"Output", false, Button::Format().label(false));
         b->setSize( vec2( 15, 15 ) );
         outputBtns.push_back(b);
         

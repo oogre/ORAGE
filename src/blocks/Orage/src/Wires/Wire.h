@@ -25,7 +25,7 @@ class Wire {
     bool over = false;
     int id_slave;
     int id_master;
-    Wire(ButtonRef slaveBtn, ButtonRef masterBtn,  int id_slave, int id_master) {
+    Wire(ViewRef slaveBtn, ViewRef masterBtn,  int id_slave, int id_master) {
         this->slaveBtn = slaveBtn;
         this->masterBtn = masterBtn;
         this->id_slave = id_slave;
@@ -36,7 +36,7 @@ class Wire {
         path.lineTo(masterBtn->getBounds().getCenter());
     }
     
-    Wire(ButtonRef slaveBtn) {
+    Wire(ViewRef slaveBtn) {
         this->slaveBtn = slaveBtn;
         path.clear();
         path.moveTo(slaveBtn->getBounds().getCenter());
@@ -47,25 +47,25 @@ class Wire {
     }
     
     typedef std::shared_ptr<class Wire> WireRef;
-    static WireRef create(ButtonRef slaveBtn, ButtonRef masterBtn,  int id_slave, int id_master)
+    static WireRef create(ViewRef slaveBtn, ViewRef masterBtn,  int id_slave, int id_master)
     {
         return WireRef(new Wire(slaveBtn, masterBtn, id_slave, id_master));
     }
     
-    static WireRef create(ButtonRef masterBtn)
+    static WireRef create(ViewRef masterBtn)
     {
         return WireRef(new Wire(masterBtn));
     }
     
-    void addMasterBtn(ButtonRef masterBtn)
+    void addMasterBtn(ViewRef masterBtn)
     {
         this->masterBtn = masterBtn;
     }
     
     Color _color = Color(1.0f,1.0f, 1.0f);
     Color _colorHighLigth = Color(1.0f,.0f, .0f);
-    ButtonRef slaveBtn;
-    ButtonRef masterBtn;
+    ViewRef slaveBtn;
+    ViewRef masterBtn;
     static float dist_Point_to_Segment(vec2 P, vec2 P0, vec2 P1){
         vec2 v = P1 - P0;
         vec2 w = P - P0;

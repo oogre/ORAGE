@@ -66,7 +66,7 @@ namespace ogre {
         if(inputs['A']){
             mFbo->bindFramebuffer();
             {
-                gl::clear( ColorA(0, 0, 0, 0));
+                gl::clear( ColorA(0, 0, 0, 1.0f));
                 gl::enableAlphaBlendingPremult();
                 gl::color( ColorA(1.0f,1.0f,1.0f,1.0f));
                 
@@ -105,7 +105,7 @@ namespace ogre {
         tools.addSlider(mUi, "sW", this->id, &(width), -1.0f, 1.0f);
         tools.addSlider(mUi, "sH", this->id, &(height), -1.0f, 1.0f);
 
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Resize::setupShader(){
