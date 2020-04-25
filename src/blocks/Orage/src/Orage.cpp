@@ -453,7 +453,7 @@ void Orage::setup(){
     
     contextMenu->setVisible(false);
     
-    addOutput(vec2(0, 0));
+    //addOutput(vec2(0, 0));
     
 }
 

@@ -47,6 +47,7 @@
 		8033B0DAC6694F96BFD18A35 /* Dialer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5190331EDD4B5E843BD167 /* Dialer.cpp */; };
 		85D4B4812CA545008D1F624C /* Wires.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CEC55F32821410B87FEE541 /* Wires.cpp */; };
 		8800562B1EF1C4090045248C /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880056291EF1C4090045248C /* Player.cpp */; };
+		880D788A244497CF00EC0D71 /* start.ORAGE.sh in Resources */ = {isa = PBXBuildFile; fileRef = 880D7889244497CF00EC0D71 /* start.ORAGE.sh */; };
 		88187B1124376BF20008F678 /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AEF24376BF20008F678 /* OscSender.cpp */; };
 		88187B1224376BF20008F678 /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AF324376BF20008F678 /* OscOutboundPacketStream.cpp */; };
 		88187B1324376BF20008F678 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AF524376BF20008F678 /* OscTypes.cpp */; };
@@ -208,6 +209,22 @@
 		858C69A657054A6F81797937 /* CocoaWindowCanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CocoaWindowCanvas.h; path = ../blocks/UIslave/src/CocoaWindowCanvas.h; sourceTree = "<group>"; };
 		880056291EF1C4090045248C /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = ../blocks/Orage/src/Modules/Videos/Player.cpp; sourceTree = "<group>"; };
 		8800562A1EF1C4090045248C /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../blocks/Orage/src/Modules/Videos/Player.h; sourceTree = "<group>"; };
+		880D7889244497CF00EC0D71 /* start.ORAGE.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = start.ORAGE.sh; path = ../resources/start.ORAGE.sh; sourceTree = "<group>"; };
+		880D7A632444E95500EC0D71 /* StringTools.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringTools.hpp; sourceTree = "<group>"; };
+		880D7A642444E95500EC0D71 /* App.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = App.hpp; sourceTree = "<group>"; };
+		880D7A652444E95500EC0D71 /* Macros.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Macros.hpp; sourceTree = "<group>"; };
+		880D7A662444E95500EC0D71 /* Option.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Option.hpp; sourceTree = "<group>"; };
+		880D7A672444E95500EC0D71 /* Config.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Config.hpp; sourceTree = "<group>"; };
+		880D7A682444E95500EC0D71 /* CLI.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CLI.hpp; sourceTree = "<group>"; };
+		880D7A692444E95500EC0D71 /* Formatter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Formatter.hpp; sourceTree = "<group>"; };
+		880D7A6A2444E95500EC0D71 /* Error.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Error.hpp; sourceTree = "<group>"; };
+		880D7A6B2444E95500EC0D71 /* Version.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Version.hpp; sourceTree = "<group>"; };
+		880D7A6C2444E95500EC0D71 /* Timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Timer.hpp; sourceTree = "<group>"; };
+		880D7A6D2444E95500EC0D71 /* FormatterFwd.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FormatterFwd.hpp; sourceTree = "<group>"; };
+		880D7A6E2444E95500EC0D71 /* Validators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Validators.hpp; sourceTree = "<group>"; };
+		880D7A6F2444E95500EC0D71 /* Split.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Split.hpp; sourceTree = "<group>"; };
+		880D7A702444E95500EC0D71 /* TypeTools.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TypeTools.hpp; sourceTree = "<group>"; };
+		880D7A712444E95500EC0D71 /* ConfigFwd.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConfigFwd.hpp; sourceTree = "<group>"; };
 		88187AEE24376BF20008F678 /* OscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscSender.h; sourceTree = "<group>"; };
 		88187AEF24376BF20008F678 /* OscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscSender.cpp; sourceTree = "<group>"; };
 		88187AF024376BF20008F678 /* OscListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscListener.h; sourceTree = "<group>"; };
@@ -366,6 +383,7 @@
 		01B97315FEAEA392516A2CEA /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				880D7A622444E95500EC0D71 /* CLI */,
 				88187AEC24376BF20008F678 /* OSC */,
 				88A889611EDC308D007F4B0C /* Syphon */,
 				378C77393A164F4C9C491399 /* Orage */,
@@ -451,6 +469,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				880D7889244497CF00EC0D71 /* start.ORAGE.sh */,
 				B5990141F5264552AD499BD4 /* CinderApp.icns */,
 				1C1624A7C5DE4256BD67460C /* Info.plist */,
 			);
@@ -525,6 +544,28 @@
 				8896F6B11FB231A800E9630A /* Kaleidoscope.cpp */,
 			);
 			name = Videos;
+			sourceTree = "<group>";
+		};
+		880D7A622444E95500EC0D71 /* CLI */ = {
+			isa = PBXGroup;
+			children = (
+				880D7A632444E95500EC0D71 /* StringTools.hpp */,
+				880D7A642444E95500EC0D71 /* App.hpp */,
+				880D7A652444E95500EC0D71 /* Macros.hpp */,
+				880D7A662444E95500EC0D71 /* Option.hpp */,
+				880D7A672444E95500EC0D71 /* Config.hpp */,
+				880D7A682444E95500EC0D71 /* CLI.hpp */,
+				880D7A692444E95500EC0D71 /* Formatter.hpp */,
+				880D7A6A2444E95500EC0D71 /* Error.hpp */,
+				880D7A6B2444E95500EC0D71 /* Version.hpp */,
+				880D7A6C2444E95500EC0D71 /* Timer.hpp */,
+				880D7A6D2444E95500EC0D71 /* FormatterFwd.hpp */,
+				880D7A6E2444E95500EC0D71 /* Validators.hpp */,
+				880D7A6F2444E95500EC0D71 /* Split.hpp */,
+				880D7A702444E95500EC0D71 /* TypeTools.hpp */,
+				880D7A712444E95500EC0D71 /* ConfigFwd.hpp */,
+			);
+			path = CLI;
 			sourceTree = "<group>";
 		};
 		88187AEC24376BF20008F678 /* OSC */ = {
@@ -847,6 +888,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22BC718BEB5A4BEE849CDB67 /* CinderApp.icns in Resources */,
+				880D788A244497CF00EC0D71 /* start.ORAGE.sh in Resources */,
 				88A8897D1EDC494E007F4B0C /* assets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1026,7 +1068,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src ../blocks/OSC/src";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src ../blocks/OSC/src ../blocks/CLI";
 			};
 			name = Debug;
 		};
@@ -1042,7 +1084,7 @@
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src ../blocks/OSC/src";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src ../blocks/OSC/src ../blocks/CLI";
 			};
 			name = Release;
 		};

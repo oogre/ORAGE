@@ -37,6 +37,13 @@ namespace ogre {
                                .attachment(GL_COLOR_ATTACHMENT0,
                                            gl::Texture2d::create(FBO_WIDTH,
                                                                  FBO_HEIGHT)));
+        
+        oFbo = gl::Fbo::create(FBO_WIDTH,
+                               FBO_HEIGHT,
+                               gl::Fbo::Format()
+                               .attachment(GL_COLOR_ATTACHMENT0,
+                                           gl::Texture2d::create(FBO_WIDTH,
+                                                                 FBO_HEIGHT)));
         //glDel
         //GLuint depthTextureId = mFbo->getDepthTexture()->getId();
 
@@ -63,11 +70,27 @@ namespace ogre {
             }
         }
         mFbo->unbindFramebuffer();
-        
         gl::popMatrices();
         
+        oFbo->bindFramebuffer();
+        {
+            ci::gl::pushMatrices();
+            
+             gl::setMatrices( ModuleVideo::CAM );
+            ci::gl::translate(ci::vec2(0, FBO_HEIGHT));
+            ci::gl::scale(ci::vec3(1, -1, 1));
+            //if(inputs['A']){
+                gl::draw(mFbo->getTexture2d( GL_COLOR_ATTACHMENT0 ));
+            //}
+            ci::gl::popMatrices();
+        }
+        oFbo->unbindFramebuffer();
+        
+        
+        
         if(inputs['A']){
-            serverRef->publishTexture(inputs['A']);
+            
+            serverRef->publishTexture(oFbo->getTexture2d( GL_COLOR_ATTACHMENT0 ));
             if(mMovieExporter){
                 mMovieExporter->addFrame(Surface8u(inputs['A']->createSource()));
             }

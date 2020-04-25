@@ -25,7 +25,8 @@ namespace ogre {
         
         syphonServer * serverRef;
         map <string, WindowCanvasRef> windowCanvas;
-        gl::FboRef			mFbo;
+        gl::FboRef            mFbo;
+        gl::FboRef            oFbo;
         
         Output(string name, JsonTree data, vec2 origin, vec2 size, gl::Context * mMainWinCtx);
         qtime::MovieWriterRef mMovieExporter;
@@ -38,6 +39,7 @@ namespace ogre {
             
             delete serverRef;
             mFbo.reset();
+            oFbo.reset();
             mMainWinCtx = nullptr;
         }
         
