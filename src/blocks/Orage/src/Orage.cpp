@@ -368,12 +368,12 @@ void Orage::setup(){
     contextMenu->addSpacer(false);
     contextMenu->addSpacer(false);
     
-    contextMenu->addButton("Hilbert", false)->setCallback(
-                                                         [this](bool a) {
-                                                             if(a){
-                                                                 addHilbert(contextMenu->getOrigin());
-                                                             }
-                                                         });
+//    contextMenu->addButton("Hilbert", false)->setCallback(
+//                                                         [this](bool a) {
+//                                                             if(a){
+//                                                                 addHilbert(contextMenu->getOrigin());
+//                                                             }
+//                                                         });
     contextMenu->addButton("Mosher", false)->setCallback(
                                                          [this](bool a) {
                                                              if(a){
@@ -425,12 +425,12 @@ void Orage::setup(){
                                                                         }
                                                                     });
     
-    contextMenu->addButton("Delay", false)->setCallback(
-                                                        [this](bool a) {
-                                                            if(a){
-                                                                addDelay(contextMenu->getOrigin());
-                                                            }
-                                                        });
+//    contextMenu->addButton("Delay", false)->setCallback(
+//                                                        [this](bool a) {
+//                                                            if(a){
+//                                                                addDelay(contextMenu->getOrigin());
+//                                                            }
+//                                                        });
     
     contextMenu->addButton("Resize", false)->setCallback(
                                                          [this](bool a) {

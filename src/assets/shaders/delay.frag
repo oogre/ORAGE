@@ -1,5 +1,6 @@
 
-#version 400 core
+#version 330 core
+
 
 #define MAX_TEX 10
 #define MAX_IMG_PER_TEX 12
