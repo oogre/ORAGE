@@ -1,46 +1,50 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/Rand.h"
-
-#include "ModuleController.hpp"
-
-#include "InteractionManager.hpp"
+#include "Pannel.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 class OrageApp : public App {
-    ModuleController moduleCnt;
-   
+    PannelRef pannel;
   public:
-    static void prepareSettings( Settings *settings );
 	void setup() override;
-    void update() override;
+	void mouseDown( MouseEvent event ) override;
+	void update() override;
 	void draw() override;
-    ivec2 mMouseLocation;
-    bool mMouseDown = false;
 };
 
-void OrageApp::setup(){
-    InteractionManager::init();
+//////////////////////////////////
+
+using namespace std;
+using namespace ci;
+using namespace ci::gl;
+
+
+
+void OrageApp::setup()
+{
+    pannel = Pannel::create({100, 100}, {100, 100});
 }
 
-void OrageApp::update(){
-    moduleCnt.update();
-    
+void OrageApp::mouseDown( MouseEvent event )
+{
 }
 
-void OrageApp::draw(){
-	gl::clear( Color( 0, 0, 0 ) );
-    moduleCnt.draw();
+void OrageApp::update()
+{
+    pannel->update();
 }
 
-void OrageApp::prepareSettings( Settings *settings ){
-    settings->setWindowSize( 1200, 600 );//1920, 1080 );
-    //settings->setWindowPos(0, 0);
-    // settings->setFullScreen(true, FullScreenOptions().display(FullScreenOptions().getDisplay()));
+void OrageApp::draw()
+{
+	clear( Color( 0, 0, 0 ) );
+    pushModelView();
+    translate( {0, 0} );
+    pannel->draw();
+    popModelView();
 }
 
-CINDER_APP( OrageApp, RendererGl, &OrageApp::prepareSettings )
+CINDER_APP( OrageApp, RendererGl )
