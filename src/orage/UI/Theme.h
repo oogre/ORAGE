@@ -18,7 +18,6 @@ class Theme{
 
 using namespace ci;
 
-
 ColorA Theme::bgActiveColor = { 1.f, 0.f, 1.f, 1.f };
 ColorA Theme::bgDisactiveColor = { 1.f, 1.f, 0.f, 1.f };
 

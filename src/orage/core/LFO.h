@@ -2,8 +2,8 @@
 #define LFO_h
 
 
-#include "../core/Clock.h"
-#include "../core/Parameter.h"
+#include "Clock.h"
+#include "Parameter.h"
 #include "cinder/Rand.h"
 #include "Module.h"
 #include "Math.h"

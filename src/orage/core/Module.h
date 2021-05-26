@@ -3,18 +3,24 @@
 
 #include "../UI/View.h"
 
-class Module{
+class Module : public std::enable_shared_from_this<Module>{
 	static int ID;
 	public :
+
+		typedef std::shared_ptr<class Module> ModuleRef;
 		int id ;
 		string name;
 		Module(string name);
 		virtual ~Module();
-		virtual ViewRef display(int x, int y, int w, int h);
+		virtual ModuleRef display(int x, int y, int w, int h);
 		ViewRef view;
  };
 
 //////////////////////////////////////
+
+using namespace std;
+
+typedef shared_ptr<class Module> ModuleRef;
 
 int Module::ID = 0;
 
@@ -27,9 +33,9 @@ Module::~Module(){
 	cout<<"destroy "<< name << "-" << id << endl;
 }
 
-ViewRef Module::display(int x, int y, int w, int h){
-	view = View::create(x, y, w, h);
-	return view;
+ModuleRef Module::display(int x, int y, int w, int h){
+	view = View::create({x, y}, {w, h});
+	return shared_from_this();
 }
 
 #endif /* Module_h */

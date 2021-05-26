@@ -1,8 +1,9 @@
 #ifndef Clock_h
 #define Clock_h
 
-#include "../lib/chrono_io.h"
-#include "../core/Parameter.h"
+#include "../../lib/chrono_io.h"
+#include "../UI/Clock.h"
+#include "Parameter.h"
 #include "Math.h"
 #include "Module.h"
 
@@ -42,7 +43,7 @@ class Clock : public Module{
 		void setBPM(float BPM);
 		float getBPM();
 		void strob(StrobFnc fnc);
-		virtual ViewRef display(int x, int y, int w, int h) override;
+		virtual ModuleRef display(int x, int y, int w, int h) override;
 };
 
 //////////////////////////////////////
@@ -63,7 +64,7 @@ Module("Clock"){
 	this->strob([&](ClockEvent event) -> void{
 		if(event.is(1, 1)){
 			bang->setValue(1);
-		}else{
+		}else if(event.is(1, 2)){
 			bang->setValue(0);
 		}
 	});
@@ -123,18 +124,19 @@ void Clock::strob(StrobFnc fnc){
 	strobFuncs.push_back(fnc);
 }
 
-ViewRef Clock::display(int x, int y, int w, int h){
-	ViewRef view = Module::display(x, y, w, h);
-	view->addSubView(bang->display(10, 10, 20, 20));
+ModuleRef Clock::display(int x, int y, int w, int h){
+	view = UIClock::create({x, y}, {w, h});
+	
 	bang->onChanged([&](ParameterI::ParameterEvent event) -> void{
 		if(event.value == 1){
-			bang->view->bgColor = View::bgActive;
+			view->getSubView("bang")->bgColor = Theme::bgActiveColor;
 		}
 		if(event.value == 0){
-			bang->view->bgColor = View::bgDisactive;
+			view->getSubView("bang")->bgColor = Theme::bgDisactiveColor;
 		}
 	});
-	return view;
+
+	return shared_from_this();
 }
 
 //////////////////////////////////////
