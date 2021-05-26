@@ -39,9 +39,19 @@
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		56D32538625F41BFA62FE168 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
 		6E7878543E944E05A89570DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		880DE507265E76650059240A /* View.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = View.h; path = ../src/View.h; sourceTree = "<group>"; };
-		880DE508265E78F80059240A /* Theme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Theme.h; path = ../src/Theme.h; sourceTree = "<group>"; };
-		880DE509265E7E9F0059240A /* Pannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Pannel.h; path = ../src/Pannel.h; sourceTree = "<group>"; };
+		88EEEE07265EE59C00D9087C /* chrono_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chrono_io.h; sourceTree = "<group>"; };
+		88EEEE08265EE59C00D9087C /* ratio_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ratio_io.h; sourceTree = "<group>"; };
+		88EEEE0B265EE59C00D9087C /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
+		88EEEE0C265EE59C00D9087C /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
+		88EEEE0D265EE59C00D9087C /* Slider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Slider.h; sourceTree = "<group>"; };
+		88EEEE0E265EE59C00D9087C /* Pannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pannel.h; sourceTree = "<group>"; };
+		88EEEE0F265EE59C00D9087C /* Clock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clock.h; sourceTree = "<group>"; };
+		88EEEE11265EE59C00D9087C /* Parameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parameter.h; sourceTree = "<group>"; };
+		88EEEE12265EE59C00D9087C /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
+		88EEEE13265EE59C00D9087C /* Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Math.h; sourceTree = "<group>"; };
+		88EEEE14265EE59C00D9087C /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; };
+		88EEEE15265EE59C00D9087C /* Clock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clock.h; sourceTree = "<group>"; };
+		88EEEE16265EE59C00D9087C /* all.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = all.h; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Orage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Orage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F32598E672D443C4AFD9A1CC /* Orage_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = Orage_Prefix.pch; sourceTree = "<group>"; };
 		FA8962A6BE8F4D699DA1CA5C /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
@@ -80,9 +90,8 @@
 			isa = PBXGroup;
 			children = (
 				153731E0373D4B8DBD83A413 /* OrageApp.cpp */,
-				880DE507265E76650059240A /* View.h */,
-				880DE508265E78F80059240A /* Theme.h */,
-				880DE509265E7E9F0059240A /* Pannel.h */,
+				88EEEE06265EE59C00D9087C /* lib */,
+				88EEEE09265EE59C00D9087C /* orage */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -160,6 +169,51 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		88EEEE06265EE59C00D9087C /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				88EEEE07265EE59C00D9087C /* chrono_io.h */,
+				88EEEE08265EE59C00D9087C /* ratio_io.h */,
+			);
+			name = lib;
+			path = ../src/lib;
+			sourceTree = "<group>";
+		};
+		88EEEE09265EE59C00D9087C /* orage */ = {
+			isa = PBXGroup;
+			children = (
+				88EEEE0A265EE59C00D9087C /* UI */,
+				88EEEE10265EE59C00D9087C /* core */,
+				88EEEE16265EE59C00D9087C /* all.h */,
+			);
+			name = orage;
+			path = ../src/orage;
+			sourceTree = "<group>";
+		};
+		88EEEE0A265EE59C00D9087C /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				88EEEE0B265EE59C00D9087C /* Theme.h */,
+				88EEEE0C265EE59C00D9087C /* View.h */,
+				88EEEE0D265EE59C00D9087C /* Slider.h */,
+				88EEEE0E265EE59C00D9087C /* Pannel.h */,
+				88EEEE0F265EE59C00D9087C /* Clock.h */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		88EEEE10265EE59C00D9087C /* core */ = {
+			isa = PBXGroup;
+			children = (
+				88EEEE11265EE59C00D9087C /* Parameter.h */,
+				88EEEE12265EE59C00D9087C /* LFO.h */,
+				88EEEE13265EE59C00D9087C /* Math.h */,
+				88EEEE14265EE59C00D9087C /* Module.h */,
+				88EEEE15265EE59C00D9087C /* Clock.h */,
+			);
+			path = core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
