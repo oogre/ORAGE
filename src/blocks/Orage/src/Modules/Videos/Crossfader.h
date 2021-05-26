@@ -48,6 +48,14 @@ namespace ogre {
         }
         
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : blend = lerp(0, 13, nValue); break;
+                case 1 : crossfade = lerp(-1.0f, 1.0f, nValue); break;
+            }
+        }
+        
+        
         typedef std::shared_ptr<class Crossfader> CrossfaderRef;
         
         static CrossfaderRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())

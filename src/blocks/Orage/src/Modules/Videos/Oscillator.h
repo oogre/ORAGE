@@ -68,7 +68,24 @@ namespace ogre {
                 mShader.reset();
                 mMainWinCtx = nullptr;
             }
-
+        
+            virtual void setData(int id, int elem, float nValue) override {
+                switch(id){
+                    case 0 : data.freq = lerp(0.125f, 600.0f, nValue); break;
+                    case 1 : data.sync = lerp(0.0f, 1.0f, nValue); break;
+                    case 2 : data.phaseDx = lerp(0.0f, 1.0f, nValue); break;
+                    case 3 : data.phaseDy = lerp(-1.0f, 1.0f, nValue); break;
+                    case 4 : data.modifier = lerp(.0f, 1.0f, nValue); break;
+                    case 5 : trail = lerp(.0f, 1.0f, nValue); break;
+                    case 6 : data.sine = lerp(.0f, 1.0f, nValue); break;
+                    case 7 : data.rect = lerp(.0f, 1.0f, nValue); break;
+                    case 8 : data.saw = lerp(.0f, 1.0f, nValue); break;
+                    case 9 : data.tri = lerp(.0f, 1.0f, nValue); break;
+                    case 10 : data.noise = lerp(.0f, 1.0f, nValue); break;
+                    case 11 : data.exp = lerp(0.064f, 10.0f, nValue); break;
+                }
+            }
+        
             typedef std::shared_ptr<class Oscillator> OscillatorRef;
         
             static OscillatorRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())

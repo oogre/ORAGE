@@ -54,6 +54,14 @@ namespace ogre {
         }
         
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : data.amountX = lerp(.0f, 20.f, nValue); break;
+                case 1 : data.amountY = lerp(.0f, 20.f, nValue); break;
+            }
+        }
+        
+        
         typedef std::shared_ptr<class Blur> BlurRef;
         gl::Context * mMainWinCtx;
         static BlurRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())

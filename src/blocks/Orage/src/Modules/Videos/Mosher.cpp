@@ -117,7 +117,8 @@ namespace ogre {
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         
-        tools.addSlider(mUi, "gain", this->id, &(data.gain), -1.f, 1.0f);
+        tools.addSlider(mUi, "gainX", this->id, &(data.gainX), -1.f, 1.0f);
+        tools.addSlider(mUi, "gainY", this->id, &(data.gainY), -1.f, 1.0f);
         
         mUi->addSpacer(false);
         mUi->addSpacer(false);

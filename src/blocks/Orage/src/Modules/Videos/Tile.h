@@ -68,6 +68,19 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : data.tileSizeX = lerp(-1.0f, 1.0f, nValue); break;
+                case 1 : data.tileSizeY = lerp(-1.0f, 1.0f, nValue); break;
+                case 2 : data.tileRotation = lerp(0.0f, 1.0f, nValue); break;
+                case 3 : data.tileCenterX = lerp(.0f, 1.0f, nValue); break;
+                case 4 : data.tileCenterY = lerp(.0f, 1.0f, nValue); break;
+                case 5 : data.preRotation = lerp(.0f, 1.0f, nValue); break;
+                case 6 : data.postRotation = lerp(.0f, 1.0f, nValue); break;
+                case 7 : data.rotCenterX = lerp(.0f, 1.0f, nValue); break;
+                case 8 : data.rotCenterY = lerp(.0f, 1.0f, nValue); break;
+            }
+        }
         
         typedef std::shared_ptr<class Tile> TileRef;
         gl::Context * mMainWinCtx;

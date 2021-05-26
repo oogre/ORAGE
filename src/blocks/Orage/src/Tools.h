@@ -23,7 +23,7 @@ namespace ogre {
     class Tools{
 
         public : 
-        SliderfRef addSlider(CanvasRef mUi, string name, int moduleId, float * data, float min, float max, int width = 0, bool constrain = false){
+        SliderfRef addSlider(SuperCanvasRef mUi, string name, int moduleId, float * data, float min, float max, int width = 0, bool constrain = false, bool addToHeader = false){
             Wires * _w = &wires;
             
             width = (int) (width != 0 ? width : mUi->getWidth() - 18 - mUi->mPadding.mRight - 2 * mUi->mPadding.mLeft);
@@ -53,6 +53,11 @@ namespace ogre {
             mUi->addSubViewDown(s);
             mUi->addSubViewRight(b);
             mUi->addSubViewSouthOf(r, name);
+            if(addToHeader){
+                mUi->addSubViewToHeader(s);
+                mUi->addSubViewToHeader(b);
+                mUi->addSubViewToHeader(r);
+            }
             return s;
         }
         

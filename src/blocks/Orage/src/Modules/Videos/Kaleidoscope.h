@@ -58,6 +58,16 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : data.segments = lerp(0.0f, 20.0f, nValue); break;
+                case 1 : data.rotation = lerp(.0f, 1.0f, nValue); break;
+                case 2 : data.scale = lerp(1.0f, 10.0f, nValue); break;
+                case 3 : data.x = lerp(0.f, 1.f, nValue); break;
+                case 4 : data.y = lerp(.0f, 1.0f, nValue); break;
+                case 5 : data.offset = lerp(.0f, 1.0f, nValue); break;
+            }
+        }
         
         typedef std::shared_ptr<class Kaleidoscope> KaleidoscopeRef;
         gl::Context * mMainWinCtx;

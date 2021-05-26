@@ -18,7 +18,6 @@ using namespace std;
 
 Orage::Orage(string name, gl::Context * mMainWinCtx){
     this->mMainWinCtx = mMainWinCtx;
-    selectedModules = SuperModule::create();
 }
 
 int Orage::injectModule(string type, vec2 pos, JsonTree data){
@@ -102,6 +101,11 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         auto m = this->addDelay(pos, data);
         return m->id;
     }
+    if (type == "Hilbert")
+    {
+        auto m = this->addHilbert(pos, data);
+        return m->id;
+    }
     if (type == "Resize")
     {
         auto m = this->addResize(pos, data);
@@ -137,6 +141,24 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         auto m = this->addOsc(pos, data);
         return m->id;
     }
+    if (type == "BeatStepPro")
+    {
+        auto m = this->addBeatStepPro(pos, data);
+        return m->id;
+    }
+    if (type == "NanoKontrol")
+    {
+        auto m = this->addNanoKontrol(pos, data);
+        return m->id;
+    }
+    if (type == "CustomCC")
+    {
+        auto m = this->addCustomCC(pos, data);
+        return m->id;
+    }
+    
+    
+    
     if (type == "ProcessCV")
     {
         auto m = this->addProcessCV(pos, data);
@@ -161,7 +183,12 @@ TileRef Orage::addTile(vec2 origin, JsonTree data){
     modules.push_back(ref);
     return ref;
 }
-
+HilbertRef Orage::addHilbert(vec2 origin, JsonTree data){
+    HilbertRef ref = Hilbert::create("Hilbert", origin, mMainWinCtx, data);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
 MosherRef Orage::addMosher(vec2 origin, JsonTree data){
     MosherRef ref = Mosher::create("Mosher", origin, mMainWinCtx, data);
     ref->setup();
@@ -284,6 +311,27 @@ OscRef Orage::addOsc(vec2 origin, JsonTree data){
     return ref;
 }
 
+BeatStepProRef Orage::addBeatStepPro(vec2 origin, JsonTree data){
+    BeatStepProRef ref = BeatStepPro::create("A_BSP", origin, mMainWinCtx, data);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
+
+NanoKontrolRef Orage::addNanoKontrol(vec2 origin, JsonTree data){
+    NanoKontrolRef ref = NanoKontrol::create("NANOK", origin, mMainWinCtx, data);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
+
+CustomCCRef Orage::addCustomCC(vec2 origin, JsonTree data){
+    CustomCCRef ref = CustomCC::create("CCC", origin, mMainWinCtx, data);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
+
 ProcessCVRef Orage::addProcessCV(vec2 origin, JsonTree data){
     ProcessCVRef ref = ProcessCV::create("PROCESS CV", origin, mMainWinCtx);
     ref->setup();
@@ -320,6 +368,12 @@ void Orage::setup(){
     contextMenu->addSpacer(false);
     contextMenu->addSpacer(false);
     
+    contextMenu->addButton("Hilbert", false)->setCallback(
+                                                         [this](bool a) {
+                                                             if(a){
+                                                                 addHilbert(contextMenu->getOrigin());
+                                                             }
+                                                         });
     contextMenu->addButton("Mosher", false)->setCallback(
                                                          [this](bool a) {
                                                              if(a){
@@ -414,6 +468,26 @@ void Orage::setup(){
                                                           }
                                                       });
     
+    contextMenu->addButton("BEAT_STEP_PRO", false)->setCallback(
+                                                                [this](bool a) {
+                                                                    if(a){
+                                                                        addBeatStepPro(contextMenu->getOrigin());
+                                                                    }
+                                                                });
+    contextMenu->addButton("NANO_KONTROL", false)->setCallback(
+                                                               [this](bool a) {
+                                                                   if(a){
+                                                                       addNanoKontrol(contextMenu->getOrigin());
+                                                                   }
+                                                               });
+    contextMenu->addButton("CUSTOM_CC", false)->setCallback(
+                                                               [this](bool a) {
+                                                                   if(a){
+                                                                       addCustomCC(contextMenu->getOrigin());
+                                                                   }
+                                                               });
+    
+    
     contextMenu->addButton("RANDOM", false)->setCallback(
                                                       [this](bool a) {
                                                           if(a){
@@ -453,12 +527,46 @@ void Orage::setup(){
     
     contextMenu->setVisible(false);
     
-    //addOutput(vec2(0, 0));
+    addOutput();
+    addNanoKontrol()->onEvent([&](int channel, int control, int value){
+        if(selectedModules.size() >= channel){
+            auto cModule = selectedModules.at(channel-1);
+            cModule->setData((control-1)/4, control%4, value * 0.00787402f);
+        }
+        //cout << channel << " " << control << " " << value << endl;
+    });
     
+    
+    addCustomCC()->onEvent([&](int channel, int control, int value){
+        cout << channel << " " << control << " "  << value << endl;
+        
+         if(selectedModules.size() > channel){
+            auto cModule = selectedModules.at(channel);
+             if(value == 0){
+                 cModule->resetData(control);
+             }
+             else{
+                cModule->incData(control, value);
+            }
+        }
+        
+        //cout << channel << " " << control << " " << value << endl;
+    });
+}
+void Orage::selectModule(ModuleRef module){
+    if(selectedModules.size()>0){
+         if(selectedModules.at(0) != module){
+            selectedModules.insert(selectedModules.begin(), module);
+            if(selectedModules.size()>1){
+                selectedModules.pop_back();
+            }
+        }
+    }else{
+        selectedModules.insert(selectedModules.begin(), module);
+    }
 }
 
-
-void Orage::update(){
+void Orage::update(vec2 mouseLoc, bool mouseDown){
     auto it = modules.begin();
     for(; it != modules.end() ; ){
         if((*it)->shouldDestroy){
@@ -469,17 +577,34 @@ void Orage::update(){
             it ++;
         }
     }
+    it = modules.begin();
+    for(; it != modules.end() ; ){
+        if(mouseDown && (*it)->mUi != nullptr){
+            Rectf bound = (*it)->mUi->getBounds();
+            if(bound.contains(mouseLoc)){
+                selectModule(*it);
+                break;
+            }
+        }
+        it ++;
+    }
     contextMenu->update();
 }
 
 
-void Orage::draw(bool selectorActive, Rectf selector){
+void Orage::draw(){
     auto it = modules.begin();
     auto end = modules.end();
     for(; it != end ; it ++){
-        (*it)->mUi->update();
-        (*it)->mUi->draw();
+        (*it)->draw();
     }
+    auto it2 = selectedModules.begin();
+    int i = 0;
+    for(; it2 != selectedModules.end() ; ){
+        (*it2)->displaySelectionRank(++i);
+        it2++;
+    }
+    
     contextMenu->draw();
 }
 
@@ -494,33 +619,12 @@ ModuleRef Orage::isOnModule(vec2 location){
     return nullptr;
 }
 
-
-void Orage::selectModuleByArea(Rectf selector){
-    resetSelectModule();
-    auto it = modules.begin();
-    auto end = modules.end();
-    for(; it != end ; it ++){
-        Rectf * r = (*it)->mUi->getBoundsRef();
-        if(r->intersects(selector)){
-            selectedModules->addModule(*it, [it]() {
-                                            (*it)->selected = true;
-                                        });
-        }
-    }
-}
-
 void Orage::fileDrop( FileDropEvent event ){
     auto it = modules.begin();
     auto end = modules.end();
     for(; it != end ; it ++){
         (*it)->fileDrop(event);
     }
-}
-
-void Orage::resetSelectModule(){
-    selectedModules->clear([this](ModuleRef it) {
-        it->selected = false;
-    });
 }
 
 void Orage::openContextMenu(vec2 position){
@@ -551,7 +655,7 @@ void Orage::tapTempo(){
     auto end = modules.end();
     for(; it != end ; it ++){
         Lfos* lfos = dynamic_cast<Lfos*> (&(*(*it)));
-        if(lfos != NULL){
+        if(lfos != NULL && lfos->data.follow){
             lfos->data.BPM = tempo;
             lfos->data.delay = 1.f - lfos->data.saw;
         }

@@ -12,7 +12,7 @@ namespace ogre {
     //1600 * 560
     
     
-    const int           ModuleVideo::FBO_WIDTH = 1280;//1600;//2400;//1280;//;
+    const int           ModuleVideo::FBO_WIDTH = 1541;//1600;//2400;//1280;//;
     const int           ModuleVideo::FBO_HEIGHT = 720;//560;//600;//720;
     const int           ModuleVideo::HALF_FBO_WIDTH = ModuleVideo::FBO_WIDTH * 0.5;
     const int           ModuleVideo::HALF_FBO_HEIGHT = ModuleVideo::FBO_HEIGHT * 0.5;

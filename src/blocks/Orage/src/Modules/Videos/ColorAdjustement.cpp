@@ -116,6 +116,8 @@ namespace ogre {
         tools.addSlider(mUi, "red", this->id, &(data.red), -1.f, 1.0f);
         tools.addSlider(mUi, "green", this->id, &(data.green), -1.f, 1.0f);
         tools.addSlider(mUi, "blue", this->id, &(data.blue), -1.f, 1.0f);
+        tools.addSlider(mUi, "ssm", this->id, &(data.ssm), 0.f, 1.0f);
+        tools.addSlider(mUi, "ssM", this->id, &(data.ssM), 0.f, 1.0f);
         
         mUi->setMinified(true);
     }

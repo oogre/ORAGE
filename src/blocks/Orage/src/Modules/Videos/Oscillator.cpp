@@ -117,7 +117,7 @@ void Oscillator::setupUI(){
     mUi->addSpacer(false);
     mUi->addSpacer(false);
     
-    tools.addSlider(mUi, "Hz", this->id, &(data.freq), 0.125f, 600.0f);
+    tools.addSlider(mUi, "Hz", this->id, &(data.freq), 0.0125f, 600.0f);
     tools.addSlider(mUi, "Sync", this->id, &(data.sync), 0.0f, 1.0f);
     
     mUi->addSpacer(false);

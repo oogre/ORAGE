@@ -29,7 +29,11 @@ namespace ogre {
         float oldInput = 0.0f;
         struct RandomData {
             float input = .0f;
+            float oldInput = .0f;
+            float counter = .0;
             float linear = .0f;
+            float randomness = .5f;
+            float seed = random();
         }randomDatas;
         Perlin p;
         virtual ~Random(){
@@ -49,6 +53,11 @@ namespace ogre {
             {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("module.type", "Random"));
+                obj.addChild(JsonTree("data.input", randomDatas.input));
+                obj.addChild(JsonTree("data.oldInput", randomDatas.oldInput));
+                obj.addChild(JsonTree("data.counter", randomDatas.counter));
+                obj.addChild(JsonTree("data.randomness", randomDatas.randomness));
+                obj.addChild(JsonTree("data.seed", randomDatas.seed));
                 obj.addChild(JsonTree("data.input", randomDatas.input));
                 obj.addChild(JsonTree("data.linear", randomDatas.linear));
                 return obj;

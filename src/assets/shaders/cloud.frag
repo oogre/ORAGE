@@ -99,7 +99,10 @@ void main() {
     }
 
     
-    vec2 st = vTexCoord0*vec2(sizex, sizey);
+    vec2 st = vTexCoord0;
+    st -= vec2(0.5, 0.5);
+    st *= vec2(sizex, sizey);
+    st += vec2(0.5, 0.5);
     float t = move * u_time * s;
     vec3 i = texture(tex0, vTexCoord0).rgb;
     if(modifierA!=1){

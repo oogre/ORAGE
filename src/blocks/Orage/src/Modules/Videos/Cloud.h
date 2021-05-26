@@ -88,6 +88,45 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : data.octave = lerp(1.0f, 10.0f, nValue); break;
+                case 1 : data.sizex = lerp(.0f, 10.0f, nValue); break;
+                case 2 : data.sizey = lerp(.0f, 10.0f, nValue); break;
+                case 3 : data.move = lerp(-1.f, 1.f, nValue); break;
+                case 4 : data.redShift = lerp(.0f, 10.0f, nValue); break;
+                case 5 : data.blueShift = lerp(.0f, 10.0f, nValue); break;
+                case 6 : data.greenShift = lerp(.0f, 10.0f, nValue); break;
+                case 7 : data.redLvl = lerp(-1.0f, 1.0f, nValue); break;
+                case 8 : data.blueLvl = lerp(-1.0f, 1.0f, nValue); break;
+                case 9 : data.greenLvl = lerp(-1.0f, 1.0f, nValue); break;
+                case 10 : data.lvl = lerp(.0f, 2.0f, nValue); break;
+            }
+        }
+        /*
+        virtual void incData(int id, float nValue) override {
+            switch(id){
+                case 0 : data.active = !data.active; break;
+                case 1 : data.follow = !data.follow; break;
+                case 2 : data.reverse = !data.reverse; break;
+                case 3 : data.BPM = max(min(data.BPM + nValue, 300.0f), 30.0f); break;
+                case 4 : data.clk_multi = max(min(data.clk_multi + nValue*0.1f, 8.0f), 0.0f); break;
+                case 5 : data.clk_div = max(min(data.clk_div + nValue*0.1f, 8.0f), 0.0f); break;
+                case 6 : data.delay = max(min(data.delay + nValue*0.1f, 1.0f), 0.0f); break;
+                case 7 : data.exp = max(min(data.exp + nValue*0.1f, 9.0f), 1.0f); break;
+            }
+        }
+        
+        virtual void resetData(int id) override {
+            switch(id){
+                case 3 : data.BPM = 114.0f; break;
+                case 4 : data.clk_multi = 0.0f; break;
+                case 5 : data.clk_div = 0.0f; break;
+                case 6 : data.delay = 0.5f; break;
+                case 7 : data.exp = 5; break;
+            }
+        }
+        */
         typedef std::shared_ptr<class Cloud> CloudRef;
         
         static CloudRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())

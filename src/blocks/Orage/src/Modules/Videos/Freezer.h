@@ -53,6 +53,14 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : data.amount = lerp(.0f, 1.0f, nValue); break;
+                case 1 : data.black = lerp(.0f, 1.0f, nValue); break;
+                case 2 : data.white = lerp(0.0f, 1.0f, nValue); break;
+            }
+        }
+        
         typedef std::shared_ptr<class Freezer> FreezerRef;
         
         static FreezerRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())

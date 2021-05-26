@@ -41,7 +41,7 @@ namespace ogre {
 
         float timer;
         if(data.active){
-            
+       
             mUi->setColorBack(ColorAT<float>(vec4(data.saw, data.saw, data.saw, .4f)));
             
             timer = (getElapsedSeconds()  - oldTime ) * data.BPM * 0.0166667f;
@@ -49,30 +49,39 @@ namespace ogre {
             
             float div = 1.f / pow(2, (int)data.clk_div);
             float multi = pow(2, (int)data.clk_multi);
-            
+     
             if(data.reverse){
                 timer = - timer;
             }
             //<<(timer * div * multi)<<endl;
+        
             timeCounter += timer * div * multi;
             timeCounter  = timeCounter - floor(timeCounter);
+    
         
             float value = timeCounter ;
             value += data.delay;
+            data.reset = round(data.reset);
+            if(data.reset == 0 && data.oldReset == 1) {
+                timeCounter -= value;
+                value = 0;
+            }
+            data.oldReset = data.reset;
+        
             value  = value - floor(value);
+            
             float exp = 1.0f;
             if(data.exp >= 5){
                 exp = 1.0f / (data.exp - 4.0f);
             }else{
                 exp = abs(6.0f - data.exp);
             }
-            value = pow(value, exp);
-        
-            data.saw = value;
+            data.saw = pow(value, exp);
+            data.BPM = round(data.BPM);
         }
+        
         data.sine = cos(data.saw * 6.28);
         data.rect = data.saw > .5;
-        data.BPM = round(data.BPM);
     }
     
     void Lfos::setupUI(){
@@ -85,13 +94,47 @@ namespace ogre {
         CanvasRef v = Canvas::create("LFO"+id, ci::app::getWindow());
         
         ToggleRef on = Toggle::create("ON "+id, &(data.active), Button::Format().label(true));
+        ToggleRef follow = Toggle::create("Follow "+id, &(data.follow), Button::Format().label(true));
         ToggleRef rev = Toggle::create("<-> "+id, &(data.reverse), Button::Format().label(true));
         
         mUi->addSubViewDown(on);
         mUi->addSubViewToHeader(on);
+        
+        mUi->addSubViewDown(follow);
+        mUi->addSubViewToHeader(follow);
+        
         mUi->addSubViewEastOf(rev, "ON "+id);
         mUi->addSubViewToHeader(rev);
         
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+        
+        tools.addSlider(mUi, "reset "+id, this->id, &(data.reset), 0, 1, 0, true);
+        
+        tools.addSlider(mUi, "BPM "+id, this->id, &(data.BPM), 30.f, 300.0f, 0, true);
+        
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+
+        tools.addSlider(mUi, "multi "+id, this->id, &(data.clk_multi), 0.0f, 8.0f, 0, true);
+        tools.addSlider(mUi, "div "+id, this->id, &(data.clk_div), 0.0f, 8.0f, 0, true);
+
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+
+        tools.addSlider(mUi, "delay "+id, this->id, &(data.delay), 0.0f, 1.0f, 0, true);
+        tools.addSlider(mUi, "exp "+id, this->id, &(data.exp), 1.0f, 9.0f, 0, true);
+        
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         
@@ -101,19 +144,6 @@ namespace ogre {
         
         mUi->addSpacer(false);
         mUi->addSpacer(false);
-        
-        tools.addSlider(mUi, "BPM "+id, this->id, &(data.BPM), 30.f, 240.0f, 0, true);
-        
-        mUi->addSpacer(false);
-        mUi->addSpacer(false);
-        
-        tools.addSlider(mUi, "multi "+id, this->id, &(data.clk_multi), 0.0f, 8.0f, 0, true);
-        tools.addSlider(mUi, "div "+id, this->id, &(data.clk_div), 0.0f, 8.0f, 0, true);
-        
-        tools.addSlider(mUi, "delay "+id, this->id, &(data.delay), 0.0f, 1.0f, 0, true);
-        tools.addSlider(mUi, "exp "+id, this->id, &(data.exp), 1.0f, 9.0f, 0, true);
-            
-        
         
         mUi->setMinified(false);
     }

@@ -23,7 +23,7 @@ namespace ogre {
     void Random::setup(){
         ModuleCommon::setup();
         setupUI();
-        p.setSeed(random());
+        p.setSeed(randomDatas.seed);
     }
     
     void Random::update(){
@@ -31,9 +31,18 @@ namespace ogre {
             return;
         }
         ModuleCommon::update();
+        float dist = randomDatas.input - randomDatas.oldInput;
+        if(abs(dist) > 0.5) dist = 1 - abs(dist);
+        randomDatas.counter += dist;
+        randomDatas.oldInput = randomDatas.input;
         
-        randomDatas.linear = (p.noise(getElapsedSeconds()) + 1) * 0.5f;
-        
+        float multi = 0;
+        if(randomDatas.randomness >= 0.5 ){
+            multi = lerp(1, 10, (randomDatas.randomness - 0.5)*2);
+        }else{
+            multi = randomDatas.randomness * 2;
+        }
+        randomDatas.linear = fmod( multi * (p.noise(randomDatas.counter) + 1) * 0.5f , 1.0f);
     }
     
     void Random::setupUI(){
@@ -45,15 +54,10 @@ namespace ogre {
         string id = toString(COUNT);
         CanvasRef v = Canvas::create("LFO"+id, ci::app::getWindow());
         
-        
         tools.addSlider(mUi, "input "+id, this->id, &(randomDatas.input), 0, 1, 0, true);
+        tools.addSlider(mUi, "rand "+id, this->id, &(randomDatas.randomness ), 0, 1, 0, true);
         tools.addSlider(mUi, "linear "+id, this->id, &(randomDatas.linear), 0, 1, 0, true);
-        
         
         mUi->setMinified(false);
     }
-    
-    
-    
-    
 }

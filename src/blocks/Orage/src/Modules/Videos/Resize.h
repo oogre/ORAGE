@@ -41,6 +41,19 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : resX = lerp(.0f, 1.0f, nValue); break;
+                case 1 : resY = lerp(.0f, 1.0f, nValue); break;
+                case 2 : resW = lerp(0.0f, 1.0f, nValue); break;
+                case 3 : resH = lerp(.0f, 1.0f, nValue); break;
+                case 4 : posX = lerp(-1.0f, 1.0f, nValue); break;
+                case 5 : posY = lerp(-1.0f, 1.0f, nValue); break;
+                case 6 : width = lerp(-1.0f, 1.0f, nValue); break;
+                case 7 : height = lerp(-1.0f, 1.0f, nValue); break;
+            }
+        }
+        
         typedef std::shared_ptr<class Resize> ResizeRef;
         
         static ResizeRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())

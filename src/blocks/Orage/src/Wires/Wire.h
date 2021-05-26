@@ -81,7 +81,11 @@ class Wire {
     }
     void draw(ivec2 mMouseLoc){
         
-        if(!mVboMesh || masterBtn == nullptr || path.getPoints().at(0) != slaveBtn->getBounds().getCenter() || path.getPoints().at(1) != masterBtn->getBounds().getCenter()){
+        if(!mVboMesh ||
+           masterBtn == nullptr ||
+           path.getPoints().at(0) != slaveBtn->getBounds().getCenter() ||
+           path.getPoints().at(1) != masterBtn->getBounds().getCenter()
+        ){
             path.clear();
             path.moveTo(slaveBtn->getBounds().getCenter());
             if(masterBtn){

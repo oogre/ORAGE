@@ -25,7 +25,9 @@ class ORAGEApp : public App {
     OrageRef        orage;
     double          lastclick = 0.0;
     ivec2           mMouseLoc;
-    Rectf           mMouseSelector;
+    bool            mMouseDown = false;
+    bool            mCTRLDown = false;
+    bool            mMouseWasDown = false;
     bool            mMouseDrag = false;
     gl::Context   * mMainWinCtx;
     
@@ -79,8 +81,9 @@ class ORAGEApp : public App {
             return;
         }
         gl::clear(ColorAT<float>(0.1, 0.1, 0.1, 1));
-        orage->update();
-        orage->draw(mMouseDrag, mMouseSelector);
+        orage->update(mMouseLoc, mCTRLDown && !mMouseWasDown && mMouseDown);
+        mMouseWasDown = mMouseDown;
+        orage->draw();
         wires.draw(mMouseLoc);
     };
     void mouseMove( MouseEvent event ) override;
@@ -101,6 +104,7 @@ void ORAGEApp::mouseMove( MouseEvent event ) {
         return;
     }
     mMouseLoc = event.getPos();
+    
 }
 
 void ORAGEApp::mouseDown( MouseEvent event ) {
@@ -115,45 +119,41 @@ void ORAGEApp::mouseDown( MouseEvent event ) {
     
     if(event.isRightDown()){
         orage->openContextMenu(event.getPos());
-        mMouseDrag = false;
-    }else{
-        mMouseSelector.y1 = mMouseSelector.y2 = event.getY();
-        mMouseSelector.x1 = mMouseSelector.x2 = event.getX();
     }
     
     if(event.isLeftDown()){
         orage->closeContextMenu();
+        mMouseDown = true;
     }
 }
 void ORAGEApp::mouseUp( MouseEvent event ) {
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
     }
-    if(mMouseDrag){
-    }
-    mMouseDrag = false;
+    mMouseDown = false;
 };
 
 void ORAGEApp::mouseDrag( MouseEvent event ) {
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
     }
-    mMouseSelector.y2 = event.getY();
-    mMouseSelector.x2 = event.getX();
 };
 
 void ORAGEApp::keyUp( KeyEvent event){
-    if(event.getChar() == ' '){
-        orage->tapTempo();
-    }
     
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
     }
+    
+    mCTRLDown = event.isControlDown();
     wires.keyUp(event);
 }
 
 void ORAGEApp::keyDown( KeyEvent event){
+    if(event.getChar() == ' '){
+        orage->tapTempo();
+    }
+    mCTRLDown = event.isControlDown();
     if(event.isMetaDown()){
         char c = event.getChar();
         if(c == 's'){

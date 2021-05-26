@@ -118,16 +118,12 @@ namespace ogre {
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         
-        
         tools.addSlider(mUi, "segments", this->id, &(data.segments), 0.f, 20);
         tools.addSlider(mUi, "rotation", this->id, &(data.rotation), 0.f, 1.0f);
         tools.addSlider(mUi, "scale", this->id, &(data.scale), 1.f, 10.0f);
         tools.addSlider(mUi, "x", this->id, &(data.x), 0.f, 1.0f);
         tools.addSlider(mUi, "y", this->id, &(data.y), 0.f, 1.0f);
-        
         tools.addSlider(mUi, "offset", this->id, &(data.offset), 0.f, 1.0f);
-        
-        
         
         mUi->setMinified(true);
     }
@@ -135,8 +131,8 @@ namespace ogre {
     void Kaleidoscope::setupShader(){
         ModuleVideo::setupShader();
         mShader = gl::GlslProg::create(
-                                       loadAsset( "shaders/kaleidoscope.vert"),
-                                       loadAsset( "shaders/kaleidoscope.frag")
-                                       );
+           loadAsset("shaders/kaleidoscope.vert"),
+           loadAsset("shaders/kaleidoscope.frag")
+       );
     }
 }

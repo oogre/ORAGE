@@ -60,6 +60,12 @@ namespace ogre {
             mFboBuffer.clear();
         }
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : bufferLen = lerp(1, 120, nValue); break;
+            }
+        }
+        
         typedef std::shared_ptr<class Delay> DelayRef;
         
         static DelayRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())

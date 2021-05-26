@@ -35,6 +35,13 @@
 
 #include "Lfos.h"
 #include "Osc.h"
+#include "NoteOnOff.h"
+#include "BeatStepPro.h"
+#include "NanoKontrol.h"
+#include "CustomCC.h"
+#include "Hilbert.h"
+
+
 #include "Random.hpp"
 #include "ProcessCV.h"
 

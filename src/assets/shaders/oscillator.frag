@@ -44,6 +44,41 @@ float nozWave(in float phase, in float height){
     return fract( sin( phase ) * 999.9)+height;
 }
 
+float w4(in float x){
+    return fract( sin( x ) * 999.9);
+}
+float w5(in float x){
+    return w4(floor(x));
+}
+float w6(in float x){
+    return x * x * (((x-1)*2 + 1));
+}
+float w7(in float x){
+    return w6(fract(x));
+}
+float w8(in float x){
+    return w5(x) * w7(x);
+}
+float w9(in float x){
+    return w5(x) * (-1 * w7(x) + 1);
+}
+float w10(in float x){
+    return w9(x-1);
+}
+float w11(in float x){
+    return w8(x)+w10(x);
+}
+float w12(in float x){
+    return w11(x) + w11(2*x)*0.5 + w11(4*x)*0.25 + w11(8*x)*0.125 + w11(16*x)*0.0625 + w11(32*x)*0.03125 + w11(64*x)*0.015625 ;
+}
+float w13(in float x, in float height){
+    // 1 / (new Array(7)).fill(0).map((v, k)=> 1 / Math.pow(2, k)).reduce((acc, v)=>acc+v, 0)
+    return height + w12(x) * 0.5039370078740157;
+}
+
+
+
+
 float recWave(in float phase, in float height){
     if(sinWave(phase, height)>0.0){
         return 1.0;
@@ -81,7 +116,7 @@ void main(){
         value += tri   * triWave(phase, phaseDy);
     }
     if(noise > 0.0){
-        value += noise * nozWave(phase, phaseDy);
+        value += noise * w13(phaseDx + modifier * (prevModValue.r + prevModValue.g + prevModValue.b) + phase * 1000, phaseDy);
     }
     
     value = clamp(value, 0.0, 1.0);

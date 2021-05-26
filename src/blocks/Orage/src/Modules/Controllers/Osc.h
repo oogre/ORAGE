@@ -27,7 +27,7 @@ namespace ogre {
     public:
         struct DATA {
             bool active = false;
-            string address = "/p5";
+            string address = "/tempo";
             int port = 9001;
             float value = 0.0f;
             DATA(){}

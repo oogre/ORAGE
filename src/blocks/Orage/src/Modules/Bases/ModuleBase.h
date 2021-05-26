@@ -15,6 +15,7 @@
 #include "Structs.h"
 #include "Config.h"
 #include <typeinfo>
+#include "cinder/Font.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -26,6 +27,7 @@ namespace ogre {
         static int ID;
         bool firstUpdate = true;
         float defaultAlpha = 0.0f;
+        static gl::Texture2dRef mSimpleTexture;
     public:
         string typeName;
         bool selected = false;
@@ -34,33 +36,30 @@ namespace ogre {
         int id ;
         bool shouldDestroy = false;
         string name;
-        //SuperCanvasRef mUiabove;
         SuperCanvasRef mUi;
         
         virtual ~ModuleCommon(){
             cout<<"destroy ModuleCommon"<<endl;
             wires.remove(name);
-            //mUi->disable();
-
-            //mUi->clear();
             mUi.reset();
             mUi = nullptr;
         }
+        
         ModuleCommon(std::string name, vec2 origin, vec2 size){
             id = ID++;
             this->name = name;
             if(!ModuleCommon::CLOSE){
                 ModuleCommon::CLOSE = gl::Texture::create(loadImage(loadAsset("/textures/close.png")));
             }
-            
-            //mUiabove = SuperCanvas::create(name+"UP");
-            //mUiabove->setSize(size);
-            
+            if(!ModuleCommon::mSimpleTexture){
+                TextLayout layout;
+                layout.clear( ColorA( 0.2f, 0.2f, 0.2f, 0.2f ) );
+                layout.setFont( Font( "Arial", 13 ) );
+                layout.setColor( Color( 1.f, 1.f, 1.f ) );
+                layout.addLine( "ControlCC" );
+                ModuleCommon::mSimpleTexture = gl::Texture2d::create( layout.render( true, false ) );
+            }
             mUi = SuperCanvas::create(name);
-            
-            //mUiabove->addSubView(mUi);
-            
-            //mUiabove->addSubViewToHeader(mUi);
             mUi->setSize(size);
             mUi->setOrigin(origin);
             
@@ -75,8 +74,8 @@ namespace ogre {
             b->setColorOutlineHighlight(ColorA(0, 0, 0, 0));
             mUi->addSubViewRight(b, Alignment::RIGHT);
             mUi->addSubViewToHeader(b);
-
         }
+        
         virtual JsonTree getData(){
             JsonTree obj ;
             obj.pushBack(JsonTree("id", this->id));
@@ -85,11 +84,25 @@ namespace ogre {
             sub.pushBack(JsonTree("y", this->mUi->getOrigin().y));
             obj.pushBack(sub);
             return obj;
-        };
-        virtual void fileDrop( FileDropEvent event ){};
-        virtual void setupUI(){};
-        virtual void setup(){};
+        }
+        
+        virtual void fileDrop( FileDropEvent event ){}
+        virtual void setupUI(){}
+        virtual void setup(){}
+        virtual void displaySelectionRank(int rank){
+            if(mUi != nullptr){
+                gl::color( Color( 1.f, 1.f, 1.f ) );
+                gl::draw( ModuleCommon::mSimpleTexture, mUi->getBounds().getUpperLeft() - vec2(0, 15) );
+                gl::drawStrokedRect( mUi->getBounds() );
+            }
+        }
+        
+        virtual void draw(){
+            if(mUi != nullptr)mUi->draw();
+        }
+        
         virtual void update(){
+            if(mUi == nullptr)return;
             if(firstUpdate){
                 defaultAlpha = mUi->getColorBack().a;
                 firstUpdate = false;
@@ -102,12 +115,15 @@ namespace ogre {
             }
             mUi->setColorBack(c);
             mUi->update();
-        };
+        }
+        virtual void setData(int id, int elem, float nValue){};
+        virtual void incData(int id, float nValue){};
+        virtual void resetData(int id){};
     };
     typedef std::shared_ptr<class ModuleCommon> ModuleRef;
     
-    template<typename DataType>
-    class ModuleBase : public ModuleCommon{
+template<typename DataType>
+class ModuleBase : public ModuleCommon{
     public:
         
         map<char, DataType> inputs;
@@ -119,7 +135,7 @@ namespace ogre {
         
         ModuleBase(std::string name, vec2 origin, vec2 size, const int & nInput, const int & nOutput);
         virtual ~ModuleBase(){
-                        cout<<"destroy ModuleBase"<<endl;
+            cout<<"destroy ModuleBase"<<endl;
             auto itin = inputs.begin();
             while(itin != inputs.end()){
                 itin->second.reset();
@@ -143,6 +159,8 @@ namespace ogre {
         virtual void setupUI() override;
         virtual void setup() override;
         virtual void update() override;
+        virtual void draw() override;
+        virtual void displaySelectionRank(int rank) override;
     };
     
     

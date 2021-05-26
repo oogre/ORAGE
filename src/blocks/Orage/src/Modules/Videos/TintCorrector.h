@@ -54,6 +54,14 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : data.hue = lerp(-1.0f, 1.0f, nValue); break;
+                case 1 : data.sat = lerp(-1.0f, 1.0f, nValue); break;
+                case 2 : data.light = lerp(-1.0f, 1.0f, nValue); break;
+            }
+        }
+        
         typedef std::shared_ptr<class TintCorrector> TintCorrectorRef;
         
         static TintCorrectorRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())

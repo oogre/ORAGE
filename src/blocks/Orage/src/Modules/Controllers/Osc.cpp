@@ -55,18 +55,25 @@ namespace ogre {
             }
         }
         
-        if(data.active && LISTENERS.find(data.port) != LISTENERS.end()){
+        
+        if(data.active && LISTENERS.find(data.port) == LISTENERS.end()){
             LISTENERS[data.port] = Listener();
             LISTENERS[data.port].setup( data.port );
-            port->setEnabled(false);
+            cout << "." << endl;
         }
         
         if(!data.active || !LISTENERS[data.port].hasWaitingMessages())return;
+        
+        
+        
         osc::Message message;
         LISTENERS[data.port].getNextMessage( &message );
-        for (int i = 0; i < message.getNumArgs(); i++) {
-            if(message.getAddress().compare(data.address) == 0){
-                data.value = message.getArgAsFloat(i);
+        
+        if(message.getAddress().compare(data.address) == 0){
+            for (int i = 0; i < message.getNumArgs(); i++) {
+                if (message.getArgType(i) == osc::TYPE_FLOAT){
+                    data.value = message.getArgAsFloat(i);
+                }
             }
         }
     }
@@ -82,15 +89,12 @@ namespace ogre {
         
         mUi->addSubViewDown(on);
         mUi->addSubViewToHeader(on);
-        
         address = mUi->addTextInput(data.address);
         port = mUi->addTextInput(to_string(data.port));
         
         mUi->addSpacer(false);
         mUi->addSpacer(false);
-        
         tools.addSlider(mUi, "value "+id, this->id, &(data.value), 0, 1, 0, true);
-        
         mUi->setMinified(false);
     }
 }

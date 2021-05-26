@@ -29,6 +29,8 @@ namespace ogre {
             float red  = 0.0f;
             float green  = 0.0f;
             float blue  = 0.0f;
+            float ssm  = 0.0f;
+            float ssM  = 1.0f;
             int modifier = 0;
             DATA(){};
             DATA(JsonTree data):
@@ -38,6 +40,8 @@ namespace ogre {
                 red(data.getChild("red").getValue<float>()),
                 green(data.getChild("green").getValue<float>()),
                 blue(data.getChild("blue").getValue<float>()),
+                ssm(data.getChild("ssm").getValue<float>()),
+                ssM(data.getChild("ssM").getValue<float>()),
                 modifier(data.getChild("modifier").getValue<int>())
             {}
         } ;
@@ -60,6 +64,19 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : data.bri = lerp(0.0f, 2.0f, nValue); break;
+                case 1 : data.sat = lerp(0.0f, 2.0f, nValue); break;
+                case 2 : data.con = lerp(0.0f, 2.0f, nValue); break;
+                case 3 : data.red = lerp(-1.f, 1.0f, nValue); break;
+                case 4 : data.green = lerp(-1.f, 1.0f, nValue); break;
+                case 5 : data.blue = lerp(-1.f, 1.0f, nValue); break;
+                case 6 : data.ssm = lerp(0.f, 1.0f, nValue); break;
+                case 7 : data.ssM = lerp(1.f, 0.0f, nValue); break;
+            }
+        }
+        
         typedef std::shared_ptr<class ColorAdjustement> ColorAdjustementRef;
         
         static ColorAdjustementRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())
@@ -78,6 +95,8 @@ namespace ogre {
                 sub.addChild(JsonTree("red", data.red));
                 sub.addChild(JsonTree("green", data.green));
                 sub.addChild(JsonTree("blue", data.blue));
+                sub.addChild(JsonTree("ssm", data.ssm));
+                sub.addChild(JsonTree("ssM", data.ssM));
                 sub.addChild(JsonTree("modifier", data.modifier));
                 obj.pushBack(sub);
                 return obj;

@@ -41,6 +41,14 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : YPbPr.x = lerp(.0f, 1.f, nValue); break;
+                case 1 : YPbPr.y = lerp(-.5f, .5f, nValue); break;
+                case 2 : YPbPr.z = lerp(-.5f, .5f, nValue); break;
+            }
+        }
+        
         typedef std::shared_ptr<class Matte> MatteRef;
         
         static MatteRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())

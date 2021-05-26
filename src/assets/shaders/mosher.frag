@@ -8,7 +8,8 @@ uniform sampler2D tex1;
 
 layout (std140) uniform;
 uniform mosher {
-    float gain; //gain3
+    float gainX; //gain3
+    float gainY; //gain3
     float x   ;
     float y   ;
     bool mirror;
@@ -52,7 +53,8 @@ void main()
     n_fragCoord += pos;
     
     //n_fragCoord = rotate2D(n_fragCoord, TWO_PI * (1 - (gain * modifierV)));
-    n_fragCoord *= (1 - (gain * modifierV)); //pow(modifierV, modifierV);
+    n_fragCoord.x *= (1 - (gainX * modifierV)); //pow(modifierV, modifierV);
+    n_fragCoord.y *= (1 - (gainY * modifierV)); //pow(modifierV, modifierV);
     n_fragCoord -= pos;
     n_fragCoord = (n_fragCoord + 1.0) * 0.5;
     

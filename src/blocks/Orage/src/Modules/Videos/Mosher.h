@@ -21,14 +21,16 @@ namespace ogre {
         gl::Context * mMainWinCtx;
         
         struct DATA {
-            float gain  = .0f; //gain3
+            float gainX  = .0f; //gain3
+            float gainY  = .0f; //gain3
             float x     = .0f;
             float y     = .0f;
             bool mirror = false;
             DATA(){};
             DATA(JsonTree data):
-                gain(data.getChild("gain").getValue<float>()),
-                x(data.getChild("x").getValue<float>()),
+            gainX(data.getChild("gainX").getValue<float>()),
+            gainY(data.getChild("gainY").getValue<float>()),
+            x(data.getChild("x").getValue<float>()),
                 y(data.getChild("y").getValue<float>()),
                 mirror(data.getChild("mirror").getValue<bool>())
             {}
@@ -52,6 +54,15 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
+        virtual void setData(int id, int elem, float nValue) override {
+            switch(id){
+                case 0 : data.gainX = lerp(-1.0f, 1.0f, nValue); break;
+                case 1 : data.gainY = lerp(-1.0f, 1.0f, nValue); break;
+                case 2 : data.x = lerp(-1.0f, 1.0f, nValue); break;
+                case 3 : data.y = lerp(-1.f, 1.0f, nValue); break;
+            }
+        }
+        
         typedef std::shared_ptr<class Mosher> MosherRef;
         
         static MosherRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())
@@ -66,7 +77,8 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "Mosher"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(JsonTree("gain", data.gain));
+                sub.addChild(JsonTree("gainX", data.gainX));
+                sub.addChild(JsonTree("gainY", data.gainY));
                 sub.addChild(JsonTree("x", data.x));
                 sub.addChild(JsonTree("y", data.y));
                 sub.addChild(JsonTree("mirror", data.mirror));
