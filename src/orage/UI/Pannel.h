@@ -14,12 +14,12 @@ class Pannel : public View {
     typedef std::shared_ptr<class Pannel> PannelRef;
     Pannel(ci::vec2 origin, ci::vec2 size);
     public :
-    static PannelRef create(ci::vec2 origin, ci::vec2 size){
-        return PannelRef( new Pannel(origin, size) );
-    }
-    virtual void update() override;
-    virtual void draw() override;
-    virtual ~Pannel() override;
+        static PannelRef create(ci::vec2 origin, ci::vec2 size){
+            return PannelRef( new Pannel(origin, size) );
+        }
+        virtual void update() override;
+        virtual void draw() override;
+        virtual ~Pannel() override;
 };
 
 //////////////////////////////////

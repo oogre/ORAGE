@@ -39,6 +39,7 @@
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		56D32538625F41BFA62FE168 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
 		6E7878543E944E05A89570DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		886F98272660442000779325 /* IView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IView.h; sourceTree = "<group>"; };
 		88EEEE07265EE59C00D9087C /* chrono_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chrono_io.h; sourceTree = "<group>"; };
 		88EEEE08265EE59C00D9087C /* ratio_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ratio_io.h; sourceTree = "<group>"; };
 		88EEEE0B265EE59C00D9087C /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
@@ -200,6 +201,7 @@
 				88EEEE0D265EE59C00D9087C /* Slider.h */,
 				88EEEE0E265EE59C00D9087C /* Pannel.h */,
 				88EEEE0F265EE59C00D9087C /* Clock.h */,
+				886F98272660442000779325 /* IView.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";

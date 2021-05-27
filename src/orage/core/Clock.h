@@ -30,6 +30,8 @@ class Clock : public Module{
 	float BPM;
 	double interval;
 	ParameterRefI bang;
+    ParameterRefF bpm;
+    
 	std::vector<StrobFnc> strobFuncs;
 
 	void update();
@@ -39,7 +41,7 @@ class Clock : public Module{
 		static ClockRef create(float BPM = 60){
             return ClockRef( new Clock(BPM) );
         }
-		virtual ~Clock() override;
+		virtual ~Clock();
 		void setBPM(float BPM);
 		float getBPM();
 		void strob(StrobFnc fnc);
@@ -58,9 +60,10 @@ typedef shared_ptr<class Clock> ClockRef;
 typedef function<void(ClockEvent)> StrobFnc;
 
 Clock::Clock(float BPM):
-Module("Clock"){
-	this->setBPM(BPM);
+    Module("Clock")
+{
 	bang = ParameterI::create(1, 0, 1);
+    bpm = ParameterF::create(BPM, 1, 300);
 	this->strob([&](ClockEvent event) -> void{
 		if(event.is(1, 1)){
 			bang->setValue(1);
@@ -74,7 +77,7 @@ Module("Clock"){
 
 Clock::~Clock(){
 	mShouldQuit = true;
-	Module::~Module();
+    mThread->join();
 }
 
 void Clock::update(){
@@ -106,7 +109,7 @@ void Clock::update(){
 }
 
 void Clock::setBPM(float BPM){
-	this->BPM = BPM;
+	bpm->setValue(BPM);
 	interval = 60 / (double)(BPM * StepPerBeat);
 }
 
@@ -126,7 +129,6 @@ void Clock::strob(StrobFnc fnc){
 
 ModuleRef Clock::display(int x, int y, int w, int h){
 	view = UIClock::create({x, y}, {w, h});
-	
 	bang->onChanged([&](ParameterI::ParameterEvent event) -> void{
 		if(event.value == 1){
 			view->getSubView("bang")->bgColor = Theme::bgActiveColor;
@@ -136,6 +138,10 @@ ModuleRef Clock::display(int x, int y, int w, int h){
 		}
 	});
 
+    bpm->onChanged([&](ParameterF::ParameterEvent event) -> void{
+        dynamic_pointer_cast<UISlider>(view->getSubView("bpm"))->setCursor(event.n_value);
+    });
+    
 	return shared_from_this();
 }
 

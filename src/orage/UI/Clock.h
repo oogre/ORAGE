@@ -2,17 +2,18 @@
 #define UI_Clock_h
 
 #include "View.h"
+#include "Slider.h"
 
 class UIClock : public View {
     typedef std::shared_ptr<class UIClock> UIClockRef;
     UIClock(ci::vec2 origin, ci::vec2 size);
     public :
-    static UIClockRef create(ci::vec2 origin, ci::vec2 size){
-        return UIClockRef( new UIClock(origin, size) );
-    }
-    virtual void update() override;
-    virtual void draw() override;
-    virtual ~UIClock() override;
+        static UIClockRef create(ci::vec2 origin, ci::vec2 size){
+            return UIClockRef( new UIClock(origin, size) );
+        }
+        virtual void update() override;
+        virtual void draw() override;
+        virtual ~UIClock();
 };
 
 //////////////////////////////////
@@ -27,6 +28,7 @@ UIClock::UIClock(vec2 origin, vec2 size) :
     View(origin, size)
 {
     ViewRef btn = addSubView("bang", View::create({10, 10}, {10, 10}));
+    ViewRef slider = addSubView("bpm", UISlider::create({10, 30}, {100, 15}));
     btn->bgColor = Theme::bgActiveColor;
     View::bgColor = Theme::bgDisactiveColor;
 }

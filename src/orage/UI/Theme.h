@@ -10,8 +10,8 @@
 
 class Theme{
     public :
-    static ci::ColorA bgActiveColor;
-    static ci::ColorA bgDisactiveColor;
+        static ci::ColorA bgActiveColor;
+        static ci::ColorA bgDisactiveColor;
 };
 
 //////////////////////////////////
