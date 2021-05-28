@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 #ifndef View_h
 #define View_h
 
@@ -17,6 +10,7 @@ class View {
 	private :
 		std::map<string, ViewRef> subViews;
         std::map<string, ViewRef> views;
+        View * parent;
 	protected :
         ci::Rectf bounds;
     	View(ci::vec2 origin, ci::vec2 size);
@@ -29,7 +23,10 @@ class View {
         ViewRef addSubView(string name, ViewRef subView);
         ViewRef getView(string name);
         ViewRef getSubView(string name);
+        void setParent(View * parent);
+        View * getParent();
         void setPos(vec2 pos);
+        vec2 getRecursivePos();
         vec2 getSize();
         virtual void update();
         virtual void draw();
@@ -56,11 +53,13 @@ View::~View(){
 
 ViewRef View::addView(string name, ViewRef view){
     views[name]=view;
+    view->setParent(this);
     return view;
 }
 
 ViewRef View::addSubView(string name, ViewRef subView){
     subViews[name]=subView;
+    subView->setParent(this);
     return subView;
 }
 
@@ -75,6 +74,21 @@ ViewRef View::getSubView(string name){
 void View::setPos(vec2 pos){
     vec2 op = {bounds.getX1(), bounds.getY1()};
     bounds.offset(pos-op);
+}
+
+vec2 View::getRecursivePos(){
+    vec2 op = {bounds.getX1(), bounds.getY1()};
+    View * p = parent;
+    while(p!= nullptr){
+        vec2 po = {p->bounds.getX1(), p->bounds.getY1()};
+        op = op + po;
+        p = p->parent;
+    }
+    return op;
+}
+
+void View::setParent(View * parent){
+    this->parent = parent;
 }
 
 vec2 View::getSize(){

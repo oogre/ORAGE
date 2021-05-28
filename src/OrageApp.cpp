@@ -24,7 +24,7 @@ using namespace ci::gl;
 using namespace ci::app;
 
 void OrageApp::setup(){
-   modules.push_back(Clock::create(60)->display(0, 0, 100, 100));
+   modules.push_back(Clock::create(60)->display(100, 100, 100, 100));
 }
 
 void OrageApp::update(){
