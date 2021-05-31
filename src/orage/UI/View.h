@@ -87,6 +87,7 @@ vec2 View::getRecursivePos(){
     return op;
 }
 
+
 void View::setParent(View * parent){
     this->parent = parent;
 }
