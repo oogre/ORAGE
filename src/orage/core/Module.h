@@ -26,11 +26,11 @@ int Module::ID = 0;
 
 Module::Module(string name){
 	this->id = Module::ID++;
-    this->name = name;//+"-"+string(this->id);
+    this->name = name+"-"+to_string(this->id);
 }
 
 Module::~Module(){
-	cout<<"destroy "<< name << "-" << id << endl;
+	cout<<"destroy "<< name << endl;
 }
 
 ModuleRef Module::display(int x, int y, int w, int h){

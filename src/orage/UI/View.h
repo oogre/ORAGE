@@ -51,6 +51,7 @@ View::View(string name, vec2 origin, vec2 size) :
 }
 
 View::~View(){
+    cout<<"destroy view : "<< name << endl;
 }
 
 ViewRef View::addView(string name, ViewRef view){
