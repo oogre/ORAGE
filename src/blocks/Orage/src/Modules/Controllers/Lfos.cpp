@@ -78,10 +78,14 @@ namespace ogre {
             }
             data.saw = pow(value, exp);
             data.BPM = round(data.BPM);
+            data.sine = cos(data.saw * 6.28);
+            
+            data.sine2 = pow(abs((value - 0.5)*2), exp);
+            data.rect = data.saw > .5;
+            
         }
         
-        data.sine = cos(data.saw * 6.28);
-        data.rect = data.saw > .5;
+        
     }
     
     void Lfos::setupUI(){
@@ -140,6 +144,7 @@ namespace ogre {
         
         tools.addSlider(mUi, "saw "+id, this->id, &(data.saw), 0, 1, 0, true);
         tools.addSlider(mUi, "sine "+id, this->id, &(data.sine), -1, 1, 0, true);
+        tools.addSlider(mUi, "sine2 "+id, this->id, &(data.sine2), -1, 1, 0, true);
         tools.addSlider(mUi, "rect "+id, this->id, &(data.rect), 0, 1, 0, true);
         
         mUi->addSpacer(false);

@@ -78,6 +78,7 @@ namespace ogre {
             float exp;
             float saw;
             float sine;
+            float sine2;
             float rect;
             DATA():
                 reset(0.0f),
@@ -92,6 +93,7 @@ namespace ogre {
                 exp(5),
                 saw(0.f),
                 sine(0.f),
+                sine2(1.f),
                 rect(0.f)
             {}
             DATA(JsonTree data):
@@ -105,6 +107,7 @@ namespace ogre {
                 exp(data.getChild("exp").getValue<float>()),
                 saw(data.getChild("saw").getValue<float>()),
                 sine(data.getChild("sine").getValue<float>()),
+                sine2(data.getChild("sine2").getValue<float>()),
                 rect(data.getChild("rect").getValue<float>())
             {}
         };
@@ -140,6 +143,7 @@ namespace ogre {
                 sub.addChild(JsonTree("exp", data.exp));
                 sub.addChild(JsonTree("saw", data.saw));
                 sub.addChild(JsonTree("sine", data.sine));
+                sub.addChild(JsonTree("sine2", data.sine2));
                 sub.addChild(JsonTree("rect", data.rect));
                 obj.pushBack(sub);
                 return obj;
