@@ -14,8 +14,6 @@ class OrageApp : public ci::app::App {
         void draw() override;
 };
 
-
-
 //////////////////////////////////
 
 using namespace std;

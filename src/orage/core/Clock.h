@@ -128,7 +128,7 @@ void Clock::strob(StrobFnc fnc){
 }
 
 ModuleRef Clock::display(int x, int y, int w, int h){
-	view = UIClock::create({x, y}, {w, h});
+	view = UIClock::create(name, {x, y}, {w, h});
 	bang->onChanged([&](ParameterI::ParameterEvent event) -> void{
 		if(event.value == 1){
 			view->getSubView("bang")->bgColor = Theme::bgActiveColor;

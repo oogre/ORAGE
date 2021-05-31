@@ -45,7 +45,7 @@ class IView : public View {
         bool wasisInside = false;
         static ci::app::MouseEvent lastMouseEvent;
     protected :
-        IView(ci::vec2 origin, ci::vec2 size);
+        IView(string name, ci::vec2 origin, ci::vec2 size);
     public :
         IView* on(string type, BaseFnc fnc);
         virtual void update() override;
@@ -61,8 +61,8 @@ typedef shared_ptr<class IView> IViewRef;
 
 MouseEvent IView::lastMouseEvent;
 
-IView::IView(ci::vec2 origin, ci::vec2 size) :
-    View(origin, size)
+IView::IView(string name, ci::vec2 origin, ci::vec2 size) :
+    View(name, origin, size)
 {
     getWindow()->getSignalMouseMove().connect( [&]( MouseEvent event ){
         IView::lastMouseEvent = event;

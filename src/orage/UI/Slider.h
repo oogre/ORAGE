@@ -6,12 +6,12 @@
 // We'll create a new Cinder Application by deriving from the App class.
 class UISlider : public IView  {
     typedef std::shared_ptr<class UISlider> UISliderRef;
-    UISlider(ci::vec2 origin, ci::vec2 size);
+    UISlider(string name, ci::vec2 origin, ci::vec2 size);
     ViewRef cursor;
     ViewRef frame;
     public :
-        static UISliderRef create(ci::vec2 origin, ci::vec2 size){
-            return UISliderRef( new UISlider(origin, size) );
+        static UISliderRef create(string name, ci::vec2 origin, ci::vec2 size){
+            return UISliderRef( new UISlider(name, origin, size) );
         }
         virtual void update() override;
         virtual void draw() override;
@@ -27,12 +27,12 @@ using namespace ci::gl;
 
 typedef std::shared_ptr<class UISlider> UISliderRef;
 
-UISlider::UISlider(vec2 origin, vec2 size) :
-IView(origin, size)
+UISlider::UISlider(string name, vec2 origin, vec2 size) :
+IView(name, origin, size)
 {
-    frame = addView("frame", View::create(origin+vec2(1, 1), size-vec2(2, 2)));
+    frame = addView("frame", View::create("frame-"+name, origin+vec2(1, 1), size-vec2(2, 2)));
     frame->bgColor = Theme::bgDisactiveColor;
-    cursor = frame->addSubView("cursor", View::create({1, 1}, {size.y-4,size.y-4}));
+    cursor = frame->addSubView("cursor", View::create("cursor-"+name, {1, 1}, {size.y-4,size.y-4}));
     on("enter", [&](BaseEvent event) -> void{
         bgColor = Theme::bgDisactiveColor;
         frame->bgColor = Theme::bgActiveColor;

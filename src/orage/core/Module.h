@@ -26,7 +26,7 @@ int Module::ID = 0;
 
 Module::Module(string name){
 	this->id = Module::ID++;
-	this->name = name;
+	this->name = name+"-"+string(this->id);
 }
 
 Module::~Module(){
@@ -34,7 +34,7 @@ Module::~Module(){
 }
 
 ModuleRef Module::display(int x, int y, int w, int h){
-	view = View::create({x, y}, {w, h});
+	view = View::create("out-"+this->name, {x, y}, {w, h});
 	return shared_from_this();
 }
 

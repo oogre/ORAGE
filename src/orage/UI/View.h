@@ -4,20 +4,22 @@
 #include "Theme.h"
 
 class View {
+    
     public :
+        string name = "";
         typedef std::function<void(void)> ParameterFnc;
 		typedef std::shared_ptr<class View> ViewRef;
 	private :
 		std::map<string, ViewRef> subViews;
         std::map<string, ViewRef> views;
-        View * parent;
+        View * parent = nullptr;
 	protected :
         ci::Rectf bounds;
-    	View(ci::vec2 origin, ci::vec2 size);
+    	View(string name, ci::vec2 origin, ci::vec2 size);
 	public :
 		ci::ColorA bgColor = Theme::bgActiveColor;
-		static ViewRef create(ci::vec2 origin, ci::vec2 size){
-            return ViewRef( new View(origin, size) );
+		static ViewRef create(string name, ci::vec2 origin, ci::vec2 size){
+            return ViewRef( new View(name, origin, size) );
         }
         ViewRef addView(string name, ViewRef view);
         ViewRef addSubView(string name, ViewRef subView);
@@ -41,14 +43,14 @@ using namespace ci::gl;
 
 typedef shared_ptr<class View> ViewRef;
 
-View::View(vec2 origin, vec2 size) :
-    bounds({0, 0}, size)
+View::View(string name, vec2 origin, vec2 size) :
+    bounds({0, 0}, size),
+    name(name)
 {
     bounds.offset( origin );
 }
 
 View::~View(){
-
 }
 
 ViewRef View::addView(string name, ViewRef view){
@@ -77,10 +79,11 @@ void View::setPos(vec2 pos){
 }
 
 vec2 View::getRecursivePos(){
+    
     vec2 op = {bounds.getX1(), bounds.getY1()};
     View * p = parent;
     while(p!= nullptr){
-        vec2 po = {p->bounds.getX1(), p->bounds.getY1()};
+        vec2 po = {p->bounds.getX1()||0, p->bounds.getY1()||0};
         op = op + po;
         p = p->parent;
     }

@@ -1,15 +1,15 @@
 #ifndef UI_Clock_h
 #define UI_Clock_h
 
-#include "View.h"
+#include "IView.h"
 #include "Slider.h"
 
-class UIClock : public View {
+class UIClock : public IView {
     typedef std::shared_ptr<class UIClock> UIClockRef;
-    UIClock(ci::vec2 origin, ci::vec2 size);
+    UIClock(string name, ci::vec2 origin, ci::vec2 size);
     public :
-        static UIClockRef create(ci::vec2 origin, ci::vec2 size){
-            return UIClockRef( new UIClock(origin, size) );
+        static UIClockRef create(string name, ci::vec2 origin, ci::vec2 size){
+            return UIClockRef( new UIClock(name, origin, size) );
         }
         virtual void update() override;
         virtual void draw() override;
@@ -24,13 +24,20 @@ using namespace ci::gl;
 
 typedef shared_ptr<class UIClock> UIClockRef;
 
-UIClock::UIClock(vec2 origin, vec2 size) :
-    View(origin, size)
+UIClock::UIClock(string name, vec2 origin, vec2 size) :
+    IView(name, origin, size)
 {
-    ViewRef btn = addSubView("bang", View::create({10, 10}, {10, 10}));
-    ViewRef slider = addSubView("bpm", UISlider::create({10, 30}, {100, 15}));
+    ViewRef btn = addSubView("bang", View::create("bang-"+name, {10, 10}, {10, 10}));
+    ViewRef slider = addSubView("bpm", UISlider::create("bpm-"+name, {10, 30}, {100, 15}));
     btn->bgColor = Theme::bgActiveColor;
     View::bgColor = Theme::bgDisactiveColor;
+    
+    on("enter", [&](BaseEvent event) -> void{
+        bgColor = Theme::bgActiveColor;
+    });
+    on("leave", [&](BaseEvent event) -> void{
+        bgColor = Theme::bgDisactiveColor;
+    });
 }
 
 
@@ -38,7 +45,7 @@ UIClock::~UIClock(){
 }
 
 void UIClock::update(){
-    View::update();
+   IView::update();
 }
 
 void UIClock::draw(){
