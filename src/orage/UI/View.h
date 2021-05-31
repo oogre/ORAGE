@@ -80,13 +80,9 @@ void View::setPos(vec2 pos){
 }
 
 vec2 View::getRecursivePos(){
-    
     vec2 op = {bounds.getX1(), bounds.getY1()};
-    View * p = parent;
-    while(p!= nullptr){
-        vec2 po = {p->bounds.getX1()||0, p->bounds.getY1()||0};
-        op = op + po;
-        p = p->parent;
+    if(parent != nullptr){
+        return op + parent->getRecursivePos();
     }
     return op;
 }
