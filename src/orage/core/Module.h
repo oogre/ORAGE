@@ -26,7 +26,7 @@ int Module::ID = 0;
 
 Module::Module(string name){
 	this->id = Module::ID++;
-	this->name = name+"-"+string(this->id);
+    this->name = name;//+"-"+string(this->id);
 }
 
 Module::~Module(){
