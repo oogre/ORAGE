@@ -92,14 +92,15 @@
 		88A889711EDC308D007F4B0C /* syphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88A8896B1EDC308D007F4B0C /* syphonServer.mm */; };
 		88A889721EDC308D007F4B0C /* syphonServerDirectory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88A8896D1EDC308D007F4B0C /* syphonServerDirectory.mm */; };
 		88A889751EDC30F6007F4B0C /* SyphonInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88A889731EDC30F6007F4B0C /* SyphonInput.cpp */; };
-		88A889761EDC3510007F4B0C /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A889631EDC308D007F4B0C /* Syphon.framework */; };
-		88A889771EDC3510007F4B0C /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 88A889631EDC308D007F4B0C /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		88A8897B1EDC47D7007F4B0C /* Freezer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88A889791EDC47D7007F4B0C /* Freezer.cpp */; };
 		88A8897D1EDC494E007F4B0C /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 88A8897C1EDC494D007F4B0C /* assets */; };
 		88AC2DA40BC4441CA9DF5B0B /* Label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E1089BA49DF4B3ABD6B9E92 /* Label.cpp */; };
 		88B0FED41F06647900EBAD22 /* ProcessCV.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88B0FED21F06647900EBAD22 /* ProcessCV.cpp */; };
 		88D0A08A1ECF2F1600BE6418 /* Output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88D0A0881ECF2F1600BE6418 /* Output.cpp */; };
 		88E4AC2D1EE03B2000A9DA8C /* Delay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E4AC2B1EE03B2000A9DA8C /* Delay.cpp */; };
+		88F3CD362665833400B53D48 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A889631EDC308D007F4B0C /* Syphon.framework */; };
+		88F3CD382665848600B53D48 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F3CD372665848600B53D48 /* Syphon.framework */; };
+		88F3CD392665848600B53D48 /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 88F3CD372665848600B53D48 /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		9AC02B2DEE2745F0AED3D7A9 /* WindowCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3BF6AED054104899B1DA04A3 /* WindowCanvas.cpp */; };
 		A8EA15C5111844118A8CBCA3 /* Canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77F2827F0BF347E29F073892 /* Canvas.cpp */; };
@@ -124,13 +125,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		88A889781EDC3510007F4B0C /* Embed Frameworks */ = {
+		88F3CD3A2665848600B53D48 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				88A889771EDC3510007F4B0C /* Syphon.framework in Embed Frameworks */,
+				88F3CD392665848600B53D48 /* Syphon.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,85 +142,85 @@
 		006D720219952D00008149E2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		006D720319952D00008149E2 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		0091D8F80E81B9330029341E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
-		00B627F32E2149C38E38DEA4 /* ColorAdjustement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = ColorAdjustement.cpp; path = ../blocks/Orage/src/Modules/Videos/ColorAdjustement.cpp; sourceTree = "<group>"; };
+		00B627F32E2149C38E38DEA4 /* ColorAdjustement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ColorAdjustement.cpp; sourceTree = "<group>"; };
 		00B784AF0FF439BC000DE1D7 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		00B784B10FF439BC000DE1D7 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		00B995581B128DF400A5C623 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		00B995591B128DF400A5C623 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
-		012E0F6742FF4438998A8A8F /* Triggers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Triggers.h; path = ../blocks/UIslave/src/Triggers.h; sourceTree = "<group>"; };
-		0290A204D6B144F78F274FB7 /* Colors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Colors.h; path = ../blocks/UIslave/src/Colors.h; sourceTree = "<group>"; };
-		05E699F4C42C476B81CC4654 /* Canvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Canvas.h; path = ../blocks/UIslave/src/Canvas.h; sourceTree = "<group>"; };
-		075B4910A16A4E30ABD32239 /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Button.h; path = ../blocks/UIslave/src/Button.h; sourceTree = "<group>"; };
-		0813D0268ACA4491BF30E418 /* Dialer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Dialer.h; path = ../blocks/UIslave/src/Dialer.h; sourceTree = "<group>"; };
-		0CC3352A00044797A8E2B918 /* States.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = States.h; path = ../blocks/UIslave/src/States.h; sourceTree = "<group>"; };
-		0CEC55F32821410B87FEE541 /* Wires.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Wires.cpp; path = ../blocks/Orage/src/Wires/Wires.cpp; sourceTree = "<group>"; };
+		012E0F6742FF4438998A8A8F /* Triggers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Triggers.h; sourceTree = "<group>"; };
+		0290A204D6B144F78F274FB7 /* Colors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Colors.h; sourceTree = "<group>"; };
+		05E699F4C42C476B81CC4654 /* Canvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Canvas.h; sourceTree = "<group>"; };
+		075B4910A16A4E30ABD32239 /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
+		0813D0268ACA4491BF30E418 /* Dialer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dialer.h; sourceTree = "<group>"; };
+		0CC3352A00044797A8E2B918 /* States.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = States.h; sourceTree = "<group>"; };
+		0CEC55F32821410B87FEE541 /* Wires.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Wires.cpp; path = ../src/blocks/Orage/src/Wires/Wires.cpp; sourceTree = SOURCE_ROOT; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		128130448FB0431A86A5095C /* Lfos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Lfos.h; path = ../blocks/Orage/src/Modules/Controllers/Lfos.h; sourceTree = "<group>"; };
-		1395FBC9EFFD4C6893A678A9 /* SuperCanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SuperCanvas.h; path = ../blocks/UIslave/src/SuperCanvas.h; sourceTree = "<group>"; };
-		15D1360DDA0B424F9540A913 /* ORAGE_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ORAGE_Prefix.pch; sourceTree = "<group>"; };
-		17C17EF095034915A1F8DCF7 /* Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Graph.h; path = ../blocks/UIslave/src/Graph.h; sourceTree = "<group>"; };
-		18EDCF584FD748DF9FD060DD /* WindowCanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WindowCanvas.h; path = ../blocks/UIslave/src/WindowCanvas.h; sourceTree = "<group>"; };
-		1A3C6B6A3E93466F94FB090E /* View.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = View.h; path = ../blocks/UIslave/src/View.h; sourceTree = "<group>"; };
-		1C1624A7C5DE4256BD67460C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1E096DD232FB4D1D82E9B975 /* ModuleVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ModuleVideo.h; path = ../blocks/Orage/src/Modules/Bases/ModuleVideo.h; sourceTree = "<group>"; };
-		264232C648FE4B1ABBAF38F6 /* Wire.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Wire.h; path = ../blocks/Orage/src/Wires/Wire.h; sourceTree = "<group>"; };
+		128130448FB0431A86A5095C /* Lfos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Lfos.h; path = ../src/blocks/Orage/src/Modules/Controllers/Lfos.h; sourceTree = SOURCE_ROOT; };
+		1395FBC9EFFD4C6893A678A9 /* SuperCanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperCanvas.h; sourceTree = "<group>"; };
+		15D1360DDA0B424F9540A913 /* xcode */ = {isa = PBXFileReference; lastKnownFileType = folder; name = xcode; path = ../../xcode; sourceTree = "<group>"; };
+		17C17EF095034915A1F8DCF7 /* Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Graph.h; sourceTree = "<group>"; };
+		18EDCF584FD748DF9FD060DD /* WindowCanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowCanvas.h; sourceTree = "<group>"; };
+		1A3C6B6A3E93466F94FB090E /* View.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
+		1C1624A7C5DE4256BD67460C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
+		1E096DD232FB4D1D82E9B975 /* ModuleVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ModuleVideo.h; path = ../src/blocks/Orage/src/Modules/Bases/ModuleVideo.h; sourceTree = SOURCE_ROOT; };
+		264232C648FE4B1ABBAF38F6 /* Wire.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Wire.h; path = ../src/blocks/Orage/src/Wires/Wire.h; sourceTree = SOURCE_ROOT; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		2AB0C580AB0C43FCBA3D46EB /* Orage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Orage.cpp; path = ../blocks/Orage/src/Orage.cpp; sourceTree = "<group>"; };
-		2B33F090D7904DAD9BE2153E /* Range.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Range.cpp; path = ../blocks/UIslave/src/Range.cpp; sourceTree = "<group>"; };
-		2E1089BA49DF4B3ABD6B9E92 /* Label.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Label.cpp; path = ../blocks/UIslave/src/Label.cpp; sourceTree = "<group>"; };
-		302233E07E59415D8A6948DE /* ModuleBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ModuleBase.h; path = ../blocks/Orage/src/Modules/Bases/ModuleBase.h; sourceTree = "<group>"; };
-		30A05F9B29094E8AA0D756B0 /* Toggle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Toggle.cpp; path = ../blocks/UIslave/src/Toggle.cpp; sourceTree = "<group>"; };
-		30FD17114D084C95AD0B7351 /* Matte.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Matte.cpp; path = ../blocks/Orage/src/Modules/Videos/Matte.cpp; sourceTree = "<group>"; };
-		33D2FD7B049A4C48BFA690AA /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Globals.h; path = ../blocks/UIslave/src/Globals.h; sourceTree = "<group>"; };
-		384B18B9172D406F977D3377 /* Plotter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Plotter.cpp; path = ../blocks/UIslave/src/Plotter.cpp; sourceTree = "<group>"; };
-		3A2D63892F05496DAABED1D8 /* Control.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Control.h; path = ../blocks/UIslave/src/Control.h; sourceTree = "<group>"; };
-		3BF6AED054104899B1DA04A3 /* WindowCanvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = WindowCanvas.cpp; path = ../blocks/UIslave/src/WindowCanvas.cpp; sourceTree = "<group>"; };
-		43070F98E6C64DECA9E6398A /* Waveform.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Waveform.cpp; path = ../blocks/UIslave/src/Waveform.cpp; sourceTree = "<group>"; };
-		44DAA34985DF4BED9E6B6A16 /* BSplineEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BSplineEditor.h; path = ../blocks/UIslave/src/BSplineEditor.h; sourceTree = "<group>"; };
-		4737C0957A05495FA35695CB /* Directions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Directions.h; path = ../blocks/UIslave/src/Directions.h; sourceTree = "<group>"; };
-		4A1AAA1CD0754A0EA20C2406 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
-		4A1BFA79B216470FA1A83EBD /* Mosher.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Mosher.cpp; path = ../blocks/Orage/src/Modules/Videos/Mosher.cpp; sourceTree = "<group>"; };
-		4C1202DE852646C2AF05DAF0 /* Oscillator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Oscillator.h; path = ../blocks/Orage/src/Modules/Videos/Oscillator.h; sourceTree = "<group>"; };
-		4E8C327BE1994ACC8ED55BBC /* Lfos.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Lfos.cpp; path = ../blocks/Orage/src/Modules/Controllers/Lfos.cpp; sourceTree = "<group>"; };
-		4EFC9170AD05499482D741C9 /* MultiSlider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = MultiSlider.cpp; path = ../blocks/UIslave/src/MultiSlider.cpp; sourceTree = "<group>"; };
-		4F62C86FB4014161A8765C9B /* ControlWithLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ControlWithLabel.h; path = ../blocks/UIslave/src/ControlWithLabel.h; sourceTree = "<group>"; };
+		2AB0C580AB0C43FCBA3D46EB /* Orage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Orage.cpp; path = ../src/blocks/Orage/src/Orage.cpp; sourceTree = SOURCE_ROOT; };
+		2B33F090D7904DAD9BE2153E /* Range.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Range.cpp; sourceTree = "<group>"; };
+		2E1089BA49DF4B3ABD6B9E92 /* Label.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Label.cpp; sourceTree = "<group>"; };
+		302233E07E59415D8A6948DE /* ModuleBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ModuleBase.h; path = ../src/blocks/Orage/src/Modules/Bases/ModuleBase.h; sourceTree = SOURCE_ROOT; };
+		30A05F9B29094E8AA0D756B0 /* Toggle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Toggle.cpp; sourceTree = "<group>"; };
+		30FD17114D084C95AD0B7351 /* Matte.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Matte.cpp; sourceTree = "<group>"; };
+		33D2FD7B049A4C48BFA690AA /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
+		384B18B9172D406F977D3377 /* Plotter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Plotter.cpp; sourceTree = "<group>"; };
+		3A2D63892F05496DAABED1D8 /* Control.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Control.h; sourceTree = "<group>"; };
+		3BF6AED054104899B1DA04A3 /* WindowCanvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WindowCanvas.cpp; sourceTree = "<group>"; };
+		43070F98E6C64DECA9E6398A /* Waveform.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Waveform.cpp; sourceTree = "<group>"; };
+		44DAA34985DF4BED9E6B6A16 /* BSplineEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSplineEditor.h; sourceTree = "<group>"; };
+		4737C0957A05495FA35695CB /* Directions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Directions.h; sourceTree = "<group>"; };
+		4A1AAA1CD0754A0EA20C2406 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../src/include/Resources.h; sourceTree = SOURCE_ROOT; };
+		4A1BFA79B216470FA1A83EBD /* Mosher.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Mosher.cpp; sourceTree = "<group>"; };
+		4C1202DE852646C2AF05DAF0 /* Oscillator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Oscillator.h; sourceTree = "<group>"; };
+		4E8C327BE1994ACC8ED55BBC /* Lfos.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Lfos.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/Lfos.cpp; sourceTree = SOURCE_ROOT; };
+		4EFC9170AD05499482D741C9 /* MultiSlider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MultiSlider.cpp; sourceTree = "<group>"; };
+		4F62C86FB4014161A8765C9B /* ControlWithLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlWithLabel.h; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
-		54722262D68D41F585BA1003 /* Spliter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Spliter.h; path = ../blocks/Orage/src/Modules/Videos/Spliter.h; sourceTree = "<group>"; };
-		548D769E6E80460E8ADB8AFE /* ColorPicker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = ColorPicker.cpp; path = ../blocks/UIslave/src/ColorPicker.cpp; sourceTree = "<group>"; };
-		56C0457E5D47474EAE6E89AB /* ModuleBase.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = ModuleBase.cpp; path = ../blocks/Orage/src/Modules/Bases/ModuleBase.cpp; sourceTree = "<group>"; };
-		56C3194BD3694C5880C0BCC1 /* Fps.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Fps.h; path = ../blocks/UIslave/src/Fps.h; sourceTree = "<group>"; };
-		5830FE4092DE4EACB2F2D354 /* Fps.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Fps.cpp; path = ../blocks/UIslave/src/Fps.cpp; sourceTree = "<group>"; };
-		58CD808C4D294977994DE0D3 /* TextureView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextureView.h; path = ../blocks/UIslave/src/TextureView.h; sourceTree = "<group>"; };
-		5B33C659014740B5A384C2A3 /* Controls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Controls.h; path = ../blocks/UIslave/src/Controls.h; sourceTree = "<group>"; };
-		5CBE252C514B4B6E833A9D90 /* Plotter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Plotter.h; path = ../blocks/UIslave/src/Plotter.h; sourceTree = "<group>"; };
-		5ECB8CC08F374783B2CEA391 /* Spacer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Spacer.cpp; path = ../blocks/UIslave/src/Spacer.cpp; sourceTree = "<group>"; };
-		6080E305157B437DB5EBDBEB /* ORAGEApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = ORAGEApp.cpp; path = ../src/ORAGEApp.cpp; sourceTree = "<group>"; };
-		60E8313692FE470D86B7D43C /* Radio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Radio.cpp; path = ../blocks/UIslave/src/Radio.cpp; sourceTree = "<group>"; };
-		6156ECAEA22A4993920D49E7 /* Colors.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Colors.cpp; path = ../blocks/UIslave/src/Colors.cpp; sourceTree = "<group>"; };
-		63512DD2031743F79EDADF34 /* WireVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = WireVideo.cpp; path = ../blocks/Orage/src/Wires/WireVideo.cpp; sourceTree = "<group>"; };
-		63599846467543F7ADC47F7D /* Control.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Control.cpp; path = ../blocks/UIslave/src/Control.cpp; sourceTree = "<group>"; };
-		66566C19927F4234B3CBA8CA /* Radio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Radio.h; path = ../blocks/UIslave/src/Radio.h; sourceTree = "<group>"; };
-		682E38C3E3124D01AECD1FBA /* Envelope.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Envelope.h; path = ../blocks/UIslave/src/Envelope.h; sourceTree = "<group>"; };
-		684C7EE8A6204C4AA7BC7BE3 /* RenderData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RenderData.h; path = ../blocks/UIslave/src/RenderData.h; sourceTree = "<group>"; };
-		68EDD811FBD8482083F3E99C /* ColorAdjustement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ColorAdjustement.h; path = ../blocks/Orage/src/Modules/Videos/ColorAdjustement.h; sourceTree = "<group>"; };
-		6A13DEDFC1B24A11B339F252 /* Toggle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Toggle.h; path = ../blocks/UIslave/src/Toggle.h; sourceTree = "<group>"; };
-		6A9787F47C6049F9B90C153B /* Waveform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Waveform.h; path = ../blocks/UIslave/src/Waveform.h; sourceTree = "<group>"; };
-		6BE92E3DA9CB4E61926D1245 /* MultiSlider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MultiSlider.h; path = ../blocks/UIslave/src/MultiSlider.h; sourceTree = "<group>"; };
-		71EE1224FD2E4ABD9216C4B1 /* Tile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Tile.h; path = ../blocks/Orage/src/Modules/Videos/Tile.h; sourceTree = "<group>"; };
-		72EAAB919E1F4FD98B8C5AA5 /* Button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Button.cpp; path = ../blocks/UIslave/src/Button.cpp; sourceTree = "<group>"; };
-		774FD180EEBF46CABA4A2405 /* WireCV.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = WireCV.cpp; path = ../blocks/Orage/src/Wires/WireCV.cpp; sourceTree = "<group>"; };
-		775231B9D48043B3AEE1A247 /* Responder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Responder.h; path = ../blocks/UIslave/src/Responder.h; sourceTree = "<group>"; };
-		77F2827F0BF347E29F073892 /* Canvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Canvas.cpp; path = ../blocks/UIslave/src/Canvas.cpp; sourceTree = "<group>"; };
-		7A8661C5B09F4E8887DB75DC /* Graph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Graph.cpp; path = ../blocks/UIslave/src/Graph.cpp; sourceTree = "<group>"; };
-		7AA0F9FA3333446797AA68A9 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Tools.h; path = ../blocks/Orage/src/Tools.h; sourceTree = "<group>"; };
-		7B48A58A7A51483C93535F19 /* BSplineEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = BSplineEditor.cpp; path = ../blocks/UIslave/src/BSplineEditor.cpp; sourceTree = "<group>"; };
-		82E3B3A07EB24135BDB6BFCD /* Slider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Slider.h; path = ../blocks/UIslave/src/Slider.h; sourceTree = "<group>"; };
-		858C69A657054A6F81797937 /* CocoaWindowCanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CocoaWindowCanvas.h; path = ../blocks/UIslave/src/CocoaWindowCanvas.h; sourceTree = "<group>"; };
-		880056291EF1C4090045248C /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = ../blocks/Orage/src/Modules/Videos/Player.cpp; sourceTree = "<group>"; };
-		8800562A1EF1C4090045248C /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../blocks/Orage/src/Modules/Videos/Player.h; sourceTree = "<group>"; };
+		54722262D68D41F585BA1003 /* Spliter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spliter.h; sourceTree = "<group>"; };
+		548D769E6E80460E8ADB8AFE /* ColorPicker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ColorPicker.cpp; sourceTree = "<group>"; };
+		56C0457E5D47474EAE6E89AB /* ModuleBase.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ModuleBase.cpp; path = ../src/blocks/Orage/src/Modules/Bases/ModuleBase.cpp; sourceTree = SOURCE_ROOT; };
+		56C3194BD3694C5880C0BCC1 /* Fps.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Fps.h; sourceTree = "<group>"; };
+		5830FE4092DE4EACB2F2D354 /* Fps.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Fps.cpp; sourceTree = "<group>"; };
+		58CD808C4D294977994DE0D3 /* TextureView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureView.h; sourceTree = "<group>"; };
+		5B33C659014740B5A384C2A3 /* Controls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Controls.h; sourceTree = "<group>"; };
+		5CBE252C514B4B6E833A9D90 /* Plotter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Plotter.h; sourceTree = "<group>"; };
+		5ECB8CC08F374783B2CEA391 /* Spacer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Spacer.cpp; sourceTree = "<group>"; };
+		6080E305157B437DB5EBDBEB /* ORAGEApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ORAGEApp.cpp; path = ../src/src/ORAGEApp.cpp; sourceTree = "<group>"; };
+		60E8313692FE470D86B7D43C /* Radio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Radio.cpp; sourceTree = "<group>"; };
+		6156ECAEA22A4993920D49E7 /* Colors.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Colors.cpp; sourceTree = "<group>"; };
+		63512DD2031743F79EDADF34 /* WireVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WireVideo.cpp; path = ../src/blocks/Orage/src/Wires/WireVideo.cpp; sourceTree = SOURCE_ROOT; };
+		63599846467543F7ADC47F7D /* Control.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Control.cpp; sourceTree = "<group>"; };
+		66566C19927F4234B3CBA8CA /* Radio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Radio.h; sourceTree = "<group>"; };
+		682E38C3E3124D01AECD1FBA /* Envelope.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Envelope.h; sourceTree = "<group>"; };
+		684C7EE8A6204C4AA7BC7BE3 /* RenderData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderData.h; sourceTree = "<group>"; };
+		68EDD811FBD8482083F3E99C /* ColorAdjustement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorAdjustement.h; sourceTree = "<group>"; };
+		6A13DEDFC1B24A11B339F252 /* Toggle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Toggle.h; sourceTree = "<group>"; };
+		6A9787F47C6049F9B90C153B /* Waveform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Waveform.h; sourceTree = "<group>"; };
+		6BE92E3DA9CB4E61926D1245 /* MultiSlider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultiSlider.h; sourceTree = "<group>"; };
+		71EE1224FD2E4ABD9216C4B1 /* Tile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
+		72EAAB919E1F4FD98B8C5AA5 /* Button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
+		774FD180EEBF46CABA4A2405 /* WireCV.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WireCV.cpp; path = ../src/blocks/Orage/src/Wires/WireCV.cpp; sourceTree = SOURCE_ROOT; };
+		775231B9D48043B3AEE1A247 /* Responder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Responder.h; sourceTree = "<group>"; };
+		77F2827F0BF347E29F073892 /* Canvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Canvas.cpp; sourceTree = "<group>"; };
+		7A8661C5B09F4E8887DB75DC /* Graph.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Graph.cpp; sourceTree = "<group>"; };
+		7AA0F9FA3333446797AA68A9 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Tools.h; path = ../src/blocks/Orage/src/Tools.h; sourceTree = SOURCE_ROOT; };
+		7B48A58A7A51483C93535F19 /* BSplineEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BSplineEditor.cpp; sourceTree = "<group>"; };
+		82E3B3A07EB24135BDB6BFCD /* Slider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Slider.h; sourceTree = "<group>"; };
+		858C69A657054A6F81797937 /* CocoaWindowCanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CocoaWindowCanvas.h; sourceTree = "<group>"; };
+		880056291EF1C4090045248C /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
+		8800562A1EF1C4090045248C /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		880D7889244497CF00EC0D71 /* start.ORAGE.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = start.ORAGE.sh; path = ../resources/start.ORAGE.sh; sourceTree = "<group>"; };
 		880D7A632444E95500EC0D71 /* StringTools.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringTools.hpp; sourceTree = "<group>"; };
 		880D7A642444E95500EC0D71 /* App.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = App.hpp; sourceTree = "<group>"; };
@@ -265,16 +266,16 @@
 		88187B0B24376BF20008F678 /* IpEndpointName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IpEndpointName.h; sourceTree = "<group>"; };
 		88187B0C24376BF20008F678 /* IpEndpointName.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IpEndpointName.cpp; sourceTree = "<group>"; };
 		88187B0D24376BF20008F678 /* NetworkingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkingUtils.h; sourceTree = "<group>"; };
-		88187B1E24376C3F0008F678 /* Osc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Osc.cpp; path = ../blocks/Orage/src/Modules/Controllers/Osc.cpp; sourceTree = "<group>"; };
-		88187B1F24376C3F0008F678 /* Osc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Osc.h; path = ../blocks/Orage/src/Modules/Controllers/Osc.h; sourceTree = "<group>"; };
-		881A135F1EEC1822003FF906 /* Resize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Resize.cpp; path = ../blocks/Orage/src/Modules/Videos/Resize.cpp; sourceTree = "<group>"; };
-		881A13601EEC1822003FF906 /* Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Resize.h; path = ../blocks/Orage/src/Modules/Videos/Resize.h; sourceTree = "<group>"; };
-		881A13621EEC4157003FF906 /* Blur.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blur.cpp; path = ../blocks/Orage/src/Modules/Videos/Blur.cpp; sourceTree = "<group>"; };
-		881A13631EEC4157003FF906 /* Blur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blur.h; path = ../blocks/Orage/src/Modules/Videos/Blur.h; sourceTree = "<group>"; };
-		88272F252524DF100074A17D /* BeatStepPro.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeatStepPro.cpp; path = ../blocks/Orage/src/Modules/Controllers/BeatStepPro.cpp; sourceTree = "<group>"; };
-		88272F262524DF100074A17D /* BeatStepPro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BeatStepPro.h; path = ../blocks/Orage/src/Modules/Controllers/BeatStepPro.h; sourceTree = "<group>"; };
-		88283FDC2433F40700881911 /* WirePiano.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WirePiano.h; path = ../blocks/Orage/src/Wires/WirePiano.h; sourceTree = "<group>"; };
-		88283FFD2433F6B000881911 /* WirePiano.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WirePiano.cpp; path = ../blocks/Orage/src/Wires/WirePiano.cpp; sourceTree = "<group>"; };
+		88187B1E24376C3F0008F678 /* Osc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Osc.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/Osc.cpp; sourceTree = SOURCE_ROOT; };
+		88187B1F24376C3F0008F678 /* Osc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Osc.h; path = ../src/blocks/Orage/src/Modules/Controllers/Osc.h; sourceTree = SOURCE_ROOT; };
+		881A135F1EEC1822003FF906 /* Resize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resize.cpp; sourceTree = "<group>"; };
+		881A13601EEC1822003FF906 /* Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resize.h; sourceTree = "<group>"; };
+		881A13621EEC4157003FF906 /* Blur.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Blur.cpp; sourceTree = "<group>"; };
+		881A13631EEC4157003FF906 /* Blur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blur.h; sourceTree = "<group>"; };
+		88272F252524DF100074A17D /* BeatStepPro.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeatStepPro.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/BeatStepPro.cpp; sourceTree = SOURCE_ROOT; };
+		88272F262524DF100074A17D /* BeatStepPro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BeatStepPro.h; path = ../src/blocks/Orage/src/Modules/Controllers/BeatStepPro.h; sourceTree = SOURCE_ROOT; };
+		88283FDC2433F40700881911 /* WirePiano.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WirePiano.h; path = ../src/blocks/Orage/src/Wires/WirePiano.h; sourceTree = SOURCE_ROOT; };
+		88283FFD2433F6B000881911 /* WirePiano.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WirePiano.cpp; path = ../src/blocks/Orage/src/Wires/WirePiano.cpp; sourceTree = SOURCE_ROOT; };
 		882840002433F6F500881911 /* PianoInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PianoInput.h; sourceTree = "<group>"; };
 		882840012433F6F500881911 /* NoteDisplay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NoteDisplay.cpp; sourceTree = "<group>"; };
 		882840022433F6F500881911 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
@@ -293,10 +294,10 @@
 		8828400F2433F6F500881911 /* Structs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Structs.cpp; sourceTree = "<group>"; };
 		882840102433F6F500881911 /* PianoInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PianoInput.cpp; sourceTree = "<group>"; };
 		882840112433F6F500881911 /* DynamicAnalyser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicAnalyser.cpp; sourceTree = "<group>"; };
-		88358C2025A9112300554E96 /* Hilbert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Hilbert.cpp; path = ../blocks/Orage/src/Modules/Videos/Hilbert.cpp; sourceTree = "<group>"; };
-		88358C2125A9112300554E96 /* Hilbert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hilbert.h; path = ../blocks/Orage/src/Modules/Videos/Hilbert.h; sourceTree = "<group>"; };
-		8840E3AE1F0E5D9D0023CA5F /* TintCorrector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TintCorrector.cpp; path = ../blocks/Orage/src/Modules/Videos/TintCorrector.cpp; sourceTree = "<group>"; };
-		8840E3AF1F0E5D9D0023CA5F /* TintCorrector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TintCorrector.h; path = ../blocks/Orage/src/Modules/Videos/TintCorrector.h; sourceTree = "<group>"; };
+		88358C2025A9112300554E96 /* Hilbert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hilbert.cpp; sourceTree = "<group>"; };
+		88358C2125A9112300554E96 /* Hilbert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hilbert.h; sourceTree = "<group>"; };
+		8840E3AE1F0E5D9D0023CA5F /* TintCorrector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TintCorrector.cpp; sourceTree = "<group>"; };
+		8840E3AF1F0E5D9D0023CA5F /* TintCorrector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TintCorrector.h; sourceTree = "<group>"; };
 		884390EA252520C90052B44F /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		88439142252521270052B44F /* RtMidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RtMidi.cpp; sourceTree = "<group>"; };
 		88439143252521270052B44F /* MidiConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MidiConstants.h; sourceTree = "<group>"; };
@@ -311,19 +312,19 @@
 		8843914C252521270052B44F /* MidiHub.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MidiHub.cpp; sourceTree = "<group>"; };
 		8843914D252521270052B44F /* MidiIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MidiIn.h; sourceTree = "<group>"; };
 		8843914E252521270052B44F /* MidiIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MidiIn.cpp; sourceTree = "<group>"; };
-		88790943257B0C9A0084AA2A /* CustomCC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomCC.h; path = ../blocks/Orage/src/Modules/Controllers/CustomCC.h; sourceTree = "<group>"; };
-		88790944257B0C9A0084AA2A /* CustomCC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomCC.cpp; path = ../blocks/Orage/src/Modules/Controllers/CustomCC.cpp; sourceTree = "<group>"; };
-		888984BC2060028400488193 /* Random.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Random.cpp; path = ../blocks/Orage/src/Modules/Controllers/Random.cpp; sourceTree = "<group>"; };
-		888984BD2060028400488193 /* Random.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Random.hpp; path = ../blocks/Orage/src/Modules/Controllers/Random.hpp; sourceTree = "<group>"; };
-		888AD3B31ECC828C00179240 /* SuperModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SuperModule.cpp; path = ../blocks/Orage/src/Modules/SuperModule.cpp; sourceTree = "<group>"; };
-		888AD3B41ECC828C00179240 /* SuperModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuperModule.h; path = ../blocks/Orage/src/Modules/SuperModule.h; sourceTree = "<group>"; };
-		8896F6B11FB231A800E9630A /* Kaleidoscope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Kaleidoscope.cpp; path = ../blocks/Orage/src/Modules/Videos/Kaleidoscope.cpp; sourceTree = "<group>"; };
-		8896F6B21FB231A800E9630A /* Kaleidoscope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Kaleidoscope.h; path = ../blocks/Orage/src/Modules/Videos/Kaleidoscope.h; sourceTree = "<group>"; };
-		889932C62523CF3E00020C9F /* NoteOnOff.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NoteOnOff.cpp; sourceTree = "<group>"; };
-		889932C72523CF4000020C9F /* NoteOnOff.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoteOnOff.h; sourceTree = "<group>"; };
-		889E456B256AA02900C114CB /* NanoKontrol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NanoKontrol.h; path = ../blocks/Orage/src/Modules/Controllers/NanoKontrol.h; sourceTree = "<group>"; };
-		889E456C256AA02A00C114CB /* NanoKontrol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NanoKontrol.cpp; path = ../blocks/Orage/src/Modules/Controllers/NanoKontrol.cpp; sourceTree = "<group>"; };
-		88A889631EDC308D007F4B0C /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
+		88790943257B0C9A0084AA2A /* CustomCC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomCC.h; path = ../src/blocks/Orage/src/Modules/Controllers/CustomCC.h; sourceTree = SOURCE_ROOT; };
+		88790944257B0C9A0084AA2A /* CustomCC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomCC.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/CustomCC.cpp; sourceTree = SOURCE_ROOT; };
+		888984BC2060028400488193 /* Random.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Random.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/Random.cpp; sourceTree = SOURCE_ROOT; };
+		888984BD2060028400488193 /* Random.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Random.hpp; path = ../src/blocks/Orage/src/Modules/Controllers/Random.hpp; sourceTree = SOURCE_ROOT; };
+		888AD3B31ECC828C00179240 /* SuperModule.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SuperModule.cpp; path = ../src/blocks/Orage/src/Modules/SuperModule.cpp; sourceTree = SOURCE_ROOT; };
+		888AD3B41ECC828C00179240 /* SuperModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuperModule.h; path = ../src/blocks/Orage/src/Modules/SuperModule.h; sourceTree = SOURCE_ROOT; };
+		8896F6B11FB231A800E9630A /* Kaleidoscope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Kaleidoscope.cpp; sourceTree = "<group>"; };
+		8896F6B21FB231A800E9630A /* Kaleidoscope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kaleidoscope.h; sourceTree = "<group>"; };
+		889932C62523CF3E00020C9F /* NoteOnOff.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = NoteOnOff.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/NoteOnOff.cpp; sourceTree = SOURCE_ROOT; };
+		889932C72523CF4000020C9F /* NoteOnOff.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NoteOnOff.h; path = ../src/blocks/Orage/src/Modules/Controllers/NoteOnOff.h; sourceTree = SOURCE_ROOT; };
+		889E456B256AA02900C114CB /* NanoKontrol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NanoKontrol.h; path = ../src/blocks/Orage/src/Modules/Controllers/NanoKontrol.h; sourceTree = SOURCE_ROOT; };
+		889E456C256AA02A00C114CB /* NanoKontrol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NanoKontrol.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/NanoKontrol.cpp; sourceTree = SOURCE_ROOT; };
+		88A889631EDC308D007F4B0C /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = ../src/blocks/Syphon/lib/Syphon.framework; sourceTree = SOURCE_ROOT; };
 		88A889641EDC308D007F4B0C /* SyphonNameboundClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
 		88A889651EDC308D007F4B0C /* SyphonNameboundClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyphonNameboundClient.m; sourceTree = "<group>"; };
 		88A889671EDC308D007F4B0C /* cinderSyphon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cinderSyphon.h; sourceTree = "<group>"; };
@@ -333,63 +334,64 @@
 		88A8896B1EDC308D007F4B0C /* syphonServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = syphonServer.mm; sourceTree = "<group>"; };
 		88A8896C1EDC308D007F4B0C /* syphonServerDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = syphonServerDirectory.h; sourceTree = "<group>"; };
 		88A8896D1EDC308D007F4B0C /* syphonServerDirectory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = syphonServerDirectory.mm; sourceTree = "<group>"; };
-		88A889731EDC30F6007F4B0C /* SyphonInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SyphonInput.cpp; path = ../blocks/Orage/src/Modules/Videos/SyphonInput.cpp; sourceTree = "<group>"; };
-		88A889741EDC30F6007F4B0C /* SyphonInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SyphonInput.h; path = ../blocks/Orage/src/Modules/Videos/SyphonInput.h; sourceTree = "<group>"; };
-		88A889791EDC47D7007F4B0C /* Freezer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Freezer.cpp; path = ../blocks/Orage/src/Modules/Videos/Freezer.cpp; sourceTree = "<group>"; };
-		88A8897A1EDC47D7007F4B0C /* Freezer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Freezer.h; path = ../blocks/Orage/src/Modules/Videos/Freezer.h; sourceTree = "<group>"; };
-		88A8897C1EDC494D007F4B0C /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
-		88B0FED21F06647900EBAD22 /* ProcessCV.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProcessCV.cpp; path = ../blocks/Orage/src/Modules/Controllers/ProcessCV.cpp; sourceTree = "<group>"; };
-		88B0FED31F06647900EBAD22 /* ProcessCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProcessCV.h; path = ../blocks/Orage/src/Modules/Controllers/ProcessCV.h; sourceTree = "<group>"; };
-		88D0A0881ECF2F1600BE6418 /* Output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Output.cpp; path = ../blocks/Orage/src/Modules/Videos/Output.cpp; sourceTree = "<group>"; };
-		88D0A0891ECF2F1600BE6418 /* Output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Output.h; path = ../blocks/Orage/src/Modules/Videos/Output.h; sourceTree = "<group>"; };
-		88D8B45074CB4476BC6C4309 /* XYPad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XYPad.h; path = ../blocks/UIslave/src/XYPad.h; sourceTree = "<group>"; };
-		88E4AC2B1EE03B2000A9DA8C /* Delay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Delay.cpp; path = ../blocks/Orage/src/Modules/Videos/Delay.cpp; sourceTree = "<group>"; };
-		88E4AC2C1EE03B2000A9DA8C /* Delay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Delay.h; path = ../blocks/Orage/src/Modules/Videos/Delay.h; sourceTree = "<group>"; };
-		89E98564226D4D9E8692EA6E /* ModuleVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = ModuleVideo.cpp; path = ../blocks/Orage/src/Modules/Bases/ModuleVideo.cpp; sourceTree = "<group>"; };
+		88A889731EDC30F6007F4B0C /* SyphonInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SyphonInput.cpp; sourceTree = "<group>"; };
+		88A889741EDC30F6007F4B0C /* SyphonInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonInput.h; sourceTree = "<group>"; };
+		88A889791EDC47D7007F4B0C /* Freezer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Freezer.cpp; sourceTree = "<group>"; };
+		88A8897A1EDC47D7007F4B0C /* Freezer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Freezer.h; sourceTree = "<group>"; };
+		88A8897C1EDC494D007F4B0C /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../src/assets; sourceTree = "<group>"; };
+		88B0FED21F06647900EBAD22 /* ProcessCV.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProcessCV.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/ProcessCV.cpp; sourceTree = SOURCE_ROOT; };
+		88B0FED31F06647900EBAD22 /* ProcessCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProcessCV.h; path = ../src/blocks/Orage/src/Modules/Controllers/ProcessCV.h; sourceTree = SOURCE_ROOT; };
+		88D0A0881ECF2F1600BE6418 /* Output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Output.cpp; sourceTree = "<group>"; };
+		88D0A0891ECF2F1600BE6418 /* Output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Output.h; sourceTree = "<group>"; };
+		88D8B45074CB4476BC6C4309 /* XYPad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYPad.h; sourceTree = "<group>"; };
+		88E4AC2B1EE03B2000A9DA8C /* Delay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Delay.cpp; sourceTree = "<group>"; };
+		88E4AC2C1EE03B2000A9DA8C /* Delay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Delay.h; sourceTree = "<group>"; };
+		88F3CD372665848600B53D48 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = ../src/blocks/Syphon/lib/Syphon.framework; sourceTree = "<group>"; };
+		89E98564226D4D9E8692EA6E /* ModuleVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ModuleVideo.cpp; path = ../src/blocks/Orage/src/Modules/Bases/ModuleVideo.cpp; sourceTree = SOURCE_ROOT; };
 		8D1107320486CEB800E47090 /* ORAGE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ORAGE.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8EB89EF88E0448CAA5BC08E3 /* ModulePiano.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ModulePiano.h; path = ../blocks/Orage/src/Modules/Bases/ModulePiano.h; sourceTree = "<group>"; };
-		90707BED38094DD4A7C80648 /* ColorPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ColorPicker.h; path = ../blocks/UIslave/src/ColorPicker.h; sourceTree = "<group>"; };
-		9151F3F98087417DA5885A3D /* Padding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Padding.h; path = ../blocks/UIslave/src/Padding.h; sourceTree = "<group>"; };
-		925E27B6C58C4953AF5EB252 /* TextureView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = TextureView.cpp; path = ../blocks/UIslave/src/TextureView.cpp; sourceTree = "<group>"; };
-		9360F4FA36CA4B03BABDFFEE /* Cloud.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Cloud.h; path = ../blocks/Orage/src/Modules/Videos/Cloud.h; sourceTree = "<group>"; };
-		9392A1FDCB51464F9E52C21A /* SuperCanvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = SuperCanvas.cpp; path = ../blocks/UIslave/src/SuperCanvas.cpp; sourceTree = "<group>"; };
-		94963EC4A6BC44B3A5DAA536 /* ControlWithLabel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = ControlWithLabel.cpp; path = ../blocks/UIslave/src/ControlWithLabel.cpp; sourceTree = "<group>"; };
-		A8820FCDD89B4F3A9492D0CF /* ModulePiano.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = ModulePiano.cpp; path = ../blocks/Orage/src/Modules/Bases/ModulePiano.cpp; sourceTree = "<group>"; };
-		A90B20E57F05445D9F753FB2 /* Tile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Tile.cpp; path = ../blocks/Orage/src/Modules/Videos/Tile.cpp; sourceTree = "<group>"; };
-		AB221C7E20AD455B99F7986D /* FontSizes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FontSizes.h; path = ../blocks/UIslave/src/FontSizes.h; sourceTree = "<group>"; };
-		B1FBE0B821F74543B3FE9718 /* Range.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Range.h; path = ../blocks/UIslave/src/Range.h; sourceTree = "<group>"; };
+		8EB89EF88E0448CAA5BC08E3 /* ModulePiano.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ModulePiano.h; path = ../src/blocks/Orage/src/Modules/Bases/ModulePiano.h; sourceTree = SOURCE_ROOT; };
+		90707BED38094DD4A7C80648 /* ColorPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorPicker.h; sourceTree = "<group>"; };
+		9151F3F98087417DA5885A3D /* Padding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Padding.h; sourceTree = "<group>"; };
+		925E27B6C58C4953AF5EB252 /* TextureView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TextureView.cpp; sourceTree = "<group>"; };
+		9360F4FA36CA4B03BABDFFEE /* Cloud.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cloud.h; sourceTree = "<group>"; };
+		9392A1FDCB51464F9E52C21A /* SuperCanvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SuperCanvas.cpp; sourceTree = "<group>"; };
+		94963EC4A6BC44B3A5DAA536 /* ControlWithLabel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ControlWithLabel.cpp; sourceTree = "<group>"; };
+		A8820FCDD89B4F3A9492D0CF /* ModulePiano.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ModulePiano.cpp; path = ../src/blocks/Orage/src/Modules/Bases/ModulePiano.cpp; sourceTree = SOURCE_ROOT; };
+		A90B20E57F05445D9F753FB2 /* Tile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
+		AB221C7E20AD455B99F7986D /* FontSizes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FontSizes.h; sourceTree = "<group>"; };
+		B1FBE0B821F74543B3FE9718 /* Range.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Range.h; sourceTree = "<group>"; };
 		B5990141F5264552AD499BD4 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
-		B7FD3A15D6AA450588FD214F /* Crossfader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Crossfader.h; path = ../blocks/Orage/src/Modules/Videos/Crossfader.h; sourceTree = "<group>"; };
-		BBB26E5485C841E3A846993E /* Oscillator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Oscillator.cpp; path = ../blocks/Orage/src/Modules/Videos/Oscillator.cpp; sourceTree = "<group>"; };
-		BD7FACACACCC45E9B93D95D1 /* Label.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Label.h; path = ../blocks/UIslave/src/Label.h; sourceTree = "<group>"; };
-		BDC266D5C9AF451F90598A92 /* QuaternionOrderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = QuaternionOrderer.cpp; path = ../blocks/UIslave/src/QuaternionOrderer.cpp; sourceTree = "<group>"; };
-		BF75D02AC9064F32A7FA4625 /* Envelope.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Envelope.cpp; path = ../blocks/UIslave/src/Envelope.cpp; sourceTree = "<group>"; };
-		C432A758EC7C4BA08C41AB6F /* View.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = View.cpp; path = ../blocks/UIslave/src/View.cpp; sourceTree = "<group>"; };
-		C57A3337A861439E953E624E /* Matte.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Matte.h; path = ../blocks/Orage/src/Modules/Videos/Matte.h; sourceTree = "<group>"; };
-		C63F6888EAF54839A1027297 /* Orage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Orage.h; path = ../blocks/Orage/src/Orage.h; sourceTree = "<group>"; };
-		C666D6F50D8F48888D43F10B /* Tools.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Tools.cpp; path = ../blocks/Orage/src/Tools.cpp; sourceTree = "<group>"; };
-		C6C9C88AD4E549E0868AA91A /* Spectrum.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Spectrum.cpp; path = ../blocks/UIslave/src/Spectrum.cpp; sourceTree = "<group>"; };
-		C6E304D117B44AA1828E45DC /* Spliter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Spliter.cpp; path = ../blocks/Orage/src/Modules/Videos/Spliter.cpp; sourceTree = "<group>"; };
-		C778B39C3AD74C9F9973AAB0 /* Spectrum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Spectrum.h; path = ../blocks/UIslave/src/Spectrum.h; sourceTree = "<group>"; };
-		C8029AA2C4F3481687F3A817 /* Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Helpers.h; path = ../blocks/UIslave/src/Helpers.h; sourceTree = "<group>"; };
-		CF6CC642EBA84F318C7F6535 /* Slider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Slider.cpp; path = ../blocks/UIslave/src/Slider.cpp; sourceTree = "<group>"; };
-		D1E018B078A2482B830ED167 /* Wire.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Wire.cpp; path = ../blocks/Orage/src/Wires/Wire.cpp; sourceTree = "<group>"; };
-		D201F67FC6144FE58B52FCAB /* QuaternionOrderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = QuaternionOrderer.h; path = ../blocks/UIslave/src/QuaternionOrderer.h; sourceTree = "<group>"; };
-		D34F9E157FC44EB8A27C6483 /* WireVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WireVideo.h; path = ../blocks/Orage/src/Wires/WireVideo.h; sourceTree = "<group>"; };
-		DCA0464AF0E4453488D69F7F /* UI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UI.h; path = ../blocks/UIslave/src/UI.h; sourceTree = "<group>"; };
-		DCF92DA0D48441FDAE01B5F1 /* TextInput.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = TextInput.cpp; path = ../blocks/UIslave/src/TextInput.cpp; sourceTree = "<group>"; };
-		DEC3683DB3FF4813BD55CCD9 /* Responder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Responder.cpp; path = ../blocks/UIslave/src/Responder.cpp; sourceTree = "<group>"; };
-		E08030CF1BFD4096938E26CF /* Crossfader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Crossfader.cpp; path = ../blocks/Orage/src/Modules/Videos/Crossfader.cpp; sourceTree = "<group>"; };
-		E5CA0725D65649E1A60FCB74 /* XYPad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = XYPad.cpp; path = ../blocks/UIslave/src/XYPad.cpp; sourceTree = "<group>"; };
-		E694CFC4215A4A08A486112F /* Mosher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Mosher.h; path = ../blocks/Orage/src/Modules/Videos/Mosher.h; sourceTree = "<group>"; };
-		EB1C049083FA42028F964085 /* Wires.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Wires.h; path = ../blocks/Orage/src/Wires/Wires.h; sourceTree = "<group>"; };
-		F56E8446F00B42288437A49F /* WireCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WireCV.h; path = ../blocks/Orage/src/Wires/WireCV.h; sourceTree = "<group>"; };
-		F6202E8982034106B3ADF808 /* TextInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextInput.h; path = ../blocks/UIslave/src/TextInput.h; sourceTree = "<group>"; };
-		F67984F78B3149BDB8416B0E /* Alignments.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Alignments.h; path = ../blocks/UIslave/src/Alignments.h; sourceTree = "<group>"; };
-		F78905B9F996416E95C7838A /* Globals.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Globals.cpp; path = ../blocks/UIslave/src/Globals.cpp; sourceTree = "<group>"; };
-		F8A43B337A574576B55CA68D /* Cloud.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Cloud.cpp; path = ../blocks/Orage/src/Modules/Videos/Cloud.cpp; sourceTree = "<group>"; };
-		FA16998C8A744783890DF9B0 /* Spacer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Spacer.h; path = ../blocks/UIslave/src/Spacer.h; sourceTree = "<group>"; };
-		FB5190331EDD4B5E843BD167 /* Dialer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = Dialer.cpp; path = ../blocks/UIslave/src/Dialer.cpp; sourceTree = "<group>"; };
+		B7FD3A15D6AA450588FD214F /* Crossfader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Crossfader.h; sourceTree = "<group>"; };
+		BBB26E5485C841E3A846993E /* Oscillator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Oscillator.cpp; sourceTree = "<group>"; };
+		BD7FACACACCC45E9B93D95D1 /* Label.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Label.h; sourceTree = "<group>"; };
+		BDC266D5C9AF451F90598A92 /* QuaternionOrderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QuaternionOrderer.cpp; sourceTree = "<group>"; };
+		BF75D02AC9064F32A7FA4625 /* Envelope.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Envelope.cpp; sourceTree = "<group>"; };
+		C432A758EC7C4BA08C41AB6F /* View.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = View.cpp; sourceTree = "<group>"; };
+		C57A3337A861439E953E624E /* Matte.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Matte.h; sourceTree = "<group>"; };
+		C63F6888EAF54839A1027297 /* Orage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Orage.h; path = ../src/blocks/Orage/src/Orage.h; sourceTree = SOURCE_ROOT; };
+		C666D6F50D8F48888D43F10B /* Tools.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Tools.cpp; path = ../src/blocks/Orage/src/Tools.cpp; sourceTree = SOURCE_ROOT; };
+		C6C9C88AD4E549E0868AA91A /* Spectrum.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Spectrum.cpp; sourceTree = "<group>"; };
+		C6E304D117B44AA1828E45DC /* Spliter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Spliter.cpp; sourceTree = "<group>"; };
+		C778B39C3AD74C9F9973AAB0 /* Spectrum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spectrum.h; sourceTree = "<group>"; };
+		C8029AA2C4F3481687F3A817 /* Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
+		CF6CC642EBA84F318C7F6535 /* Slider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Slider.cpp; sourceTree = "<group>"; };
+		D1E018B078A2482B830ED167 /* Wire.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Wire.cpp; path = ../src/blocks/Orage/src/Wires/Wire.cpp; sourceTree = SOURCE_ROOT; };
+		D201F67FC6144FE58B52FCAB /* QuaternionOrderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuaternionOrderer.h; sourceTree = "<group>"; };
+		D34F9E157FC44EB8A27C6483 /* WireVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WireVideo.h; path = ../src/blocks/Orage/src/Wires/WireVideo.h; sourceTree = SOURCE_ROOT; };
+		DCA0464AF0E4453488D69F7F /* UI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
+		DCF92DA0D48441FDAE01B5F1 /* TextInput.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TextInput.cpp; sourceTree = "<group>"; };
+		DEC3683DB3FF4813BD55CCD9 /* Responder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Responder.cpp; sourceTree = "<group>"; };
+		E08030CF1BFD4096938E26CF /* Crossfader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Crossfader.cpp; sourceTree = "<group>"; };
+		E5CA0725D65649E1A60FCB74 /* XYPad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = XYPad.cpp; sourceTree = "<group>"; };
+		E694CFC4215A4A08A486112F /* Mosher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mosher.h; sourceTree = "<group>"; };
+		EB1C049083FA42028F964085 /* Wires.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Wires.h; path = ../src/blocks/Orage/src/Wires/Wires.h; sourceTree = SOURCE_ROOT; };
+		F56E8446F00B42288437A49F /* WireCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WireCV.h; path = ../src/blocks/Orage/src/Wires/WireCV.h; sourceTree = SOURCE_ROOT; };
+		F6202E8982034106B3ADF808 /* TextInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextInput.h; sourceTree = "<group>"; };
+		F67984F78B3149BDB8416B0E /* Alignments.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Alignments.h; sourceTree = "<group>"; };
+		F78905B9F996416E95C7838A /* Globals.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Globals.cpp; sourceTree = "<group>"; };
+		F8A43B337A574576B55CA68D /* Cloud.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Cloud.cpp; sourceTree = "<group>"; };
+		FA16998C8A744783890DF9B0 /* Spacer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spacer.h; sourceTree = "<group>"; };
+		FB5190331EDD4B5E843BD167 /* Dialer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Dialer.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -397,6 +399,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88F3CD362665833400B53D48 /* Syphon.framework in Frameworks */,
 				884390EB252520CA0052B44F /* CoreMIDI.framework in Frameworks */,
 				006D720419952D00008149E2 /* AVFoundation.framework in Frameworks */,
 				006D720519952D00008149E2 /* CoreMedia.framework in Frameworks */,
@@ -407,9 +410,9 @@
 				00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */,
 				00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */,
 				00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */,
+				88F3CD382665848600B53D48 /* Syphon.framework in Frameworks */,
 				00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */,
 				00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */,
-				88A889761EDC3510007F4B0C /* Syphon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,7 +438,8 @@
 				6080E305157B437DB5EBDBEB /* ORAGEApp.cpp */,
 			);
 			name = Source;
-			sourceTree = "<group>";
+			path = ../src;
+			sourceTree = SOURCE_ROOT;
 		};
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
@@ -478,11 +482,13 @@
 				FC6F5FE9A21D46469F1A8FED /* src */,
 			);
 			name = UIslave;
-			sourceTree = "<group>";
+			path = ../src/blocks/UIslave;
+			sourceTree = SOURCE_ROOT;
 		};
 		29B97314FDCFA39411CA2CEA /* ORAGE */ = {
 			isa = PBXGroup;
 			children = (
+				88F3CD372665848600B53D48 /* Syphon.framework */,
 				88A8897C1EDC494D007F4B0C /* assets */,
 				01B97315FEAEA392516A2CEA /* Blocks */,
 				29B97315FDCFA39411CA2CEA /* Headers */,
@@ -498,10 +504,11 @@
 			isa = PBXGroup;
 			children = (
 				4A1AAA1CD0754A0EA20C2406 /* Resources.h */,
-				15D1360DDA0B424F9540A913 /* ORAGE_Prefix.pch */,
+				15D1360DDA0B424F9540A913 /* xcode */,
 			);
 			name = Headers;
-			sourceTree = "<group>";
+			path = ../src/include;
+			sourceTree = SOURCE_ROOT;
 		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
@@ -511,7 +518,8 @@
 				1C1624A7C5DE4256BD67460C /* Info.plist */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
+			path = ../src/resources;
+			sourceTree = SOURCE_ROOT;
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
@@ -541,7 +549,8 @@
 				888AD3B41ECC828C00179240 /* SuperModule.h */,
 			);
 			name = Modules;
-			sourceTree = "<group>";
+			path = ../src/blocks/Orage/src/Modules;
+			sourceTree = SOURCE_ROOT;
 		};
 		6602E87D465242C5985734F5 /* Videos */ = {
 			isa = PBXGroup;
@@ -584,7 +593,8 @@
 				8896F6B11FB231A800E9630A /* Kaleidoscope.cpp */,
 			);
 			name = Videos;
-			sourceTree = "<group>";
+			path = ../src/blocks/Orage/src/Modules/Videos;
+			sourceTree = SOURCE_ROOT;
 		};
 		880D7A622444E95500EC0D71 /* CLI */ = {
 			isa = PBXGroup;
@@ -606,7 +616,7 @@
 				880D7A712444E95500EC0D71 /* ConfigFwd.hpp */,
 			);
 			path = CLI;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		88187AEC24376BF20008F678 /* OSC */ = {
 			isa = PBXGroup;
@@ -614,8 +624,8 @@
 				88187AED24376BF20008F678 /* src */,
 			);
 			name = OSC;
-			path = ../blocks/OSC;
-			sourceTree = "<group>";
+			path = ../src/blocks/OSC;
+			sourceTree = SOURCE_ROOT;
 		};
 		88187AED24376BF20008F678 /* src */ = {
 			isa = PBXGroup;
@@ -700,8 +710,8 @@
 				882840112433F6F500881911 /* DynamicAnalyser.cpp */,
 			);
 			name = Piano;
-			path = ../blocks/Orage/src/Wires/Piano;
-			sourceTree = "<group>";
+			path = ../src/blocks/Orage/src/Wires/Piano;
+			sourceTree = SOURCE_ROOT;
 		};
 		88439140252521270052B44F /* MIDI2 */ = {
 			isa = PBXGroup;
@@ -709,8 +719,8 @@
 				88439141252521270052B44F /* src */,
 			);
 			name = MIDI2;
-			path = ../blocks/MIDI2;
-			sourceTree = "<group>";
+			path = ../src/blocks/MIDI2;
+			sourceTree = SOURCE_ROOT;
 		};
 		88439141252521270052B44F /* src */ = {
 			isa = PBXGroup;
@@ -739,8 +749,8 @@
 				88A889661EDC308D007F4B0C /* src */,
 			);
 			name = Syphon;
-			path = ../blocks/Syphon;
-			sourceTree = "<group>";
+			path = ../src/blocks/Syphon;
+			sourceTree = SOURCE_ROOT;
 		};
 		88A889621EDC308D007F4B0C /* lib */ = {
 			isa = PBXGroup;
@@ -800,7 +810,8 @@
 				88272F262524DF100074A17D /* BeatStepPro.h */,
 			);
 			name = Controllers;
-			sourceTree = "<group>";
+			path = ../src/blocks/Orage/src/Modules/Controllers;
+			sourceTree = SOURCE_ROOT;
 		};
 		A9BD20EE4F334FF38E31DA8C /* Wires */ = {
 			isa = PBXGroup;
@@ -818,7 +829,8 @@
 				63512DD2031743F79EDADF34 /* WireVideo.cpp */,
 			);
 			name = Wires;
-			sourceTree = "<group>";
+			path = ../src/blocks/Orage/src/Wires;
+			sourceTree = SOURCE_ROOT;
 		};
 		E5A88721866B40FE9B26FB7E /* Bases */ = {
 			isa = PBXGroup;
@@ -831,7 +843,8 @@
 				89E98564226D4D9E8692EA6E /* ModuleVideo.cpp */,
 			);
 			name = Bases;
-			sourceTree = "<group>";
+			path = ../src/blocks/Orage/src/Modules/Bases;
+			sourceTree = SOURCE_ROOT;
 		};
 		FC6F5FE9A21D46469F1A8FED /* src */ = {
 			isa = PBXGroup;
@@ -909,7 +922,8 @@
 				E5CA0725D65649E1A60FCB74 /* XYPad.cpp */,
 			);
 			name = src;
-			sourceTree = "<group>";
+			path = ../src/blocks/UIslave/src;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -921,7 +935,7 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				88A889781EDC3510007F4B0C /* Embed Frameworks */,
+				88F3CD3A2665848600B53D48 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1088,7 +1102,7 @@
 				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
-				FRAMEWORK_SEARCH_PATHS = ../blocks/Syphon/lib;
+				FRAMEWORK_SEARCH_PATHS = ../src/blocks/Syphon/lib;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1117,7 +1131,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = ../blocks/Syphon/lib;
+				FRAMEWORK_SEARCH_PATHS = ../src/blocks/Syphon/lib;
 				GCC_FAST_MATH = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;

@@ -34,6 +34,7 @@
 #include "syphonClient.h"
 
 #import <Syphon/Syphon.h>
+
 #import "SyphonNameboundClient.h"
 
 syphonClient::syphonClient()
