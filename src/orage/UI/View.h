@@ -26,9 +26,9 @@ class View {
         ViewRef getView(string name);
         ViewRef getSubView(string name);
         void setParent(View * parent);
-        View * getParent();
         void setPos(vec2 pos);
-        vec2 getRecursivePos();
+        vec2 getPos(bool recursive = false);
+        string getName(bool recursive = false);
         vec2 getSize();
         virtual void update();
         virtual void draw();
@@ -51,16 +51,18 @@ View::View(string name, vec2 origin, vec2 size) :
 }
 
 View::~View(){
-    cout<<"destroy view : "<< name << endl;
+    cout<<"destroy view : "<< getName(true) << endl;
 }
 
 ViewRef View::addView(string name, ViewRef view){
+    view->name = name;
     views[name]=view;
     view->setParent(this);
     return view;
 }
 
 ViewRef View::addSubView(string name, ViewRef subView){
+    subView->name = name;
     subViews[name]=subView;
     subView->setParent(this);
     return subView;
@@ -79,14 +81,21 @@ void View::setPos(vec2 pos){
     bounds.offset(pos-op);
 }
 
-vec2 View::getRecursivePos(){
+vec2 View::getPos(bool recursive){
     vec2 op = {bounds.getX1(), bounds.getY1()};
-    if(parent != nullptr){
-        return op + parent->getRecursivePos();
+    if(recursive && parent != nullptr){
+        op = op + parent->getPos(recursive);
     }
     return op;
 }
 
+string View::getName(bool recursive){
+    string n = name;
+    if(recursive && parent != nullptr){
+        n = parent->getName(recursive) + "-" + n;
+    }
+    return n;
+}
 
 void View::setParent(View * parent){
     this->parent = parent;

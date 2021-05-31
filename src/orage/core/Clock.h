@@ -62,8 +62,8 @@ typedef function<void(ClockEvent)> StrobFnc;
 Clock::Clock(float BPM):
     Module("Clock")
 {
-	bang = ParameterI::create(1, 0, 1);
-    bpm = ParameterF::create(BPM, 1, 300);
+	bang = static_pointer_cast<ParameterI>(addSubModule("bang", ParameterI::create(1, 0, 1)));
+    bpm = static_pointer_cast<ParameterF>(addSubModule("bpm", ParameterF::create(BPM, 1, 300)));
 	this->strob([&](ClockEvent event) -> void{
 		if(event.is(1, 1)){
 			bang->setValue(1);

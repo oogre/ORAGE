@@ -27,8 +27,8 @@ typedef shared_ptr<class UIClock> UIClockRef;
 UIClock::UIClock(string name, vec2 origin, vec2 size) :
     IView(name, origin, size)
 {
-    ViewRef btn = addSubView("bang", View::create("bang-"+name, {10, 10}, {10, 10}));
-    ViewRef slider = addSubView("bpm", UISlider::create("bpm-"+name, {10, 30}, {100, 15}));
+    ViewRef btn = addSubView("bang", View::create(name, {10, 10}, {10, 10}));
+    ViewRef slider = addSubView("bpm", UISlider::create(name, {10, 30}, {100, 15}));
     btn->bgColor = Theme::bgActiveColor;
     View::bgColor = Theme::bgDisactiveColor;
     

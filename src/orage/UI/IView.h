@@ -67,6 +67,9 @@ IView::IView(string name, ci::vec2 origin, ci::vec2 size) :
     getWindow()->getSignalMouseMove().connect( [&]( MouseEvent event ){
         IView::lastMouseEvent = event;
     });
+    getWindow()->getSignalMouseDrag().connect( [&]( MouseEvent event ){
+        IView::lastMouseEvent = event;
+    });
 }
 
 IView* IView::on(string type, BaseFnc fnc){
@@ -75,7 +78,7 @@ IView* IView::on(string type, BaseFnc fnc){
 }
 
 void IView::update(){
-    vec2 p = getRecursivePos();
+    vec2 p = getPos(true);
     Rectf b = {p, bounds.getSize() + p};
     if(b.contains(IView::lastMouseEvent.getPos())){
         for(auto fnc : baseFncs["over"]){

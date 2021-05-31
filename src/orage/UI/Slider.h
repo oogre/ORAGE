@@ -30,9 +30,9 @@ typedef std::shared_ptr<class UISlider> UISliderRef;
 UISlider::UISlider(string name, vec2 origin, vec2 size) :
 IView(name, origin, size)
 {
-    frame = addView("frame", View::create("frame-"+name, origin+vec2(1, 1), size-vec2(2, 2)));
+    frame = addView("frame", View::create(name, origin+vec2(1, 1), size-vec2(2, 2)));
     frame->bgColor = Theme::bgDisactiveColor;
-    cursor = frame->addSubView("cursor", View::create("cursor-"+name, {1, 1}, {size.y-4,size.y-4}));
+    cursor = frame->addSubView("cursor", View::create(name, {1, 1}, {size.y-4,size.y-4}));
     on("enter", [&](BaseEvent event) -> void{
         bgColor = Theme::bgDisactiveColor;
         frame->bgColor = Theme::bgActiveColor;
