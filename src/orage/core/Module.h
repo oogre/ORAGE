@@ -11,6 +11,10 @@ class Module : public std::enable_shared_from_this<Module>{
 	private : 
 		std::map<string, ModuleRef> subModules;
 		Module * parent = nullptr;
+    protected:
+        ci::vec2 origin;
+        ci::vec2 size = {0, 0};
+        bool previouslyDisplayed();
 	public:
 		int id ;
 		ModuleRef addSubModule(string name, ModuleRef subModule);
@@ -20,6 +24,8 @@ class Module : public std::enable_shared_from_this<Module>{
 		Module(string name);
 		virtual ~Module();
 		virtual ModuleRef display(int x, int y, int w, int h);
+        virtual ModuleRef display();
+        virtual void hide();
 		ViewRef view;
  };
 
@@ -41,8 +47,24 @@ Module::~Module(){
 }
 
 ModuleRef Module::display(int x, int y, int w, int h){
-	view = View::create("out-"+this->name, {x, y}, {w, h});
+	origin = {x, y};
+    size = {w, h};
 	return shared_from_this();
+}
+
+ModuleRef Module::display(){
+    if(previouslyDisplayed()){
+        display(origin.x, origin.y, size.x, size.y);
+    }
+    return shared_from_this();
+}
+
+bool Module::previouslyDisplayed(){
+    return size != ci::vec2(0, 0);
+}
+
+void Module::hide(){
+    view = nullptr;
 }
 
 void Module::setParent(Module * parent){
@@ -63,6 +85,7 @@ ModuleRef Module::addSubModule(string name, ModuleRef subModule){
     subModule->setParent(this);
     return subModule;
 }
+
 ModuleRef Module::getSubModule(string name){
     return subModules[name];
 }

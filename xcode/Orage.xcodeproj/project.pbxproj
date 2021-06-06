@@ -39,6 +39,7 @@
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		56D32538625F41BFA62FE168 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
 		6E7878543E944E05A89570DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		886F5F25266A6E9B005BB9C5 /* Underscore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Underscore.h; sourceTree = "<group>"; };
 		886F98272660442000779325 /* IView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IView.h; sourceTree = "<group>"; };
 		88EEEE07265EE59C00D9087C /* chrono_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chrono_io.h; sourceTree = "<group>"; };
 		88EEEE08265EE59C00D9087C /* ratio_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ratio_io.h; sourceTree = "<group>"; };
@@ -46,7 +47,6 @@
 		88EEEE0C265EE59C00D9087C /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
 		88EEEE0D265EE59C00D9087C /* Slider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Slider.h; sourceTree = "<group>"; };
 		88EEEE0E265EE59C00D9087C /* Pannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pannel.h; sourceTree = "<group>"; };
-		88EEEE0F265EE59C00D9087C /* Clock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clock.h; sourceTree = "<group>"; };
 		88EEEE11265EE59C00D9087C /* Parameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parameter.h; sourceTree = "<group>"; };
 		88EEEE12265EE59C00D9087C /* LFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFO.h; sourceTree = "<group>"; };
 		88EEEE13265EE59C00D9087C /* Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Math.h; sourceTree = "<group>"; };
@@ -177,6 +177,7 @@
 			children = (
 				88EEEE07265EE59C00D9087C /* chrono_io.h */,
 				88EEEE08265EE59C00D9087C /* ratio_io.h */,
+				886F5F25266A6E9B005BB9C5 /* Underscore.h */,
 			);
 			name = lib;
 			path = ../src/lib;
@@ -200,7 +201,6 @@
 				88EEEE0C265EE59C00D9087C /* View.h */,
 				88EEEE0D265EE59C00D9087C /* Slider.h */,
 				88EEEE0E265EE59C00D9087C /* Pannel.h */,
-				88EEEE0F265EE59C00D9087C /* Clock.h */,
 				886F98272660442000779325 /* IView.h */,
 			);
 			path = UI;

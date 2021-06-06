@@ -2,6 +2,7 @@
 #define View_h
 
 #include "Theme.h"
+#include "../../lib/Underscore.h"
 
 class View {
     
@@ -10,8 +11,8 @@ class View {
         typedef std::function<void(void)> ParameterFnc;
 		typedef std::shared_ptr<class View> ViewRef;
 	private :
-		std::map<string, ViewRef> subViews;
-        std::map<string, ViewRef> views;
+        std::vector<ViewRef> subViews;
+        std::vector<ViewRef> views;
         View * parent = nullptr;
 	protected :
         ci::Rectf bounds;
@@ -22,12 +23,18 @@ class View {
             return ViewRef( new View(name, origin, size) );
         }
         ViewRef addView(string name, ViewRef view);
-        ViewRef addSubView(string name, ViewRef subView);
+        template<typename T>
+        std::shared_ptr<T> addSubView(string name, ViewRef subView);
         ViewRef getView(string name);
+        template<typename T>
+        std::shared_ptr<T> getSubView(string name);
         ViewRef getSubView(string name);
+        template<typename T>
+        std::vector<T> foreach(std::function<T(ViewRef, int, string)> action);
         void setParent(View * parent);
         void setPos(vec2 pos);
         vec2 getPos(bool recursive = false);
+        bool isInside(vec2 pos);
         string getName(bool recursive = false);
         vec2 getSize();
         virtual void update();
@@ -55,25 +62,41 @@ View::~View(){
 }
 
 ViewRef View::addView(string name, ViewRef view){
+    if(_::any(views, [&](ViewRef v) { return v->name == name; })){
+        throw std::invalid_argument( "addView need unique name per lvl" );
+    }
     view->name = name;
-    views[name]=view;
+    views.push_back(view);
     view->setParent(this);
     return view;
 }
 
-ViewRef View::addSubView(string name, ViewRef subView){
-    subView->name = name;
-    subViews[name]=subView;
-    subView->setParent(this);
-    return subView;
+template<typename T>
+std::shared_ptr<T> View::addSubView(string name, ViewRef view){
+    if(_::any(subViews, [&](ViewRef v) { return v->name == name; })){
+        throw std::invalid_argument( "addSubView need unique name per lvl" );
+    }
+    view->name = name;
+    subViews.push_back(view);
+    view->setParent(this);
+    return dynamic_pointer_cast<T>(view);
 }
 
 ViewRef View::getView(string name){
-    return views[name];
+    std::vector<ViewRef>::iterator r = _::find(views, [&](ViewRef v) { return v->name == name; });
+    if(r == views.end()) throw exception();
+    return *r;
+}
+
+template<typename T>
+shared_ptr<T> View::getSubView(string name){
+    return dynamic_pointer_cast<T>(getSubView(name));
 }
 
 ViewRef View::getSubView(string name){
-    return subViews[name];
+    std::vector<ViewRef>::iterator r = _::find(subViews, [&](ViewRef v) { return v->name == name; });
+    if(r == views.end()) throw exception();
+    return *r;
 }
 
 void View::setPos(vec2 pos){
@@ -87,6 +110,12 @@ vec2 View::getPos(bool recursive){
         op = op + parent->getPos(recursive);
     }
     return op;
+}
+
+bool View::isInside(vec2 pos){
+    vec2 p = getPos(true);
+    Rectf b = {p, bounds.getSize() + p};
+    return b.contains(pos);
 }
 
 string View::getName(bool recursive){
@@ -106,10 +135,10 @@ vec2 View::getSize(){
 }
 
 void View::update(){
-    for(auto& [name, view] : views){
+    for(auto& view : views){
         view->update();
     }
-	for(auto& [name, subView] : subViews){
+	for(auto& subView : subViews){
 		subView->update();
 	}
 }
@@ -119,13 +148,15 @@ void View::draw(){
     translate( bounds.getUpperLeft() );
     color( bgColor );
     drawSolidRect({0, 0, bounds.getWidth(), bounds.getHeight()});
-    for(auto& [name, subView] : subViews){
+    
+    for(auto& subView : subViews){
         subView->draw();
     }
     popModelView();
-    for(auto& [name, view] : views){
+    for(auto& view : views){
         view->draw();
     }
+    
 }
 
 #endif /* View_h */

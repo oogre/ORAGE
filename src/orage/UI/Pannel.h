@@ -33,7 +33,7 @@ typedef shared_ptr<class Pannel> PannelRef;
 Pannel::Pannel(vec2 origin, vec2 size) :
     View(origin, size)
 {
-    ViewRef btn = addSubView(View::create({10, 10}, {10, 10}));
+    ViewRef btn = addSubView<View>(View::create({10, 10}, {10, 10}));
     btn->bgColor = Theme::bgActiveColor;
     View::bgColor = Theme::bgDisactiveColor;
 }

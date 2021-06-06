@@ -32,13 +32,14 @@ IView(name, origin, size)
 {
     frame = addView("frame", View::create(name, origin+vec2(1, 1), size-vec2(2, 2)));
     frame->bgColor = Theme::bgDisactiveColor;
-    cursor = frame->addSubView("cursor", View::create(name, {1, 1}, {size.y-4,size.y-4}));
-    on("enter", [&](BaseEvent event) -> void{
+    cursor = frame->addSubView<View>("cursor", View::create(name, {1, 1}, {size.y-4,size.y-4}));
+    
+    getSignal("enter")->connect([&](CustomEvent event) -> void{
         bgColor = Theme::bgDisactiveColor;
         frame->bgColor = Theme::bgActiveColor;
         cursor->bgColor = Theme::bgDisactiveColor;
     });
-    on("leave", [&](BaseEvent event) -> void{
+    getSignal("leave")->connect([&](CustomEvent event) -> void{
         bgColor = Theme::bgActiveColor;
         frame->bgColor = Theme::bgDisactiveColor;
         cursor->bgColor = Theme::bgActiveColor;
@@ -50,6 +51,8 @@ void UISlider::setCursor(float v){
 }
 
 UISlider::~UISlider(){
+    getSignal("enter")->disconnect_all_slots();
+    getSignal("leave")->disconnect_all_slots();
 }
 
 void UISlider::update(){

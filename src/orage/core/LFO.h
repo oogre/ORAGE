@@ -14,7 +14,8 @@ class LFO : public Module {
 	LFO();
 	float time = 0;
 	float rstTime = 0;
-
+    
+    void onResetChange(ParameterEventI event);
 	public :
 
 		ParameterRefI Mul;
@@ -30,6 +31,7 @@ class LFO : public Module {
 		static LFORef create(){
             return LFORef( new LFO() );
         }
+        virtual ~LFO();
         void update(ClockEvent event);
 };
 
@@ -45,17 +47,18 @@ Module("LFO"){
 	Mul = ParameterI::create(1, 1, 16);
 	Div = ParameterI::create(1, 1, 16);
 	Rst = ParameterI::create(0, 0, 1);
-	Rst->onChanged([&](ParameterI::ParameterEvent event) -> void{
-		if(event.value == 1){
-			rstTime = time;	
-		}
-	});
+    
+    Rst->getChangeSignal()->connect(boost::bind(&LFO::onResetChange, this, _1));
 	Rev = ParameterI::create(0, 0, 1);
 
 	Sin = ParameterF::create(0, 0, 1);
 	Rec = ParameterF::create(0, 0, 1);
 	Tri = ParameterF::create(0, 0, 1);
 	Saw = ParameterF::create(0, 0, 1);
+}
+
+LFO::~LFO(){
+    Rst->getChangeSignal()->disconnect_all_slots();
 }
 
 void LFO::update(ClockEvent event){
@@ -69,6 +72,12 @@ void LFO::update(ClockEvent event){
     Rec->setValue(saw > .5 ? 0 : 1);
 	Tri->setValue(abs(1-(saw * 2))); 
 	Saw->setValue(saw); 
+}
+
+void LFO::onResetChange(ParameterEventI event){
+    if(event.value == 1){
+        rstTime = time;
+    }
 }
 
 

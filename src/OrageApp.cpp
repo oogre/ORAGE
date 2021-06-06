@@ -12,6 +12,7 @@ class OrageApp : public ci::app::App {
         void setup() override;
         void update() override;
         void draw() override;
+        void mouseDown(ci::app::MouseEvent event) override;
 };
 
 //////////////////////////////////
@@ -21,16 +22,24 @@ using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
 
+void OrageApp::mouseDown(MouseEvent event) {
+//    if(modules.back()->view == nullptr){
+//        modules.back()->display();
+//    } else {
+//        modules.back()->hide();
+//    }
+}
+
 void OrageApp::setup(){
    modules.push_back(Clock::create(60)->display(100, 100, 100, 100));
 }
 
 void OrageApp::update(){
-    b+=1;
-    if(b > 300){
-        b = 0;
-    }
-    dynamic_pointer_cast<Clock>(modules[0])->setBPM(b);
+//    b+=1;
+//    if(b > 300){
+//        b = 0;
+//    }
+//    dynamic_pointer_cast<Clock>(modules[0])->setBPM(b);
     for(auto module : modules){
         if(module->view != nullptr) module->view->update();
     }
