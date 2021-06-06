@@ -3,6 +3,7 @@
 
 #include "Theme.h"
 #include "../../lib/Underscore.h"
+#include "../../lib/Tools.h"
 
 class View {
     
@@ -93,10 +94,20 @@ shared_ptr<T> View::getSubView(string name){
     return dynamic_pointer_cast<T>(getSubView(name));
 }
 
-ViewRef View::getSubView(string name){
-    std::vector<ViewRef>::iterator r = _::find(subViews, [&](ViewRef v) { return v->name == name; });
-    if(r == views.end()) throw exception();
-    return *r;
+ViewRef View::getSubView(string request){
+    std::string name ("");
+    std::string rest ("");
+    Tools::split(request, '-', &name, &rest);
+    for(auto& subView : subViews){
+        if(subView->name == name){
+            if(rest.length()==0){
+                return subView;
+            }else{
+                return subView->getSubView(rest);
+            }
+        }
+    }
+    return nullptr;
 }
 
 void View::setPos(vec2 pos){
