@@ -10,6 +10,7 @@
 
 #include "View.h"
 #include <boost/signals2.hpp>
+// https://scicomp.ethz.ch/public/manual/Boost/1.55.0/signals2.pdf
 class IView;
 typedef std::shared_ptr<class IView> IViewRef;
 
@@ -17,26 +18,39 @@ struct CustomEvent{
     string name;
     ci::app::MouseEvent mouseEvent;
     IViewRef target;
-    CustomEvent(string name, ci::app::MouseEvent mouseEvent, IViewRef target) :
-    name(name),
-    mouseEvent(mouseEvent),
-    target(target)
+    std::time_t timeStamp;
+    ivec2 oldMousePos;
+    CustomEvent(string name, ci::app::MouseEvent mouseEvent, IViewRef target, ivec2 oldMousePos) :
+        name(name),
+        mouseEvent(mouseEvent),
+        target(target),
+        timeStamp(std::time(0)),
+        oldMousePos(oldMousePos)
     {
     };
 };
 
-class IView : public View, public std::enable_shared_from_this<IView> {
+class IView : public View {
         typedef std::shared_ptr<class IView> IViewRef;
-        typedef boost::signals2::signal<void(CustomEvent)> CustomEventSignal;
+        typedef boost::signals2::signal<bool(CustomEvent)> CustomEventSignal;
         typedef std::map<string, CustomEventSignal> MapType;
         MapType sigMap;
     
         bool wasisInside = false;
+        bool isDown = false;
+        bool isDraging = false;
+        vec2 oldMousePos;
+        std::time_t tAtDown;
+        std::time_t tAtUp;
     
         static ci::app::MouseEvent lastMouseEvent;
-        static IViewRef lastTarget;
         static bool initialized;
     
+        CustomEventSignal * getSignal(string type);
+        void eventTrigger(string type, ci::app::MouseEvent mouseEvent, ivec2 oldMousePos);
+        bool onEnter(CustomEvent event);
+        bool onLeave(CustomEvent event);
+        bool onDrag(CustomEvent event);
     protected :
         IView(string name, ci::vec2 origin, ci::vec2 size);
     public :
@@ -47,7 +61,11 @@ class IView : public View, public std::enable_shared_from_this<IView> {
         virtual void update() override;
         virtual ~IView();
     
-        CustomEventSignal * getSignal(string type);
+        void addEventListener(const string type, const CustomEventSignal::slot_type slot);
+        template<typename Callable>
+        void removeEventListener(const string type, Callable slot);
+    
+    
 };
 
 //////////////////////////////////////////////
@@ -57,10 +75,9 @@ using namespace ci;
 using namespace ci::app;
 using namespace boost::signals2;
 
-typedef signal<void(CustomEvent)> CustomEventSignal;
+typedef signal<bool(CustomEvent)> CustomEventSignal;
 
 MouseEvent IView::lastMouseEvent;
-IViewRef IView::lastTarget;
 bool IView::initialized = false;
 
 IView::IView(string name, ci::vec2 origin, ci::vec2 size) :
@@ -77,104 +94,124 @@ IView::IView(string name, ci::vec2 origin, ci::vec2 size) :
     sigMap.insert(MapType::value_type({"longClick", CustomEventSignal()}));
     sigMap.insert(MapType::value_type({"dragStart", CustomEventSignal()}));
     sigMap.insert(MapType::value_type({"drag", CustomEventSignal()}));
-    sigMap.insert(MapType::value_type({"doubleClick", CustomEventSignal()}));
     sigMap.insert(MapType::value_type({"dragEnd", CustomEventSignal()}));
     
-    if(!IView::initialized){
-        IView::initialized = true;
-        getWindow()->getSignalMouseMove().connect( [&]( MouseEvent event ){
-            IView::lastMouseEvent = event;
-        });
-        getWindow()->getSignalMouseWheel().connect( [&]( MouseEvent event ){
-            IView::lastMouseEvent = event;
-        });
-        getWindow()->getSignalMouseDown().connect( [&]( MouseEvent event ){
-            IView::lastMouseEvent = event;
-        });
-        getWindow()->getSignalMouseUp().connect( [&]( MouseEvent event ){
-            IView::lastMouseEvent = event;
-        });
-    }
-//    overSignal.connect([&](OverEvent event) -> void{
-//        cout<<event.target->getName(true)<<" : over"<<endl;
-//    });
-    
-    
-    getSignal("enter")->connect([&](CustomEvent event) -> void{
-        //if(IView::lastTarget == event.target){
-            cout<<event.target->getName(true)<<" : "<<event.name<<endl;
-        //}
+    getWindow()->getSignalMouseMove().connect(100-getDepth(), [&]( MouseEvent event ){
+        ivec2 mousePos = event.getPos();
+        if(isInside(mousePos)){
+            if(!wasisInside){
+                eventTrigger("enter", event, oldMousePos);
+            }
+            eventTrigger("over", event, oldMousePos);
+            
+            wasisInside = true;
+        }else if(wasisInside){
+            eventTrigger("leave", event, oldMousePos);
+            wasisInside = false;
+        }
+        oldMousePos = mousePos;
     });
+    
+    getWindow()->getSignalMouseWheel().connect(100-getDepth(), [&]( MouseEvent event ){
+        ivec2 mousePos = event.getPos();
+        if(isInside(mousePos)){
+            eventTrigger("wheel", event, oldMousePos);
+        }
+        oldMousePos = mousePos;
+    });
+    
+    getWindow()->getSignalMouseDrag().connect(100-getDepth(), [&]( MouseEvent event ){
+        ivec2 mousePos = event.getPos();
+        if(isDown){
+            eventTrigger("drag", event, oldMousePos);
+        }
+        oldMousePos = mousePos;
+    });
+    
+    getWindow()->getSignalMouseDown().connect(100-getDepth(), [&]( MouseEvent event ){
+        ivec2 mousePos = event.getPos();
+        if(isInside(mousePos)){
+            eventTrigger("down", event, oldMousePos);
+            tAtDown = std::time(0);
+            isDown = true;
+        }
+        oldMousePos = mousePos;
+    });
+    
+    getWindow()->getSignalMouseUp().connect(100-getDepth(), [&]( MouseEvent event ){
+        vec2 mousePos = event.getPos();
+        if(isInside(mousePos)){
+            eventTrigger("up", event, oldMousePos);
+            tAtUp = std::time(0);
+            if(tAtUp - tAtDown < 1){
+                eventTrigger("click", event, oldMousePos);
+            }else{
+                eventTrigger("longClick", event, oldMousePos);
+            }
+        }
+        else if(isDown){
+            eventTrigger("leave", event, oldMousePos);
+            wasisInside = false;
+        }
+        isDown = false;
+        oldMousePos = mousePos;
+    });
+    
+    addEventListener("enter", boost::bind(&IView::onEnter, this, _1));
+    addEventListener("leave", boost::bind(&IView::onLeave, this, _1));
+    addEventListener("drag", boost::bind(&IView::onDrag, this, _1));
+    
 }
 
 IView::~IView(){
-    
+    removeEventListener("enter", boost::bind(&IView::onEnter, this, _1));
+    removeEventListener("leave", boost::bind(&IView::onLeave, this, _1));
+}
+
+bool IView::onEnter(CustomEvent event){
+    setBgColor(Theme::bgActiveColor);
+    cout<<event.target->getName(true)<<" : "<<event.name << " @ " << event.timeStamp <<endl;
+    return true;
+}
+
+bool IView::onLeave(CustomEvent event){
+    setBgColor(Theme::bgDisactiveColor);
+    cout<<event.target->getName(true)<<" : "<<event.name<< " @ " << event.timeStamp <<endl;
+    return true;
+}
+
+bool IView::onDrag(CustomEvent event){
+    cout<<event.target->getName(true)<<" : "<<event.name<< " @ " << event.timeStamp <<endl;
+    return true;
+}
+
+void IView::addEventListener(const string type, const CustomEventSignal::slot_type slot){
+    getSignal(type)->connect(100-getDepth(), slot);
+}
+
+template<typename Callable>
+void IView::removeEventListener(const string type, Callable slot){
+    getSignal(type)->disconnect(slot);
 }
 
 CustomEventSignal * IView::getSignal(string type){
-    return  &(sigMap[type]);
+    MapType::iterator signal = sigMap.find(type);
+    if(signal == sigMap.end())throw invalid_argument( "getSignal needs type to be recognized" );
+    return &(signal->second);
+}
+
+void IView::eventTrigger(string type, MouseEvent mouseEvent, ivec2 oldMousePos){
+    CustomEventSignal * signal = getSignal(type);
+    CustomEvent event = {
+        type,
+        mouseEvent,
+        static_pointer_cast<IView>(shared_from_this()),
+        oldMousePos
+    };
+    ((*signal)(event));
 }
 
 void IView::update(){
-    vec2 mousePos = IView::lastMouseEvent.getPos();
-//    if(isInside(mousePos)){
-//        foreach<bool>([&](ViewRef sView, int key, int name) {
-//            return sView->isInside(mousePos);
-//        });
-//
-//
-//        //for(auto [name, sView] : subViews){
-//            //if(sView->isInside(mousePos))break;
-//        //    cout<<typeid(sView).name()<<end;
-//        //}
-//        sigMap["over"]({
-//            "over",
-//            IView::lastMouseEvent,
-//            shared_from_this()
-//        });
-//    }
-
-    if(isInside(mousePos)){
-        sigMap["over"]({
-            "over",
-            IView::lastMouseEvent,
-            shared_from_this()
-        });
-        if(IView::lastMouseEvent.isLeft()){
-            sigMap["down"]({
-                "down",
-                IView::lastMouseEvent,
-                shared_from_this()
-            });
-        }
-        if(IView::lastMouseEvent.getWheelIncrement() != 0){
-            sigMap["wheel"]({
-                "wheel",
-                IView::lastMouseEvent,
-                shared_from_this()
-            });
-        }
-        if(!wasisInside){
-            IView::lastTarget = shared_from_this();
-            sigMap["enter"]({
-                "enter",
-                IView::lastMouseEvent,
-                shared_from_this()
-            });
-        }
-        wasisInside = true;
-        
-    }else{
-        if(wasisInside){
-            sigMap["leave"]({
-                "leave",
-                IView::lastMouseEvent,
-                shared_from_this()
-            });
-        }
-        wasisInside = false;
-    }
-    
     View::update();
 }
 

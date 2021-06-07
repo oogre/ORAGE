@@ -31,6 +31,9 @@ private:
     
     ParameterRefI bang;
     ParameterRefF bpm;
+    ViewRef bangUI;
+    UISliderRefF bpmUI;
+    bool onDrag(CustomEvent event);
     
 	static const uint16_t StepPerBeat = 840;
 	static constexpr const float subStepInterval = 1.0f/StepPerBeat;
@@ -123,41 +126,38 @@ signal<void(ClockEvent)>* Clock::getClockSignal(){
     return &clockSignal;
 }
 
+bool Clock::onDrag(CustomEvent event){
+    ivec2 dist = event.mouseEvent.getPos() - event.oldMousePos;
+    view->setPos(ivec2(view->getPos(true)) + dist);
+    return true;
+}
+
 ModuleRef Clock::display(int x, int y, int w, int h){
     Module::display(x, y, w, h);
-	view = IView::create(name, origin, size);
+    view = View::create(name, origin, size);
     
-    IViewRef iview = dynamic_pointer_cast<IView>(view);
-    ViewRef bangUI = view->addSubView<View>("bang", View::create(name, {10, 10}, {10, 10}));
-    
-    IViewRef bpmUI3 = view->addSubView<IView>("abc", IView::create(name, {10, 30}, {100, 15}));
-    UISliderRef bpmUI = view->addSubView<UISlider>("bpm", UISlider::create(name, {10, 30}, {100, 15}));
-    
-    
-    iview->bgColor = Theme::bgDisactiveColor;
-    bangUI->bgColor = Theme::bgActiveColor;
-    bpmUI->setCursor(bpm->getValue(true));
-    
-    iview->getSignal("enter")->connect([&](CustomEvent event) -> void{
-        view->bgColor = Theme::bgActiveColor;
-    });
-    iview->getSignal("leave")->connect([&](CustomEvent event) -> void{
-        view->bgColor = Theme::bgDisactiveColor;
-    });
-    bpmUI->getSignal("wheel")->connect([&](CustomEvent event) -> void{
-        bpm->setValue(bpm->getValue() - event.mouseEvent.getWheelIncrement());
-    });
+    view->addSubView<IView>("handle", IView::create(name, {0, 0}, {view->getSize().x, 10}))
+        ->addEventListener("drag", boost::bind(&Clock::onDrag, this, _1));
+    view->setBgColor(Theme::bgDisactiveColor);
+        
+    bangUI = view->addSubView<View>("bang", View::create(name, {10, 15}, {15, 15}))
+        ->setBgColor(Theme::bgActiveColor);
+    bpmUI = view->addSubView<UISlider<float>>("bpm", UISlider<float>::create(name, {10, 35}, {view->getSize().x-20, 15}))
+        ->setParameter(bpm);
     
     bpm->getChangeSignal()->connect([&](ParameterEvent<float> event) -> void{
         setBPM(event.value);
-        view->getSubView<UISlider>("bpm")->setCursor(event.n_value);
+        bpmUI->setCursor(event.n_value);
     });
+    
+    
+    
     bang->getChangeSignal()->connect([&](ParameterEvent<int> event) -> void{
         if(event.value == 1){
-            view->getSubView<View>("bang")->bgColor = Theme::bgActiveColor;
+            bangUI->setBgColor(Theme::bgActiveColor);
         }
         if(event.value == 0){
-            view->getSubView<View>("bang")->bgColor = Theme::bgDisactiveColor;
+            bangUI->setBgColor(Theme::bgDisactiveColor);
         }
     });
     return shared_from_this();

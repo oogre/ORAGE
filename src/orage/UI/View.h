@@ -5,7 +5,7 @@
 #include "../../lib/Underscore.h"
 #include "../../lib/Tools.h"
 
-class View {
+class View : public std::enable_shared_from_this<View> {
     
     public :
         string name = "";
@@ -15,11 +15,12 @@ class View {
         std::vector<ViewRef> subViews;
         std::vector<ViewRef> views;
         View * parent = nullptr;
+        ci::ColorA bgColor = Theme::bgActiveColor;
 	protected :
         ci::Rectf bounds;
     	View(string name, ci::vec2 origin, ci::vec2 size);
 	public :
-		ci::ColorA bgColor = Theme::bgActiveColor;
+        ViewRef setBgColor(ci::ColorA c){ bgColor = c;  return shared_from_this(); };
 		static ViewRef create(string name, ci::vec2 origin, ci::vec2 size){
             return ViewRef( new View(name, origin, size) );
         }
@@ -38,6 +39,7 @@ class View {
         bool isInside(vec2 pos);
         string getName(bool recursive = false);
         vec2 getSize();
+        int getDepth();
         virtual void update();
         virtual void draw();
         virtual ~View();
@@ -135,6 +137,11 @@ string View::getName(bool recursive){
         n = parent->getName(recursive) + "-" + n;
     }
     return n;
+}
+
+int View::getDepth(){
+    if(parent != nullptr) return parent->getDepth() + 1;
+    return 0;
 }
 
 void View::setParent(View * parent){

@@ -30,6 +30,7 @@ class Parameter : public Module{
         }
         virtual ~Parameter();
         void setValue(T v, bool forceEvent = false);
+        void setNormalizedValue(float v, bool forceEvent = false);
         void setMin(T v);
         void setMax(T v);
         T getValue(bool normalized = false);
@@ -62,6 +63,12 @@ Parameter<T>::Parameter(T v, T m, T M) :
 
 template<class T>
 Parameter<T>::~Parameter(){
+}
+
+template<class T>
+void Parameter<T>::setNormalizedValue(float v, bool forceEvent){
+    T _v = lerp(_min, _max, v);
+    setValue(_v, forceEvent);
 }
 
 template<class T>

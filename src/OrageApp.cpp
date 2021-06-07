@@ -31,7 +31,7 @@ void OrageApp::mouseDown(MouseEvent event) {
 }
 
 void OrageApp::setup(){
-   modules.push_back(Clock::create(60)->display(100, 100, 100, 100));
+   modules.push_back(Clock::create(60)->display(100, 100, 130, 60));
 }
 
 void OrageApp::update(){
