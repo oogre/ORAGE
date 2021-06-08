@@ -12,8 +12,8 @@ class UISlider : public IView  {
     UISlider(ci::vec2 origin, ci::vec2 size);
     ViewRef cursor;
     ViewRef slider;
-    
     Surface  valueTex;
+    
     bool onEnter(IViewEvent event);
     bool onLeave(IViewEvent event);
     bool onWheel(IViewEvent event);
@@ -25,7 +25,7 @@ public :
         return UISliderRef( new UISlider(origin, size) );
     }
     virtual ~UISlider();
-    void setCursor(float v);
+    void render();
     virtual void draw() override;
     std::shared_ptr<class UISlider<T>> setParameter(std::shared_ptr<class Parameter<T>> paramter);
 };
@@ -41,14 +41,10 @@ typedef UISlider<float> UISliderF;
 typedef std::shared_ptr<UISliderI> UISliderRefI;
 typedef std::shared_ptr<UISliderF> UISliderRefF;
 
+
 template<typename T>
 void UISlider<T>::onParamChange(ParameterEvent<T> event){
-    setCursor(event.n_value);
-    TextLayout simple;
-    simple.setFont( getFont("bold") );
-    simple.setColor( Color::white() );
-    simple.addLine( to_string(event.value) );
-    valueTex = simple.render( true, View::PREMULT ) ;
+    render();
 }
 
 template<typename T>
@@ -95,8 +91,18 @@ UISlider<T>::UISlider(vec2 origin, vec2 size) :
 }
 
 template<typename T>
-void UISlider<T>::setCursor(float v){
-    cursor->setPos({lerp(1.f, slider->getSize().x - cursor->getSize().x - 1.f, v) , 1});
+void UISlider<T>::render(){
+    float nValue = (paramter->getValue() - paramter->getMin()) * paramter->getRatio();
+    
+    cursor->setPos({lerp(1.f, slider->getSize().x - cursor->getSize().x - 1.f, nValue) , 1});
+    
+    TextLayout simple;
+    simple.setFont( getFont("bold") );
+    simple.setColor( Color::black() );
+    stringstream stream;
+    stream << std::fixed << std::setprecision(1) << paramter->getValue();
+    simple.addLine( stream.str() );
+    valueTex = simple.render( true, View::PREMULT ) ;
 }
 
 template<typename T>
@@ -112,27 +118,24 @@ shared_ptr<class UISlider<T>> UISlider<T>::setParameter(shared_ptr<class Paramet
     }
     removeEventListener("wheel", boost::bind(&UISlider::onWheel, this, _1));
     paramter = p;
-    setCursor(paramter->getValue(true));
+    render();
     addEventListener("wheel", boost::bind(&UISlider::onWheel, this, _1));
     addEventListener("down", boost::bind(&UISlider::onDown, this, _1));
     addEventListener("drag", boost::bind(&UISlider::onDown, this, _1));
     paramter->addEventListener(boost::bind(&UISlider<T>::onParamChange, this, _1));
     
-    TextLayout simple;
-    simple.setFont( getFont("bold") );
-    simple.setColor( Color::white() );
-    simple.addLine( to_string(paramter->getValue()) );
-    valueTex =simple.render( true, PREMULT ) ;
+    
     
     return static_pointer_cast<UISlider>(shared_from_this());
 }
 
 template<typename T>
 void UISlider<T>::draw(){
-    cout<<getName(true)<<endl;
+    pushModelView();
+    IView::draw();
     color( Color::white() );
     gl::draw( gl::Texture2d::create( valueTex ), vec2( 0, 0 ) );
-    IView::draw();
+    popModelView();
 }
 
 

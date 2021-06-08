@@ -54,7 +54,7 @@ Module::Module(){
 }
 
 Module::~Module(){
-	cout<<"destroy "<< getName(true) << endl;
+	//cout<<"destroy "<< getName(true) << endl;
 }
 
 ModuleRef Module::display(int x, int y, int w, int h){

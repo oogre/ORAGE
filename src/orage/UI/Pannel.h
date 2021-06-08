@@ -60,8 +60,11 @@ void Pannel::draw(){
     translate( bounds.getUpperLeft() );
     color( ci::ColorA(1, 1, 1, 0.2) );
     drawSolidRect({0, 0, bounds.getWidth(), bounds.getHeight()});
-    View::draw();
-    
+    for(auto& subView : subViews){
+        pushModelView();
+        subView->draw();
+        popModelView();
+    }
     color( Color::white() );
     gl::draw( titleTex, vec2( 0, 0 ) );
 }

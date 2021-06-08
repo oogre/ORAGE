@@ -37,8 +37,8 @@ private:
 	shared_ptr<thread> mThread;
     
     ParameterRefI bang;
-    ParameterRefF bpm;
-    void onBPMChange(ParameterEventF event);
+    ParameterRefI bpm;
+    void onBPMChange(ParameterEventI event);
     void onBANGChange(ParameterEventI event);
     static const uint16_t StepPerBeat = 840;
 	static constexpr const float subStepInterval = 1.0f/StepPerBeat;
@@ -74,7 +74,7 @@ Clock::Clock(float BPM):
     Module()
 {
 	bang = addSubModule<ParameterI>("bang", ParameterI::create(1, 0, 1));
-    bpm = addSubModule<ParameterF>("bpm", ParameterF::create(BPM, 1, 300));
+    bpm = addSubModule<ParameterI>("bpm", ParameterI::create(BPM, 1, 300));
     
     clockSignal.connect([&](ClockEvent event) -> void{
         if(event.is(1, 1)){
@@ -129,17 +129,16 @@ signal<void(ClockEvent)>* Clock::getClockSignal(){
     return &clockSignal;
 }
 
-void Clock::onBPMChange(ParameterEventF event){
+void Clock::onBPMChange(ParameterEventI event){
     setBPM(event.value);
-    pannel->getSubView<UISliderF>("bpm")->setCursor(event.n_value);
 }
 
 void Clock::onBANGChange(ParameterEventI event){
     if(event.value == 1){
-        pannel->getSubView<View>("bang")->setBgColor(Theme::bgActiveColor);
+       pannel->getSubView<View>("bang")->setBgColor(Theme::bgActiveColor);
     }
     if(event.value == 0){
-        pannel->getSubView<View>("bang")->setBgColor(Theme::bgDisactiveColor);
+       pannel->getSubView<View>("bang")->setBgColor(Theme::bgDisactiveColor);
     }
 }
 
@@ -149,7 +148,7 @@ ModuleRef Clock::display(int x, int y, int w, int h){
     pannel->addSubView<View>("bang", View::create({10, 20}, {15, 15}))
         ->setBgColor(Theme::bgActiveColor);
     
-    pannel->addSubView<UISliderF>("bpm", UISliderF::create({10, 40}, {size.x-20, 15}))
+    pannel->addSubView<UISliderI>("bpm", UISliderI::create({10, 40}, {size.x-20, 15}))
         ->setParameter(bpm);
     
     bpm->addEventListener(boost::bind(&Clock::onBPMChange, this, _1));

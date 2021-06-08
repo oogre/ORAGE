@@ -16,11 +16,10 @@ public :
     typedef std::shared_ptr<class View> ViewRef;
     
 private :
-    std::vector<ViewRef> subViews;
     View * parent = nullptr;
-    ci::ColorA bgColor = Theme::bgActiveColor;
-   
 protected :
+    ci::ColorA bgColor = Theme::bgActiveColor;
+    std::vector<ViewRef> subViews;
     ci::Rectf bounds;
     View(ci::vec2 origin, ci::vec2 size);
 public :
@@ -73,7 +72,7 @@ View::View(vec2 origin, vec2 size) :
 }
 
 View::~View(){
-    cout<<"destroy view : "<< getName(true) << endl;
+    //cout<<"destroy view : "<< getName(true) << endl;
 }
 
 template<typename T>
@@ -168,18 +167,14 @@ void View::update(){
 }
 
 void View::draw(){
-    
-    pushModelView();
     translate( bounds.getUpperLeft() );
     color( bgColor );
     drawSolidRect({0, 0, bounds.getWidth(), bounds.getHeight()});
-    
+    pushModelView();
     for(auto& subView : subViews){
         subView->draw();
     }
-    
     popModelView();
-    
 }
 
 #endif /* View_h */

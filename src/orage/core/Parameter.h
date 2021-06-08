@@ -106,6 +106,10 @@ void Parameter<T>::eventTrigger(T value){
 
 template<class T>
 void Parameter<T>::setNormalizedValue(float v, bool forceEvent){
+    if(strncmp(typeid(T).name(),"i",1) == 0){
+        int valueCount = (getMax() - getMin());
+        v = round(v * valueCount) / valueCount;
+    }
     T _v = lerp(_min, _max, v);
     setValue(_v, forceEvent);
 }
