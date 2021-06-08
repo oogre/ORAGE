@@ -5,9 +5,7 @@
 #include "orage/all.h"
 
 class OrageApp : public ci::app::App {
-    std::vector<ModuleRef> modules;
-    ModuleRef c;
-    float b = 60;
+    ModuleRef orage;
     public:
         void setup() override;
         void update() override;
@@ -23,36 +21,31 @@ using namespace ci::gl;
 using namespace ci::app;
 
 void OrageApp::mouseDown(MouseEvent event) {
-//    if(modules.back()->view == nullptr){
-//        modules.back()->display();
+//    ModuleRef clock = orage->getSubModule("clock");
+//    if(clock->pannel == nullptr){
+//        clock->display();
 //    } else {
-//        modules.back()->hide();
+//        clock->hide();
 //    }
 }
 
 void OrageApp::setup(){
-   modules.push_back(Clock::create(60)->display(100, 100, 130, 60));
+    orage = Module::create();
+    orage->setName("orage");
+    orage->display(0, 0, 800, 600);
+    orage->addSubModule<Clock>("clock", Clock::create(60))->display(100, 100, 130, 60);
+    orage->addSubModule<LFO>("lfo", LFO::create())->display(250, 100, 130, 235);
+    
+    orage->getSubModule<Clock>("clock")->getClockSignal()->connect(boost::bind(&LFO::run, orage->getSubModule<LFO>("lfo"), _1));
 }
 
 void OrageApp::update(){
-//    b+=1;
-//    if(b > 300){
-//        b = 0;
-//    }
-//    dynamic_pointer_cast<Clock>(modules[0])->setBPM(b);
-    for(auto module : modules){
-        if(module->view != nullptr) module->view->update();
-    }
+    orage->update();
 }
 
 void OrageApp::draw(){
 	clear( Color( 0, 0, 0 ) );
-    pushModelView();
-    translate( {0, 0} );
-    for(auto module : modules){
-      if(module->view != nullptr) module->view->draw();
-    }
-    popModelView();
+    orage->draw();
 }
 
 

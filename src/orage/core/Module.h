@@ -1,32 +1,44 @@
 #ifndef Module_h
 #define Module_h
 
-#include "../UI/View.h"
+#include "../UI/Pannel.h"
+#include "../../lib/Underscore.h"
+#include "../../lib/Tools.h"
 
 class Module : public std::enable_shared_from_this<Module>{
 	static int ID;
 	public :
 		typedef std::shared_ptr<class Module> ModuleRef;
-		string name;
+		
 	private : 
-		std::map<string, ModuleRef> subModules;
+		std::vector<ModuleRef> subModules;
 		Module * parent = nullptr;
+        string name;
     protected:
         ci::vec2 origin;
         ci::vec2 size = {0, 0};
         bool previouslyDisplayed();
+        Module();
 	public:
 		int id ;
-		ModuleRef addSubModule(string name, ModuleRef subModule);
+        template<typename T>
+		std::shared_ptr<T> addSubModule(string name, ModuleRef subModule);
+        template<typename T>
+        std::shared_ptr<T> getSubModule(string name);
         ModuleRef getSubModule(string name);
         void setParent(Module * parent);
         string getName(bool recursive = false);
-		Module(string name);
+        void setName(string name);
+        static ModuleRef create(){
+            return ModuleRef( new Module() );
+        }
 		virtual ~Module();
 		virtual ModuleRef display(int x, int y, int w, int h);
         virtual ModuleRef display();
         virtual void hide();
-		ViewRef view;
+		PannelRef pannel;
+        virtual void update();
+        virtual void draw();
  };
 
 //////////////////////////////////////
@@ -37,9 +49,8 @@ typedef shared_ptr<class Module> ModuleRef;
 
 int Module::ID = 0;
 
-Module::Module(string name){
+Module::Module(){
 	this->id = Module::ID++;
-    this->name = name+"-"+to_string(this->id);
 }
 
 Module::~Module(){
@@ -49,6 +60,10 @@ Module::~Module(){
 ModuleRef Module::display(int x, int y, int w, int h){
 	origin = {x, y};
     size = {w, h};
+    pannel = Pannel::create(getName(false), origin, size);
+    if(parent != nullptr && parent->pannel != nullptr){
+        pannel->setParent(parent->pannel.get());
+    }
 	return shared_from_this();
 }
 
@@ -64,7 +79,7 @@ bool Module::previouslyDisplayed(){
 }
 
 void Module::hide(){
-    view = nullptr;
+    pannel = nullptr;
 }
 
 void Module::setParent(Module * parent){
@@ -78,16 +93,62 @@ string Module::getName(bool recursive){
     }
     return n;
 }
-
-ModuleRef Module::addSubModule(string name, ModuleRef subModule){
-    subModule->name = name;
-    subModules[name]=subModule;
-    subModule->setParent(this);
-    return subModule;
+void Module::setName(string name){
+    this->name = name;//+"-"+to_string(this->id);
 }
 
-ModuleRef Module::getSubModule(string name){
-    return subModules[name];
+template<typename T>
+std::shared_ptr<T> Module::addSubModule(string name, ModuleRef subModule){
+    if(_::any(subModules, [&](ModuleRef v) {
+            return v->name == name;
+        }))
+    {
+        throw std::invalid_argument( "addSubModule need unique name per lvl : " + name);
+    }
+    subModule->setName(name);
+    subModules.push_back(subModule);
+    subModule->setParent(this);
+    return dynamic_pointer_cast<T>(subModule);
+}
+
+template<typename T>
+std::shared_ptr<T> Module::getSubModule(string name){
+    return dynamic_pointer_cast<T>(getSubModule(name));
+}
+
+ModuleRef Module::getSubModule(string request){
+    std::string name ("");
+    std::string rest ("");
+    Tools::split(request, '-', &name, &rest);
+    for(auto& subModule : subModules){
+        if(subModule->name == name){
+            if(rest.length()==0){
+                return subModule;
+            }else{
+                return subModule->getSubModule(rest);
+            }
+        }
+    }
+    return nullptr;
+}
+
+void Module::update(){
+    if(pannel != nullptr){
+        pannel->update();
+        for(auto& subModule : subModules){
+            subModule->update();
+        }
+    }
+}
+void Module::draw(){
+    if(pannel !=  nullptr){
+        pushModelView();
+        pannel->draw();
+        for(auto& subModule : subModules){
+            subModule->draw();
+        }
+        popModelView();
+    }
 }
 
 

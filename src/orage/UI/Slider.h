@@ -3,28 +3,30 @@
 
 #include "IView.h"
 #include "../core/Parameter.h"
+#include <cmath>
 
 // We'll create a new Cinder Application by deriving from the App class.
 template<typename T>
 class UISlider : public IView  {
     typedef std::shared_ptr<class UISlider> UISliderRef;
-    UISlider(string name, ci::vec2 origin, ci::vec2 size);
+    UISlider(ci::vec2 origin, ci::vec2 size);
     ViewRef cursor;
-    ViewRef frame;
-    bool onEnter(CustomEvent event);
-    bool onLeave(CustomEvent event);
-    bool onWheel(CustomEvent event);
-    bool onDown(CustomEvent event);
+    ViewRef slider;
+    
+    Surface  valueTex;
+    bool onEnter(IViewEvent event);
+    bool onLeave(IViewEvent event);
+    bool onWheel(IViewEvent event);
+    bool onDown(IViewEvent event);
     shared_ptr<class Parameter<T>> paramter;
+    void onParamChange(ParameterEvent<T> event);
 public :
-    static UISliderRef create(string name, ci::vec2 origin, ci::vec2 size){
-        return UISliderRef( new UISlider(name, origin, size) );
+    static UISliderRef create(ci::vec2 origin, ci::vec2 size){
+        return UISliderRef( new UISlider(origin, size) );
     }
-    virtual void update() override;
-    virtual void draw() override;
     virtual ~UISlider();
     void setCursor(float v);
-    
+    virtual void draw() override;
     std::shared_ptr<class UISlider<T>> setParameter(std::shared_ptr<class Parameter<T>> paramter);
 };
 
@@ -34,33 +36,45 @@ using namespace std;
 using namespace ci;
 using namespace ci::gl;
 
-typedef std::shared_ptr<class UISlider<int>> UISliderRefI;
-typedef std::shared_ptr<class UISlider<float>> UISliderRefF;
+typedef UISlider<int> UISliderI;
+typedef UISlider<float> UISliderF;
+typedef std::shared_ptr<UISliderI> UISliderRefI;
+typedef std::shared_ptr<UISliderF> UISliderRefF;
 
 template<typename T>
-bool UISlider<T>::onEnter(CustomEvent event){
+void UISlider<T>::onParamChange(ParameterEvent<T> event){
+    setCursor(event.n_value);
+    TextLayout simple;
+    simple.setFont( getFont("bold") );
+    simple.setColor( Color::white() );
+    simple.addLine( to_string(event.value) );
+    valueTex = simple.render( true, View::PREMULT ) ;
+}
+
+template<typename T>
+bool UISlider<T>::onEnter(IViewEvent event){
     setBgColor(Theme::bgDisactiveColor);
-    frame->setBgColor(Theme::bgActiveColor);
+    slider->setBgColor(Theme::bgActiveColor);
     cursor->setBgColor(Theme::bgDisactiveColor);
     return true;
 }
 
 template<typename T>
-bool UISlider<T>::onLeave(CustomEvent event){
+bool UISlider<T>::onLeave(IViewEvent event){
     setBgColor(Theme::bgActiveColor);
-    frame->setBgColor(Theme::bgDisactiveColor);
+    slider->setBgColor(Theme::bgDisactiveColor);
     cursor->setBgColor(Theme::bgActiveColor);
     return true;
 }
 
 template<typename T>
-bool UISlider<T>::onWheel(CustomEvent event){
+bool UISlider<T>::onWheel(IViewEvent event){
     paramter->setValue(paramter->getValue() - event.mouseEvent.getWheelIncrement());
     return true;
 }
 
 template<typename T>
-bool UISlider<T>::onDown(CustomEvent event){
+bool UISlider<T>::onDown(IViewEvent event){
     ivec2 dist = event.mouseEvent.getPos() - ivec2(getPos(true));
     float n_x_dist = dist.x/getSize().x;
     paramter->setNormalizedValue(n_x_dist);
@@ -68,20 +82,21 @@ bool UISlider<T>::onDown(CustomEvent event){
 }
 
 template<typename T>
-UISlider<T>::UISlider(string name, vec2 origin, vec2 size) :
-    IView(name, origin, size)
+UISlider<T>::UISlider(vec2 origin, vec2 size) :
+    IView(origin, size)
 {
-    frame = addView("frame", View::create(name, origin+vec2(1, 1), size-vec2(2, 2)));
-    frame->setBgColor(Theme::bgDisactiveColor);
-    cursor = frame->addSubView<View>("cursor", View::create(name, {1, 1}, {size.y-4,size.y-4}));
+    slider = addSubView<View>("slider", View::create(vec2(1, 1), size-vec2(2, 2)));
+    slider->setBgColor(Theme::bgDisactiveColor);
+    cursor = slider->addSubView<View>("cursor", View::create({1, 1}, vec2(size.y, size.y)-vec2(4, 4)));
     
     addEventListener("enter", boost::bind(&UISlider<T>::onEnter, this, _1));
     addEventListener("leave", boost::bind(&UISlider<T>::onLeave, this, _1));
+    
 }
 
 template<typename T>
 void UISlider<T>::setCursor(float v){
-    cursor->setPos({lerp(1.f, frame->getSize().x - cursor->getSize().x - 1.f, v) , 1});
+    cursor->setPos({lerp(1.f, slider->getSize().x - cursor->getSize().x - 1.f, v) , 1});
 }
 
 template<typename T>
@@ -91,24 +106,33 @@ UISlider<T>::~UISlider(){
 }
 
 template<typename T>
-void UISlider<T>::update(){
-    IView::update();
-}
-
-template<typename T>
-void UISlider<T>::draw(){
-    View::draw();
-}
-
-template<typename T>
 shared_ptr<class UISlider<T>> UISlider<T>::setParameter(shared_ptr<class Parameter<T>> p){
+    if(paramter!= nullptr){
+        paramter->removeEventListener(boost::bind(&UISlider<T>::onParamChange, this, _1));
+    }
     removeEventListener("wheel", boost::bind(&UISlider::onWheel, this, _1));
     paramter = p;
     setCursor(paramter->getValue(true));
     addEventListener("wheel", boost::bind(&UISlider::onWheel, this, _1));
     addEventListener("down", boost::bind(&UISlider::onDown, this, _1));
     addEventListener("drag", boost::bind(&UISlider::onDown, this, _1));
+    paramter->addEventListener(boost::bind(&UISlider<T>::onParamChange, this, _1));
+    
+    TextLayout simple;
+    simple.setFont( getFont("bold") );
+    simple.setColor( Color::white() );
+    simple.addLine( to_string(paramter->getValue()) );
+    valueTex =simple.render( true, PREMULT ) ;
+    
     return static_pointer_cast<UISlider>(shared_from_this());
+}
+
+template<typename T>
+void UISlider<T>::draw(){
+    cout<<getName(true)<<endl;
+    color( Color::white() );
+    gl::draw( gl::Texture2d::create( valueTex ), vec2( 0, 0 ) );
+    IView::draw();
 }
 
 

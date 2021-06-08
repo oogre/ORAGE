@@ -4,17 +4,24 @@
 #include "../../lib/chrono_io.h"
 #include "../UI/IView.h"
 #include "../UI/Slider.h"
+#include "../UI/Pannel.h"
 #include "Parameter.h"
 #include "Math.h"
 #include "Module.h"
 #include <boost/signals2.hpp>
 
 struct ClockEvent{
-	float time;
+	float timeUnit;
 	float progress;
 	Math::FRACTION_LIST list;
 	bool is(int num, int den);
 };
+
+//////////////////////////////////////
+
+bool ClockEvent::is(int num, int den){
+    return find(list.begin(), list.end(), make_pair(num, den)) != list.end();
+}
 
 //////////////////////////////////////
 
@@ -31,16 +38,14 @@ private:
     
     ParameterRefI bang;
     ParameterRefF bpm;
-    ViewRef bangUI;
-    UISliderRefF bpmUI;
-    bool onDrag(CustomEvent event);
-    
-	static const uint16_t StepPerBeat = 840;
+    void onBPMChange(ParameterEventF event);
+    void onBANGChange(ParameterEventI event);
+    static const uint16_t StepPerBeat = 840;
 	static constexpr const float subStepInterval = 1.0f/StepPerBeat;
 	static Math::LISTOF_FRACTION_LIST FRACTIONS;
 	double interval;
     
-	void update();
+	void run();
     
 	Clock(float BPM = 60);
 public :
@@ -66,10 +71,10 @@ using namespace boost::signals2;
 typedef shared_ptr<class Clock> ClockRef;
 
 Clock::Clock(float BPM):
-    Module("Clock")
+    Module()
 {
-	bang = dynamic_pointer_cast<ParameterI>(addSubModule("bang", ParameterI::create(1, 0, 1)));
-    bpm = dynamic_pointer_cast<ParameterF>(addSubModule("bpm", ParameterF::create(BPM, 1, 300)));
+	bang = addSubModule<ParameterI>("bang", ParameterI::create(1, 0, 1));
+    bpm = addSubModule<ParameterF>("bpm", ParameterF::create(BPM, 1, 300));
     
     clockSignal.connect([&](ClockEvent event) -> void{
         if(event.is(1, 1)){
@@ -80,7 +85,7 @@ Clock::Clock(float BPM):
     });
     setBPM(BPM);
 	mShouldQuit = false;
-	mThread = shared_ptr<thread>(new thread(bind(&Clock::update, this)));
+	mThread = shared_ptr<thread>(new thread(bind(&Clock::run, this)));
 }
 
 Clock::~Clock(){
@@ -89,23 +94,21 @@ Clock::~Clock(){
     clockSignal.disconnect_all_slots();
 }
 
-void Clock::update(){
+void Clock::run(){
 	typedef duration<double> DURATION;
 	typedef high_resolution_clock CLCK;
 
 	ThreadSetup threadSetup;
 	double delay = 0;
 	int counter = 0;
-	auto t0 = CLCK::now();
-	auto t1 = t0;
+	auto t1 = CLCK::now();
 	while(!mShouldQuit){
 		auto t2 = CLCK::now();
-		float time =  duration_cast<DURATION>(t2 - t0).count();
 		delay += duration_cast<DURATION>(t2 - t1).count();
 		if(delay >= interval){
 			delay -= interval;
             clockSignal({
-				time, 
+				subStepInterval,
 				(++counter) * subStepInterval, 
 				Clock::FRACTIONS[counter-1]
 			});
@@ -126,53 +129,41 @@ signal<void(ClockEvent)>* Clock::getClockSignal(){
     return &clockSignal;
 }
 
-bool Clock::onDrag(CustomEvent event){
-    ivec2 dist = event.mouseEvent.getPos() - event.oldMousePos;
-    view->setPos(ivec2(view->getPos(true)) + dist);
-    return true;
+void Clock::onBPMChange(ParameterEventF event){
+    setBPM(event.value);
+    pannel->getSubView<UISliderF>("bpm")->setCursor(event.n_value);
+}
+
+void Clock::onBANGChange(ParameterEventI event){
+    if(event.value == 1){
+        pannel->getSubView<View>("bang")->setBgColor(Theme::bgActiveColor);
+    }
+    if(event.value == 0){
+        pannel->getSubView<View>("bang")->setBgColor(Theme::bgDisactiveColor);
+    }
 }
 
 ModuleRef Clock::display(int x, int y, int w, int h){
     Module::display(x, y, w, h);
-    view = View::create(name, origin, size);
     
-    view->addSubView<IView>("handle", IView::create(name, {0, 0}, {view->getSize().x, 10}))
-        ->addEventListener("drag", boost::bind(&Clock::onDrag, this, _1));
-    view->setBgColor(Theme::bgDisactiveColor);
-        
-    bangUI = view->addSubView<View>("bang", View::create(name, {10, 15}, {15, 15}))
+    pannel->addSubView<View>("bang", View::create({10, 20}, {15, 15}))
         ->setBgColor(Theme::bgActiveColor);
-    bpmUI = view->addSubView<UISlider<float>>("bpm", UISlider<float>::create(name, {10, 35}, {view->getSize().x-20, 15}))
+    
+    pannel->addSubView<UISliderF>("bpm", UISliderF::create({10, 40}, {size.x-20, 15}))
         ->setParameter(bpm);
     
-    bpm->getChangeSignal()->connect([&](ParameterEvent<float> event) -> void{
-        setBPM(event.value);
-        bpmUI->setCursor(event.n_value);
-    });
+    bpm->addEventListener(boost::bind(&Clock::onBPMChange, this, _1));
+    bang->addEventListener(boost::bind(&Clock::onBANGChange, this, _1));
     
     
-    
-    bang->getChangeSignal()->connect([&](ParameterEvent<int> event) -> void{
-        if(event.value == 1){
-            bangUI->setBgColor(Theme::bgActiveColor);
-        }
-        if(event.value == 0){
-            bangUI->setBgColor(Theme::bgDisactiveColor);
-        }
-    });
     return shared_from_this();
 }
 
 void Clock::hide(){
     Module::hide();
-    bpm->getChangeSignal()->disconnect_all_slots();
-    bang->getChangeSignal()->disconnect_all_slots();
-}
-
-//////////////////////////////////////
-
-bool ClockEvent::is(int num, int den){
-	return find(list.begin(), list.end(), make_pair(num, den)) != list.end();
+    bpm->removeEventListener(boost::bind(&Clock::onBPMChange, this, _1));
+    bang->removeEventListener(boost::bind(&Clock::onBANGChange, this, _1));
+    
 }
 
 #endif /* Clock_h */

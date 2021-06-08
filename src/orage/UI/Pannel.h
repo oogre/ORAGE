@@ -8,18 +8,19 @@
 #ifndef Pannel_h
 #define Pannel_h
 
-#include "View.h"
+#include "IView.h"
 
 class Pannel : public View {
     typedef std::shared_ptr<class Pannel> PannelRef;
-    Pannel(ci::vec2 origin, ci::vec2 size);
+    Pannel(string name, ci::vec2 origin, ci::vec2 size);
+    bool onDrag(IViewEvent event);
+    ci::gl::Texture2dRef  titleTex;
     public :
-        static PannelRef create(ci::vec2 origin, ci::vec2 size){
-            return PannelRef( new Pannel(origin, size) );
+        static PannelRef create(string name, ci::vec2 origin, ci::vec2 size){
+            return PannelRef( new Pannel(name, origin, size) );
         }
-        virtual void update() override;
-        virtual void draw() override;
         virtual ~Pannel() override;
+        virtual void draw() override;
 };
 
 //////////////////////////////////
@@ -30,23 +31,39 @@ using namespace ci::gl;
 
 typedef shared_ptr<class Pannel> PannelRef;
 
-Pannel::Pannel(vec2 origin, vec2 size) :
+Pannel::Pannel(string name, vec2 origin, vec2 size) :
     View(origin, size)
 {
-    ViewRef btn = addSubView<View>(View::create({10, 10}, {10, 10}));
-    btn->bgColor = Theme::bgActiveColor;
-    View::bgColor = Theme::bgDisactiveColor;
+    View::name = name;
+    addSubView<IView>("handle", IView::create({0, 0}, {size.x, 15}))
+        ->addEventListener("drag", boost::bind(&Pannel::onDrag, this, _1));
+    
+    TextLayout simple;
+    simple.setFont( getFont("bold") );
+    simple.setColor( Color::white() );
+    simple.addLine( name );
+    titleTex = gl::Texture2d::create( simple.render( true, PREMULT ) );
+    
+    setBgColor(Theme::bgDisactiveColor);
 }
 
 Pannel::~Pannel(){
 }
 
-void Pannel::update(){
-    View::update();
+bool Pannel::onDrag(IViewEvent event){
+    ivec2 dist = event.mouseEvent.getPos() - event.oldMousePos;
+    move( dist);
+    return true;
 }
 
 void Pannel::draw(){
+    translate( bounds.getUpperLeft() );
+    color( ci::ColorA(1, 1, 1, 0.2) );
+    drawSolidRect({0, 0, bounds.getWidth(), bounds.getHeight()});
     View::draw();
+    
+    color( Color::white() );
+    gl::draw( titleTex, vec2( 0, 0 ) );
 }
 
 

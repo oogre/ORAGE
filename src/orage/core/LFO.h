@@ -16,23 +16,26 @@ class LFO : public Module {
 	float rstTime = 0;
     
     void onResetChange(ParameterEventI event);
+
 	public :
+		ParameterRefI mul;
+		ParameterRefI div;
+		ParameterRefI rst;
+		ParameterRefI rev;
 
-		ParameterRefI Mul;
-		ParameterRefI Div;
-		ParameterRefI Rst;
-		ParameterRefI Rev;
-
-		ParameterRefF Sin;
-		ParameterRefF Rec;
-		ParameterRefF Tri;
-		ParameterRefF Saw;
+		ParameterRefF sin;
+		ParameterRefF rec;
+		ParameterRefF tri;
+        ParameterRefF saw;
+        ParameterRefF noz;
 
 		static LFORef create(){
             return LFORef( new LFO() );
         }
         virtual ~LFO();
-        void update(ClockEvent event);
+        void run(ClockEvent event);
+        virtual ModuleRef display(int x, int y, int w, int h) override;
+        virtual void hide() override;
 };
 
 //////////////////////////////////////
@@ -43,41 +46,67 @@ typedef shared_ptr<class LFO> LFORef;
 
 
 LFO::LFO():
-Module("LFO"){
-	Mul = ParameterI::create(1, 1, 16);
-	Div = ParameterI::create(1, 1, 16);
-	Rst = ParameterI::create(0, 0, 1);
-    
-    Rst->getChangeSignal()->connect(boost::bind(&LFO::onResetChange, this, _1));
-	Rev = ParameterI::create(0, 0, 1);
-
-	Sin = ParameterF::create(0, 0, 1);
-	Rec = ParameterF::create(0, 0, 1);
-	Tri = ParameterF::create(0, 0, 1);
-	Saw = ParameterF::create(0, 0, 1);
+Module(){
+    mul = addSubModule<ParameterI>("mul", ParameterI::create(1, 1, 16));
+	div = addSubModule<ParameterI>("div", ParameterI::create(1, 1, 16));
+	rst = addSubModule<ParameterI>("rst", ParameterI::create(0, 0, 1))
+        ->addEventListener(boost::bind(&LFO::onResetChange, this, _1));
+	rev = addSubModule<ParameterI>("rev", ParameterI::create(0, 0, 1));
+    sin = addSubModule<ParameterF>("sin", ParameterF::create(0, 0, 1));
+	rec = addSubModule<ParameterF>("rec", ParameterF::create(0, 0, 1));
+	tri = addSubModule<ParameterF>("tri", ParameterF::create(0, 0, 1));
+	saw = addSubModule<ParameterF>("saw", ParameterF::create(0, 0, 1));
+    noz = addSubModule<ParameterF>("noz", ParameterF::create(0, 0, 1));;
 }
 
 LFO::~LFO(){
-    Rst->getChangeSignal()->disconnect_all_slots();
 }
 
-void LFO::update(ClockEvent event){
-	time = event.time;
-	float t = (time - rstTime) * Mul->getValue() / Div->getValue();
-	float saw = t - floor(t);
-	if(Rev->getValue() == 1){
-		saw = 1 - saw;
+void LFO::run(ClockEvent event){
+	time += event.timeUnit * mul->getValue() / div->getValue();
+	float t = (time - rstTime);
+	float _saw = t - floor(t);
+	if(rev->getValue() == 1){
+		_saw = 1 - _saw;
 	}
-	Sin->setValue((cos(saw * M_PIl * 2)+1)*0.5); 
-    Rec->setValue(saw > .5 ? 0 : 1);
-	Tri->setValue(abs(1-(saw * 2))); 
-	Saw->setValue(saw); 
+	sin->setValue((cos(_saw * M_PIl * 2)+1)*0.5);
+    rec->setValue(_saw > .5 ? 0 : 1);
+	tri->setValue(abs(1-(_saw * 2)));
+	saw->setValue(_saw);
 }
 
 void LFO::onResetChange(ParameterEventI event){
     if(event.value == 1){
         rstTime = time;
     }
+}
+
+ModuleRef LFO::display(int x, int y, int w, int h){
+    Module::display(x, y, w, h);
+    
+    pannel->addSubView<UISliderI>("mul", UISliderI::create({10, 20}, {size.x-20, 15}))
+        ->setParameter(mul);
+    pannel->addSubView<UISliderI>("div", UISliderI::create({10, 40}, {size.x-20, 15}))
+        ->setParameter(div);
+    pannel->addSubView<UISliderI>("rst", UISliderI::create({10, 60}, {size.x-20, 15}))
+        ->setParameter(rst);
+    pannel->addSubView<UISliderI>("rev", UISliderI::create({10, 80}, {size.x-20, 15}))
+        ->setParameter(rev);
+    pannel->addSubView<UISliderF>("sin", UISliderF::create({10, 110}, {size.x-20, 15}))
+        ->setParameter(sin);
+    pannel->addSubView<UISliderF>("rec", UISliderF::create({10, 130}, {size.x-20, 15}))
+        ->setParameter(rec);
+    pannel->addSubView<UISliderF>("tri", UISliderF::create({10, 150}, {size.x-20, 15}))
+        ->setParameter(tri);
+    pannel->addSubView<UISliderF>("saw", UISliderF::create({10, 170}, {size.x-20, 15}))
+        ->setParameter(saw);
+    pannel->addSubView<UISliderF>("noz", UISliderF::create({10, 190}, {size.x-20, 15}))
+        ->setParameter(noz);
+    
+    return shared_from_this();
+}
+void LFO::hide(){
+    Module::hide();
 }
 
 
