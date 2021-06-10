@@ -84,24 +84,15 @@ void LFO::onResetChange(ParameterEventI event){
 ModuleRef LFO::display(int x, int y, int w, int h){
     Module::display(x, y, w, h);
     
-    pannel->addSubView<UISliderI>("mul", UISliderI::create({10, 20}, {size.x-20, 15}))
-        ->setParameter(mul);
-    pannel->addSubView<UISliderI>("div", UISliderI::create({10, 40}, {size.x-20, 15}))
-        ->setParameter(div);
-    pannel->addSubView<UISliderI>("rst", UISliderI::create({10, 60}, {size.x-20, 15}))
-        ->setParameter(rst);
-    pannel->addSubView<UISliderI>("rev", UISliderI::create({10, 80}, {size.x-20, 15}))
-        ->setParameter(rev);
-    pannel->addSubView<UISliderF>("sin", UISliderF::create({10, 110}, {size.x-20, 15}))
-        ->setParameter(sin);
-    pannel->addSubView<UISliderF>("rec", UISliderF::create({10, 130}, {size.x-20, 15}))
-        ->setParameter(rec);
-    pannel->addSubView<UISliderF>("tri", UISliderF::create({10, 150}, {size.x-20, 15}))
-        ->setParameter(tri);
-    pannel->addSubView<UISliderF>("saw", UISliderF::create({10, 170}, {size.x-20, 15}))
-        ->setParameter(saw);
-    pannel->addSubView<UISliderF>("noz", UISliderF::create({10, 190}, {size.x-20, 15}))
-        ->setParameter(noz);
+    pannel->addSubView<UISliderI>("mul", UISliderI::create({10, 20 }, {size.x-20, 15}, mul));
+    pannel->addSubView<UISliderI>("div", UISliderI::create({10, 40 }, {size.x-20, 15}, div));
+    pannel->addSubView<UISliderI>("rst", UISliderI::create({10, 60 }, {size.x-20, 15}, rst));
+    pannel->addSubView<UISliderI>("rev", UISliderI::create({10, 80 }, {size.x-20, 15}, rev));
+    pannel->addSubView<UISliderF>("sin", UISliderF::create({10, 110}, {size.x-20, 15}, sin));
+    pannel->addSubView<UISliderF>("rec", UISliderF::create({10, 130}, {size.x-20, 15}, rec));
+    pannel->addSubView<UISliderF>("tri", UISliderF::create({10, 150}, {size.x-20, 15}, tri));
+    pannel->addSubView<UISliderF>("saw", UISliderF::create({10, 170}, {size.x-20, 15}, saw));
+    pannel->addSubView<UISliderF>("noz", UISliderF::create({10, 190}, {size.x-20, 15}, noz));
     
     return shared_from_this();
 }

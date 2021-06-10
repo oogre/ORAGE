@@ -34,8 +34,8 @@ void OrageApp::setup(){
     orage->setName("orage");
     orage->display(0, 0, 800, 600);
     orage->addSubModule<Clock>("clock", Clock::create(60))->display(100, 100, 130, 60);
-    orage->addSubModule<LFO>("lfo·1", LFO::create())->display(250, 100, 130, 235);
-    orage->addSubModule<LFO>("lfo·2", LFO::create())->display(400, 100, 130, 235);
+    orage->addSubModule<LFO>("lfo·1", LFO::create())->display(250, 100, 130, 215);
+    orage->addSubModule<LFO>("lfo·2", LFO::create())->display(400, 100, 130, 215);
     
     orage->getSubModule<Clock>("clock")->getClockSignal()->connect(boost::bind(&LFO::run, orage->getSubModule<LFO>("lfo·1"), _1));
     orage->getSubModule<Clock>("clock")->getClockSignal()->connect(boost::bind(&LFO::run, orage->getSubModule<LFO>("lfo·2"), _1));

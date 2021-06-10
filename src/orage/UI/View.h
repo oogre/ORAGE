@@ -14,15 +14,14 @@ public :
     string name = "";
     typedef std::function<void(void)> ParameterFnc;
     typedef std::shared_ptr<class View> ViewRef;
-    
-private :
-    View * parent = nullptr;
 protected :
+    View * parent = nullptr;
     ci::ColorA bgColor = Theme::bgActiveColor;
     std::vector<ViewRef> subViews;
     ci::Rectf bounds;
     View(ci::vec2 origin, ci::vec2 size);
 public :
+    bool open = false;
     Font getFont(string name);
     static const bool PREMULT = false;
     void setBgColor(ci::ColorA c){ bgColor = c; };

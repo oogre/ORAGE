@@ -10,11 +10,13 @@
 
 #include "IView.h"
 
-class Pannel : public View {
+class Pannel : public IView {
     typedef std::shared_ptr<class Pannel> PannelRef;
     Pannel(string name, ci::vec2 origin, ci::vec2 size);
     bool onDrag(IViewEvent event);
     ci::gl::Texture2dRef  titleTex;
+    bool onEnter(IViewEvent event);
+    bool onLeave(IViewEvent event);
     public :
         static PannelRef create(string name, ci::vec2 origin, ci::vec2 size){
             return PannelRef( new Pannel(name, origin, size) );
@@ -32,12 +34,14 @@ using namespace ci::gl;
 typedef shared_ptr<class Pannel> PannelRef;
 
 Pannel::Pannel(string name, vec2 origin, vec2 size) :
-    View(origin, size)
+    IView(origin, size)
 {
     View::name = name;
     addSubView<IView>("handle", IView::create({0, 0}, {size.x, 15}))
         ->addEventListener("drag", boost::bind(&Pannel::onDrag, this, _1));
     
+    addEventListener("enter", boost::bind(&Pannel::onEnter, this, _1));
+    addEventListener("leave", boost::bind(&Pannel::onLeave, this, _1));
     TextLayout simple;
     simple.setFont( getFont("bold") );
     simple.setColor( Color::white() );
@@ -45,6 +49,20 @@ Pannel::Pannel(string name, vec2 origin, vec2 size) :
     titleTex = gl::Texture2d::create( simple.render( true, PREMULT ) );
     
     setBgColor(Theme::bgDisactiveColor);
+}
+
+bool Pannel::onEnter(IViewEvent event){
+    for(auto& subView : subViews){
+        subView->open = true;
+    }
+    return true;
+}
+
+bool Pannel::onLeave(IViewEvent event){
+    for(auto& subView : subViews){
+        subView->open = false;
+    }
+    return true;
 }
 
 Pannel::~Pannel(){

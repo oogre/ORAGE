@@ -148,8 +148,7 @@ ModuleRef Clock::display(int x, int y, int w, int h){
     pannel->addSubView<View>("bang", View::create({10, 20}, {15, 15}))
         ->setBgColor(Theme::bgActiveColor);
     
-    pannel->addSubView<UISliderI>("bpm", UISliderI::create({10, 40}, {size.x-20, 15}))
-        ->setParameter(bpm);
+    pannel->addSubView<UISliderI>("bpm", UISliderI::create({10, 40}, {size.x-20, 15}, bpm));
     
     bpm->addEventListener(boost::bind(&Clock::onBPMChange, this, _1));
     bang->addEventListener(boost::bind(&Clock::onBANGChange, this, _1));

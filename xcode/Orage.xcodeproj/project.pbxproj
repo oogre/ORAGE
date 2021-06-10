@@ -83,6 +83,7 @@
 		8816DB21266FCF8200D339CC /* VictorMono-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VictorMono-SemiBold.ttf"; sourceTree = "<group>"; };
 		8816DB22266FCF8200D339CC /* VictorMono-LightOblique.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VictorMono-LightOblique.ttf"; sourceTree = "<group>"; };
 		8816DB23266FCF8200D339CC /* VictorMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VictorMono-Medium.ttf"; sourceTree = "<group>"; };
+		88453DCA267215A400019C4F /* Connector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Connector.h; sourceTree = "<group>"; };
 		886F5F25266A6E9B005BB9C5 /* Underscore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Underscore.h; sourceTree = "<group>"; };
 		886F98272660442000779325 /* IView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IView.h; sourceTree = "<group>"; };
 		88EEEE07265EE59C00D9087C /* chrono_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chrono_io.h; sourceTree = "<group>"; };
@@ -277,6 +278,7 @@
 				88EEEE0D265EE59C00D9087C /* Slider.h */,
 				88EEEE0E265EE59C00D9087C /* Pannel.h */,
 				886F98272660442000779325 /* IView.h */,
+				88453DCA267215A400019C4F /* Connector.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
