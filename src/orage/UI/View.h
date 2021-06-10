@@ -166,13 +166,10 @@ void View::update(){
 }
 
 void View::draw(){
+    pushModelView();
     translate( bounds.getUpperLeft() );
     color( bgColor );
     drawSolidRect({0, 0, bounds.getWidth(), bounds.getHeight()});
-    pushModelView();
-    for(auto& subView : subViews){
-        subView->draw();
-    }
     popModelView();
 }
 

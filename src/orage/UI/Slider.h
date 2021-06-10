@@ -54,7 +54,7 @@ float UISlider<T>::OFFSET_OPEN = 11;
 template<typename T>
 float UISlider<T>::OFFSET_CLOSE = 0;
 template<typename T>
-float UISlider<T>::OFFSET_SPEED = 0.25;
+float UISlider<T>::OFFSET_SPEED = 0.1;
 
 template<typename T>
 void UISlider<T>::onParamChange(ParameterEvent<T> event){
@@ -66,6 +66,8 @@ bool UISlider<T>::onEnter(IViewEvent event){
     setBgColor(Theme::bgDisactiveColor);
     slider->setBgColor(Theme::bgActiveColor);
     cursor->setBgColor(Theme::bgDisactiveColor);
+    connectorIn->open = true;
+    connectorOut->open = true;
     return true;
 }
 
@@ -74,6 +76,8 @@ bool UISlider<T>::onLeave(IViewEvent event){
     setBgColor(Theme::bgActiveColor);
     slider->setBgColor(Theme::bgDisactiveColor);
     cursor->setBgColor(Theme::bgActiveColor);
+    connectorIn->open = false;
+    connectorOut->open = false;
     return true;
 }
 
@@ -97,10 +101,10 @@ UISlider<T>::UISlider(vec2 origin, vec2 size, shared_ptr<class Parameter<T>> par
 {
     slider = addSubView<View>("slider", View::create(vec2(1, 1), size-vec2(2, 2)));
     slider->setBgColor(Theme::bgDisactiveColor);
-    cursor = slider->addSubView<View>("cursor", View::create({1, 1}, vec2(size.y, size.y)-vec2(4, 4)));
+    cursor = addSubView<View>("cursor", View::create({2, 2}, vec2(size.y, size.y)-vec2(4, 4)));
     
-    connectorIn = addSubView<View>("connectorIn", Connector<T>::create(vec2( -7, size.y/2 - 2), vec2(6, 6), parameter));
-    connectorOut = addSubView<View>("connectorOut", Connector<T>::create(vec2(size.x + 1, size.y/2 - 2), vec2(6, 6), parameter));
+    connectorIn = addSubView<View>("connectorIn", Connector<T>::create(vec2( -3, size.y/2 - 2), vec2(3, 6), parameter));
+    connectorOut = addSubView<View>("connectorOut", Connector<T>::create(vec2(size.x, size.y/2 - 2), vec2(3, 6), parameter));
     
     this->paramter = parameter;
     render(true);
@@ -123,7 +127,7 @@ template<typename T>
 void UISlider<T>::render(bool force){
     float nValue = (paramter->getValue() - paramter->getMin()) * paramter->getRatio();
     
-    cursor->setPos({lerp(1.f, slider->getSize().x - cursor->getSize().x - 1.f, nValue) , 1});
+    cursor->setPos({lerp(2.f, slider->getSize().x - cursor->getSize().x , nValue) , cursor->getPos().y});
     if(open || force){
         TextLayout simple;
         simple.setFont( getFont("bold") );
@@ -144,13 +148,28 @@ UISlider<T>::~UISlider(){
 template<typename T>
 void UISlider<T>::draw(){
     pushModelView();
-    IView::draw();
+    translate( getPos() );
     if(open){
-        color( ColorA(1, 1, 1, offset/OFFSET_OPEN ) );
-        gl::draw( gl::Texture2d::create( valueTex ), vec2( - nameTex->getWidth() - offset , 0 ) );
-        gl::draw(  nameTex, vec2( getSize().x + offset, 0 ) );
+        pushModelView();
+        translate({offset, 0 });
+        color(ColorA::white());
+        gl::draw(nameTex, vec2( getSize().x , 0 ) );
+        popModelView();
+        
+        pushModelView();
+        translate({-offset, 0 });
+        color(ColorA::white());
+        gl::draw(gl::Texture2d::create( valueTex ), vec2( - nameTex->getWidth()  , 0 ) );
+        popModelView();
     }
     offset = lerp(offset, open ? OFFSET_OPEN : OFFSET_CLOSE, OFFSET_SPEED);
+    
+    color( getBgColor() );
+    drawSolidRect({0, 0, getSize().x, getSize().y});
+    slider->draw();
+    cursor->draw();
+    connectorIn->draw();
+    connectorOut->draw();
     popModelView();
 }
 

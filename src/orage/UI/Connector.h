@@ -16,6 +16,9 @@ template<typename T>
 class Connector : public IView  {
     typedef std::shared_ptr<class Connector> ConnectorRef;
     Connector(ci::vec2 origin, ci::vec2 size, std::shared_ptr<class Parameter<T>> parameter);
+    bool onEnter(IViewEvent event);
+    bool onLeave(IViewEvent event);
+    std::shared_ptr<class Parameter<T>> parameter;
 public :
     static ConnectorRef create(ci::vec2 origin, ci::vec2 size, std::shared_ptr<class Parameter<T>> parameter){
         return ConnectorRef( new Connector(origin, size, parameter) );
@@ -39,7 +42,9 @@ template<typename T>
 Connector<T>::Connector(vec2 origin, vec2 size, shared_ptr<class Parameter<T>> parameter) :
 IView(origin, size)
 {
-    
+    this->parameter = parameter;
+    addEventListener("enter", boost::bind(&Connector<T>::onEnter, this, _1));
+    addEventListener("leave", boost::bind(&Connector<T>::onLeave, this, _1));
 }
 
 template<typename T>
@@ -48,19 +53,23 @@ Connector<T>::~Connector(){
 }
 
 template<typename T>
+bool Connector<T>::onEnter(IViewEvent event){
+    cout<<parameter->getName()<< " enter" << endl;
+}
+
+template<typename T>
+bool Connector<T>::onLeave(IViewEvent event){
+    cout<<parameter->getName()<< " leave" << endl;
+}
+
+template<typename T>
 void Connector<T>::draw(){
-    IView::draw();
-    /*
     pushModelView();
-    IView::draw();
-    if(open){
-        color( ColorA(1, 1, 1, offset/OFFSET_OPEN ) );
-        gl::draw( gl::Texture2d::create( valueTex ), vec2( - nameTex->getWidth() - offset , 0 ) );
-        gl::draw(  nameTex, vec2( getSize().x + offset, 0 ) );
-    }
-    offset = lerp(offset, open ? OFFSET_OPEN : OFFSET_CLOSE, OFFSET_SPEED);
+    translate( bounds.getUpperLeft() );
+    
+    color( ci::ColorA(1, 1, 1, open ? 0.7 : 0.3) );
+    drawSolidRect({0, 0, bounds.getWidth(), bounds.getHeight()});
     popModelView();
-     */
 }
 
 #endif /* Connector_h */
