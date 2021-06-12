@@ -7,6 +7,7 @@
 #include "cinder/Font.h"
 #include "Resources.h"
 
+
 class View : public std::enable_shared_from_this<View> {
     //WordNode::setFont( gl::TextureFont::create( Font( loadResource( RES_FONT ), 34 ), gl::TextureFont::Format().enableMipmapping( true ) ) );
     const static std::map<string, Font> fonts;
