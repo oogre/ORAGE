@@ -103,8 +103,8 @@ UISlider<T>::UISlider(vec2 origin, vec2 size, shared_ptr<class Parameter<T>> par
     slider->setBgColor(Theme::bgDisactiveColor);
     cursor = addSubView<View>("cursor", View::create({2, 2}, vec2(size.y, size.y)-vec2(4, 4)));
     
-    connectorIn = addSubView<View>("connectorIn", Connector<T>::create(vec2( -3, size.y/2 - 2), vec2(3, 6), parameter));
-    connectorOut = addSubView<View>("connectorOut", Connector<T>::create(vec2(size.x, size.y/2 - 2), vec2(3, 6), parameter));
+    connectorIn = addSubView<View>("connectorIn", Connector<T>::create(vec2( -3, size.y/2 - 2), parameter));
+    connectorOut = addSubView<View>("connectorOut", Connector<T>::create(vec2(size.x, size.y/2 - 2), parameter));
     
     this->paramter = parameter;
     render(true);

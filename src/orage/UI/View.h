@@ -41,6 +41,7 @@ public :
     bool isInside(vec2 pos);
     string getName(bool recursive = false);
     vec2 getSize();
+    void setSize(vec2 size);
     int getDepth();
     virtual void update();
     virtual void draw();
@@ -157,6 +158,10 @@ void View::setParent(View * parent){
 
 vec2 View::getSize(){
     return bounds.getSize();
+}
+
+void View::setSize(vec2 size){
+    bounds = {bounds.getX1(), bounds.getY1(), size.x, size.y};
 }
 
 void View::update(){
