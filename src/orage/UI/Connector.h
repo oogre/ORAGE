@@ -31,6 +31,7 @@ public :
     virtual void draw() override;
 };
 
+
 //////////////////////////////////
 
 using namespace std;
@@ -68,11 +69,13 @@ Connector<T>::~Connector(){
 template<typename T>
 bool Connector<T>::onEnter(IViewEvent event){
     cout<<parameter->getName()<< " enter" << endl;
+    return true;
 }
 
 template<typename T>
 bool Connector<T>::onLeave(IViewEvent event){
     cout<<parameter->getName()<< " leave" << endl;
+    return true;
 }
 
 template<typename T>
@@ -84,13 +87,9 @@ void Connector<T>::draw(){
     drawSolidRect({-1 * (bounds.getWidth()*0.5f), -1 * (bounds.getHeight()*0.5f), bounds.getWidth()*0.5f, bounds.getHeight()*0.5f});
     popModelView();
     
-    
     //size.x = lerp(size.x, open ? SIZE_OPEN.x : SIZE_CLOSE.x, SIZE_SPEED);
     //size.y = lerp(size.y, open ? SIZE_OPEN.y : SIZE_CLOSE.y, SIZE_SPEED);
     //setSize(size);
-    
-    
-    
 }
 
 #endif /* Connector_h */

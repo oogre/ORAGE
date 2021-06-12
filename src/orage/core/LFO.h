@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "Math.h"
 
+
 class LFO : public Module {
 	typedef std::shared_ptr<class LFO> LFORef;
 
