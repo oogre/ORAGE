@@ -42,6 +42,9 @@ void OrageApp::setup(){
     
     orage->getSubModule<Module>("lfo·1")->getSubModule<ParameterI>("div")->addSlave(
                                                                                     orage->getSubModule<Module>("lfo·2")->getSubModule<ParameterI>("div"));
+    
+
+
 }
 
 void OrageApp::update(){
@@ -54,4 +57,22 @@ void OrageApp::draw(){
 }
 
 
-CINDER_APP( OrageApp, RendererGl )
+CINDER_APP( OrageApp, RendererGl, []( App::Settings *settings ) {
+    vector<DisplayRef> displays = Display::getDisplays();
+    Rectf mainDisplayBounds;
+
+    for(auto display : displays){
+        auto displaySize = display->getBounds();
+        
+        if(displaySize.getX1() == 0 && displaySize.getY1() == 0){
+            mainDisplayBounds = displaySize;
+            settings->setDisplay(display);
+        }
+    }
+
+
+    cout<<mainDisplayBounds<<endl;
+    settings->setWindowSize(mainDisplayBounds.getWidth(), mainDisplayBounds.getHeight()/3);
+    settings->setWindowPos(mainDisplayBounds.getX1(), 0);
+    settings->setTitle("ORAGE");
+} )

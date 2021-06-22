@@ -1,6 +1,7 @@
 #ifndef Math_h
 #define Math_h
 #define M_PIl 3.141592653589793238462643383279502884L /* pi */
+#define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
 
 #include <iostream>
 #include <algorithm>    // std::max
