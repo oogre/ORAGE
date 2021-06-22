@@ -15,17 +15,22 @@
 template<typename T>
 class Connector : public IView  {
     typedef std::shared_ptr<class Connector> ConnectorRef;
-    static vec2 SIZE_OPEN;
+public :
     static vec2 SIZE_CLOSE;
+private :
+    static vec2 SIZE_OPEN;
     static float SIZE_SPEED;
+    bool inside = false;
+    bool isInside();
     vec2 _size;
-    Connector(ci::vec2 origin, std::shared_ptr<class Parameter<T>> parameter);
+    Connector(ci::vec2 origin, std::shared_ptr<class Parameter<T>> parameter, View::ANCHOR anchor = TOP_LEFT);
     bool onEnter(IViewEvent event);
     bool onLeave(IViewEvent event);
+    bool onClick(IViewEvent event);
     std::shared_ptr<class Parameter<T>> parameter;
 public :
-    static ConnectorRef create(ci::vec2 origin, std::shared_ptr<class Parameter<T>> parameter){
-        return ConnectorRef( new Connector(origin, parameter) );
+    static ConnectorRef create(ci::vec2 origin, std::shared_ptr<class Parameter<T>> parameter, View::ANCHOR anchor = TOP_LEFT){
+        return ConnectorRef( new Connector(origin, parameter, anchor) );
     }
     virtual ~Connector();
     virtual void draw() override;
@@ -52,8 +57,8 @@ float Connector<T>::SIZE_SPEED = 0.1f;
 
 
 template<typename T>
-Connector<T>::Connector(vec2 origin, shared_ptr<class Parameter<T>> parameter) :
-IView(origin, SIZE_OPEN)
+Connector<T>::Connector(vec2 origin, shared_ptr<class Parameter<T>> parameter, View::ANCHOR anchor) :
+IView(origin, SIZE_CLOSE, anchor)
 {
     _size = getSize();
     this->parameter = parameter;
@@ -67,29 +72,45 @@ Connector<T>::~Connector(){
 }
 
 template<typename T>
+bool Connector<T>::onClick(IViewEvent event){
+    cout<<"click"<<endl;
+    return true;
+}
+
+template<typename T>
 bool Connector<T>::onEnter(IViewEvent event){
-    cout<<parameter->getName()<< " enter" << endl;
+    addEventListener("down", boost::bind(&Connector<T>::onClick, this, _1));
+    inside = true;
     return true;
 }
 
 template<typename T>
 bool Connector<T>::onLeave(IViewEvent event){
-    cout<<parameter->getName()<< " leave" << endl;
+    removeEventListener("down", boost::bind(&Connector<T>::onClick, this, _1));
+    inside = false;
     return true;
 }
 
 template<typename T>
+bool Connector<T>::isInside(){
+    return inside || open;
+}
+
+template<typename T>
 void Connector<T>::draw(){
-    pushModelView();
-    translate( bounds.getCenter() );
-    
-    color( ci::ColorA(1, 1, 1, open ? 0.7 : 0.3) );
-    drawSolidRect({-1 * (bounds.getWidth()*0.5f), -1 * (bounds.getHeight()*0.5f), bounds.getWidth()*0.5f, bounds.getHeight()*0.5f});
-    popModelView();
-    
-    //size.x = lerp(size.x, open ? SIZE_OPEN.x : SIZE_CLOSE.x, SIZE_SPEED);
-    //size.y = lerp(size.y, open ? SIZE_OPEN.y : SIZE_CLOSE.y, SIZE_SPEED);
-    //setSize(size);
+    if(isInside() && _size != SIZE_OPEN){
+        setBgColor(Theme::ConnectorActiveColor);
+        _size.x = lerp(_size.x, SIZE_OPEN.x, SIZE_SPEED);
+        _size.y = lerp(_size.y, SIZE_OPEN.y, SIZE_SPEED);
+        setSize(_size);
+    }else if(!isInside() && _size != SIZE_CLOSE){
+        setBgColor(Theme::ConnectorDisactiveColor);
+        _size.x = lerp(_size.x, SIZE_CLOSE.x, SIZE_SPEED);
+        _size.y = lerp(_size.y, SIZE_CLOSE.y, SIZE_SPEED);
+        setSize(_size);
+    }
+
+    IView::draw();
 }
 
 #endif /* Connector_h */

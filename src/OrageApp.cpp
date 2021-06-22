@@ -39,6 +39,9 @@ void OrageApp::setup(){
     
     orage->getSubModule<Clock>("clock")->getClockSignal()->connect(boost::bind(&LFO::run, orage->getSubModule<LFO>("lfo·1"), _1));
     orage->getSubModule<Clock>("clock")->getClockSignal()->connect(boost::bind(&LFO::run, orage->getSubModule<LFO>("lfo·2"), _1));
+    
+    orage->getSubModule<Module>("lfo·1")->getSubModule<ParameterI>("div")->addSlave(
+                                                                                    orage->getSubModule<Module>("lfo·2")->getSubModule<ParameterI>("div"));
 }
 
 void OrageApp::update(){

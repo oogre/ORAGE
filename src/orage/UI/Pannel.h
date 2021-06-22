@@ -12,14 +12,14 @@
 
 class Pannel : public IView {
     typedef std::shared_ptr<class Pannel> PannelRef;
-    Pannel(string name, ci::vec2 origin, ci::vec2 size);
+    Pannel(string name, ci::vec2 origin, ci::vec2 size, View::ANCHOR anchor = TOP_LEFT);
     bool onDrag(IViewEvent event);
     ci::gl::Texture2dRef  titleTex;
     bool onEnter(IViewEvent event);
     bool onLeave(IViewEvent event);
     public :
-        static PannelRef create(string name, ci::vec2 origin, ci::vec2 size){
-            return PannelRef( new Pannel(name, origin, size) );
+        static PannelRef create(string name, ci::vec2 origin, ci::vec2 size, View::ANCHOR anchor = TOP_LEFT){
+            return PannelRef( new Pannel(name, origin, size, anchor) );
         }
         virtual ~Pannel() override;
         virtual void draw() override;
@@ -33,8 +33,8 @@ using namespace ci::gl;
 
 typedef shared_ptr<class Pannel> PannelRef;
 
-Pannel::Pannel(string name, vec2 origin, vec2 size) :
-    IView(origin, size)
+Pannel::Pannel(string name, vec2 origin, vec2 size, View::ANCHOR anchor) :
+    IView(origin, size, anchor)
 {
     View::name = name;
     addSubView<IView>("handle", IView::create({0, 0}, {size.x, 15}))

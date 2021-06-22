@@ -10,8 +10,10 @@
 
 class Theme{
     public :
-        static ci::ColorA bgActiveColor;
-        static ci::ColorA bgDisactiveColor;
+    static ci::ColorA bgActiveColor;
+    static ci::ColorA bgDisactiveColor;
+    static ci::ColorA ConnectorActiveColor;
+    static ci::ColorA ConnectorDisactiveColor;
 };
 
 //////////////////////////////////
@@ -20,5 +22,8 @@ using namespace ci;
 
 ColorA Theme::bgActiveColor = { 1.f, 0.f, 1.f, 1.f };
 ColorA Theme::bgDisactiveColor = { 1.f, 1.f, 0.f, 1.f };
+
+ColorA Theme::ConnectorActiveColor = { 1.f, 1.f, 1.f, 0.8f };
+ColorA Theme::ConnectorDisactiveColor = { 1.f, 1.f, 1.f, 0.5f };
 
 #endif /* Theme_h */

@@ -11,7 +11,7 @@
 template<typename T>
 class UISlider : public IView  {
     typedef std::shared_ptr<class UISlider> UISliderRef;
-    UISlider(ci::vec2 origin, ci::vec2 size, std::shared_ptr<class Parameter<T>> parameter);
+    UISlider(ci::vec2 origin, ci::vec2 size, std::shared_ptr<class Parameter<T>> parameter, View::ANCHOR anchor = TOP_LEFT);
     ViewRef cursor;
     ViewRef slider;
     ViewRef connectorIn;
@@ -30,8 +30,8 @@ class UISlider : public IView  {
     shared_ptr<class Parameter<T>> paramter;
     void onParamChange(ParameterEvent<T> event);
 public :
-    static UISliderRef create(ci::vec2 origin, ci::vec2 size, std::shared_ptr<class Parameter<T>> parameter){
-        return UISliderRef( new UISlider(origin, size, parameter) );
+    static UISliderRef create(ci::vec2 origin, ci::vec2 size, std::shared_ptr<class Parameter<T>> parameter, View::ANCHOR anchor = TOP_LEFT){
+        return UISliderRef( new UISlider(origin, size, parameter, anchor) );
     }
     virtual ~UISlider();
     void render(bool force = false);
@@ -68,6 +68,9 @@ bool UISlider<T>::onEnter(IViewEvent event){
     cursor->setBgColor(Theme::bgDisactiveColor);
     connectorIn->open = true;
     connectorOut->open = true;
+    addEventListener("wheel", boost::bind(&UISlider::onWheel, this, _1));
+    addEventListener("down", boost::bind(&UISlider::onDown, this, _1));
+    addEventListener("drag", boost::bind(&UISlider::onDown, this, _1));
     return true;
 }
 
@@ -78,6 +81,9 @@ bool UISlider<T>::onLeave(IViewEvent event){
     cursor->setBgColor(Theme::bgActiveColor);
     connectorIn->open = false;
     connectorOut->open = false;
+    removeEventListener("wheel", boost::bind(&UISlider::onWheel, this, _1));
+    removeEventListener("down", boost::bind(&UISlider::onDown, this, _1));
+    removeEventListener("drag", boost::bind(&UISlider::onDown, this, _1));
     return true;
 }
 
@@ -96,15 +102,15 @@ bool UISlider<T>::onDown(IViewEvent event){
 }
 
 template<typename T>
-UISlider<T>::UISlider(vec2 origin, vec2 size, shared_ptr<class Parameter<T>> parameter) :
-    IView(origin, size)
+UISlider<T>::UISlider(vec2 origin, vec2 size, shared_ptr<class Parameter<T>> parameter, View::ANCHOR anchor) :
+    IView(origin, size, anchor)
 {
     slider = addSubView<View>("slider", View::create(vec2(1, 1), size-vec2(2, 2)));
     slider->setBgColor(Theme::bgDisactiveColor);
     cursor = addSubView<View>("cursor", View::create({2, 2}, vec2(size.y, size.y)-vec2(4, 4)));
     
-    connectorIn = addSubView<View>("connectorIn", Connector<T>::create(vec2( -3, size.y/2 - 2), parameter));
-    connectorOut = addSubView<View>("connectorOut", Connector<T>::create(vec2(size.x, size.y/2 - 2), parameter));
+    connectorIn =  addSubView<View>("connectorIn",  Connector<T>::create( vec2(0, 0.5) * size, parameter, Connector<T>::CENTER_RIGHT));
+    connectorOut = addSubView<View>("connectorOut", Connector<T>::create( vec2(1, 0.5) * size, parameter, Connector<T>::CENTER_LEFT));
     
     this->paramter = parameter;
     render(true);
@@ -117,9 +123,7 @@ UISlider<T>::UISlider(vec2 origin, vec2 size, shared_ptr<class Parameter<T>> par
     
     addEventListener("enter", boost::bind(&UISlider<T>::onEnter, this, _1));
     addEventListener("leave", boost::bind(&UISlider<T>::onLeave, this, _1));
-    addEventListener("wheel", boost::bind(&UISlider::onWheel, this, _1));
-    addEventListener("down", boost::bind(&UISlider::onDown, this, _1));
-    addEventListener("drag", boost::bind(&UISlider::onDown, this, _1));
+    
     paramter->addEventListener(boost::bind(&UISlider<T>::onParamChange, this, _1));
 }
 

@@ -56,10 +56,10 @@ class IView : public View {
         void onMouseUp(ci::app::MouseEvent mouseEvent);
         std::vector<ci::signals::Connection> connections;
     protected :
-        IView(ci::vec2 origin, ci::vec2 size);
+        IView(ci::vec2 origin, ci::vec2 size, View::ANCHOR anchor = TOP_LEFT);
     public :
-        static IViewRef create(ci::vec2 origin, ci::vec2 size){
-            return IViewRef( new IView(origin, size) );
+    static IViewRef create(ci::vec2 origin, ci::vec2 size, View::ANCHOR anchor = TOP_LEFT){
+            return IViewRef( new IView(origin, size, anchor) );
         }
     
         virtual ~IView();
@@ -141,8 +141,8 @@ void IView::onMouseUp(MouseEvent mouseEvent){
     oldMousePos = mousePos;
 }
 
-IView::IView(ci::vec2 origin, ci::vec2 size) :
-    View(origin, size)
+IView::IView(ci::vec2 origin, ci::vec2 size, View::ANCHOR anchor) :
+    View(origin, size, anchor)
 {
     sigMap.insert(MapType::value_type({"over", IViewEventSignal()}));
     sigMap.insert(MapType::value_type({"enter", IViewEventSignal()}));

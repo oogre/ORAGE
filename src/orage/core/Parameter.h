@@ -37,15 +37,22 @@ class Parameter : public Module{
     T _max;
     Parameter(T v, T m, T M);
     T limiter(T v, T min, T max);
+    std::vector<boost::variant<shared_ptr<class Parameter<int>>, shared_ptr<class Parameter<float>>>> slaves;
 public :
     static std::shared_ptr<class Parameter<T>> create(T v, T m, T M){
         return std::shared_ptr<class Parameter<T>>( new Parameter(v, m, M) );
+    }
+    void addSlave(boost::variant<shared_ptr<class Parameter<int>>, shared_ptr<class Parameter<float>>> slave){
+        //slaves.push_back(slave);
+        
+        //addEventListener(boost::bind(&Parameter<T>::onReceiveValue), slave, _1);
     }
     virtual ~Parameter();
     void setValue(T v, bool forceEvent = false);
     void setNormalizedValue(float v, bool forceEvent = false);
     void setMin(T v);
     void setMax(T v);
+    void onReceiveValue(ParameterEvent<T> event);
     T getValue(bool normalized = false);
     T getMin();
     T getMax();
@@ -81,6 +88,11 @@ Parameter<T>::Parameter(T v, T m, T M) :
 
 template<class T>
 Parameter<T>::~Parameter(){
+}
+
+template<class T>
+void Parameter<T>::onReceiveValue(ParameterEvent<T> event){
+    setValue(event.value);
 }
 
 template<class T>
