@@ -58,6 +58,10 @@ Module(){
 	tri = addSubModule<ParameterF>("tri", ParameterF::create(0, 0, 1));
 	saw = addSubModule<ParameterF>("saw", ParameterF::create(0, 0, 1));
     noz = addSubModule<ParameterF>("noz", ParameterF::create(0, 0, 1));;
+    
+//    noz->addEventListener([&](ParameterEvent<float> event)->void {
+//        cout<<noz->to_string()<<endl;
+//    });
 }
 
 LFO::~LFO(){
@@ -86,14 +90,14 @@ ModuleRef LFO::display(int x, int y, int w, int h){
     Module::display(x, y, w, h);
     
     pannel->addSubView<UISliderI>("mul", UISliderI::create({10, 20 }, {size.x-20, 15}, mul));
-    pannel->addSubView<UISliderI>("div", UISliderI::create({10, 40 }, {size.x-20, 15}, div));
-    pannel->addSubView<UISliderI>("rst", UISliderI::create({10, 60 }, {size.x-20, 15}, rst));
-    pannel->addSubView<UISliderI>("rev", UISliderI::create({10, 80 }, {size.x-20, 15}, rev));
-    pannel->addSubView<UISliderF>("sin", UISliderF::create({10, 110}, {size.x-20, 15}, sin));
-    pannel->addSubView<UISliderF>("rec", UISliderF::create({10, 130}, {size.x-20, 15}, rec));
-    pannel->addSubView<UISliderF>("tri", UISliderF::create({10, 150}, {size.x-20, 15}, tri));
-    pannel->addSubView<UISliderF>("saw", UISliderF::create({10, 170}, {size.x-20, 15}, saw));
-    pannel->addSubView<UISliderF>("noz", UISliderF::create({10, 190}, {size.x-20, 15}, noz));
+    pannel->addSubView<UISliderI>("div", UISliderI::create({10, 50 }, {size.x-20, 15}, div));
+    pannel->addSubView<UISliderI>("rst", UISliderI::create({10, 80 }, {size.x-20, 15}, rst));
+    pannel->addSubView<UISliderI>("rev", UISliderI::create({10, 110}, {size.x-20, 15}, rev));
+    pannel->addSubView<UISliderF>("sin", UISliderF::create({10, 140}, {size.x-20, 15}, sin));
+    pannel->addSubView<UISliderF>("rec", UISliderF::create({10, 170}, {size.x-20, 15}, rec));
+    pannel->addSubView<UISliderF>("tri", UISliderF::create({10, 200}, {size.x-20, 15}, tri));
+    pannel->addSubView<UISliderF>("saw", UISliderF::create({10, 230}, {size.x-20, 15}, saw));
+    pannel->addSubView<UISliderF>("noz", UISliderF::create({10, 260}, {size.x-20, 15}, noz));
     
     return shared_from_this();
 }

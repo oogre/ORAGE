@@ -83,9 +83,17 @@
 		8816DB21266FCF8200D339CC /* VictorMono-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VictorMono-SemiBold.ttf"; sourceTree = "<group>"; };
 		8816DB22266FCF8200D339CC /* VictorMono-LightOblique.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VictorMono-LightOblique.ttf"; sourceTree = "<group>"; };
 		8816DB23266FCF8200D339CC /* VictorMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VictorMono-Medium.ttf"; sourceTree = "<group>"; };
+		88327093268CFF3B00B06485 /* Number.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Number.h; sourceTree = "<group>"; };
+		88327094268D1CBC00B06485 /* UI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
+		8837C458268B789E003258FA /* Core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Core.h; sourceTree = "<group>"; };
+		883F5451268CA23900AA040F /* LimittedNumber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LimittedNumber.h; sourceTree = "<group>"; };
+		883F5452268CBA2700AA040F /* json.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
 		88453DCA267215A400019C4F /* Connector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Connector.h; sourceTree = "<group>"; };
+		884C90AD268249CE0093666E /* Cable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cable.h; sourceTree = "<group>"; };
+		884D1F18268F3422004F84E6 /* Number.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Number.h; sourceTree = "<group>"; };
 		886F5F25266A6E9B005BB9C5 /* Underscore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Underscore.h; sourceTree = "<group>"; };
 		886F98272660442000779325 /* IView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IView.h; sourceTree = "<group>"; };
+		88C73D11268E04B800C75690 /* Node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		88EEEE07265EE59C00D9087C /* chrono_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chrono_io.h; sourceTree = "<group>"; };
 		88EEEE08265EE59C00D9087C /* ratio_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ratio_io.h; sourceTree = "<group>"; };
 		88EEEE0B265EE59C00D9087C /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
@@ -97,7 +105,7 @@
 		88EEEE13265EE59C00D9087C /* Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Math.h; sourceTree = "<group>"; };
 		88EEEE14265EE59C00D9087C /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; };
 		88EEEE15265EE59C00D9087C /* Clock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clock.h; sourceTree = "<group>"; };
-		88EEEE16265EE59C00D9087C /* all.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = all.h; sourceTree = "<group>"; };
+		88F2AC632695BC6700CF68F4 /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Orage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Orage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F32598E672D443C4AFD9A1CC /* Orage_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = Orage_Prefix.pch; sourceTree = "<group>"; };
 		FA8962A6BE8F4D699DA1CA5C /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
@@ -248,9 +256,19 @@
 			path = ../resources/VictorMono;
 			sourceTree = "<group>";
 		};
+		884D1F19268F494D004F84E6 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				88C73D11268E04B800C75690 /* Node.h */,
+				88EEEE13265EE59C00D9087C /* Math.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
 		88EEEE06265EE59C00D9087C /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				883F5452268CBA2700AA040F /* json.hpp */,
 				88EEEE07265EE59C00D9087C /* chrono_io.h */,
 				88EEEE08265EE59C00D9087C /* ratio_io.h */,
 				886F5F25266A6E9B005BB9C5 /* Underscore.h */,
@@ -262,9 +280,9 @@
 		88EEEE09265EE59C00D9087C /* orage */ = {
 			isa = PBXGroup;
 			children = (
+				884D1F19268F494D004F84E6 /* common */,
 				88EEEE0A265EE59C00D9087C /* UI */,
 				88EEEE10265EE59C00D9087C /* core */,
-				88EEEE16265EE59C00D9087C /* all.h */,
 			);
 			name = orage;
 			path = ../src/orage;
@@ -279,6 +297,9 @@
 				88EEEE0E265EE59C00D9087C /* Pannel.h */,
 				886F98272660442000779325 /* IView.h */,
 				88453DCA267215A400019C4F /* Connector.h */,
+				88327094268D1CBC00B06485 /* UI.h */,
+				884D1F18268F3422004F84E6 /* Number.h */,
+				88F2AC632695BC6700CF68F4 /* Button.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -288,9 +309,12 @@
 			children = (
 				88EEEE11265EE59C00D9087C /* Parameter.h */,
 				88EEEE12265EE59C00D9087C /* LFO.h */,
-				88EEEE13265EE59C00D9087C /* Math.h */,
 				88EEEE14265EE59C00D9087C /* Module.h */,
 				88EEEE15265EE59C00D9087C /* Clock.h */,
+				884C90AD268249CE0093666E /* Cable.h */,
+				8837C458268B789E003258FA /* Core.h */,
+				883F5451268CA23900AA040F /* LimittedNumber.h */,
+				88327093268CFF3B00B06485 /* Number.h */,
 			);
 			path = core;
 			sourceTree = "<group>";

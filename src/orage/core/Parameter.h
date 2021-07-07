@@ -1,166 +1,84 @@
 #ifndef Parameter_h
 #define Parameter_h
 
-#include "Module.h"
 #include "Math.h"
 #include <boost/signals2.hpp>
+#include "Module.h"
 
-template<class T>
-class Parameter;
-
-template <typename T>
-struct ParameterEvent{
-    std::shared_ptr<class Parameter<T>> target;
-    T value;
-    float n_value;
-    std::time_t timeStamp;
-    ParameterEvent(std::shared_ptr<class Parameter<T>> target, T value) :
-        target(target),
-        timeStamp(std::time(0)),
-        value(value),
-        n_value((value - target->getMin()) * target->getRatio())
-    {
-    };
-};
-
-//////////////////////////////////////
-
-template<class T>
-class Parameter : public Module{
-    typedef boost::signals2::signal<void(ParameterEvent<T>)> ParameterEventSignal;
-    ParameterEventSignal parameterSignal;
-    void eventTrigger(T value);
-    bool onVerobse(ParameterEvent<T> event);
-    float _ratio;
-    T _val;
-    T _min;
-    T _max;
-    Parameter(T v, T m, T M);
-    T limiter(T v, T min, T max);
-    std::vector<boost::variant<shared_ptr<class Parameter<int>>, shared_ptr<class Parameter<float>>>> slaves;
-public :
-    static std::shared_ptr<class Parameter<T>> create(T v, T m, T M){
-        return std::shared_ptr<class Parameter<T>>( new Parameter(v, m, M) );
-    }
-    void addSlave(boost::variant<shared_ptr<class Parameter<int>>, shared_ptr<class Parameter<float>>> slave){
-        //slaves.push_back(slave);
+namespace ORAGE {
+    namespace CORE {
+        class Parameter;
+        typedef std::shared_ptr<class Parameter> ParameterRef;
+        using namespace std;
+        using namespace boost::signals2;
         
-        //addEventListener(boost::bind(&Parameter<T>::onReceiveValue), slave, _1);
-    }
-    virtual ~Parameter();
-    void setValue(T v, bool forceEvent = false);
-    void setNormalizedValue(float v, bool forceEvent = false);
-    void setMin(T v);
-    void setMax(T v);
-    void onReceiveValue(ParameterEvent<T> event);
-    T getValue(bool normalized = false);
-    T getMin();
-    T getMax();
-    float getRatio(){ return _ratio; }
-    std::shared_ptr<class Parameter<T>> addEventListener(const typename ParameterEventSignal::slot_type slot);
-    template<typename Callable>
-    void removeEventListener(Callable slot){parameterSignal.disconnect(slot);}
-};
+        struct ParameterEvent{
+            ParameterRef target;
+            time_t timeStamp;
+            string type;
+            ParameterEvent(){}
+            ParameterEvent(string type, ParameterRef target) :
+                type(type),
+                target(target),
+                timeStamp(time(0))
+            {
+            };
+            string to_string();
+        };//struct ParameterEvent
 
-//////////////////////////////////////
+        class Parameter : public Module{
+        protected:
+            typedef boost::signals2::signal<void(ParameterEvent)> ParameterEventSignal;
+            typedef std::shared_ptr<class Parameter> ParameterRef;
+            typedef std::map<string, ParameterEventSignal> MapType;
+            ParameterEventSignal parameterSignal;
+            MapType sigMap;
 
-using namespace std;
-using namespace boost::signals2;
-
-typedef Parameter<int> ParameterI;
-typedef Parameter<float> ParameterF;
-typedef ParameterEvent<int> ParameterEventI;
-typedef ParameterEvent<float> ParameterEventF;
-typedef shared_ptr<class Parameter<int>> ParameterRefI;
-typedef shared_ptr<class Parameter<float>> ParameterRefF;
-typedef signal<void(ParameterEvent<int>)> ParameterEventSignalI;
-typedef signal<void(ParameterEvent<float>)> ParameterEventSignalF;
-
-template<class T>
-Parameter<T>::Parameter(T v, T m, T M) :
-    Module(),
-    _val(v),
-	_min(m),
-	_max(M),
-    _ratio(Math::reverseDiff<T>(m, M))
-{
-}
-
-template<class T>
-Parameter<T>::~Parameter(){
-}
-
-template<class T>
-void Parameter<T>::onReceiveValue(ParameterEvent<T> event){
-    setValue(event.value);
-}
-
-template<class T>
-bool Parameter<T>::onVerobse(ParameterEvent<T> event){
-    cout<<event.target->getName(true)<<" : "<<event.value << " @ " << event.timeStamp <<endl;
-    return true;
-}
-
-template<class T>
-shared_ptr<class Parameter<T>> Parameter<T>::addEventListener(const typename ParameterEventSignal::slot_type slot){
-    parameterSignal.connect(slot);
-    return static_pointer_cast<Parameter<T>>(shared_from_this());
-}
-
-template<class T>
-void Parameter<T>::eventTrigger(T value){
-    ParameterEvent<T> event = {
-        static_pointer_cast<Parameter<T>>(shared_from_this()),
-        value
-    };
-    parameterSignal(event);
-}
-
-template<class T>
-void Parameter<T>::setNormalizedValue(float v, bool forceEvent){
-    if(strncmp(typeid(T).name(),"i",1) == 0){
-        int valueCount = (getMax() - getMin());
-        v = round(v * valueCount) / valueCount;
-    }
-    T _v = lerp(_min, _max, v);
-    setValue(_v, forceEvent);
-}
-
-template<class T>
-void Parameter<T>::setValue(T v, bool forceEvent){
-    T _v = Math::constrain<T>(v, _min, _max);
-    if(forceEvent || _val != _v){
-        _val = _v;
-        eventTrigger(_val);
-    }
-}
-
-template<class T>
-void Parameter<T>::setMin(T v){
-    _min = v;
-    _ratio = Math::reverseDiff<T>(_min, _max);
-}
-
-template<class T>
-void Parameter<T>::setMax(T v){
-    _max = v;
-    _ratio = Math::reverseDiff<T>(_min, _max);
-}
-
-template<class T>
-T Parameter<T>::getValue(bool normalized){
-    if(!normalized) return _val;
-    return (_val - _min) * _ratio;
-}
-
-template<class T>
-T Parameter<T>::getMin(){
-    return _min;
-}
-
-template<class T>
-T Parameter<T>::getMax(){
-    return _max;
-}
-
+            Parameter(string name, string type = "Parameter") :
+                Module(name, type)
+            {
+            }
+        public :
+            static ParameterRef create(std::string name){
+                return ParameterRef( new Parameter( name ) );
+            }
+            virtual ~Parameter(){
+            }
+            virtual void addEventListener(const string type, const typename ParameterEventSignal::slot_type slot) override {
+                if(sigMap.find(type) == sigMap.end()){
+                    sigMap.insert(MapType::value_type({type, ParameterEventSignal()}));
+                }
+                sigMap.at(type).connect(slot);
+            }
+            template<typename Callable>
+            void removeEventListener(const std::string type, Callable slot) {
+                if(sigMap.find(type) != sigMap.end()){
+                    sigMap.at(type).disconnect(slot);
+                }
+            }
+            void eventTrigger(std::string type, ParameterRef target = nullptr){
+                ParameterEvent event;
+                if(target == nullptr){
+                    event = ParameterEvent(type, as<Parameter>());
+                }else{
+                    event = ParameterEvent(type, target);
+                }
+                MapType::iterator signal = sigMap.find(type);
+                if(signal == sigMap.end())return ;
+                (sigMap.at(type))(event);
+            }
+            virtual ModuleRef addModule(ModuleRef module) override {
+                auto t = Module::addModule(module);
+                eventTrigger("add", module->as<Parameter>());
+                return t;
+            }
+            virtual string getStringValue(){
+                return "hello";
+            }
+            
+        };//class Parameter
+        typedef shared_ptr<class Parameter> ParameterRef;
+        typedef signal<void(ParameterEvent)> ParameterEventSignal;
+    }//namespace CORE
+}//namespace ORAGE
 #endif /* Parameter_h */

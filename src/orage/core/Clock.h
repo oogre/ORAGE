@@ -2,166 +2,111 @@
 #define Clock_h
 
 #include "../../lib/chrono_io.h"
-#include "../UI/IView.h"
-#include "../UI/Slider.h"
-#include "../UI/Pannel.h"
 #include "Parameter.h"
-#include "Math.h"
-#include "Module.h"
+#include "../common/Math.h"
+#include "Number.h"
 #include <boost/signals2.hpp>
 
-struct ClockEvent{
-	float timeUnit;
-	float progress;
-	Math::FRACTION_LIST list;
-	bool is(int num, int den);
-};
-
-//////////////////////////////////////
-
-bool ClockEvent::is(int num, int den){
-    return find(list.begin(), list.end(), make_pair(num, den)) != list.end();
-}
-
-//////////////////////////////////////
-
-class Clock : public Module{
-	typedef std::shared_ptr<class Clock> ClockRef;
-    typedef boost::signals2::signal<void(ClockEvent)> ClockSignal;
-    ClockSignal    clockSignal;
-public :
-        ClockSignal* getClockSignal();
-    
-private:
-	bool mShouldQuit;
-	shared_ptr<thread> mThread;
-    
-    ParameterRefI bang;
-    ParameterRefI bpm;
-    void onBPMChange(ParameterEventI event);
-    void onBANGChange(ParameterEventI event);
-    static const uint16_t StepPerBeat = 840;
-	static constexpr const float subStepInterval = 1.0f/StepPerBeat;
-	static Math::LISTOF_FRACTION_LIST FRACTIONS;
-	double interval;
-    
-	void run();
-    
-	Clock(float BPM = 60);
-public :
-    static ClockRef create(float BPM = 60){
-        return ClockRef( new Clock(BPM) );
-    }
-    virtual ~Clock();
-    
-    void setBPM(float BPM);
-    virtual ModuleRef display(int x, int y, int w, int h) override;
-    virtual void hide() override;
-};
-
-//////////////////////////////////////
-
-Math::LISTOF_FRACTION_LIST Clock::FRACTIONS = Math::getFractions(StepPerBeat);
-
-using namespace ci;
-using namespace std;
-using namespace std::chrono;
-using namespace boost::signals2;
-
-typedef shared_ptr<class Clock> ClockRef;
-
-Clock::Clock(float BPM):
-    Module()
-{
-	bang = addSubModule<ParameterI>("bang", ParameterI::create(1, 0, 1));
-    bpm = addSubModule<ParameterI>("bpm", ParameterI::create(BPM, 1, 300));
-    
-    clockSignal.connect([&](ClockEvent event) -> void{
-        if(event.is(1, 1)){
-            bang->setValue(1);
-        }else if(event.is(1, 2)){
-            bang->setValue(0);
-        }
-    });
-    setBPM(BPM);
-	mShouldQuit = false;
-	mThread = shared_ptr<thread>(new thread(bind(&Clock::run, this)));
-}
-
-Clock::~Clock(){
-	mShouldQuit = true;
-    mThread->join();
-    clockSignal.disconnect_all_slots();
-}
-
-void Clock::run(){
-	typedef duration<double> DURATION;
-	typedef high_resolution_clock CLCK;
-
-	ThreadSetup threadSetup;
-	double delay = 0;
-	int counter = 0;
-	auto t1 = CLCK::now();
-	while(!mShouldQuit){
-		auto t2 = CLCK::now();
-		delay += duration_cast<DURATION>(t2 - t1).count();
-		if(delay >= interval){
-			delay -= interval;
-            clockSignal({
-				subStepInterval,
-				(++counter) * subStepInterval, 
-				Clock::FRACTIONS[counter-1]
-			});
-			if(counter >= StepPerBeat){
-				counter = 0;
-			}
-		}
-		t1 = t2;
-	}
-}
-
-void Clock::setBPM(float BPM){
-	bpm->setValue(BPM);
-	interval = 60 / (double)(BPM * StepPerBeat);
-}
-
-signal<void(ClockEvent)>* Clock::getClockSignal(){
-    return &clockSignal;
-}
-
-void Clock::onBPMChange(ParameterEventI event){
-    setBPM(event.value);
-}
-
-void Clock::onBANGChange(ParameterEventI event){
-    if(event.value == 1){
-       pannel->getSubView<View>("bang")->setBgColor(Theme::bgActiveColor);
-    }
-    if(event.value == 0){
-       pannel->getSubView<View>("bang")->setBgColor(Theme::bgDisactiveColor);
-    }
-}
-
-ModuleRef Clock::display(int x, int y, int w, int h){
-    Module::display(x, y, w, h);
-    
-    pannel->addSubView<View>("bang", View::create({10, 20}, {15, 15}))
-        ->setBgColor(Theme::bgActiveColor);
-    
-    pannel->addSubView<UISliderI>("bpm", UISliderI::create({10, 40}, {size.x-20, 15}, bpm));
-    
-    bpm->addEventListener(boost::bind(&Clock::onBPMChange, this, _1));
-    bang->addEventListener(boost::bind(&Clock::onBANGChange, this, _1));
-    
-    
-    return shared_from_this();
-}
-
-void Clock::hide(){
-    Module::hide();
-    bpm->removeEventListener(boost::bind(&Clock::onBPMChange, this, _1));
-    bang->removeEventListener(boost::bind(&Clock::onBANGChange, this, _1));
-    
-}
-
+namespace ORAGE {
+    namespace CORE {
+        using namespace ci;
+        using namespace std;
+        using namespace std::chrono;
+        using namespace boost::signals2;
+        
+        struct ClockEvent{
+            float timeUnit;
+            float progress;
+            ORAGE::COMMON::Math::FRACTION_LIST list;
+            bool is(int num, int den){
+                return find(list.begin(), list.end(), make_pair(num, den)) != list.end();
+            }
+        };//struct ClockEvent
+        typedef signal<void(ClockEvent)> ClockSignal;
+        
+        
+        class Clock : public Parameter{
+            typedef shared_ptr<class Clock> ClockRef;
+            typedef shared_ptr<class thread> ThreadRef;
+            
+            double interval;
+            bool mShouldQuit;
+            ClockSignal    clockSignal;
+            ThreadRef mThread;
+            static const uint16_t StepPerBeat = 360;
+            static const uint16_t defaultBPM = 60;
+            static ORAGE::COMMON::Math::LISTOF_FRACTION_LIST FRACTIONS;
+            static constexpr const float subStepInterval = 1.0f/StepPerBeat;
+            
+            void run(){
+                typedef duration<double> DURATION;
+                typedef high_resolution_clock CLCK;
+                ThreadSetup threadSetup;
+                double delay = 0;
+                int counter = 0;
+                auto t1 = CLCK::now();
+                while(!mShouldQuit){
+                    auto t2 = CLCK::now();
+                    delay += duration_cast<DURATION>(t2 - t1).count();
+                    if(delay >= interval){
+                        delay -= interval;
+                        clockSignal({
+                            subStepInterval,
+                            (++counter) * subStepInterval,
+                            Clock::FRACTIONS[counter-1]
+                        });
+                        if(counter >= StepPerBeat){
+                            counter = 0;
+                        }
+                    }
+                    t1 = t2;
+                    this_thread::sleep_for(milliseconds(1));
+                }
+            }//void run()
+            
+            double bpmToInterval(float BPM){
+                return 60 / (double)(BPM * StepPerBeat) ;
+            }//double bpmToInterval(float BPM)
+            
+            Clock(string name, string type = "Clock"):
+                Parameter(name, type),
+                interval(bpmToInterval(defaultBPM))
+            {
+                addModule(NumberI::create("bang"));
+                addModule(NumberI::create("bpm", defaultBPM))
+                //->as<NumberI>()
+                ->addEventListener("change", [&](ParameterEvent event) -> void {
+                    float bpm = event.target->as<NumberI>()->getValue();
+                    interval = bpmToInterval(bpm);
+                });
+                clockSignal.connect([&](ClockEvent event) -> void{
+                    if(event.is(1, 1)){
+                        getModule("bang")->as<NumberI>()->setValue(1);
+                    }else if(event.is(1, 2)){
+                        getModule("bang")->as<NumberI>()->setValue(0);
+                    }
+                });
+                mShouldQuit = false;
+                mThread = ThreadRef(new thread(bind(&Clock::run, this)));
+            }//Clock(string name, int BPM)
+        public :
+            static ClockRef create(string name){
+                return ClockRef( new Clock(name) );
+            }
+            
+            virtual ~Clock(){
+                mShouldQuit = true;
+                mThread->join();
+                clockSignal.disconnect_all_slots();
+            }
+            
+            virtual void setConf(json conf) override {
+                Parameter::setConf(conf);
+                //getModule("bpm")->as<NumberI>()->setValue(conf.at("bpm"));
+            }
+        };// class Clock
+        typedef shared_ptr<class Clock> ClockRef;
+        ORAGE::COMMON::Math::LISTOF_FRACTION_LIST ORAGE::CORE::Clock::FRACTIONS = ORAGE::COMMON::Math::getFractions(StepPerBeat);
+    }//namespace CORE
+}//namespace ORAGE
 #endif /* Clock_h */

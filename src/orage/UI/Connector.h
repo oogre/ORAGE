@@ -10,6 +10,7 @@
 
 #include "IView.h"
 #include "../core/Parameter.h"
+//#include "../core/Cable.h"
 
 // We'll create a new Cinder Application by deriving from the App class.
 template<typename T>
@@ -17,20 +18,22 @@ class Connector : public IView  {
     typedef std::shared_ptr<class Connector> ConnectorRef;
 public :
     static vec2 SIZE_CLOSE;
+    enum TYPE { INPUT, OUTPUT };
 private :
+    TYPE type;
     static vec2 SIZE_OPEN;
     static float SIZE_SPEED;
     bool inside = false;
     bool isInside();
     vec2 _size;
-    Connector(ci::vec2 origin, std::shared_ptr<class Parameter<T>> parameter, View::ANCHOR anchor = TOP_LEFT);
+    Connector(ci::vec2 origin, std::shared_ptr<class Parameter<T>> parameter, TYPE type, View::ANCHOR anchor = TOP_LEFT);
     bool onEnter(IViewEvent event);
     bool onLeave(IViewEvent event);
     bool onClick(IViewEvent event);
     std::shared_ptr<class Parameter<T>> parameter;
 public :
-    static ConnectorRef create(ci::vec2 origin, std::shared_ptr<class Parameter<T>> parameter, View::ANCHOR anchor = TOP_LEFT){
-        return ConnectorRef( new Connector(origin, parameter, anchor) );
+    static ConnectorRef create(ci::vec2 origin, std::shared_ptr<class Parameter<T>> parameter, TYPE type, View::ANCHOR anchor = TOP_LEFT){
+        return ConnectorRef( new Connector(origin, parameter, type, anchor) );
     }
     virtual ~Connector();
     virtual void draw() override;
@@ -57,7 +60,7 @@ float Connector<T>::SIZE_SPEED = 0.1f;
 
 
 template<typename T>
-Connector<T>::Connector(vec2 origin, shared_ptr<class Parameter<T>> parameter, View::ANCHOR anchor) :
+Connector<T>::Connector(vec2 origin, shared_ptr<class Parameter<T>> parameter, TYPE type, View::ANCHOR anchor) :
 IView(origin, SIZE_CLOSE, anchor)
 {
     _size = getSize();
@@ -73,13 +76,25 @@ Connector<T>::~Connector(){
 
 template<typename T>
 bool Connector<T>::onClick(IViewEvent event){
-    cout<<"click"<<endl;
+    
+    if(type == INPUT){
+        
+    }else if(type == OUTPUT){
+        
+    }
+    
+//    CableRef cable = Cable::create(parameter);
+//    if(cable->isComplete()){
+//        cable->getInput()->getParent(true)->addCable(cable);
+//    }
+    
     return true;
 }
 
 template<typename T>
 bool Connector<T>::onEnter(IViewEvent event){
     addEventListener("down", boost::bind(&Connector<T>::onClick, this, _1));
+    addEventListener("drag", boost::bind(&Connector<T>::onClick, this, _1));
     inside = true;
     return true;
 }
@@ -87,6 +102,7 @@ bool Connector<T>::onEnter(IViewEvent event){
 template<typename T>
 bool Connector<T>::onLeave(IViewEvent event){
     removeEventListener("down", boost::bind(&Connector<T>::onClick, this, _1));
+    removeEventListener("drag", boost::bind(&Connector<T>::onClick, this, _1));
     inside = false;
     return true;
 }
