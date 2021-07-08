@@ -5,6 +5,7 @@
 #include "../../lib/Underscore.h"
 #include "../../lib/Tools.h"
 #include "../common/Node.h"
+#include "../common/EventTemplate.h"
 
 namespace ORAGE {
     namespace UI {
@@ -15,9 +16,10 @@ namespace ORAGE {
         using json = nlohmann::json;
         
         
-        class View : public COMMON::Node {
+        class View : public COMMON::Node, public COMMON::EventTemplate<View, COMMON::MouseEvent<View>> {
             typedef shared_ptr<class View> ViewRef;
-            
+            typedef COMMON::EventTemplate<View, COMMON::MouseEvent<View>> MouseEvt;
+            typedef ORAGE::COMMON::NodeRef NodeRef;
             const static map<string, Font> fonts;
             ColorA bgColor = Theme::bgActiveColor;
         protected :
@@ -25,6 +27,7 @@ namespace ORAGE {
             CORE::ModuleRef module;
             View(std::string name, string type = "View") :
                 Node(name, type),
+                MouseEvt(),
                 bounds({0, 0}, Theme::defaultSize),
                 anchor(Theme::defaultAnchor)
             {
@@ -41,7 +44,9 @@ namespace ORAGE {
                 return ViewRef( new View(name) );
             }
             virtual ViewRef addView(ViewRef view){
-                return Node::addNode(view)->as<View>();
+                Node::addNode(view);
+                eventTrigger({"add", view});
+                return view;
             }
             virtual ViewRef getView(std::string name){
                 auto temp = Node::getNode(name);
@@ -63,7 +68,7 @@ namespace ORAGE {
             vec2 getPos(bool recursive = false){
                 if(recursive){
                     vec2 op = {0, 0};
-                    forEachToRoot([&](ORAGE::COMMON::NodeRef node) -> void {
+                    forEachToRoot([&](NodeRef node) -> void {
                         op = op + node->as<View>()->getPos();
                     });
                     return op;
@@ -112,7 +117,7 @@ namespace ORAGE {
                 bounds.set(bounds.getX1(), bounds.getY1(), bounds.getX1()+size.x, bounds.getY1()+size.y);
             }
             virtual void update(){
-                forEach([&](ORAGE::COMMON::NodeRef node) -> void{
+                forEach([&](NodeRef node) -> void{
                     node->as<View>()->update();
                 });
             }
@@ -157,7 +162,7 @@ namespace ORAGE {
                 color( bgColor );
                 drawSolidRect({0, 0, bounds.getWidth(), bounds.getHeight()});
                 
-                forEach([&](ORAGE::COMMON::NodeRef node) -> void {
+                forEach([&](NodeRef node) -> void {
                     pushModelView();
                     node->as<View>()->draw();
                     popModelView();

@@ -34,7 +34,7 @@ using UI = ORAGE::UI::Manager;
 void OrageApp::setup(){
     typedef ORAGE::COMMON::Event<ORAGE::CORE::Module> ModuleEvt;
     typedef ORAGE::COMMON::Event<ORAGE::CORE::Cable> CableCoreEvt;
-    typedef ORAGE::COMMON::Event<ORAGE::UI::IView> IViewEvt;
+    typedef ORAGE::COMMON::Event<ORAGE::UI::View> ViewEvt;
     typedef ORAGE::COMMON::Event<ORAGE::UI::Cable> CableUiEvt;
     typedef ORAGE::CORE::ModuleType ModuleType;
     typedef ORAGE::UI::ViewType ViewType;
@@ -45,7 +45,7 @@ void OrageApp::setup(){
     CORE::Instance().cables->addEventListener("add", [&](CableCoreEvt event) -> void{
         UI::Instance().addCable( event.target->input->getName()+"-inputs-input", event.target->output->getName()+"-outputs-output");
     });
-    UI::Instance().view->as<ORAGE::UI::IView>()->addEventListener("add", [&](IViewEvt event) -> void{
+    UI::Instance().view->addEventListener("add", [&](ViewEvt event) -> void{
         cout<<event.target->getName(true)<<endl;
     });
     UI::Instance().cables->addEventListener("add", [&](CableUiEvt event) -> void{
@@ -104,7 +104,8 @@ void OrageApp::setup(){
     }));
     
     CORE::Instance().addCables(json::array({
-        json::array({"numberF", "numberI"}),
+        json::array({"numberI", "numberF"}),
+        json::array({"numberF", "toggle"}),
     }));
 
     cout << CORE::Instance().to_string() << endl;

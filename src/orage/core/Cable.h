@@ -19,12 +19,14 @@ namespace ORAGE {
             ModuleRef input;
             ModuleRef output;
         protected:
-            typedef std::shared_ptr<class Cable> CableRef;
+            typedef shared_ptr<class Cable> CableRef;
+            typedef ORAGE::COMMON::Event<Module> ModuleEvt;
+            
             Cable(ModuleRef input, ModuleRef output) :
                 input(input),
                 output(output)
             {
-                this->output->addEventListener("change", [&](ORAGE::COMMON::Event<Module> event) -> void{
+                this->output->addEventListener("change", [&](ModuleEvt event) -> void{
                     this->input->setValue(event.target->getValue());
                 });
             }

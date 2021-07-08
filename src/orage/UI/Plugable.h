@@ -9,7 +9,7 @@
 #define Plugable_h
 
 #include "Plug.h"
-#include "IView.h"
+#include "View.h"
 
 namespace ORAGE {
     namespace UI {

@@ -20,7 +20,7 @@ namespace ORAGE {
         
         class Number : public IView {
             typedef shared_ptr<class Number> NumberRef;
-            
+            typedef COMMON::MouseEvent<View> MouseEvt;
             Surface  valueSurface;
             
             Number(string name, string type="Number") :
@@ -42,15 +42,14 @@ namespace ORAGE {
                 
                 addEventListener("enter", boost::bind(&Number::onEnter, this, _1));
                 addEventListener("leave", boost::bind(&Number::onLeave, this, _1));
-                
             }
             
-            bool onDragStart(COMMON::MouseEvent<IView> event){
+            bool onDragStart(MouseEvt event){
                 addEventListener("drag", boost::bind(&Number::onDrag, this, _1));
                 addEventListener("dragEnd", boost::bind(&Number::onDragEnd, this, _1));
                 return true;
             }
-            bool onDrag(COMMON::MouseEvent<IView> event){
+            bool onDrag(MouseEvt event){
                 ivec2 dist = event.mouseEvent.getPos() - event.oldMousePos;
                 if(module->is<CORE::NumberI>()){
                     module->setValue(module->getValue() - dist.y);
@@ -59,16 +58,16 @@ namespace ORAGE {
                 }
                 return true;
             }
-            bool onDragEnd(COMMON::MouseEvent<IView> event){
+            bool onDragEnd(MouseEvt event){
                 removeEventListener("drag", boost::bind(&Number::onDrag, this, _1));
                 removeEventListener("dragEnd", boost::bind(&Number::onDragEnd, this, _1));
                 return true;
             }
-            bool onEnter(COMMON::MouseEvent<IView> event){
+            bool onEnter(MouseEvt event){
                 addEventListener("dragStart", boost::bind(&Number::onDragStart, this, _1));
                 return true;
             }
-            bool onLeave(COMMON::MouseEvent<IView> event){
+            bool onLeave(MouseEvt event){
                 removeEventListener("dragStart", boost::bind(&Number::onDragStart, this, _1));
                 return true;
             }
@@ -108,7 +107,7 @@ namespace ORAGE {
                 simple.addLine( value );
                 valueSurface = simple.render( true, View::PREMULT ) ;
             }
-        };//class Number : public IView {
+        };//class Number
         typedef shared_ptr<class Number> NumberRef;
     }//namespace UI {
 }//namespace ORAGE {

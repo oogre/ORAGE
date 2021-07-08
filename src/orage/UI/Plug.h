@@ -15,7 +15,8 @@ namespace ORAGE {
         using namespace std;
         
         class Plug : public IView  {
-            typedef std::shared_ptr<class Plug> PlugRef;
+            typedef shared_ptr<class Plug> PlugRef;
+            typedef COMMON::MouseEvent<View> MouseEvt;
             enum TYPE { INPUT, OUTPUT };
             TYPE type;
             Plug(string name) :
@@ -24,8 +25,8 @@ namespace ORAGE {
                 setSize(Theme::plugSize);
                 addEventListener("down", boost::bind(&Plug::onDown, this, _1));
             }
-            bool onDown(COMMON::MouseEvent<IView> event){
-                getParent<IView>(true)->eventTrigger("plug", event.target);
+            bool onDown(MouseEvt event){
+                getParent<View>(true)->eventTrigger({"plug", event.target});
                 return true;
             }
             
@@ -36,9 +37,6 @@ namespace ORAGE {
             virtual ~Plug(){
                 
             }
-            virtual void draw() override {
-                IView::draw();
-            };
         };//class Plug
         typedef std::shared_ptr<class Plug> PlugRef;
     }//namespace UI {

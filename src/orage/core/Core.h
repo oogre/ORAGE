@@ -18,7 +18,7 @@ namespace ORAGE {
         enum class ModuleType {
             NumberI,
             NumberF,
-            //Clock,
+            Clock,
             Module,
         };
         
@@ -74,10 +74,10 @@ namespace ORAGE {
                         newModule = NumberI::create(name);
                         break;
                     }
-//                    case ModuleType::Clock : {
-//                        newModule = Clock::create(name);
-//                        break;
-//                    }
+                    case ModuleType::Clock : {
+                        newModule = Clock::create(name);
+                        break;
+                    }
                     default : {
                         newModule = Module::create(name);
                         break;

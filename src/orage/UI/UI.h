@@ -23,15 +23,16 @@ namespace ORAGE {
         };
         
         class Manager {
+            typedef COMMON::MouseEvent<View> MouseEvt;
             Manager(){
                 cables = Cables::create();
-                view = IView::create("UI");
+                view = View::create("UI");
                 view->setSize(getWindow()->getSize());
                 view->setBgColor(Theme::bgColor);
                 getWindow()->getSignalResize().connect([&]() -> void {
                     view->setSize(getWindow()->getSize());
                 });
-                view->as<IView>()->addEventListener("plug", boost::bind(&Manager::onPlug, this, _1));
+                view->addEventListener("plug", boost::bind(&Manager::onPlug, this, _1));
             }
             Manager(const Manager &old);
             const Manager &operator=(const Manager &old);
@@ -86,7 +87,7 @@ namespace ORAGE {
             string to_string(){
                 return view->to_string();
             }
-            bool onPlug(COMMON::MouseEvent<IView> event){
+            bool onPlug(MouseEvt event){
                 cout<<event.target->getName(true)<<endl;
                 return true;
             }

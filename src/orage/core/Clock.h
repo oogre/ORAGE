@@ -19,13 +19,14 @@ namespace ORAGE {
             typedef shared_ptr<class Clock> ClockRef;
             typedef shared_ptr<class thread> ThreadRef;
             typedef COMMON::EventTemplate<Clock, COMMON::ClockEvent> ClockEvt;
+            typedef ORAGE::COMMON::Math Math;
             double interval;
             bool mShouldQuit;
             
             ThreadRef mThread;
             static const uint16_t StepPerBeat = 360;
             static const uint16_t defaultBPM = 60;
-            static ORAGE::COMMON::Math::LISTOF_FRACTION_LIST FRACTIONS;
+            static Math::LISTOF_FRACTION_LIST FRACTIONS;
             static constexpr const float subStepInterval = 1.0f/StepPerBeat;
             
             void run(){

@@ -24,6 +24,7 @@ namespace ORAGE {
         
         class Button : public IView {
             typedef shared_ptr<class Button> ButtonRef;
+            typedef COMMON::MouseEvent<View> MouseEvt;
             enum ButtonType {
                 BANG,
                 TOGGLE
@@ -50,7 +51,7 @@ namespace ORAGE {
                 addEventListener("up", boost::bind(&Button::onUp, this, _1));
                 
             }
-            bool onDown(COMMON::MouseEvent<IView> event){
+            bool onDown(MouseEvt event){
                 switch(type){
                     case BANG :
                         turnOn();
@@ -60,7 +61,7 @@ namespace ORAGE {
                 }
                 return true;
             }
-            bool onUp(COMMON::MouseEvent<IView> event){
+            bool onUp(MouseEvt event){
                 switch(type){
                     case BANG :
                         turnOff();
@@ -121,7 +122,7 @@ namespace ORAGE {
                     setBgColor(Theme::bgDisactiveColor);
                 }
             }
-        };//class Number : public IView {
+        };//class Button
         typedef shared_ptr<class Number> NumberRef;
     }//namespace UI {
 }//namespace ORAGE {

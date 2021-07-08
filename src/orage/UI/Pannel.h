@@ -19,15 +19,13 @@ namespace ORAGE {
         
         class Pannel : public IView {
             typedef shared_ptr<class Pannel> PannelRef;
-
+            typedef COMMON::MouseEvent<View> mouseEvt;
             Texture2dRef titleTex;
             
             Pannel(string name, string type = "Pannel") :
                 IView(name, type)
             {
-                addView(IView::create("handle"))
-                    ->as<IView>()
-                    ->addEventListener("drag", boost::bind(&Pannel::onDrag, this, _1));
+                addView(IView::create("handle"))->addEventListener("drag", boost::bind(&Pannel::onDrag, this, _1));
                 
                 addEventListener("enter", boost::bind(&Pannel::onEnter, this, _1));
                 addEventListener("leave", boost::bind(&Pannel::onLeave, this, _1));
@@ -39,18 +37,18 @@ namespace ORAGE {
                 
                 setBgColor(Theme::bgDisactiveColor);
             }
-            bool onDrag(COMMON::MouseEvent<IView> event){
+            bool onDrag(mouseEvt event){
                 ivec2 dist = event.mouseEvent.getPos() - event.oldMousePos;
                 move(dist);
                 return true;
             }
-            bool onEnter(COMMON::MouseEvent<IView> event){
+            bool onEnter(mouseEvt event){
                 forEach([&](ORAGE::COMMON::NodeRef node) -> void{
                     node->as<View>()->open = true;
                 });
                 return true;
             }
-            bool onLeave(COMMON::MouseEvent<IView> event){
+            bool onLeave(mouseEvt event){
                 forEach([&](ORAGE::COMMON::NodeRef node) -> void{
                     node->as<View>()->open = false;
                 });

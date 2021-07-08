@@ -9,7 +9,6 @@
 #define IView_h
 
 #include "View.h"
-#include "../common/EventTemplate.h"
 
 namespace ORAGE {
     namespace UI {
@@ -17,9 +16,12 @@ namespace ORAGE {
         using namespace ci;
         using namespace ci::app;
         
-        class IView : public View, public COMMON::EventTemplate<IView, COMMON::MouseEvent<IView>> {
+        class IView : public View {
             typedef shared_ptr<class IView> IViewRef;
-            typedef COMMON::EventTemplate<IView, COMMON::MouseEvent<IView>> MouseEvt;
+            typedef COMMON::MouseEvent<View> MouseEvt;
+            typedef COMMON::EventTemplate<View, MouseEvt> MouseEvtHandler;
+            
+            
             bool wasisInside = false;
             bool isDown = false;
             bool isDraging = false;
@@ -102,19 +104,18 @@ namespace ORAGE {
             }//void onMouseUp
         protected :
             IView(string name, string type = "IView"):
-                View(name, type),
-                MouseEvt()
+                View(name, type)
             {
                     connections.push_back(getWindow()->getSignalMouseMove().connect(100-getDepth(), boost::bind(&IView::onMouseMove, this, _1)));
                     connections.push_back(getWindow()->getSignalMouseWheel().connect(100-getDepth(), boost::bind(&IView::onMouseWheel, this, _1)));
                     connections.push_back(getWindow()->getSignalMouseDrag().connect(100-getDepth(), boost::bind(&IView::onMouseDrag, this, _1)));
                     connections.push_back(getWindow()->getSignalMouseDown().connect(100-getDepth(), boost::bind(&IView::onMouseDown, this, _1)));
                     connections.push_back(getWindow()->getSignalMouseUp().connect(100-getDepth(), boost::bind(&IView::onMouseUp, this, _1)));
-                    addEventListener("enter", [&](COMMON::MouseEvent<IView> event) -> bool {
+                    addEventListener("enter", [&](MouseEvt event) -> bool {
                         strokeColor = Theme::strokeActiveColor;
                         return true;
                     });
-                    addEventListener("leave", [&](COMMON::MouseEvent<IView> event) -> bool {
+                    addEventListener("leave", [&](MouseEvt event) -> bool {
                         strokeColor = Theme::strokeDisactiveColor;
                         return true;
                     });
@@ -130,25 +131,12 @@ namespace ORAGE {
                 }
             }
             void eventTrigger(string type, ci::app::MouseEvent mouseEvent, ivec2 oldMousePos){
-                MouseEvt::eventTrigger({
+                MouseEvtHandler::eventTrigger({
                     type,
                     mouseEvent,
-                    as<IView>(),
+                    as<View>(),
                     oldMousePos
                 });
-            }
-            void eventTrigger(string type, shared_ptr<IView> target) {
-                MouseEvt::eventTrigger({
-                    type,
-                    target
-                });
-            }
-            virtual ORAGE::UI::ViewRef addView(ORAGE::UI::ViewRef view) override {
-                auto t = View::addView(view);
-                if(view->is<ORAGE::UI::IView>()){
-                    eventTrigger("add", view->as<IView>());
-                }
-                return t;
             }
             virtual void draw() override {
                 View::draw();
