@@ -13,9 +13,9 @@
 namespace ORAGE {
     namespace CORE {
         using namespace std;
-        //using namespace boost::signals2;
         
         class Cable {
+        public:
             ModuleRef input;
             ModuleRef output;
         protected:
@@ -24,7 +24,7 @@ namespace ORAGE {
                 input(input),
                 output(output)
             {
-                this->output->addEventListener("change", [&](ORAGE::CORE::ParameterEvent event) -> void{
+                this->output->addEventListener("change", [&](ORAGE::COMMON::Event<Module> event) -> void{
                     this->input->setValue(event.target->getValue());
                 });
             }
@@ -36,6 +36,9 @@ namespace ORAGE {
 //                output->removeEventListener("change", [&](ORAGE::CORE::ParameterEvent event) -> void{
 //                    input->setValue(event.target->getValue());
 //                });
+            }
+            string to_string(){
+                return output->getName(true)+">>>"+input->getName(true);
             }
         };//class Cable
         typedef shared_ptr<class Cable> CableRef;

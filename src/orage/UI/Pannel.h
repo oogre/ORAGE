@@ -39,18 +39,18 @@ namespace ORAGE {
                 
                 setBgColor(Theme::bgDisactiveColor);
             }
-            bool onDrag(IViewEvent event){
+            bool onDrag(COMMON::MouseEvent<IView> event){
                 ivec2 dist = event.mouseEvent.getPos() - event.oldMousePos;
                 move(dist);
                 return true;
             }
-            bool onEnter(IViewEvent event){
+            bool onEnter(COMMON::MouseEvent<IView> event){
                 forEach([&](ORAGE::COMMON::NodeRef node) -> void{
                     node->as<View>()->open = true;
                 });
                 return true;
             }
-            bool onLeave(IViewEvent event){
+            bool onLeave(COMMON::MouseEvent<IView> event){
                 forEach([&](ORAGE::COMMON::NodeRef node) -> void{
                     node->as<View>()->open = false;
                 });

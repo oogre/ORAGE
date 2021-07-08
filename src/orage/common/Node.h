@@ -76,6 +76,9 @@ namespace ORAGE {
                 if(recursive && hasParent()){
                     return parent->getParent<T>(recursive);
                 }
+                if(hasParent()){
+                    return parent->as<T>();
+                }
                 return as<T>();
             }
             int getDepth(){

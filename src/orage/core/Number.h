@@ -9,21 +9,22 @@
 #define Number_h
 
 
-#include "Parameter.h"
+#include "Module.h"
 #include "boost/variant.hpp"
 
 namespace ORAGE {
     namespace CORE {
         using namespace std;
+        using json = nlohmann::json;
         
         template<class T>
-        class Number : public Parameter {
+        class Number : public Module {
             typedef shared_ptr<class Number<T>> NumberRef;
             T value;
             T o_value;
         protected:
             Number(string name, T value, string type = "Number") :
-                Parameter(name, type),
+                Module(name, type),
                 value(value),
                 o_value(value)
             {
@@ -40,7 +41,7 @@ namespace ORAGE {
             virtual void setValue(float value) override {
                 this->value = value;
                 conf["/value"_json_pointer] = this->value;
-                eventTrigger("change");
+                eventTrigger({"change", as<CORE::Module>()});
             }
             virtual float getValue() override {
                 return value;

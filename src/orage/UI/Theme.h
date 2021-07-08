@@ -48,6 +48,8 @@ namespace ORAGE {
             static vec2 NumberSize;
             static vec2 ButtonSize;
             
+            static vec2 plugSize;
+            
             static map<string, Font> fonts;
             static Font getFont(string name){
                 auto font = Theme::fonts.find(name);
@@ -61,6 +63,8 @@ namespace ORAGE {
         
         vec2 Theme::NumberSize = {50, 20};
         vec2 Theme::ButtonSize = {20, 20};
+        
+        vec2 Theme::plugSize = vec2(10, 10);
         
         ANCHOR Theme::defaultAnchor = TOP_LEFT;
         

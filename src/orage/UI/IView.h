@@ -9,42 +9,17 @@
 #define IView_h
 
 #include "View.h"
-#include <boost/signals2.hpp>
-// https://scicomp.ethz.ch/public/manual/Boost/1.55.0/signals2.pdf
+#include "../common/EventTemplate.h"
 
 namespace ORAGE {
     namespace UI {
         using namespace std;
         using namespace ci;
         using namespace ci::app;
-        using namespace boost::signals2;
         
-        class IView;
-        typedef std::shared_ptr<class IView> IViewRef;
-
-        struct IViewEvent{
-            string name;
-            MouseEvent mouseEvent;
-            IViewRef target;
-            time_t timeStamp;
-            ivec2 oldMousePos;
-            IViewEvent(){}
-            IViewEvent(string name, IViewRef target) : name(name), target(target){};
-            IViewEvent(string name, MouseEvent mouseEvent, IViewRef target, ivec2 oldMousePos) :
-                name(name),
-                mouseEvent(mouseEvent),
-                target(target),
-                timeStamp(time(0)),
-                oldMousePos(oldMousePos)
-            {};
-            string to_string();
-        };//struct IViewEvent
-    
-        class IView : public View {
+        class IView : public View, public COMMON::EventTemplate<IView, COMMON::MouseEvent<IView>> {
             typedef shared_ptr<class IView> IViewRef;
-            typedef signal<bool(IViewEvent)> IViewEventSignal;
-            typedef map<string, IViewEventSignal> MapType;
-            MapType sigMap;
+            typedef COMMON::EventTemplate<IView, COMMON::MouseEvent<IView>> MouseEvt;
             bool wasisInside = false;
             bool isDown = false;
             bool isDraging = false;
@@ -54,7 +29,7 @@ namespace ORAGE {
             vector<ci::signals::Connection> connections;
             ColorA strokeColor = Theme::strokeDisactiveColor;
             
-            void onMouseMove(MouseEvent mouseEvent){
+            void onMouseMove(ci::app::MouseEvent mouseEvent){
                 ivec2 mousePos = mouseEvent.getPos();
                 if(isInside(mousePos)){
                     if(!wasisInside){
@@ -70,7 +45,7 @@ namespace ORAGE {
                 oldMousePos = mousePos;
             }//void onMouseMove
             
-            void onMouseWheel(MouseEvent mouseEvent){
+            void onMouseWheel(ci::app::MouseEvent mouseEvent){
                 ivec2 mousePos = mouseEvent.getPos();
                 if(isInside(mousePos)){
                     eventTrigger("wheel", mouseEvent, oldMousePos);
@@ -78,7 +53,7 @@ namespace ORAGE {
                 oldMousePos = mousePos;
             }//void onMouseWheel
             
-            void onMouseDrag(MouseEvent mouseEvent){
+            void onMouseDrag(ci::app::MouseEvent mouseEvent){
                 ivec2 mousePos = mouseEvent.getPos();
                 if(isDown){
                     if(!isDraging){
@@ -90,7 +65,7 @@ namespace ORAGE {
                 oldMousePos = mousePos;
             }//void onMouseDrag
             
-            void onMouseDown(MouseEvent mouseEvent){
+            void onMouseDown(ci::app::MouseEvent mouseEvent){
                 ivec2 mousePos = mouseEvent.getPos();
                 if(isInside(mousePos)){
                     eventTrigger("down", mouseEvent, oldMousePos);
@@ -100,7 +75,7 @@ namespace ORAGE {
                 oldMousePos = mousePos;
             }//void onMouseDown
             
-            void onMouseUp(MouseEvent mouseEvent){
+            void onMouseUp(ci::app::MouseEvent mouseEvent){
                 vec2 mousePos = mouseEvent.getPos();
                 
                 
@@ -127,30 +102,19 @@ namespace ORAGE {
             }//void onMouseUp
         protected :
             IView(string name, string type = "IView"):
-                View(name, type)
+                View(name, type),
+                MouseEvt()
             {
-                    sigMap.insert(MapType::value_type({"over", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"enter", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"leave", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"wheel", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"up", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"down", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"click", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"doubleClick", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"longClick", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"dragStart", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"drag", IViewEventSignal()}));
-                    sigMap.insert(MapType::value_type({"dragEnd", IViewEventSignal()}));
                     connections.push_back(getWindow()->getSignalMouseMove().connect(100-getDepth(), boost::bind(&IView::onMouseMove, this, _1)));
                     connections.push_back(getWindow()->getSignalMouseWheel().connect(100-getDepth(), boost::bind(&IView::onMouseWheel, this, _1)));
                     connections.push_back(getWindow()->getSignalMouseDrag().connect(100-getDepth(), boost::bind(&IView::onMouseDrag, this, _1)));
                     connections.push_back(getWindow()->getSignalMouseDown().connect(100-getDepth(), boost::bind(&IView::onMouseDown, this, _1)));
                     connections.push_back(getWindow()->getSignalMouseUp().connect(100-getDepth(), boost::bind(&IView::onMouseUp, this, _1)));
-                    addEventListener("enter", [&](IViewEvent event) -> bool {
+                    addEventListener("enter", [&](COMMON::MouseEvent<IView> event) -> bool {
                         strokeColor = Theme::strokeActiveColor;
                         return true;
                     });
-                    addEventListener("leave", [&](IViewEvent event) -> bool {
+                    addEventListener("leave", [&](COMMON::MouseEvent<IView> event) -> bool {
                         strokeColor = Theme::strokeDisactiveColor;
                         return true;
                     });
@@ -165,43 +129,25 @@ namespace ORAGE {
                     connections.erase(connections.begin());
                 }
             }
-            void eventTrigger(string type, MouseEvent mouseEvent, ivec2 oldMousePos){
-                IViewEvent event{
+            void eventTrigger(string type, ci::app::MouseEvent mouseEvent, ivec2 oldMousePos){
+                MouseEvt::eventTrigger({
                     type,
                     mouseEvent,
                     as<IView>(),
                     oldMousePos
-                };
-                MapType::iterator signal = sigMap.find(type);
-                if(signal == sigMap.end())return ;
-                (sigMap.at(type))(event);
+                });
             }
-            void eventTrigger(string type, IViewRef target = nullptr){
-                IViewEvent event;
-                if(target == nullptr){
-                    event = IViewEvent(type, as<IView>());
-                }else{
-                    event = IViewEvent(type, target);
-                }
-                MapType::iterator signal = sigMap.find(type);
-                if(signal == sigMap.end())return ;
-                (sigMap.at(type))(event);
-            }
-            void addEventListener(const string type, const IViewEventSignal::slot_type slot){
-                if(sigMap.find(type) == sigMap.end()){
-                    sigMap.insert(MapType::value_type({type, IViewEventSignal()}));
-                }
-                sigMap.at(type).connect(slot);
-            }
-            template<typename Callable>
-            void removeEventListener(const string type, Callable slot){
-                if(sigMap.find(type) != sigMap.end()){
-                    sigMap.at(type).disconnect(slot);
-                }
+            void eventTrigger(string type, shared_ptr<IView> target) {
+                MouseEvt::eventTrigger({
+                    type,
+                    target
+                });
             }
             virtual ORAGE::UI::ViewRef addView(ORAGE::UI::ViewRef view) override {
                 auto t = View::addView(view);
-                eventTrigger("add", view->as<IView>());
+                if(view->is<ORAGE::UI::IView>()){
+                    eventTrigger("add", view->as<IView>());
+                }
                 return t;
             }
             virtual void draw() override {
@@ -210,12 +156,7 @@ namespace ORAGE {
                 drawStrokedRect({0, 0, bounds.getWidth()+1, bounds.getHeight()+1});
             }
         };//class IView
-        typedef signal<bool(IViewEvent)> IViewEventSignal;
         typedef shared_ptr<class IView> IViewRef;
-        
-        string IViewEvent::to_string() {
-            return name + " : " + target->getName(true);
-        }
     }//namespace UI {
 }//namespace ORAGE {
 #endif /* IView_h */

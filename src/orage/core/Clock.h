@@ -2,36 +2,26 @@
 #define Clock_h
 
 #include "../../lib/chrono_io.h"
-#include "Parameter.h"
+#include "Module.h"
 #include "../common/Math.h"
+#include "../common/EventTemplate.h"
 #include "Number.h"
-#include <boost/signals2.hpp>
+
 
 namespace ORAGE {
     namespace CORE {
         using namespace ci;
         using namespace std;
         using namespace std::chrono;
-        using namespace boost::signals2;
-        
-        struct ClockEvent{
-            float timeUnit;
-            float progress;
-            ORAGE::COMMON::Math::FRACTION_LIST list;
-            bool is(int num, int den){
-                return find(list.begin(), list.end(), make_pair(num, den)) != list.end();
-            }
-        };//struct ClockEvent
-        typedef signal<void(ClockEvent)> ClockSignal;
         
         
-        class Clock : public Parameter{
+        class Clock : public Module, public COMMON::EventTemplate<Clock, COMMON::ClockEvent> {
             typedef shared_ptr<class Clock> ClockRef;
             typedef shared_ptr<class thread> ThreadRef;
-            
+            typedef COMMON::EventTemplate<Clock, COMMON::ClockEvent> ClockEvt;
             double interval;
             bool mShouldQuit;
-            ClockSignal    clockSignal;
+            
             ThreadRef mThread;
             static const uint16_t StepPerBeat = 360;
             static const uint16_t defaultBPM = 60;
@@ -50,7 +40,8 @@ namespace ORAGE {
                     delay += duration_cast<DURATION>(t2 - t1).count();
                     if(delay >= interval){
                         delay -= interval;
-                        clockSignal({
+                        ClockEvt::eventTrigger({
+                            "tic",
                             subStepInterval,
                             (++counter) * subStepInterval,
                             Clock::FRACTIONS[counter-1]
@@ -69,23 +60,25 @@ namespace ORAGE {
             }//double bpmToInterval(float BPM)
             
             Clock(string name, string type = "Clock"):
-                Parameter(name, type),
+                Module(name, type),
+                COMMON::EventTemplate<Clock, COMMON::ClockEvent>(),
                 interval(bpmToInterval(defaultBPM))
             {
                 addModule(NumberI::create("bang"));
                 addModule(NumberI::create("bpm", defaultBPM))
-                //->as<NumberI>()
-                ->addEventListener("change", [&](ParameterEvent event) -> void {
-                    float bpm = event.target->as<NumberI>()->getValue();
-                    interval = bpmToInterval(bpm);
-                });
-                clockSignal.connect([&](ClockEvent event) -> void{
+                    ->addEventListener("change", [&](COMMON::Event<Module> event) -> void {
+                        float bpm = event.target->as<NumberI>()->getValue();
+                        interval = bpmToInterval(bpm);
+                    });
+                
+                ClockEvt::addEventListener("tic", [&](COMMON::ClockEvent event) -> void {
                     if(event.is(1, 1)){
-                        getModule("bang")->as<NumberI>()->setValue(1);
+                        getModule("bang")->setValue(1);
                     }else if(event.is(1, 2)){
-                        getModule("bang")->as<NumberI>()->setValue(0);
+                        getModule("bang")->setValue(0);
                     }
                 });
+                
                 mShouldQuit = false;
                 mThread = ThreadRef(new thread(bind(&Clock::run, this)));
             }//Clock(string name, int BPM)
@@ -97,11 +90,11 @@ namespace ORAGE {
             virtual ~Clock(){
                 mShouldQuit = true;
                 mThread->join();
-                clockSignal.disconnect_all_slots();
+                //clockSignal.disconnect_all_slots();
             }
             
             virtual void setConf(json conf) override {
-                Parameter::setConf(conf);
+                Module::setConf(conf);
                 //getModule("bpm")->as<NumberI>()->setValue(conf.at("bpm"));
             }
         };// class Clock

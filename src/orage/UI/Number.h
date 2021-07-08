@@ -8,7 +8,7 @@
 #ifndef UINumber_h
 #define UINumber_h
 
-
+#include "Plugable.h"
 #include "IView.h"
 
 namespace ORAGE {
@@ -27,34 +27,48 @@ namespace ORAGE {
                 IView(name, type)
             {
                 setSize(Theme::NumberSize);
+                setBgColor(Theme::bgActiveColor);
+                
+                ORAGE::UI::ViewRef inputs = addView(Plugable::create("inputs"));
+                inputs->setSize({getSize().x, 5});
+                inputs->setPos({0, -7});
+                inputs->as<Plugable>()->addPlug("input");
+                
+                ORAGE::UI::ViewRef outputs = addView(Plugable::create("outputs"));
+                outputs->setSize({getSize().x, 5});
+                outputs->setPos({0, getSize().y+2});
+                outputs->anchor = TOP_LEFT;
+                outputs->as<Plugable>()->addPlug("output");
+                
                 addEventListener("enter", boost::bind(&Number::onEnter, this, _1));
                 addEventListener("leave", boost::bind(&Number::onLeave, this, _1));
-                setBgColor(Theme::bgActiveColor);
+                
             }
-            bool onDragStart(IViewEvent event){
+            
+            bool onDragStart(COMMON::MouseEvent<IView> event){
                 addEventListener("drag", boost::bind(&Number::onDrag, this, _1));
                 addEventListener("dragEnd", boost::bind(&Number::onDragEnd, this, _1));
                 return true;
             }
-            bool onDrag(IViewEvent event){
+            bool onDrag(COMMON::MouseEvent<IView> event){
                 ivec2 dist = event.mouseEvent.getPos() - event.oldMousePos;
-                if(parameter->is<CORE::NumberI>()){
-                    parameter->setValue(parameter->getValue() - dist.y);
+                if(module->is<CORE::NumberI>()){
+                    module->setValue(module->getValue() - dist.y);
                 }else{
-                    parameter->setValue(parameter->getValue() - dist.y * 0.01);
+                    module->setValue(module->getValue() - dist.y * 0.01);
                 }
                 return true;
             }
-            bool onDragEnd(IViewEvent event){
+            bool onDragEnd(COMMON::MouseEvent<IView> event){
                 removeEventListener("drag", boost::bind(&Number::onDrag, this, _1));
                 removeEventListener("dragEnd", boost::bind(&Number::onDragEnd, this, _1));
                 return true;
             }
-            bool onEnter(IViewEvent event){
+            bool onEnter(COMMON::MouseEvent<IView> event){
                 addEventListener("dragStart", boost::bind(&Number::onDragStart, this, _1));
                 return true;
             }
-            bool onLeave(IViewEvent event){
+            bool onLeave(COMMON::MouseEvent<IView> event){
                 removeEventListener("dragStart", boost::bind(&Number::onDragStart, this, _1));
                 return true;
             }
@@ -68,7 +82,7 @@ namespace ORAGE {
                 removeEventListener("dragStart", boost::bind(&Number::onDragStart, this, _1));
                 removeEventListener("drag", boost::bind(&Number::onDrag, this, _1));
                 removeEventListener("dragEnd", boost::bind(&Number::onDragEnd, this, _1));
-                parameter->removeEventListener("change", boost::bind(&Number::onChange, this, _1));
+                module->removeEventListener("change", boost::bind(&Number::onChange, this, _1));
             }
             virtual void draw() override {
                 pushModelView();
@@ -79,12 +93,12 @@ namespace ORAGE {
                 gl::draw( tex, pos );
                 popModelView();
             }
-            virtual void setParameter(CORE::ParameterRef parameter) override {
-                View::setParameter(parameter);
-                parameter->addEventListener("change", boost::bind(&Number::onChange, this, _1));
-                render( parameter->getStringValue() );
+            virtual void setModule(CORE::ModuleRef module) override {
+                View::setModule(module);
+                module->addEventListener("change", boost::bind(&Number::onChange, this, _1));
+                render( module->getStringValue() );
             }
-            void onChange(CORE::ParameterEvent event){
+            void onChange(COMMON::Event<CORE::Module> event){
                 render( event.target->getStringValue() );
             }
             void render(string value){

@@ -9,30 +9,30 @@
 #define Orage_h
 #include "Number.h"
 #include "Clock.h"
-#include "Cable.h"
+#include "Cables.h"
 
 namespace ORAGE {
     namespace CORE {
         using namespace std;
         
         enum class ModuleType {
-            Parameter,
             NumberI,
             NumberF,
-            Clock,
+            //Clock,
             Module,
         };
         
         class Manager {
-            ModuleRef module;
-            typedef map<string, CableRef> Cables;
-            Cables cables;
             Manager(){
-                module = Parameter::create("CORE");
+                module = Module::create("CORE");
+                cables = Cables::create();
             }
             Manager(const Manager &old);
             const Manager &operator=(const Manager &old);
         public:
+            ModuleRef module;
+            CablesRef cables;
+            
             static Manager &Instance(){
                 static auto_ptr<Manager> instance( new Manager );
                 return *instance;
@@ -40,22 +40,23 @@ namespace ORAGE {
             virtual ~Manager(){
                 
             }
-            void addEventListener(const string type, const typename ParameterEventSignal::slot_type slot){
-                module->addEventListener(type, slot);
-            }
             void addCables(json cables){
-                for (const auto& item : cables.items())
-                {
+                for (const auto& item : cables.items()){
                     addCable(item.value());
                 }
             }
-            
             void addCable(json cable){
-                string inputName = cable[1];
-                string outputName = cable[0];
-                cables[outputName+">>>"+inputName] = Cable::create(getModule(inputName), getModule(outputName));
+                string inputName = cable[1] ;
+                string outputName = cable[0] ;
+                ModuleRef input = getModule(inputName);
+                ModuleRef output = getModule(outputName);
+                cables->addCable(input, output);
             }
-            
+            void addModules(json modules){
+                for (const auto& item : modules.items()){
+                    addModule(item.value());
+                }
+            }   
             void addModule(json conf){
                 if(!conf.contains("/type"_json_pointer) || !conf.contains("/name"_json_pointer)){
                     throw std::invalid_argument( "ORAGE::CORE::Manager::addModule need /type /name");
@@ -73,10 +74,10 @@ namespace ORAGE {
                         newModule = NumberI::create(name);
                         break;
                     }
-                    case ModuleType::Clock : {
-                        newModule = Clock::create(name);
-                        break;
-                    }
+//                    case ModuleType::Clock : {
+//                        newModule = Clock::create(name);
+//                        break;
+//                    }
                     default : {
                         newModule = Module::create(name);
                         break;
@@ -85,7 +86,7 @@ namespace ORAGE {
                 newModule->setConf(conf);
                 module->addModule( newModule );
             }
-            template<typename T = Parameter>
+            template<typename T = Module>
             shared_ptr<T> getModule(string name){
                 return module->getModule(name)->as<T>();
             }

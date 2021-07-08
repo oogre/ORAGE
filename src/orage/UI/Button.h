@@ -8,7 +8,9 @@
 #ifndef Button_h
 #define Button_h
 
+#include "Plugable.h"
 #include "IView.h"
+
 /*
  toggle
  bang
@@ -31,11 +33,24 @@ namespace ORAGE {
             IView(name, type)
             {
                 setSize(Theme::ButtonSize);
+                setBgColor(Theme::bgDisactiveColor);
+                
+                ORAGE::UI::ViewRef inputs = addView(Plugable::create("inputs"));
+                inputs->setSize({getSize().x, 5});
+                inputs->setPos({0, -7});
+                inputs->as<Plugable>()->addPlug("input");
+                
+                ORAGE::UI::ViewRef outputs = addView(Plugable::create("outputs"));
+                outputs->setSize({getSize().x, 5});
+                outputs->setPos({0, getSize().y+2});
+                outputs->anchor = TOP_LEFT;
+                outputs->as<Plugable>()->addPlug("output");
+                
                 addEventListener("down", boost::bind(&Button::onDown, this, _1));
                 addEventListener("up", boost::bind(&Button::onUp, this, _1));
-                setBgColor(Theme::bgDisactiveColor);
+                
             }
-            bool onDown(IViewEvent event){
+            bool onDown(COMMON::MouseEvent<IView> event){
                 switch(type){
                     case BANG :
                         turnOn();
@@ -45,7 +60,7 @@ namespace ORAGE {
                 }
                 return true;
             }
-            bool onUp(IViewEvent event){
+            bool onUp(COMMON::MouseEvent<IView> event){
                 switch(type){
                     case BANG :
                         turnOff();
@@ -59,10 +74,10 @@ namespace ORAGE {
             }
         public :
             void turnOn(){
-                parameter->setValue(parameter->getConf().at("on"));
+                module->setValue(module->getConf().at("on"));
             }
             void turnOff(){
-                parameter->setValue(parameter->getConf().at("off"));
+                module->setValue(module->getConf().at("off"));
             }
             void toggle(){
                 if(isOn()){
@@ -72,7 +87,7 @@ namespace ORAGE {
                 }
             }
             bool isOn(){
-                return parameter->getValue() == parameter->getConf().at("on");
+                return module->getValue() == module->getConf().at("on");
             }
             static ButtonRef create(string name){
                 return ButtonRef( new Button(name) );
@@ -84,19 +99,19 @@ namespace ORAGE {
             virtual ~Button() {
                 removeEventListener("down", boost::bind(&Button::onDown, this, _1));
                 removeEventListener("up", boost::bind(&Button::onUp, this, _1));
-                parameter->removeEventListener("change", boost::bind(&Button::onChange, this, _1));
+                module->removeEventListener("change", boost::bind(&Button::onChange, this, _1));
             }
             virtual void draw() override {
                 pushModelView();
                 IView::draw();
                 popModelView();
             }
-            virtual void setParameter(CORE::ParameterRef parameter) override {
-                View::setParameter(parameter);
-                parameter->addEventListener("change", boost::bind(&Button::onChange, this, _1));
+            virtual void setModule(CORE::ModuleRef module) override {
+                View::setModule(module);
+                module->addEventListener("change", boost::bind(&Button::onChange, this, _1));
                 render();
             }
-            void onChange(CORE::ParameterEvent event){
+            void onChange(COMMON::Event<CORE::Module> event){
                 render();
             }
             void render(){

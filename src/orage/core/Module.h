@@ -6,38 +6,29 @@
 #include "../../lib/Underscore.h"
 #include "../../lib/Tools.h"
 #include "../common/Node.h"
+#include "../common/EventTemplate.h"
 
 namespace ORAGE {
     namespace CORE {
         using namespace std;
         using json = nlohmann::json;
         
-        struct ParameterEvent;
-        
-        class Module : public COMMON::Node{
+        class Module : public COMMON::Node, public COMMON::EventTemplate<Module> {
             static int ID;
-            typedef boost::signals2::signal<void(ParameterEvent)> ParameterEventSignal;
+            typedef shared_ptr<class Module> ModuleRef;
             
         protected:
             Module(string name, string type = "Module") :
-                Node(name, type)
+                Node(name, type),
+                COMMON::EventTemplate<Module>()
             {
                 id = Module::ID++;
             }
         public:
             int id ;
-            virtual shared_ptr<class Module> addModule(shared_ptr<class Module> module){
-                return Node::addNode(module)->as<Module>();
+            static ModuleRef create(string name){
+                return ModuleRef( new Module(name) );
             }
-            virtual shared_ptr<class Module> getModule(string name){
-                auto temp = Node::getNode(name);
-                if(temp != nullptr)return temp->as<Module>();
-                throw invalid_argument( "getModule : unknown : " + name );
-            }
-            static shared_ptr<class Module> create(string name){
-                return shared_ptr<class Module>( new Module(name) );
-            }
-           
             virtual ~Module(){
             }
             virtual void update(){
@@ -45,17 +36,27 @@ namespace ORAGE {
                     node->as<Module>()->update();
                 });
             }
+            virtual ModuleRef addModule(ModuleRef module){
+                Node::addNode(module);
+                eventTrigger({"add", module});
+                return module;
+            }
+            virtual ModuleRef getModule(string name){
+                auto temp = Node::getNode(name);
+                if(temp != nullptr)return temp->as<Module>();
+                throw invalid_argument( "getModule : unknown : " + name );
+            }
             template<typename T = Module>
             bool is(){
                 return as<T>() != NULL;
             }
             virtual void setValue(float value){
-                
-            };
+            }
             virtual float getValue(){
                 return 0;
-            };
-            virtual void addEventListener(const string type, const typename ParameterEventSignal::slot_type slot){
+            }
+            virtual string getStringValue(){
+                return "";
             }
         };//class Module
         typedef shared_ptr<class Module> ModuleRef;

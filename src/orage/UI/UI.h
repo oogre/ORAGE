@@ -7,7 +7,7 @@
 
 #ifndef OrageUI_h
 #define OrageUI_h
-
+#include "Cables.h"
 #include "Pannel.h"
 #include "Number.h"
 #include "Button.h"
@@ -23,18 +23,22 @@ namespace ORAGE {
         };
         
         class Manager {
-            ViewRef view;
             Manager(){
+                cables = Cables::create();
                 view = IView::create("UI");
                 view->setSize(getWindow()->getSize());
                 view->setBgColor(Theme::bgColor);
                 getWindow()->getSignalResize().connect([&]() -> void {
                     view->setSize(getWindow()->getSize());
                 });
+                view->as<IView>()->addEventListener("plug", boost::bind(&Manager::onPlug, this, _1));
             }
             Manager(const Manager &old);
             const Manager &operator=(const Manager &old);
         public:
+            ViewRef view;
+            CablesRef cables;
+            
             static Manager &Instance(){
                 static auto_ptr<Manager> instance( new Manager );
                 return *instance;
@@ -47,9 +51,13 @@ namespace ORAGE {
             void draw(){
                 clear( Color( 0, 0, 0 ) );
                 view->draw();
+                cables->draw();
             }
-            void addView(ORAGE::CORE::ParameterRef parameter){
-                json conf = parameter->getConf();
+            void addCable(string inputName, string outputName){
+                cables->addCable(getView(inputName)->as<Plug>(), getView(outputName)->as<Plug>());
+            }
+            void addView(ORAGE::CORE::ModuleRef module){
+                json conf = module->getConf();
                 ViewType type = conf.at("/view"_json_pointer);
                 string name = conf.at("/name"_json_pointer);
                 
@@ -68,19 +76,19 @@ namespace ORAGE {
                         newView = View::create(name);
                         break;
                 }
-                newView->setParameter(parameter);
-                //newView->setParameter(parameter->getModule("bang")->as<ORAGE::CORE::Parameter>());
+                newView->setModule(module);
                 view->addView( newView );
             }
             template<typename T = View>
             shared_ptr<T> getView(string name){
                 return view->getView(name)->as<T>();
             }
-            void addEventListener(const string type, const typename IViewEventSignal::slot_type slot){
-                view->as<IView>()->addEventListener(type, slot);
-            }
             string to_string(){
                 return view->to_string();
+            }
+            bool onPlug(COMMON::MouseEvent<IView> event){
+                cout<<event.target->getName(true)<<endl;
+                return true;
             }
         };//class Manager{
     }//namespace UI {

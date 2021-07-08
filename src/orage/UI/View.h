@@ -14,15 +14,15 @@ namespace ORAGE {
         using namespace ci::app;
         using json = nlohmann::json;
         
+        
         class View : public COMMON::Node {
-            typedef function<void(void)> ParameterFnc;
             typedef shared_ptr<class View> ViewRef;
             
             const static map<string, Font> fonts;
             ColorA bgColor = Theme::bgActiveColor;
         protected :
             Rectf bounds;
-            CORE::ParameterRef parameter;
+            CORE::ModuleRef module;
             View(std::string name, string type = "View") :
                 Node(name, type),
                 bounds({0, 0}, Theme::defaultSize),
@@ -116,8 +116,6 @@ namespace ORAGE {
                     node->as<View>()->update();
                 });
             }
-            
-            
             virtual void draw(){
                 switch(anchor){
                     case TOP_LEFT :
@@ -158,18 +156,25 @@ namespace ORAGE {
                 }
                 color( bgColor );
                 drawSolidRect({0, 0, bounds.getWidth(), bounds.getHeight()});
+                
                 forEach([&](ORAGE::COMMON::NodeRef node) -> void {
+                    pushModelView();
                     node->as<View>()->draw();
+                    popModelView();
                 });
             }
-            virtual void setParameter(CORE::ParameterRef parameter){
-                this->parameter = parameter;
-                json conf = parameter->getConf();
+            template<typename T = View>
+            bool is(){
+                return as<T>() != NULL;
+            }
+            virtual void setModule(CORE::ModuleRef module){
+                this->module = module;
+                json conf = module->getConf();
                 if(conf.contains("/position/x"_json_pointer) && conf.contains("/position/y"_json_pointer)){
                     setPos({conf.at("/position/x"_json_pointer), conf.at("/position/y"_json_pointer)});
                 }
             }
-            virtual ~View(){}    
+            virtual ~View(){}
         };//class View
         typedef shared_ptr<class View> ViewRef;
     }//namespace UI {
