@@ -23,13 +23,7 @@ namespace ORAGE {
                 IView(name)
             {
                 setSize(Theme::plugSize);
-                addEventListener("down", boost::bind(&Plug::onDown, this, _1));
             }
-            bool onDown(MouseEvt event){
-                getParent<View>(true)->eventTrigger({"plug", event.target});
-                return true;
-            }
-            
         public :
             static PlugRef create(string name){
                 return PlugRef( new Plug(name) );

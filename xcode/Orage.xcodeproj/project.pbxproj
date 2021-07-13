@@ -93,6 +93,7 @@
 		884D1F18268F3422004F84E6 /* Number.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Number.h; sourceTree = "<group>"; };
 		886F5F25266A6E9B005BB9C5 /* Underscore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Underscore.h; sourceTree = "<group>"; };
 		886F98272660442000779325 /* IView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IView.h; sourceTree = "<group>"; };
+		88BC31332698822E00538615 /* Inline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Inline.h; sourceTree = "<group>"; };
 		88C73D11268E04B800C75690 /* Node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		88EEEE07265EE59C00D9087C /* chrono_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chrono_io.h; sourceTree = "<group>"; };
 		88EEEE08265EE59C00D9087C /* ratio_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ratio_io.h; sourceTree = "<group>"; };
@@ -308,6 +309,7 @@
 				88F2AC632695BC6700CF68F4 /* Button.h */,
 				88F2AC652697468700CF68F4 /* Cables.h */,
 				88F2AC662697470600CF68F4 /* Cable.h */,
+				88BC31332698822E00538615 /* Inline.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";

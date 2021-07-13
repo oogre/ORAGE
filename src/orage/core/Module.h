@@ -7,17 +7,20 @@
 #include "../../lib/Tools.h"
 #include "../common/Node.h"
 #include "../common/EventTemplate.h"
+#include <boost/any.hpp>
 
 namespace ORAGE {
     namespace CORE {
         using namespace std;
+        using boost::any_cast;
         using json = nlohmann::json;
         
         class Module : public COMMON::Node, public COMMON::EventTemplate<Module> {
             static int ID;
             typedef shared_ptr<class Module> ModuleRef;
-            
         protected:
+            unordered_map<string, boost::any> values;
+            unordered_map<string, boost::any> defaultValues;
             Module(string name, string type = "Module") :
                 Node(name, type),
                 COMMON::EventTemplate<Module>()
@@ -49,6 +52,18 @@ namespace ORAGE {
             template<typename T = Module>
             bool is(){
                 return as<T>() != NULL;
+            }
+            virtual void set(string key, boost::any value, bool defaultValue = false){
+                if(defaultValue){
+                    defaultValues[key] = value;
+                }
+                values[key] = value;
+            }
+            virtual boost::any get(string key){
+                return values[key];
+            }
+            virtual void reset(){
+                values = defaultValues;
             }
             virtual void setValue(float value){
             }

@@ -27,7 +27,7 @@ namespace ORAGE {
                 timeStamp(time(0))
             {
             }
-        };//class Event<T>
+        };//struct BaseEvent
         
         template<typename T>
         struct Event : public BaseEvent{
@@ -38,7 +38,7 @@ namespace ORAGE {
                 target(target)
             {
             }
-        };//class Event<T>
+        };//struct Event<T>
         
         template<class T>
         struct MouseEvent : public COMMON::Event<T>{

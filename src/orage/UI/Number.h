@@ -8,7 +8,9 @@
 #ifndef UINumber_h
 #define UINumber_h
 
-#include "Plugable.h"
+//#include "Plugable.h"
+#include "Plug.h"
+#include "Inline.h"
 #include "IView.h"
 
 namespace ORAGE {
@@ -29,19 +31,26 @@ namespace ORAGE {
                 setSize(Theme::NumberSize);
                 setBgColor(Theme::bgActiveColor);
                 
-                ORAGE::UI::ViewRef inputs = addView(Plugable::create("inputs"));
+                ORAGE::UI::ViewRef inputs = addView(Inline::create("inputs"));
                 inputs->setSize({getSize().x, 5});
                 inputs->setPos({0, -7});
-                inputs->as<Plugable>()->addPlug("input");
+                inputs->addView(Plug::create("input"));
+                inputs->addView(Plug::create("input2"));
                 
-                ORAGE::UI::ViewRef outputs = addView(Plugable::create("outputs"));
+                ORAGE::UI::ViewRef outputs = addView(Inline::create("outputs"));
                 outputs->setSize({getSize().x, 5});
                 outputs->setPos({0, getSize().y+2});
                 outputs->anchor = TOP_LEFT;
-                outputs->as<Plugable>()->addPlug("output");
+                outputs->addView(Plug::create("output"));
                 
+                
+                inputs->getView("input")->addEventListener("down", boost::bind(&Number::onInputDown, this, _1));
                 addEventListener("enter", boost::bind(&Number::onEnter, this, _1));
                 addEventListener("leave", boost::bind(&Number::onLeave, this, _1));
+            }
+            bool onInputDown(MouseEvt event){
+                getParent<View>(true)->eventTrigger({"plug", as<View>()});
+                return true;
             }
             
             bool onDragStart(MouseEvt event){

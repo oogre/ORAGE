@@ -53,7 +53,9 @@ namespace ORAGE {
                 if(temp != nullptr)return temp->as<View>();
                 throw invalid_argument( "getView : unknown : " + name );
             }
-            
+            vec2 getCenter(bool recursive = false){
+                return getPos(recursive) + getSize() * 0.5f;
+            }
             void setPos(vec2 pos){
                 vec2 op = {bounds.getX1(), bounds.getY1()};
                 bounds.offset(pos-op);

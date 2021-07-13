@@ -12,6 +12,9 @@
 #include "Module.h"
 #include "boost/variant.hpp"
 
+
+
+
 namespace ORAGE {
     namespace CORE {
         using namespace std;
@@ -24,10 +27,10 @@ namespace ORAGE {
             T o_value;
         protected:
             Number(string name, T value, string type = "Number") :
-                Module(name, type),
-                value(value),
-                o_value(value)
+                Module(name, type)
             {
+                o_value = this->value = value;
+                set("value", value, true);
             };
         public :
             static NumberRef create(string name, T value = 0){
@@ -46,7 +49,7 @@ namespace ORAGE {
             virtual float getValue() override {
                 return value;
             }
-            void reset(){
+            virtual void reset() override {
                 setValue(o_value);
             }
             virtual void setConf(json conf) override {

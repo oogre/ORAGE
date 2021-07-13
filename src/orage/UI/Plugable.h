@@ -19,8 +19,6 @@ namespace ORAGE {
         
         class Plugable : public View  {
             typedef std::shared_ptr<class Plugable> PlugableRef;
-            enum TYPE { INPUT, OUTPUT };
-            TYPE type;
         protected :
             Plugable(string name, string type="Plugable") :
                 View(name, type)

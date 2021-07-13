@@ -43,7 +43,7 @@ void OrageApp::setup(){
         UI::Instance().addView(event.target);
     });
     CORE::Instance().cables->addEventListener("add", [&](CableCoreEvt event) -> void{
-        UI::Instance().addCable( event.target->input->getName()+"-inputs-input", event.target->output->getName()+"-outputs-output");
+        UI::Instance().addCable( event.target->input->getName()+"-input", event.target->output->getName()+"-output");
     });
     UI::Instance().view->addEventListener("add", [&](ViewEvt event) -> void{
         cout<<event.target->getName(true)<<endl;
@@ -103,10 +103,10 @@ void OrageApp::setup(){
         }),
     }));
     
-    CORE::Instance().addCables(json::array({
-        json::array({"numberI", "numberF"}),
-        json::array({"numberF", "toggle"}),
-    }));
+//    CORE::Instance().addCables(json::array({
+//        json::array({"numberI", "numberF"}),
+//        json::array({"numberF", "toggle"}),
+//    }));
 
     cout << CORE::Instance().to_string() << endl;
     cout << UI::Instance().to_string() << endl;
