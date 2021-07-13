@@ -19,6 +19,7 @@ namespace ORAGE {
             static int ID;
             typedef shared_ptr<class Module> ModuleRef;
         protected:
+            json conf;
             unordered_map<string, boost::any> values;
             unordered_map<string, boost::any> defaultValues;
             Module(string name, string type = "Module") :
@@ -53,14 +54,22 @@ namespace ORAGE {
             bool is(){
                 return as<T>() != NULL;
             }
-            virtual void set(string key, boost::any value, bool defaultValue = false){
+            template<class T>
+            void set(string key, T value, bool defaultValue = false, bool trigEvent= true){
                 if(defaultValue){
                     defaultValues[key] = value;
                 }
                 values[key] = value;
+                json::json_pointer jsonKey;
+                jsonKey /= key;//append key
+                conf[jsonKey] = value;
+                if(trigEvent){
+                    eventTrigger({"change", as<CORE::Module>()});
+                }
             }
-            virtual boost::any get(string key){
-                return values[key];
+            template<class T>
+            T get(string key){
+                return any_cast<T>(values[key]);
             }
             virtual void reset(){
                 values = defaultValues;
@@ -72,6 +81,15 @@ namespace ORAGE {
             }
             virtual string getStringValue(){
                 return "";
+            }
+            virtual void setConf(json conf){
+                this->conf = conf;
+            }
+            virtual json getConf(){
+                return this->conf;
+            }
+            virtual void update(COMMON::Event<CORE::Module> event) {
+                
             }
         };//class Module
         typedef shared_ptr<class Module> ModuleRef;

@@ -66,7 +66,7 @@ namespace ORAGE {
                 interval(bpmToInterval(defaultBPM))
             {
                 addModule(NumberI::create("bang"));
-                addModule(NumberI::create("bpm", defaultBPM))
+                addModule(NumberI::create("bpm"))
                     ->addEventListener("change", [&](COMMON::Event<Module> event) -> void {
                         float bpm = event.target->as<NumberI>()->getValue();
                         interval = bpmToInterval(bpm);

@@ -52,6 +52,7 @@ namespace ORAGE {
                 ModuleRef output = getModule(outputName);
                 cables->addCable(input, output);
             }
+            
             void addModules(json modules){
                 for (const auto& item : modules.items()){
                     addModule(item.value());
@@ -86,6 +87,7 @@ namespace ORAGE {
                 newModule->setConf(conf);
                 module->addModule( newModule );
             }
+            
             template<typename T = Module>
             shared_ptr<T> getModule(string name){
                 return module->getModule(name)->as<T>();

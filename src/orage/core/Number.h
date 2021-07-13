@@ -23,54 +23,40 @@ namespace ORAGE {
         template<class T>
         class Number : public Module {
             typedef shared_ptr<class Number<T>> NumberRef;
-            T value;
-            T o_value;
         protected:
-            Number(string name, T value, string type = "Number") :
+            Number(string name, string type = "Number") :
                 Module(name, type)
             {
-                o_value = this->value = value;
-                set("value", value, true);
+//                addEventListener("change", [](COMMON::Event<CORE::Module> event) -> void{
+//                    cout<<event.target->getConf().dump()<<endl;
+//                });
             };
         public :
-            static NumberRef create(string name, T value = 0){
-                return NumberRef( new Number( name, value ) );
+            static NumberRef create(string name){
+                return NumberRef( new Number( name ) );
             }
             virtual ~Number(){
             }
             virtual string to_string() override {
-                return Module::to_string() + " : " + std::to_string(value);
+                return Module::to_string() + " : " + getStringValue();
             }
             virtual void setValue(float value) override {
-                this->value = value;
-                conf["/value"_json_pointer] = this->value;
-                eventTrigger({"change", as<CORE::Module>()});
+                set<T>("value", (T)value);
             }
             virtual float getValue() override {
-                return value;
-            }
-            virtual void reset() override {
-                setValue(o_value);
-            }
-            virtual void setConf(json conf) override {
-                if(!conf.contains("/value"_json_pointer)){
-                    throw invalid_argument( "ORAGE::CORE::Number::setConf needs /value");
-                }
-                if(!conf.contains("/defaultValue"_json_pointer)){
-                    json data{{
-                        "defaultValue",
-                        conf.at("/value"_json_pointer)
-                    }};
-                    conf.insert(data.begin(), data.end());
-                }
-                value = conf.at("/value"_json_pointer);
-                o_value = conf.at("/defaultValue"_json_pointer);
-                Node::setConf(conf);
+                return get<T>("value");
             }
             virtual string getStringValue() override {
                 stringstream stream;
-                stream << fixed << setprecision(2) << value;
+                stream << fixed << setprecision(2) << get<T>("value");
                 return stream.str();
+            }
+            virtual void update(COMMON::Event<CORE::Module> event) override {
+                
+            }
+            virtual void setConf(json conf) override {
+                Module::setConf(conf);
+                set<T>("value", conf["value"], true, false);
             }
         };//class Number<T>
         typedef Number<int> NumberI;

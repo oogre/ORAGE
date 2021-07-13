@@ -12,7 +12,6 @@ namespace ORAGE {
     namespace COMMON {
         
         using namespace std;
-        using json = nlohmann::json;
         
         class Node : public enable_shared_from_this<Node> {
             typedef shared_ptr<class Node> NodeRef;
@@ -22,7 +21,7 @@ namespace ORAGE {
             string name;
             string type;
         protected:
-            json conf;
+            
             
             Node(std::string name, string type = "node") :
                 name(name),
@@ -121,12 +120,6 @@ namespace ORAGE {
                 });
                 
                 return result;
-            }
-            virtual void setConf(json conf){
-                this->conf = conf;
-            }
-            virtual json getConf(){
-                return this->conf;
             }
         };//class Node
         typedef shared_ptr<class Node> NodeRef;

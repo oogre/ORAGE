@@ -43,64 +43,78 @@ void OrageApp::setup(){
         UI::Instance().addView(event.target);
     });
     CORE::Instance().cables->addEventListener("add", [&](CableCoreEvt event) -> void{
-        UI::Instance().addCable( event.target->input->getName()+"-input", event.target->output->getName()+"-output");
+        //UI::Instance().addCable( event.target->input->getName()+"-input", event.target->output->getName()+"-output");
     });
     UI::Instance().view->addEventListener("add", [&](ViewEvt event) -> void{
-        cout<<event.target->getName(true)<<endl;
+        //cout<<event.target->getName(true)<<endl;
     });
     UI::Instance().cables->addEventListener("add", [&](CableUiEvt event) -> void{
-        cout<<event.target->output->getName(true)<<">>>"<<event.target->input->getName(true)<<endl;
+        //cout<<event.target->output->getName(true)<<">>>"<<event.target->input->getName(true)<<endl;
     });
     
     CORE::Instance().addModules(json::array({
+        
         json::object({
             {"name", "numberI"},
             {"type", ModuleType::NumberI},
             {"view", ViewType::Number},
             {"value", 60},
-            {"defaultValue", 0},
             {"position", {
                 {"x", 20},
                 {"y", 100},
             }}
         }),
-        json::object({
-            {"name", "numberF"},
-            {"type", ModuleType::NumberF},
-            {"view", ViewType::Number},
-            {"value", 3.14},
-            {"defaultValue", 0},
-            {"position", {
-                {"x", 90},
-                {"y", 100},
-            }}
-        }),
-        json::object({
-            {"name", "bang"},
-            {"type", ModuleType::NumberI},
-            {"view", ViewType::BangButton},
-            {"on", 1},
-            {"off", 0},
-            {"value", 0},
-            {"defaultValue", 0},
-            {"position", {
-                {"x", 160},
-                {"y", 100},
-            }}
-        }),
-        json::object({
-            {"name", "toggle"},
-            {"type", ModuleType::NumberI},
-            {"view", ViewType::ToggleButton},
-            {"on", 1},
-            {"off", 0},
-            {"value", 1},
-            {"defaultValue", 0},
-            {"position", {
-                {"x", 200},
-                {"y", 100},
-            }}
-        }),
+//        json::object({
+//            {"name", "numberF"},
+//            {"type", ModuleType::NumberF},
+//            {"view", ViewType::Number},
+//            {"inputs", json::object({
+//                {"value", 3.14}
+//            })},
+//            {"outputs", json::object({
+//                {"value", 3.14}
+//            })},
+//            {"position", {
+//                {"x", 90},
+//                {"y", 100},
+//            }}
+//        }),
+//        json::object({
+//            {"name", "bang"},
+//            {"type", ModuleType::NumberI},
+//            {"view", ViewType::BangButton},
+//            {"on", 1},
+//            {"off", 0},
+//            {"value", 0},
+//            {"inputs", json::object({
+//                {"value", 0}
+//            })},
+//            {"outputs", json::object({
+//                {"value", 0}
+//            })},
+//            {"position", {
+//                {"x", 160},
+//                {"y", 100},
+//            }}
+//        }),
+//        json::object({
+//            {"name", "toggle"},
+//            {"type", ModuleType::NumberI},
+//            {"view", ViewType::ToggleButton},
+//            {"on", 1},
+//            {"off", 0},
+//            {"value", 1},
+//            {"inputs", json::object({
+//                {"value", 0}
+//            })},
+//            {"outputs", json::object({
+//                {"value", 0}
+//            })},
+//            {"position", {
+//                {"x", 200},
+//                {"y", 100},
+//            }}
+//        }),
     }));
     
 //    CORE::Instance().addCables(json::array({
@@ -109,7 +123,7 @@ void OrageApp::setup(){
 //    }));
 
     cout << CORE::Instance().to_string() << endl;
-    cout << UI::Instance().to_string() << endl;
+//    cout << UI::Instance().to_string() << endl;
     
     //    CORE::Instance().addModule({
     //        {"name", "clock"},

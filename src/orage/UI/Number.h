@@ -35,14 +35,12 @@ namespace ORAGE {
                 inputs->setSize({getSize().x, 5});
                 inputs->setPos({0, -7});
                 inputs->addView(Plug::create("input"));
-                inputs->addView(Plug::create("input2"));
                 
                 ORAGE::UI::ViewRef outputs = addView(Inline::create("outputs"));
                 outputs->setSize({getSize().x, 5});
                 outputs->setPos({0, getSize().y+2});
                 outputs->anchor = TOP_LEFT;
                 outputs->addView(Plug::create("output"));
-                
                 
                 inputs->getView("input")->addEventListener("down", boost::bind(&Number::onInputDown, this, _1));
                 addEventListener("enter", boost::bind(&Number::onEnter, this, _1));
@@ -52,7 +50,6 @@ namespace ORAGE {
                 getParent<View>(true)->eventTrigger({"plug", as<View>()});
                 return true;
             }
-            
             bool onDragStart(MouseEvt event){
                 addEventListener("drag", boost::bind(&Number::onDrag, this, _1));
                 addEventListener("dragEnd", boost::bind(&Number::onDragEnd, this, _1));
