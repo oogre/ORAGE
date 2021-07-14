@@ -83,6 +83,7 @@
 		8816DB21266FCF8200D339CC /* VictorMono-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VictorMono-SemiBold.ttf"; sourceTree = "<group>"; };
 		8816DB22266FCF8200D339CC /* VictorMono-LightOblique.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VictorMono-LightOblique.ttf"; sourceTree = "<group>"; };
 		8816DB23266FCF8200D339CC /* VictorMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VictorMono-Medium.ttf"; sourceTree = "<group>"; };
+		8820625C269F821B0064FF90 /* Incolumn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Incolumn.h; sourceTree = "<group>"; };
 		88327093268CFF3B00B06485 /* Number.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Number.h; sourceTree = "<group>"; };
 		88327094268D1CBC00B06485 /* UI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
 		8837C458268B789E003258FA /* Core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Core.h; sourceTree = "<group>"; };
@@ -264,10 +265,9 @@
 		883E5E36269F3F41007134A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				883E5E3B269F4F08007134A2 /* Complex */,
+				883E5E3A269F4EE6007134A2 /* Base */,
 				883E5E38269F406C007134A2 /* Logic */,
-				88EEEE15265EE59C00D9087C /* Clock.h */,
-				88EEEE12265EE59C00D9087C /* LFO.h */,
-				88327093268CFF3B00B06485 /* Number.h */,
 				883E5E37269F401A007134A2 /* all.h */,
 			);
 			path = Components;
@@ -279,6 +279,32 @@
 				883E5E39269F407A007134A2 /* Add.h */,
 			);
 			path = Logic;
+			sourceTree = "<group>";
+		};
+		883E5E3A269F4EE6007134A2 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				88327093268CFF3B00B06485 /* Number.h */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		883E5E3B269F4F08007134A2 /* Complex */ = {
+			isa = PBXGroup;
+			children = (
+				88EEEE12265EE59C00D9087C /* LFO.h */,
+				88EEEE15265EE59C00D9087C /* Clock.h */,
+			);
+			path = Complex;
+			sourceTree = "<group>";
+		};
+		883E5E3C269F4F61007134A2 /* Connections */ = {
+			isa = PBXGroup;
+			children = (
+				884C90AD268249CE0093666E /* Cable.h */,
+				88F2AC68269786E200CF68F4 /* Cables.h */,
+			);
+			path = Connections;
 			sourceTree = "<group>";
 		};
 		884D1F19268F494D004F84E6 /* common */ = {
@@ -329,6 +355,7 @@
 				88F2AC652697468700CF68F4 /* Cables.h */,
 				88F2AC662697470600CF68F4 /* Cable.h */,
 				88BC31332698822E00538615 /* Inline.h */,
+				8820625C269F821B0064FF90 /* Incolumn.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -336,10 +363,9 @@
 		88EEEE10265EE59C00D9087C /* core */ = {
 			isa = PBXGroup;
 			children = (
+				883E5E3C269F4F61007134A2 /* Connections */,
 				883E5E36269F3F41007134A2 /* Components */,
 				88EEEE14265EE59C00D9087C /* Module.h */,
-				884C90AD268249CE0093666E /* Cable.h */,
-				88F2AC68269786E200CF68F4 /* Cables.h */,
 				8837C458268B789E003258FA /* Core.h */,
 			);
 			path = core;

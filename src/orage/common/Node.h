@@ -132,9 +132,10 @@ namespace ORAGE {
             virtual void setName(string name){
                 this->name = name;
             };
-            void forEach(NodeCallback callback, bool recursive = false){
+            template<typename T = Node>
+            void forEach(function<void(shared_ptr<T>)> callback, bool recursive = false){
                 for(auto& node : nodes){
-                    callback(node);
+                    callback(node->as<T>());
                     if(recursive){
                         node->forEach(callback);
                     }
@@ -148,7 +149,7 @@ namespace ORAGE {
             }
             virtual string to_string(){
                 string result = getName()+"("+type+")";
-                forEach([&](NodeRef node) -> void {
+                forEach<Node>([&](NodeRef node) -> void {
                     result = result + "\n";
                     for(int i = 0 ; i < node->getDepth() ; i ++){
                         result = result + "\t";

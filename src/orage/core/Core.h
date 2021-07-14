@@ -8,7 +8,7 @@
 #ifndef Orage_h
 #define Orage_h
 #include "Components/all.h"
-#include "Cables.h"
+#include "Connections/Cables.h"
 
 namespace ORAGE {
     namespace CORE {
@@ -23,21 +23,19 @@ namespace ORAGE {
         
         class Manager {
             Manager(){
-                module = Module::create("CORE");
-                cables = Cables::create();
+                
             }
             Manager(const Manager &old);
             const Manager &operator=(const Manager &old);
         public:
-            ModuleRef module;
-            CablesRef cables;
+            static ModuleRef module;
+            static CablesRef cables;
             
             static Manager &Instance(){
                 static auto_ptr<Manager> instance( new Manager );
                 return *instance;
             }
             virtual ~Manager(){
-                
             }
             void addCables(json cables){
                 for (const auto& item : cables.items()){
@@ -47,23 +45,19 @@ namespace ORAGE {
             void addCable(json cable){
                 addCable(cable[1], cable[0], true);
             }
-            
             void addCable(string inputName, string outputName, bool trigEvent = true){
-                ModuleRef input = getModule(inputName);
-                ModuleRef output = getModule(outputName);
-                addCable(input, output, trigEvent);
+                addCable(getModule(inputName), getModule(outputName), trigEvent);
             }
-            
             void addCable(ModuleRef input, ModuleRef output, bool trigEvent = true){
                 cables->addCable(input, output, trigEvent);
             }
             
-            void addModules(json modules, bool trigEvent = true){
+            void addModules(json modules, ModuleRef base = module){
                 for (const auto& item : modules.items()){
-                    addModule(item.value());
+                    addModule(item.value(), base);
                 }
             }   
-            void addModule(json conf){
+            void addModule(json conf, ModuleRef base = module){
                 if(!conf.contains("/type"_json_pointer) || !conf.contains("/name"_json_pointer)){
                     throw std::invalid_argument( "ORAGE::CORE::Manager::addModule need /type /name");
                 }
@@ -90,9 +84,11 @@ namespace ORAGE {
                     }
                 }
                 newModule->setConf(conf);
-                module->addModule( newModule );
+                base->addModule( newModule );
+                if(conf.contains("/submodules"_json_pointer)){
+                    addModules(conf.at("/submodules"_json_pointer), newModule);
+                }
             }
-            
             template<typename T = Module>
             shared_ptr<T> getModule(string name){
                 return module->getModule(name)->as<T>();
@@ -101,6 +97,8 @@ namespace ORAGE {
                 return module->to_string();
             }
         };//class Manager {
+        ModuleRef Manager::module = Module::create("CORE");
+        CablesRef Manager::cables = Cables::create();
     }//namespace CORE {
 }//namespace ORAGE {
 #endif /* Orage_h */

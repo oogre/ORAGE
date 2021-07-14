@@ -81,22 +81,26 @@ namespace ORAGE {
             EventTemplate(){
             }
         public :
-            virtual void addEventListener(const string type, const typename EventSignal::slot_type slot) {
+            virtual bool addEventListener(const string type, const typename EventSignal::slot_type slot) {
                 if(sigMap.find(type) == sigMap.end()){
                     sigMap.insert(pair<string, EventSignal>(type,EventSignal()));
                 }
                 sigMap.at(type).connect(slot);
+                return true;
             }
             template<typename Callable>
-            void removeEventListener(const string type, Callable slot) {
+            bool removeEventListener(const string type, Callable slot) {
                 if(sigMap.find(type) != sigMap.end()){
                     sigMap.at(type).disconnect(slot);
                 }
+                return true;
             }
-            virtual void eventTrigger(E event) {
+            virtual bool eventTrigger(E event) {
                 typename MapType::iterator signal = sigMap.find(event.type);
-                if(signal == sigMap.end())return ;
+                if(signal == sigMap.end())return false;
                 (sigMap.at(event.type))(event);
+                
+                return true;
             }
         };//class EventTemplate
     }//namespace COMMON

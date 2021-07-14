@@ -8,8 +8,6 @@
 #ifndef Cable_h
 #define Cable_h
 
-#include "Module.h"
-
 namespace ORAGE {
     namespace CORE {
         using namespace std;

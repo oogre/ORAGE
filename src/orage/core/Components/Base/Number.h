@@ -9,7 +9,6 @@
 #define Number_h
 
 
-#include "../Module.h"
 
 namespace ORAGE {
     namespace CORE {

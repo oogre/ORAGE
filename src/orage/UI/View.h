@@ -67,11 +67,13 @@ namespace ORAGE {
             void setPos(vec2 pos){
                 vec2 op = {bounds.getX1(), bounds.getY1()};
                 bounds.offset(pos-op);
+                eventTrigger({"move", as<View>()});
 //                (*confRef)["/position/x"_json_pointer] = pos.x;
 //                (*confRef)["/position/y"_json_pointer] = pos.y;
             }
             void move(vec2 dist){
                 bounds.offset(dist);
+                eventTrigger({"move", as<View>()});
 //                (*confRef)["/position/x"_json_pointer] = bounds.getX1();
 //                (*confRef)["/position/y"_json_pointer] = bounds.getY1();
             }
@@ -127,8 +129,8 @@ namespace ORAGE {
                 bounds.set(bounds.getX1(), bounds.getY1(), bounds.getX1()+size.x, bounds.getY1()+size.y);
             }
             virtual void update(){
-                forEach([&](NodeRef node) -> void{
-                    node->as<View>()->update();
+                forEach<View>([&](ViewRef view) -> void {
+                    view->update();
                 });
             }
             virtual void draw(){
@@ -172,9 +174,9 @@ namespace ORAGE {
                 color( bgColor );
                 drawSolidRect({0, 0, bounds.getWidth(), bounds.getHeight()});
                 
-                forEach([&](NodeRef node) -> void {
+                forEach<View>([&](ViewRef view) -> void {
                     pushModelView();
-                    node->as<View>()->draw();
+                    view->draw();
                     popModelView();
                 });
             }

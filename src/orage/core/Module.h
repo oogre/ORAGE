@@ -35,8 +35,8 @@ namespace ORAGE {
             virtual ~Module(){
             }
             virtual void update(){
-                forEach([&](COMMON::NodeRef node) -> void{
-                    node->as<Module>()->update();
+                forEach<Module>([&](ModuleRef module) -> void{
+                    module->update();
                 });
             }
             virtual ModuleRef addModule(ModuleRef module){

@@ -19,26 +19,26 @@ namespace ORAGE {
         enum class ViewType {
             ToggleButton,
             BangButton,
-            Number
+            Number,
+            Pannel
         };
         
         class Manager {
             typedef COMMON::MouseEvent<View> MouseEvt;
+            typedef ORAGE::COMMON::Event<ORAGE::CORE::Module> ModuleEvt;
             Manager(){
-                cables = Cables::create();
-                view = View::create("UI");
-                view->setSize(getWindow()->getSize());
-                view->setBgColor(Theme::bgColor);
+                Manager::view->setSize(getWindow()->getSize());
+                Manager::view->setBgColor(Theme::bgColor);
                 getWindow()->getSignalResize().connect([&]() -> void {
-                    view->setSize(getWindow()->getSize());
+                    Manager::view->setSize(getWindow()->getSize());
                 });
-                view->addEventListener("plug", boost::bind(&Manager::onPlug, this, _1));
+                Manager::view->addEventListener("plug", boost::bind(&Manager::onPlug, this, _1));
             }
             Manager(const Manager &old);
             const Manager &operator=(const Manager &old);
         public:
-            ViewRef view;
-            CablesRef cables;
+            static ViewRef view;
+            static CablesRef cables;
             
             static Manager &Instance(){
                 static auto_ptr<Manager> instance( new Manager );
@@ -75,7 +75,7 @@ namespace ORAGE {
                 addCable(inView, outView, trigEvent);
             }
             
-            void addView(ORAGE::CORE::ModuleRef module){
+            void addView(ORAGE::CORE::ModuleRef module, ViewRef base = view){
                 json conf = module->getConf();
                 ViewType type = conf.at("/view"_json_pointer);
                 string name = conf.at("/name"_json_pointer);
@@ -91,12 +91,24 @@ namespace ORAGE {
                     case ViewType::ToggleButton :
                         newView = Button::create(name)->togglify();
                         break;
+                    case ViewType::Pannel :
+                        newView = Pannel::create(name);
+                        break;
                     default :
                         newView = View::create(name);
                         break;
                 }
                 newView->setModule(module);
-                view->addView( newView );
+               
+                if(newView->is<Pannel>()){
+                    module->addEventListener("add", [newView, module](ModuleEvt event)->void{
+                        json subConf = event.target->getConf();
+                        if(subConf.contains("/display"_json_pointer) && subConf.at("/display"_json_pointer)){
+                            Manager::Instance().addView(event.target, newView->getView("parameters"));
+                        }
+                    });
+                }
+                base->addView( newView );
             }
             template<typename T = View>
             shared_ptr<T> getView(string name){
@@ -117,6 +129,9 @@ namespace ORAGE {
                 return true;
             }
         };//class Manager{
+        
+        CablesRef Manager::cables = Cables::create();
+        ViewRef Manager::view = View::create("UI");
     }//namespace UI {
 }//namespace ORAGE {
 #endif /* OrageUI_h */

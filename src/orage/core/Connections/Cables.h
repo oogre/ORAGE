@@ -9,8 +9,6 @@
 #define Cables_h
 
 #include "Cable.h"
-#include "Module.h"
-#include "../common/EventTemplate.h"
 
 namespace ORAGE {
     namespace CORE {

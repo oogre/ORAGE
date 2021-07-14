@@ -24,11 +24,15 @@ namespace ORAGE {
             vec2 mousePos;
             CablesWrapper cables;
             CableRef tempCable;
+            bool initilized = false;
         protected :
             Cables():
                 EventTemplate<Cable>()
             {
+            }
+            void init(){
                 mouseMoveHandler = getWindow()->getSignalMouseMove().connect(boost::bind(&Cables::onMouseMove, this, _1));
+                initilized = true;
             }
         public :
             static CablesRef create(){
@@ -43,11 +47,12 @@ namespace ORAGE {
                 //over = path.calcDistance(event.getPos()) < 20;
             }
             void draw() {
+                if(!initilized)init();
                 for (auto const& [key, cable] : cables){
                     cable->draw();
                 }
                 if(tempCable != nullptr){
-                    tempCable->draw(mousePos);
+                    tempCable->draw();
                 }
             };
             void addCable(PlugInputRef input, PlugOutputRef output, bool trigEvent = true){
@@ -62,7 +67,7 @@ namespace ORAGE {
                     addCable(input, tempCable->output, trigEvent);
                     tempCable = nullptr;
                 }else{
-                    tempCable = Cable::create(input);
+                    tempCable = Cable::create(input, &mousePos);
                 }
             }
             void addCable(PlugOutputRef output, bool trigEvent = true){
@@ -70,7 +75,7 @@ namespace ORAGE {
                     addCable(tempCable->input, output, trigEvent);
                     tempCable = nullptr;
                 }else{
-                    tempCable = Cable::create(output);
+                    tempCable = Cable::create(output, &mousePos);
                 }
             }
         };//class Cables

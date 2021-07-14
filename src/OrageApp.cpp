@@ -60,50 +60,123 @@ void OrageApp::setup(){
     
     CORE::Instance().addModules(json::array({
         json::object({
-            {"name", "numberI"},
-            {"type", ModuleType::NumberI},
-            {"view", ViewType::Number},
-            {"value", 60},
+            {"name", "wrapper"},
+            {"type", ModuleType::Module},
+            {"view", ViewType::Pannel},
+            {"submodules", json::array({
+                json::object({
+                    {"name", "numberI"},
+                    {"type", ModuleType::NumberI},
+                    {"view", ViewType::Number},
+                    {"value", 60},
+                    {"display", true},
+                    {"position", {
+                        {"x", 20},
+                        {"y", 100},
+                    }}
+                }),
+                json::object({
+                    {"name", "numberII"},
+                    {"type", ModuleType::NumberI},
+                    {"view", ViewType::Number},
+                    {"value", 180},
+                    {"display", true},
+                    {"position", {
+                        {"x", 180},
+                        {"y", 100},
+                    }}
+                }),
+                json::object({
+                    {"name", "bang"},
+                    {"type", ModuleType::NumberI},
+                    {"view", ViewType::BangButton},
+                    {"on", 1},
+                    {"off", 0},
+                    {"value", 0},
+                    {"position", {
+                        {"x", 280},
+                        {"y", 100},
+                    }}
+                }),
+                json::object({
+                    {"name", "toggle"},
+                    {"type", ModuleType::NumberI},
+                    {"view", ViewType::ToggleButton},
+                    {"on", 1},
+                    {"off", 0},
+                    {"value", 0},
+                    {"position", {
+                        {"x", 380},
+                        {"y", 100},
+                    }}
+                }),
+            })},
             {"position", {
                 {"x", 20},
                 {"y", 100},
             }}
         }),
         json::object({
-            {"name", "numberII"},
-            {"type", ModuleType::NumberI},
-            {"view", ViewType::Number},
-            {"value", 180},
+            {"name", "wrapperII"},
+            {"type", ModuleType::Module},
+            {"view", ViewType::Pannel},
+            {"submodules", json::array({
+                json::object({
+                    {"name", "numberI"},
+                    {"type", ModuleType::NumberI},
+                    {"view", ViewType::Number},
+                    {"value", 60},
+                    {"display", true},
+                    {"position", {
+                        {"x", 20},
+                        {"y", 100},
+                    }}
+                }),
+                json::object({
+                    {"name", "numberII"},
+                    {"type", ModuleType::NumberI},
+                    {"view", ViewType::Number},
+                    {"value", 180},
+                    {"display", true},
+                    {"position", {
+                        {"x", 180},
+                        {"y", 100},
+                    }}
+                }),
+                json::object({
+                    {"name", "bang"},
+                    {"type", ModuleType::NumberI},
+                    {"view", ViewType::BangButton},
+                    {"on", 1},
+                    {"off", 0},
+                    {"value", 0},
+                    {"position", {
+                        {"x", 280},
+                        {"y", 100},
+                    }}
+                }),
+                json::object({
+                    {"name", "toggle"},
+                    {"type", ModuleType::NumberI},
+                    {"view", ViewType::ToggleButton},
+                    {"on", 1},
+                    {"off", 0},
+                    {"value", 0},
+                    {"position", {
+                        {"x", 380},
+                        {"y", 100},
+                    }}
+                }),
+            })},
             {"position", {
-                {"x", 180},
-                {"y", 100},
-            }}
-        }),
-        json::object({
-            {"name", "bang"},
-            {"type", ModuleType::NumberI},
-            {"view", ViewType::BangButton},
-            {"on", 1},
-            {"off", 0},
-            {"value", 0},
-            {"position", {
-                {"x", 280},
-                {"y", 100},
-            }}
-        }),
-        json::object({
-            {"name", "toggle"},
-            {"type", ModuleType::NumberI},
-            {"view", ViewType::ToggleButton},
-            {"on", 1},
-            {"off", 0},
-            {"value", 0},
-            {"position", {
-                {"x", 380},
+                {"x", 200},
                 {"y", 100},
             }}
         }),
     }));
+    
+    cout<<CORE::Instance().to_string()<<endl;
+    cout<<UI::Instance().to_string()<<endl;
     
 //    CORE::Instance().addCables(json::array({
 //        json::array({"numberI", "numberII"})
