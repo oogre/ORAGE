@@ -43,17 +43,22 @@ void OrageApp::setup(){
         UI::Instance().addView(event.target);
     });
     CORE::Instance().cables->addEventListener("add", [&](CableCoreEvt event) -> void{
-        //UI::Instance().addCable( event.target->input->getName()+"-input", event.target->output->getName()+"-output");
+        UI::Instance().addCable( event.target->input, event.target->output, false);
     });
     UI::Instance().view->addEventListener("add", [&](ViewEvt event) -> void{
         //cout<<event.target->getName(true)<<endl;
     });
     UI::Instance().cables->addEventListener("add", [&](CableUiEvt event) -> void{
-        //cout<<event.target->output->getName(true)<<">>>"<<event.target->input->getName(true)<<endl;
+        ORAGE::CORE::ModuleRef input = event.target->input->getParent<ORAGE::UI::View>([&](ORAGE::UI::ViewRef view)->bool{
+            return view->getModule()!= nullptr;
+        })->getModule();
+        ORAGE::CORE::ModuleRef output = event.target->output->getParent<ORAGE::UI::View>([&](ORAGE::UI::ViewRef view)->bool{
+            return view->getModule()!= nullptr;
+        })->getModule();
+        CORE::Instance().addCable(input, output, false);
     });
     
     CORE::Instance().addModules(json::array({
-        
         json::object({
             {"name", "numberI"},
             {"type", ModuleType::NumberI},
@@ -64,92 +69,45 @@ void OrageApp::setup(){
                 {"y", 100},
             }}
         }),
-//        json::object({
-//            {"name", "numberF"},
-//            {"type", ModuleType::NumberF},
-//            {"view", ViewType::Number},
-//            {"inputs", json::object({
-//                {"value", 3.14}
-//            })},
-//            {"outputs", json::object({
-//                {"value", 3.14}
-//            })},
-//            {"position", {
-//                {"x", 90},
-//                {"y", 100},
-//            }}
-//        }),
-//        json::object({
-//            {"name", "bang"},
-//            {"type", ModuleType::NumberI},
-//            {"view", ViewType::BangButton},
-//            {"on", 1},
-//            {"off", 0},
-//            {"value", 0},
-//            {"inputs", json::object({
-//                {"value", 0}
-//            })},
-//            {"outputs", json::object({
-//                {"value", 0}
-//            })},
-//            {"position", {
-//                {"x", 160},
-//                {"y", 100},
-//            }}
-//        }),
-//        json::object({
-//            {"name", "toggle"},
-//            {"type", ModuleType::NumberI},
-//            {"view", ViewType::ToggleButton},
-//            {"on", 1},
-//            {"off", 0},
-//            {"value", 1},
-//            {"inputs", json::object({
-//                {"value", 0}
-//            })},
-//            {"outputs", json::object({
-//                {"value", 0}
-//            })},
-//            {"position", {
-//                {"x", 200},
-//                {"y", 100},
-//            }}
-//        }),
+        json::object({
+            {"name", "numberII"},
+            {"type", ModuleType::NumberI},
+            {"view", ViewType::Number},
+            {"value", 180},
+            {"position", {
+                {"x", 180},
+                {"y", 100},
+            }}
+        }),
+        json::object({
+            {"name", "bang"},
+            {"type", ModuleType::NumberI},
+            {"view", ViewType::BangButton},
+            {"on", 1},
+            {"off", 0},
+            {"value", 0},
+            {"position", {
+                {"x", 280},
+                {"y", 100},
+            }}
+        }),
+        json::object({
+            {"name", "toggle"},
+            {"type", ModuleType::NumberI},
+            {"view", ViewType::ToggleButton},
+            {"on", 1},
+            {"off", 0},
+            {"value", 0},
+            {"position", {
+                {"x", 380},
+                {"y", 100},
+            }}
+        }),
     }));
     
 //    CORE::Instance().addCables(json::array({
-//        json::array({"numberI", "numberF"}),
-//        json::array({"numberF", "toggle"}),
+//        json::array({"numberI", "numberII"})
 //    }));
-
-    cout << CORE::Instance().to_string() << endl;
-//    cout << UI::Instance().to_string() << endl;
-    
-    //    CORE::Instance().addModule({
-    //        {"name", "clock"},
-    //        {"type", ORAGE::CORE::ModuleType::Clock},
-    //        {"subModule" , json::array({
-    //            json::object({
-    //                {"name", "active"},
-    //                {"type", ORAGE::CORE::ModuleType::NumberI},
-    //                {"value", 1}
-    //            }),
-    //            json::object({
-    //                {"name", "bpm"},
-    //                {"type", ORAGE::CORE::ModuleType::NumberI},
-    //                {"value", 130}
-    //            }),
-    //            json::object({
-    //                {"name", "bang"},
-    //                {"type", ORAGE::CORE::ModuleType::NumberI},
-    //                {"value", 1}
-    //            })
-    //        })},
-    //        {"position", {
-    //            {"x", 100},
-    //            {"y", 100},
-    //        }}
-    //    });
 }
 
 void OrageApp::update(){

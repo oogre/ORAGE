@@ -53,6 +53,14 @@ namespace ORAGE {
                 if(temp != nullptr)return temp->as<View>();
                 throw invalid_argument( "getView : unknown : " + name );
             }
+            
+            template<typename T = View>
+            vector<shared_ptr<T>> getViews(){
+                return _::map<vector<shared_ptr<T>>>(getNodes<T>(), [&](NodeRef node){
+                    return node->as<T>();
+                });
+            }
+                
             vec2 getCenter(bool recursive = false){
                 return getPos(recursive) + getSize() * 0.5f;
             }
@@ -170,16 +178,15 @@ namespace ORAGE {
                     popModelView();
                 });
             }
-            template<typename T = View>
-            bool is(){
-                return as<T>() != NULL;
-            }
             virtual void setModule(CORE::ModuleRef module){
                 this->module = module;
                 json conf = module->getConf();
                 if(conf.contains("/position/x"_json_pointer) && conf.contains("/position/y"_json_pointer)){
                     setPos({conf.at("/position/x"_json_pointer), conf.at("/position/y"_json_pointer)});
                 }
+            }
+            virtual CORE::ModuleRef getModule(){
+                return module;
             }
             virtual ~View(){}
         };//class View

@@ -1,11 +1,11 @@
 #ifndef Clock_h
 #define Clock_h
 
-#include "../../lib/chrono_io.h"
-#include "Module.h"
-#include "../common/Math.h"
-#include "../common/EventTemplate.h"
-#include "Number.h"
+#include "../../../lib/chrono_io.h"
+#include "../Module.h"
+#include "../../common/Math.h"
+#include "../../common/EventTemplate.h"
+#include "./Number.h"
 
 
 namespace ORAGE {

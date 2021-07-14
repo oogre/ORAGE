@@ -54,9 +54,27 @@ namespace ORAGE {
                 view->draw();
                 cables->draw();
             }
-            void addCable(string inputName, string outputName){
-                cables->addCable(getView(inputName)->as<Plug>(), getView(outputName)->as<Plug>());
+            void addCable(string inputName, string outputName, bool trigEvent = true){
+                addCable(view->getView(inputName), view->getView(outputName), trigEvent);
             }
+            void addCable(ViewRef input, ViewRef output, bool trigEvent = true){
+                cables->addCable(input->getViews<PlugInput>()[0], output->getViews<PlugOutput>()[0], trigEvent);
+            }
+            
+            void addCable(ORAGE::CORE::ModuleRef input, ORAGE::CORE::ModuleRef output, bool trigEvent = true){
+                ViewRef inView;
+                ViewRef outView;
+                view->every<ORAGE::UI::View>([&](ORAGE::UI::ViewRef view) -> void {
+                    if(view->getModule() && view->getModule()->id == input->id){
+                        inView = view;
+                    }
+                    if(view->getModule() && view->getModule()->id == output->id){
+                        outView = view;
+                    }
+                });
+                addCable(inView, outView, trigEvent);
+            }
+            
             void addView(ORAGE::CORE::ModuleRef module){
                 json conf = module->getConf();
                 ViewType type = conf.at("/view"_json_pointer);
@@ -87,8 +105,15 @@ namespace ORAGE {
             string to_string(){
                 return view->to_string();
             }
-            bool onPlug(MouseEvt event){
-                cout<<event.target->getName(true)<<endl;
+            bool onPlug(MouseEvt event){                
+                if(event.target->is<ORAGE::UI::PlugInput>()){
+                    cout<< "input : "<<view->getName(true)<<endl;
+                    cables->addCable(event.target->as<ORAGE::UI::PlugInput>());
+                }
+                if(event.target->is<ORAGE::UI::PlugOutput>()){
+                    cout<< "output : "<<view->getName(true)<<endl;
+                    cables->addCable(event.target->as<ORAGE::UI::PlugOutput>());
+                }
                 return true;
             }
         };//class Manager{

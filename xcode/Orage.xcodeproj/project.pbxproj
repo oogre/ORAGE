@@ -86,7 +86,8 @@
 		88327093268CFF3B00B06485 /* Number.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Number.h; sourceTree = "<group>"; };
 		88327094268D1CBC00B06485 /* UI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
 		8837C458268B789E003258FA /* Core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Core.h; sourceTree = "<group>"; };
-		883F5451268CA23900AA040F /* LimittedNumber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LimittedNumber.h; sourceTree = "<group>"; };
+		883E5E37269F401A007134A2 /* all.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = all.h; sourceTree = "<group>"; };
+		883E5E39269F407A007134A2 /* Add.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Add.h; sourceTree = "<group>"; };
 		883F5452268CBA2700AA040F /* json.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
 		88453DCA267215A400019C4F /* Plug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Plug.h; sourceTree = "<group>"; };
 		884C90AD268249CE0093666E /* Cable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cable.h; sourceTree = "<group>"; };
@@ -106,7 +107,6 @@
 		88EEEE14265EE59C00D9087C /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; };
 		88EEEE15265EE59C00D9087C /* Clock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Clock.h; sourceTree = "<group>"; };
 		88F2AC632695BC6700CF68F4 /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
-		88F2AC6426970D2E00CF68F4 /* Plugable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Plugable.h; sourceTree = "<group>"; };
 		88F2AC652697468700CF68F4 /* Cables.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cables.h; sourceTree = "<group>"; };
 		88F2AC662697470600CF68F4 /* Cable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cable.h; sourceTree = "<group>"; };
 		88F2AC6726977D0900CF68F4 /* EventTemplate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventTemplate.h; sourceTree = "<group>"; };
@@ -261,6 +261,26 @@
 			path = ../resources/VictorMono;
 			sourceTree = "<group>";
 		};
+		883E5E36269F3F41007134A2 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				883E5E38269F406C007134A2 /* Logic */,
+				88EEEE15265EE59C00D9087C /* Clock.h */,
+				88EEEE12265EE59C00D9087C /* LFO.h */,
+				88327093268CFF3B00B06485 /* Number.h */,
+				883E5E37269F401A007134A2 /* all.h */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		883E5E38269F406C007134A2 /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				883E5E39269F407A007134A2 /* Add.h */,
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
 		884D1F19268F494D004F84E6 /* common */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,7 +323,6 @@
 				88EEEE0E265EE59C00D9087C /* Pannel.h */,
 				886F98272660442000779325 /* IView.h */,
 				88453DCA267215A400019C4F /* Plug.h */,
-				88F2AC6426970D2E00CF68F4 /* Plugable.h */,
 				88327094268D1CBC00B06485 /* UI.h */,
 				884D1F18268F3422004F84E6 /* Number.h */,
 				88F2AC632695BC6700CF68F4 /* Button.h */,
@@ -317,14 +336,11 @@
 		88EEEE10265EE59C00D9087C /* core */ = {
 			isa = PBXGroup;
 			children = (
-				88EEEE12265EE59C00D9087C /* LFO.h */,
+				883E5E36269F3F41007134A2 /* Components */,
 				88EEEE14265EE59C00D9087C /* Module.h */,
-				88EEEE15265EE59C00D9087C /* Clock.h */,
 				884C90AD268249CE0093666E /* Cable.h */,
 				88F2AC68269786E200CF68F4 /* Cables.h */,
 				8837C458268B789E003258FA /* Core.h */,
-				883F5451268CA23900AA040F /* LimittedNumber.h */,
-				88327093268CFF3B00B06485 /* Number.h */,
 			);
 			path = core;
 			sourceTree = "<group>";

@@ -39,7 +39,7 @@ namespace ORAGE {
             
             static ColorA strokeActiveColor;
             static ColorA strokeDisactiveColor;
-            
+            static ColorA InlineBGColor;
             
             static vec2 defaultSize;
             static vec2 defaultOrigin;
@@ -75,6 +75,7 @@ namespace ORAGE {
         ColorA Theme::strokeActiveColor = { 1.f, 0.f, 0.f, 9.f };
         ColorA Theme::strokeDisactiveColor = { 1.f, 1.f, 1.f, 5.f };
         
+        ColorA Theme::InlineBGColor = {0, 0, 0, 0};
         ColorA Theme::ConnectorActiveColor = { 1.f, 1.f, 1.f, 0.8f };
         ColorA Theme::ConnectorDisactiveColor = { 1.f, 1.f, 1.f, 0.2f };
         

@@ -8,7 +8,6 @@
 #ifndef Button_h
 #define Button_h
 
-#include "Plugable.h"
 #include "IView.h"
 
 /*
@@ -36,20 +35,19 @@ namespace ORAGE {
                 setSize(Theme::ButtonSize);
                 setBgColor(Theme::bgDisactiveColor);
                 
-                ORAGE::UI::ViewRef inputs = addView(Plugable::create("inputs"));
+                ORAGE::UI::ViewRef inputs = addView(Inline::create("inputs"));
                 inputs->setSize({getSize().x, 5});
                 inputs->setPos({0, -7});
-                inputs->as<Plugable>()->addPlug("input");
+                inputs->addView(PlugInput::create("input"));
                 
-                ORAGE::UI::ViewRef outputs = addView(Plugable::create("outputs"));
+                ORAGE::UI::ViewRef outputs = addView(Inline::create("outputs"));
                 outputs->setSize({getSize().x, 5});
                 outputs->setPos({0, getSize().y+2});
                 outputs->anchor = TOP_LEFT;
-                outputs->as<Plugable>()->addPlug("output");
+                outputs->addView(PlugOutput::create("output"));
                 
                 addEventListener("down", boost::bind(&Button::onDown, this, _1));
                 addEventListener("up", boost::bind(&Button::onUp, this, _1));
-                
             }
             bool onDown(MouseEvt event){
                 switch(type){
@@ -70,7 +68,6 @@ namespace ORAGE {
                         toggle();
                         break;
                 }
-                
                 return true;
             }
         public :

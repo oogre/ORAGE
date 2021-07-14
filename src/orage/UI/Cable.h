@@ -15,46 +15,59 @@ namespace ORAGE {
         using namespace std;
         using namespace ci;
         using namespace ci::gl;
-        class Cable  {
+        class Cable {
             typedef shared_ptr<class Cable> CableRef;
             Path2d  path;
+            
             bool  over = false;
-            ci::signals::Connection mouseMoveHandler;
+            
         public :
-            PlugRef input;
-            PlugRef output;
+            PlugInputRef input;
+            PlugOutputRef output;
         protected :
-            Cable(PlugRef input, PlugRef output) :
+            Cable(PlugInputRef input, PlugOutputRef output) :
                 input(input),
                 output(output)
             {
                 render();
-                //mouseMoveHandler = getWindow()->getSignalMouseMove().connect(boost::bind(&Cable::onMouseMove, this, _1));
             }
+            
         public :
-            static CableRef create(PlugRef input, PlugRef output){
+            static CableRef create(PlugInputRef input, PlugOutputRef output){
                 return CableRef( new Cable(input, output) );
+            }
+            static CableRef create(PlugInputRef input){
+                return CableRef( new Cable(input, nullptr) );
+            }
+            static CableRef create(PlugOutputRef output){
+                return CableRef( new Cable(nullptr, output) );
             }
             virtual ~Cable(){
             }
-            void onMouseMove(ci::app::MouseEvent event){
-                //https://github.com/cinder/Cinder/blob/master/include/cinder/Path2d.h
-                //over = path.calcDistance(event.getPos()) < 20;
+            bool isInput(){
+                return input != nullptr;
             }
-            virtual void draw() {
+            bool isOutput(){
+                return output != nullptr;
+            }
+            virtual void draw(vec2 mPos = vec2(0, 0)) {
+                if(output == nullptr || input == nullptr){
+                    render(mPos);
+                }
                 if(over){
-                gl::color( Color( 1.0f, 0.5f, 0.25f ) );
+                    gl::color( Color( 1.0f, 0.5f, 0.25f ) );
                 }else{
                     gl::color( Color::white() );
                 }
                 gl::draw( path );
             }
-            void render(){
-                vec2 pStart = output->getCenter(true);
-                vec2 pStop = input->getCenter(true);
+            void render(vec2 mPos = vec2(0, 0)){
+                vec2 pStart = (output != nullptr) ? output->getCenter(true) : mPos;
+                vec2 pStop  = (input  != nullptr) ? input->getCenter(true)  : mPos;
                 vec2 pCenter = (pStart + pStop)*0.5f;
                 vec2 p1 = vec2(pStart.x, pCenter.y);
                 vec2 p2 = vec2(pStop.x, pCenter.y);
+                path.clear();
                 path.moveTo( pStart );
                 path.curveTo( p1, p2, pStop );
             }

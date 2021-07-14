@@ -35,10 +35,12 @@ namespace ORAGE {
             virtual ~Cables(){
                 
             }
-            void addCable(ModuleRef input, ModuleRef output){
+            void addCable(ModuleRef input, ModuleRef output, bool trigEvent = true){
                 CableRef cable = Cable::create(input, output);
                 cables[output->getName(true)+">>>"+input->getName(true)] = cable;
-                CableEvt::eventTrigger({"add", cable});
+                if(trigEvent){
+                    CableEvt::eventTrigger({"add", cable});
+                }
             }
         };//class Cables
         typedef std::shared_ptr<class Cables> CablesRef;

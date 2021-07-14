@@ -8,7 +8,6 @@
 #ifndef UINumber_h
 #define UINumber_h
 
-//#include "Plugable.h"
 #include "Plug.h"
 #include "Inline.h"
 #include "IView.h"
@@ -34,21 +33,16 @@ namespace ORAGE {
                 ORAGE::UI::ViewRef inputs = addView(Inline::create("inputs"));
                 inputs->setSize({getSize().x, 5});
                 inputs->setPos({0, -7});
-                inputs->addView(Plug::create("input"));
+                inputs->addView(PlugInput::create("input"));
                 
                 ORAGE::UI::ViewRef outputs = addView(Inline::create("outputs"));
                 outputs->setSize({getSize().x, 5});
                 outputs->setPos({0, getSize().y+2});
                 outputs->anchor = TOP_LEFT;
-                outputs->addView(Plug::create("output"));
+                outputs->addView(PlugOutput::create("output"));
                 
-                inputs->getView("input")->addEventListener("down", boost::bind(&Number::onInputDown, this, _1));
                 addEventListener("enter", boost::bind(&Number::onEnter, this, _1));
                 addEventListener("leave", boost::bind(&Number::onLeave, this, _1));
-            }
-            bool onInputDown(MouseEvt event){
-                getParent<View>(true)->eventTrigger({"plug", as<View>()});
-                return true;
             }
             bool onDragStart(MouseEvt event){
                 addEventListener("drag", boost::bind(&Number::onDrag, this, _1));

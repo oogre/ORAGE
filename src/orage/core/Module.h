@@ -16,7 +16,7 @@ namespace ORAGE {
         using json = nlohmann::json;
         
         class Module : public COMMON::Node, public COMMON::EventTemplate<Module> {
-            static int ID;
+            
             typedef shared_ptr<class Module> ModuleRef;
         protected:
             json conf;
@@ -26,10 +26,9 @@ namespace ORAGE {
                 Node(name, type),
                 COMMON::EventTemplate<Module>()
             {
-                id = Module::ID++;
+                
             }
         public:
-            int id ;
             static ModuleRef create(string name){
                 return ModuleRef( new Module(name) );
             }
@@ -49,10 +48,6 @@ namespace ORAGE {
                 auto temp = Node::getNode(name);
                 if(temp != nullptr)return temp->as<Module>();
                 throw invalid_argument( "getModule : unknown : " + name );
-            }
-            template<typename T = Module>
-            bool is(){
-                return as<T>() != NULL;
             }
             template<class T>
             void set(string key, T value, bool defaultValue = false, bool trigEvent= true){
@@ -93,7 +88,7 @@ namespace ORAGE {
             }
         };//class Module
         typedef shared_ptr<class Module> ModuleRef;
-        int Module::ID = 0;
+        
     }//namespace CORE
 }//namespace ORAGE
 #endif /* Module_h */

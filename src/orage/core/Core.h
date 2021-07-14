@@ -7,8 +7,7 @@
 
 #ifndef Orage_h
 #define Orage_h
-#include "Number.h"
-#include "Clock.h"
+#include "Components/all.h"
 #include "Cables.h"
 
 namespace ORAGE {
@@ -46,14 +45,20 @@ namespace ORAGE {
                 }
             }
             void addCable(json cable){
-                string inputName = cable[1] ;
-                string outputName = cable[0] ;
-                ModuleRef input = getModule(inputName);
-                ModuleRef output = getModule(outputName);
-                cables->addCable(input, output);
+                addCable(cable[1], cable[0], true);
             }
             
-            void addModules(json modules){
+            void addCable(string inputName, string outputName, bool trigEvent = true){
+                ModuleRef input = getModule(inputName);
+                ModuleRef output = getModule(outputName);
+                addCable(input, output, trigEvent);
+            }
+            
+            void addCable(ModuleRef input, ModuleRef output, bool trigEvent = true){
+                cables->addCable(input, output, trigEvent);
+            }
+            
+            void addModules(json modules, bool trigEvent = true){
                 for (const auto& item : modules.items()){
                     addModule(item.value());
                 }

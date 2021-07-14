@@ -9,11 +9,7 @@
 #define Number_h
 
 
-#include "Module.h"
-#include "boost/variant.hpp"
-
-
-
+#include "../Module.h"
 
 namespace ORAGE {
     namespace CORE {
@@ -27,7 +23,7 @@ namespace ORAGE {
             Number(string name, string type = "Number") :
                 Module(name, type)
             {
-//                addEventListener("change", [](COMMON::Event<CORE::Module> event) -> void{
+//                addEventListener("change", [](COMMON::Event<CORE::Module> event) -> void{
 //                    cout<<event.target->getConf().dump()<<endl;
 //                });
             };
@@ -41,7 +37,7 @@ namespace ORAGE {
                 return Module::to_string() + " : " + getStringValue();
             }
             virtual void setValue(float value) override {
-                set<T>("value", (T)value);
+                set<T>("value", value);
             }
             virtual float getValue() override {
                 return get<T>("value");

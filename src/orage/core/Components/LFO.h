@@ -2,11 +2,9 @@
 #define LFO_h
 
 
-#include "Clock.h"
-#include "Parameter.h"
+#include "./Clock.h"
 #include "cinder/Rand.h"
-#include "Module.h"
-#include "Math.h"
+#include "../Module.h"
 
 
 class LFO : public Module {

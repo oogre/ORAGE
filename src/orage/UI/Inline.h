@@ -23,6 +23,7 @@ namespace ORAGE {
             Inline(string name, string type="Inline") :
                 View(name, type)
             {
+                setBgColor(Theme::InlineBGColor);
             }
         public :
             static InlineRef create(string name){
@@ -32,6 +33,7 @@ namespace ORAGE {
             }
             virtual ORAGE::UI::ViewRef addView(ORAGE::UI::ViewRef view) override {
                 view->setPos(positionAcc);
+                view->setSize({getSize().y, getSize().y});
                 positionAcc = positionAcc + margin + vec2(view->getSize().x, 0);
                 return View::addView(view);
             }
