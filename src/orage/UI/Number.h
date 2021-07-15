@@ -19,31 +19,39 @@ namespace ORAGE {
         using namespace ci::gl;
         using json = nlohmann::json;
         
+        template<Layout T = Layout::Normal>
         class Number : public IView {
-            typedef shared_ptr<class Number> NumberRef;
+            typedef shared_ptr<class Number<T>> NumberRef;
             typedef COMMON::MouseEvent<View> MouseEvt;
             Surface  valueSurface;
             
             Number(string name, string type="Number") :
                 IView(name, type)
             {
-                setSize(Theme::NumberSize);
-                setBgColor(Theme::bgActiveColor);
+                setSize(Theme<T>::NumberSize);
+                setBgColor(Theme<T>::bgActiveColor);
                 
-                ORAGE::UI::ViewRef inputs = addView(Inline::create("inputs"));
-                inputs->setSize({getSize().x, 5});
-                inputs->setPos({0, -7});
-                inputs->addView(PlugInput::create("input"));
+                ORAGE::UI::ViewRef iWrapper = wrapperBuilder("inputs");
+                iWrapper->setSize(Theme<T>::PlugWrapperSize(getSize()));
+                iWrapper->setPos(Theme<T>::PlugWrapperPos(getSize(), PlugType::Input));
+                iWrapper->addView(PlugInput::create("input"));
                 
-                ORAGE::UI::ViewRef outputs = addView(Inline::create("outputs"));
-                outputs->setSize({getSize().x, 5});
-                outputs->setPos({0, getSize().y+2});
-                outputs->anchor = TOP_LEFT;
-                outputs->addView(PlugOutput::create("output"));
+                ORAGE::UI::ViewRef oWrapper = wrapperBuilder("outputs");
+                oWrapper->setSize(Theme<T>::PlugWrapperSize(getSize()));
+                oWrapper->setPos(Theme<T>::PlugWrapperPos(getSize(), PlugType::Output));
+                oWrapper->addView(PlugOutput::create("output"));
                 
                 addEventListener("enter", boost::bind(&Number::onEnter, this, _1));
                 addEventListener("leave", boost::bind(&Number::onLeave, this, _1));
             }
+            
+            UI::ViewRef wrapperBuilder(string name){
+                switch(T){
+                    case Layout::Normal : return addView(Inline::create(name));
+                    case Layout::Lite :  return  addView(Incolumn::create(name));
+                }
+            }
+            
             bool onDragStart(MouseEvt event){
                 addEventListener("drag", boost::bind(&Number::onDrag, this, _1));
                 addEventListener("dragEnd", boost::bind(&Number::onDragEnd, this, _1));
@@ -102,13 +110,12 @@ namespace ORAGE {
             }
             void render(string value){
                 TextLayout simple;
-                simple.setFont( Theme::getFont("bold") );
+                simple.setFont( Theme<T>::getFont("bold") );
                 simple.setColor( Color::white() );
                 simple.addLine( value );
                 valueSurface = simple.render( true, View::PREMULT ) ;
             }
         };//class Number
-        typedef shared_ptr<class Number> NumberRef;
     }//namespace UI {
 }//namespace ORAGE {
 #endif /* UINumber_h */

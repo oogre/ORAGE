@@ -44,12 +44,12 @@ namespace ORAGE {
                 addEventListener("leave", boost::bind(&Pannel::onLeave, this, _1));
                 
                 TextLayout simple;
-                simple.setFont( Theme::getFont("bold") );
+                simple.setFont( Theme<Layout::Normal>::getFont("bold") );
                 simple.setColor( Color::white() );
                 simple.addLine( name );
                 titleTex = gl::Texture2d::create( simple.render( true, PREMULT ) );
                 
-                setBgColor(Theme::bgDisactiveColor);
+                setBgColor(Theme<Layout::Normal>::bgDisactiveColor);
             }
             bool onDrag(mouseEvt event){
                 ivec2 dist = event.mouseEvent.getPos() - event.oldMousePos;

@@ -17,6 +17,37 @@ namespace ORAGE {
         using namespace ci::app;
         using namespace std;
         
+        
+        enum class Layout {
+            Normal,
+            Lite
+        };
+        ostream& operator<<(ostream& out, const Layout value){
+            const char* s = 0;
+            #define PROCESS_VAL(p) case(p): s = #p; break;
+            switch(value){
+                    PROCESS_VAL(Layout::Normal);
+                    PROCESS_VAL(Layout::Lite);
+            }
+            #undef PROCESS_VAL
+            return out << s;
+        }
+        
+        enum class PlugType {
+            Input,
+            Output
+        };
+        ostream& operator<<(ostream& out, const PlugType value){
+            const char* s = 0;
+            #define PROCESS_VAL(p) case(p): s = #p; break;
+            switch(value){
+                    PROCESS_VAL(PlugType::Input);
+                    PROCESS_VAL(PlugType::Output);
+            }
+            #undef PROCESS_VAL
+            return out << s;
+        }
+        
         enum ANCHOR {
             TOP_LEFT,
             TOP_CENTER,
@@ -27,8 +58,25 @@ namespace ORAGE {
             BOTTOM_LEFT,
             BOTTOM_CENTER,
             BOTTOM_RIGHT
-        };
+        };ostream& operator<<(ostream& out, const ANCHOR value){
+            const char* s = 0;
+            #define PROCESS_VAL(p) case(p): s = #p; break;
+            switch(value){
+                    PROCESS_VAL(ANCHOR::TOP_LEFT);
+                    PROCESS_VAL(ANCHOR::TOP_CENTER);
+                    PROCESS_VAL(ANCHOR::TOP_RIGHT);
+                    PROCESS_VAL(ANCHOR::CENTER_LEFT);
+                    PROCESS_VAL(ANCHOR::CENTER_CENTER);
+                    PROCESS_VAL(ANCHOR::CENTER_RIGHT);
+                    PROCESS_VAL(ANCHOR::BOTTOM_LEFT);
+                    PROCESS_VAL(ANCHOR::BOTTOM_CENTER);
+                    PROCESS_VAL(ANCHOR::BOTTOM_RIGHT);
+            }
+            #undef PROCESS_VAL
+            return out << s;
+        }
         
+        template<Layout T = Layout::Normal>
         class Theme{
         public :
             static ColorA bgColor;
@@ -46,6 +94,9 @@ namespace ORAGE {
             static ANCHOR defaultAnchor;
             
             static vec2 NumberSize;
+            static vec2 PlugWrapperSize(vec2 parentSize);
+            static vec2 PlugWrapperPos(vec2 parentSize, PlugType type);
+            
             static vec2 ButtonSize;
             
             static vec2 plugSize;
@@ -58,28 +109,65 @@ namespace ORAGE {
             }
         };//class Theme{
         
-        vec2 Theme::defaultSize = {100, 200};
-        vec2 Theme::defaultOrigin = {0, 0};
+        template<Layout T>
+        vec2 Theme<T>::defaultSize = {100, 200};
+        template<Layout T>
+        vec2 Theme<T>::defaultOrigin = {0, 0};
         
-        vec2 Theme::NumberSize = {50, 20};
-        vec2 Theme::ButtonSize = {20, 20};
+        template<Layout T>
+        vec2 Theme<T>::NumberSize = []()->vec2{
+            switch(T){
+                case Layout::Normal : return {50, 20};
+                case Layout::Lite : return {100, 20};
+            }
+        }();
         
-        vec2 Theme::plugSize = vec2(10, 10);
+        template<Layout T>
+        vec2 Theme<T>::PlugWrapperSize(vec2 parentSize){
+            switch(T){
+                case Layout::Normal : return { parentSize.x, 5 };
+                case Layout::Lite : return   { 7, parentSize.y };
+            }
+        }
+        template<Layout T>
+        vec2 Theme<T>::PlugWrapperPos(vec2 parentSize, PlugType type){
+            switch(T){
+                case Layout::Normal : return type==PlugType::Input ? vec2(0, -7) : vec2(0, parentSize.y + 2);
+                case Layout::Lite : return   type==PlugType::Input ? vec2(-7, 0) : vec2(parentSize.x + 2, 0);
+            }
+        }
         
-        ANCHOR Theme::defaultAnchor = TOP_LEFT;
         
-        ColorA Theme::bgColor = { 1.f, 1.f, 1.f, 0.1f };
-        ColorA Theme::bgActiveColor = { 1.f, 1.f, 1.f, 0.8f };
-        ColorA Theme::bgDisactiveColor = { 1.f, 1.f, 1.f, 0.1f };
+        template<Layout T>
+        vec2 Theme<T>::ButtonSize = {20, 20};
         
-        ColorA Theme::strokeActiveColor = { 1.f, 0.f, 0.f, 9.f };
-        ColorA Theme::strokeDisactiveColor = { 1.f, 1.f, 1.f, 5.f };
+        template<Layout T>
+        vec2 Theme<T>::plugSize = vec2(10, 10);
         
-        ColorA Theme::InlineBGColor = {0, 0, 0, 0};
-        ColorA Theme::ConnectorActiveColor = { 1.f, 1.f, 1.f, 0.8f };
-        ColorA Theme::ConnectorDisactiveColor = { 1.f, 1.f, 1.f, 0.2f };
+        template<Layout T>
+        ANCHOR Theme<T>::defaultAnchor = TOP_LEFT;
         
-        map<string, Font> Theme::fonts = {
+        template<Layout T>
+        ColorA Theme<T>::bgColor = { 1.f, 1.f, 1.f, 0.1f };
+        template<Layout T>
+        ColorA Theme<T>::bgActiveColor = { 1.f, 1.f, 1.f, 0.8f };
+        template<Layout T>
+        ColorA Theme<T>::bgDisactiveColor = { 1.f, 1.f, 1.f, 0.1f };
+        
+        template<Layout T>
+        ColorA Theme<T>::strokeActiveColor = { 1.f, 0.f, 0.f, 9.f };
+        template<Layout T>
+        ColorA Theme<T>::strokeDisactiveColor = { 1.f, 1.f, 1.f, 5.f };
+        
+        template<Layout T>
+        ColorA Theme<T>::InlineBGColor = {0, 0, 0, 0};
+        template<Layout T>
+        ColorA Theme<T>::ConnectorActiveColor = { 1.f, 1.f, 1.f, 0.8f };
+        template<Layout T>
+        ColorA Theme<T>::ConnectorDisactiveColor = { 1.f, 1.f, 1.f, 0.2f };
+        
+        template<Layout T>
+        map<string, Font> Theme<T>::fonts = {
             { "regular", Font( loadResource( VICTOR_MONO_REGULAR ), 11 ) },
             { "regular_oblique", Font( loadResource( VICTOR_MONO_REGULAR_OBLIQUE ), 11 ) },
             { "thin", Font( loadResource( VICTOR_MONO_THIN ), 11 ) },

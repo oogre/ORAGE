@@ -28,7 +28,7 @@ namespace ORAGE {
             typedef ORAGE::COMMON::Event<ORAGE::CORE::Module> ModuleEvt;
             Manager(){
                 Manager::view->setSize(getWindow()->getSize());
-                Manager::view->setBgColor(Theme::bgColor);
+                Manager::view->setBgColor(Theme<Layout::Normal>::bgColor);
                 getWindow()->getSignalResize().connect([&]() -> void {
                     Manager::view->setSize(getWindow()->getSize());
                 });
@@ -83,7 +83,11 @@ namespace ORAGE {
                 ViewRef newView;
                 switch(type){
                     case ViewType::Number :
-                        newView = Number::create(name);
+                        if(base->is<Incolumn>()){
+                            newView = Number<Layout::Lite>::create(name);
+                        }else{
+                            newView = Number<Layout::Normal>::create(name);
+                        }
                         break;
                     case ViewType::BangButton :
                         newView = Button::create(name);

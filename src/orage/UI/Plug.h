@@ -14,21 +14,6 @@ namespace ORAGE {
     namespace UI {
         using namespace std;
         
-        enum class PlugType {
-            Input,
-            Output
-        };
-        ostream& operator<<(ostream& out, const PlugType value){
-            const char* s = 0;
-            #define PROCESS_VAL(p) case(p): s = #p; break;
-            switch(value){
-                    PROCESS_VAL(PlugType::Input);
-                    PROCESS_VAL(PlugType::Output);
-            }
-            #undef PROCESS_VAL
-            return out << s;
-        }
-        
         template<PlugType T>
         class Plug : public IView  {
             typedef shared_ptr<class Plug<T>> PlugRef;
@@ -37,7 +22,7 @@ namespace ORAGE {
             Plug(string name, string type="Plug") :
                 IView(name, type)
             {
-                setSize(Theme::plugSize);
+                setSize(Theme<Layout::Normal>::plugSize);
                 addEventListener("down", boost::bind(&Plug::onDown, this, _1));
             }
             void onDown(MouseEvt event){

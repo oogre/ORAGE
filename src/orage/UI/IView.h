@@ -29,7 +29,7 @@ namespace ORAGE {
             time_t tAtDown;
             time_t tAtUp;
             vector<ci::signals::Connection> connections;
-            ColorA strokeColor = Theme::strokeDisactiveColor;
+            ColorA strokeColor = Theme<Layout::Normal>::strokeDisactiveColor;
             
             void onMouseMove(ci::app::MouseEvent mouseEvent){
                 ivec2 mousePos = mouseEvent.getPos();
@@ -112,11 +112,11 @@ namespace ORAGE {
                     connections.push_back(getWindow()->getSignalMouseDown().connect(100-getDepth(), boost::bind(&IView::onMouseDown, this, _1)));
                     connections.push_back(getWindow()->getSignalMouseUp().connect(100-getDepth(), boost::bind(&IView::onMouseUp, this, _1)));
                     addEventListener("enter", [&](MouseEvt event) -> bool {
-                        strokeColor = Theme::strokeActiveColor;
+                        strokeColor = Theme<Layout::Normal>::strokeActiveColor;
                         return true;
                     });
                     addEventListener("leave", [&](MouseEvt event) -> bool {
-                        strokeColor = Theme::strokeDisactiveColor;
+                        strokeColor = Theme<Layout::Normal>::strokeDisactiveColor;
                         return true;
                     });
             }

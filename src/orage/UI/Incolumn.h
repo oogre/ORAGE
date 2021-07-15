@@ -24,7 +24,7 @@ namespace ORAGE {
             Incolumn(string name, string type="Incolumn") :
                 View(name, type)
             {
-                setBgColor(Theme::InlineBGColor);
+                setBgColor(Theme<Layout::Normal>::InlineBGColor);
             }
         public :
             static IncolumnRef create(string name){

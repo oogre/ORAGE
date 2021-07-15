@@ -23,7 +23,7 @@ namespace ORAGE {
             Inline(string name, string type="Inline") :
                 View(name, type)
             {
-                setBgColor(Theme::InlineBGColor);
+                setBgColor(Theme<Layout::Normal>::InlineBGColor);
             }
         public :
             static InlineRef create(string name){

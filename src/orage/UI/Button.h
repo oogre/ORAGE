@@ -32,8 +32,8 @@ namespace ORAGE {
             Button(string name, string type="Button") :
             IView(name, type)
             {
-                setSize(Theme::ButtonSize);
-                setBgColor(Theme::bgDisactiveColor);
+                setSize(Theme<Layout::Normal>::ButtonSize);
+                setBgColor(Theme<Layout::Normal>::bgDisactiveColor);
                 
                 ORAGE::UI::ViewRef inputs = addView(Inline::create("inputs"));
                 inputs->setSize({getSize().x, 5});
@@ -114,13 +114,12 @@ namespace ORAGE {
             }
             void render(){
                 if(isOn()){
-                    setBgColor(Theme::bgActiveColor);
+                    setBgColor(Theme<Layout::Normal>::bgActiveColor);
                 }else{
-                    setBgColor(Theme::bgDisactiveColor);
+                    setBgColor(Theme<Layout::Normal>::bgDisactiveColor);
                 }
             }
         };//class Button
-        typedef shared_ptr<class Number> NumberRef;
     }//namespace UI {
 }//namespace ORAGE {
 

@@ -21,17 +21,17 @@ namespace ORAGE {
             typedef COMMON::EventTemplate<View, COMMON::MouseEvent<View>> MouseEvt;
             typedef ORAGE::COMMON::NodeRef NodeRef;
             const static map<string, Font> fonts;
-            ColorA bgColor = Theme::bgActiveColor;
+            ColorA bgColor = Theme<Layout::Normal>::bgActiveColor;
         protected :
             Rectf bounds;
             CORE::ModuleRef module;
             View(std::string name, string type = "View") :
                 Node(name, type),
                 MouseEvt(),
-                bounds({0, 0}, Theme::defaultSize),
-                anchor(Theme::defaultAnchor)
+                bounds({0, 0}, Theme<Layout::Normal>::defaultSize),
+                anchor(Theme<Layout::Normal>::defaultAnchor)
             {
-                bounds.offset( Theme::defaultOrigin );
+                bounds.offset( Theme<Layout::Normal>::defaultOrigin );
             }
         public :
             ANCHOR anchor;

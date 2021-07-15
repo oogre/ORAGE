@@ -48,9 +48,11 @@ namespace ORAGE {
         public :
             PannelRef getPannel(ViewRef view){
                 if(view == nullptr)return nullptr;
-                return view->getParent<UI::View>([&](UI::ViewRef view) -> bool{
+                UI::ViewRef parent = view->getParent<UI::View>([&](UI::ViewRef view) -> bool{
                     return view->is<Pannel>();
-                })->as<Pannel>();
+                });
+                if(parent == nullptr)return nullptr;
+                return parent->as<Pannel>();
             }
             static CableRef create(PlugInputRef input, PlugOutputRef output){
                 return CableRef( new Cable(input, output) );
