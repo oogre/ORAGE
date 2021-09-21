@@ -1,0 +1,270 @@
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DCD9210B-869C-4F0D-B6B7-67C4D94E5D4D}</ProjectGuid>
+    <RootNamespace>ORAGE</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\include;"..\..\..\..\Frameworks\Cinder\include";..\blocks\ORAGE\assets;..\blocks\OSC\src</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>"..\..\..\..\Frameworks\Cinder\include";..\include</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>"..\..\..\..\Frameworks\Cinder\lib\msw\$(PlatformTarget)";"..\..\..\..\Frameworks\Cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)"</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCPMT</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\include;"..\..\..\..\Frameworks\Cinder\include";..\blocks\ORAGE\assets;..\blocks\OSC\src</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>"..\..\..\..\Frameworks\Cinder\include";..\include</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>"..\..\..\..\Frameworks\Cinder\lib\msw\$(PlatformTarget)";"..\..\..\..\Frameworks\Cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)"</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding />
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources.rc" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <ClCompile Include="..\src\ORAGEApp.cpp" />
+    <ClCompile Include="..\blocks\UI\src\BSplineEditor.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Button.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Canvas.cpp" />
+    <ClCompile Include="..\blocks\UI\src\ColorPicker.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Colors.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Control.cpp" />
+    <ClCompile Include="..\blocks\UI\src\ControlWithLabel.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Dialer.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Envelope.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Fps.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Globals.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Graph.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Label.cpp" />
+    <ClCompile Include="..\blocks\UI\src\MultiSlider.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Plotter.cpp" />
+    <ClCompile Include="..\blocks\UI\src\QuaternionOrderer.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Radio.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Range.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Responder.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Slider.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Spacer.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Spectrum.cpp" />
+    <ClCompile Include="..\blocks\UI\src\SuperCanvas.cpp" />
+    <ClCompile Include="..\blocks\UI\src\TextInput.cpp" />
+    <ClCompile Include="..\blocks\UI\src\TextureView.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Toggle.cpp" />
+    <ClCompile Include="..\blocks\UI\src\View.cpp" />
+    <ClCompile Include="..\blocks\UI\src\Waveform.cpp" />
+    <ClCompile Include="..\blocks\UI\src\WindowCanvas.cpp" />
+    <ClCompile Include="..\blocks\UI\src\XYPad.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Orage.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Tools.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\SuperModule.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Bases\ModuleBase.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Bases\ModulePiano.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Bases\ModuleVideo.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\BeatStepPro.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\CustomCC.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\Lfos.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\NanoKontrol.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\NoteOnOff.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\Osc.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\ProcessCV.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\Random.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Blur.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Cloud.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\ColorAdjustement.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Crossfader.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Delay.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Freezer.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Hilbert.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Kaleidoscope.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Matte.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Mosher.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Oscillator.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Output.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Player.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Resize.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Spliter.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\SyphonInput.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Tile.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\TintCorrector.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Trail.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\Wire.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WireCV.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WirePiano.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\Wires.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WireVideo.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\Wire.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WireCV.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WirePiano.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\Wires.cpp" />
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WireVideo.cpp" />
+    <ClCompile Include="..\blocks\OSC\src\cinder\osc\Osc.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\blocks\UI\src\Alignments.h" />
+    <ClInclude Include="..\blocks\UI\src\BSplineEditor.h" />
+    <ClInclude Include="..\blocks\UI\src\Button.h" />
+    <ClInclude Include="..\blocks\UI\src\Canvas.h" />
+    <ClInclude Include="..\blocks\UI\src\CocoaWindowCanvas.h" />
+    <ClInclude Include="..\blocks\UI\src\ColorPicker.h" />
+    <ClInclude Include="..\blocks\UI\src\Colors.h" />
+    <ClInclude Include="..\blocks\UI\src\Control.h" />
+    <ClInclude Include="..\blocks\UI\src\Controls.h" />
+    <ClInclude Include="..\blocks\UI\src\ControlWithLabel.h" />
+    <ClInclude Include="..\blocks\UI\src\Dialer.h" />
+    <ClInclude Include="..\blocks\UI\src\Directions.h" />
+    <ClInclude Include="..\blocks\UI\src\Envelope.h" />
+    <ClInclude Include="..\blocks\UI\src\FontSizes.h" />
+    <ClInclude Include="..\blocks\UI\src\Fps.h" />
+    <ClInclude Include="..\blocks\UI\src\Globals.h" />
+    <ClInclude Include="..\blocks\UI\src\Graph.h" />
+    <ClInclude Include="..\blocks\UI\src\Helpers.h" />
+    <ClInclude Include="..\blocks\UI\src\Label.h" />
+    <ClInclude Include="..\blocks\UI\src\MultiSlider.h" />
+    <ClInclude Include="..\blocks\UI\src\Padding.h" />
+    <ClInclude Include="..\blocks\UI\src\Plotter.h" />
+    <ClInclude Include="..\blocks\UI\src\QuaternionOrderer.h" />
+    <ClInclude Include="..\blocks\UI\src\Radio.h" />
+    <ClInclude Include="..\blocks\UI\src\Range.h" />
+    <ClInclude Include="..\blocks\UI\src\RenderData.h" />
+    <ClInclude Include="..\blocks\UI\src\Responder.h" />
+    <ClInclude Include="..\blocks\UI\src\Slider.h" />
+    <ClInclude Include="..\blocks\UI\src\Spacer.h" />
+    <ClInclude Include="..\blocks\UI\src\Spectrum.h" />
+    <ClInclude Include="..\blocks\UI\src\States.h" />
+    <ClInclude Include="..\blocks\UI\src\SuperCanvas.h" />
+    <ClInclude Include="..\blocks\UI\src\TextInput.h" />
+    <ClInclude Include="..\blocks\UI\src\TextureView.h" />
+    <ClInclude Include="..\blocks\UI\src\Toggle.h" />
+    <ClInclude Include="..\blocks\UI\src\Triggers.h" />
+    <ClInclude Include="..\blocks\UI\src\UI.h" />
+    <ClInclude Include="..\blocks\UI\src\View.h" />
+    <ClInclude Include="..\blocks\UI\src\Waveform.h" />
+    <ClInclude Include="..\blocks\UI\src\WindowCanvas.h" />
+    <ClInclude Include="..\blocks\UI\src\XYPad.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Orage.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Tools.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\SuperModule.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Bases\ModuleBase.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Bases\ModulePiano.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Bases\ModuleVideo.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\BeatStepPro.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\CustomCC.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\Lfos.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\NanoKontrol.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\NoteOnOff.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\Osc.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\ProcessCV.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Blur.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Cloud.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\ColorAdjustement.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Crossfader.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Delay.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Freezer.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Hilbert.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Kaleidoscope.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Matte.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Mosher.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Oscillator.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Output.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Player.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Resize.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Spliter.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\SyphonInput.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Tile.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\TintCorrector.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\Wire.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WireCV.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WirePiano.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\Wires.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WireVideo.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\Wire.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WireCV.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WirePiano.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\Wires.h" />
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WireVideo.h" />
+    <ClInclude Include="..\blocks\OSC\src\cinder\osc\Osc.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

@@ -1,3 +1,4 @@
 .DS_Store
 xcode/build/*
 proj/cmake/build/*
+vc2019/build/*

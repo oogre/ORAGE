@@ -1,0 +1,550 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Blocks">
+      <UniqueIdentifier>{FB3A987A-305A-4721-B696-455CA9E1A757}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\UI">
+      <UniqueIdentifier>{08DCFD21-C252-426D-9754-C434F395CE21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\UI\src">
+      <UniqueIdentifier>{95C54240-046D-4A0F-B04E-0996B53C539D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ORAGE">
+      <UniqueIdentifier>{376A0907-D145-4E7E-A973-5762C35E1265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ORAGE\src">
+      <UniqueIdentifier>{B478BE22-02E5-4EE9-9725-08387856C15A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ORAGE\src\Modules">
+      <UniqueIdentifier>{B523AAC6-C7C1-4D80-A420-48BA81D91430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ORAGE\src\Modules\Bases">
+      <UniqueIdentifier>{818825BC-DD57-47DD-A8E8-D381530C9132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ORAGE\src\Modules\Controllers">
+      <UniqueIdentifier>{96C364A2-58F7-4791-A6D6-E87BCF9F2516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ORAGE\src\Modules\Videos">
+      <UniqueIdentifier>{19EAB02D-85DE-44F2-9776-8EBB615C4D20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\ORAGE\src\Wires">
+      <UniqueIdentifier>{66FD26D5-F4E3-40EE-8C0A-8996BDC650F6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\OSC">
+      <UniqueIdentifier>{506F34C3-3753-4F5E-9063-2D01C5B8AC1D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\OSC\src">
+      <UniqueIdentifier>{019D2446-555E-4189-851D-6B30540CF36B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\OSC\src\cinder">
+      <UniqueIdentifier>{471A7454-A9A6-4142-BD8D-EC77C25A5AB0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\OSC\src\cinder\osc">
+      <UniqueIdentifier>{918F9E98-942D-4447-A241-EB3938D68139}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\ORAGEApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ORAGEApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Alignments.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\BSplineEditor.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Button.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Canvas.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\CocoaWindowCanvas.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\ColorPicker.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Colors.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Control.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Controls.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\ControlWithLabel.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Dialer.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Directions.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Envelope.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\FontSizes.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Fps.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Globals.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Graph.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Helpers.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Label.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\MultiSlider.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Padding.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Plotter.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\QuaternionOrderer.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Radio.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Range.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\RenderData.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Responder.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Slider.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Spacer.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Spectrum.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\States.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\SuperCanvas.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\TextInput.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\TextureView.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Toggle.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Triggers.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\UI.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\View.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\Waveform.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\WindowCanvas.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\UI\src\XYPad.h">
+      <Filter>Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClCompile Include="..\blocks\UI\src\BSplineEditor.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Button.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Canvas.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\ColorPicker.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Colors.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Control.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\ControlWithLabel.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Dialer.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Envelope.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Fps.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Globals.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Graph.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Label.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\MultiSlider.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Plotter.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\QuaternionOrderer.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Radio.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Range.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Responder.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Slider.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Spacer.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Spectrum.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\SuperCanvas.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\TextInput.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\TextureView.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Toggle.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\View.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\Waveform.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\WindowCanvas.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\UI\src\XYPad.cpp">
+      <Filter>Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClInclude Include="..\blocks\ORAGE\src\Orage.h">
+      <Filter>Blocks\ORAGE\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Tools.h">
+      <Filter>Blocks\ORAGE\src</Filter>
+    </ClInclude>
+    <ClCompile Include="..\blocks\ORAGE\src\Orage.cpp">
+      <Filter>Blocks\ORAGE\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Tools.cpp">
+      <Filter>Blocks\ORAGE\src</Filter>
+    </ClCompile>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\SuperModule.h">
+      <Filter>Blocks\ORAGE\src\Modules</Filter>
+    </ClInclude>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\SuperModule.cpp">
+      <Filter>Blocks\ORAGE\src\Modules</Filter>
+    </ClCompile>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Bases\ModuleBase.h">
+      <Filter>Blocks\ORAGE\src\Modules\Bases</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Bases\ModulePiano.h">
+      <Filter>Blocks\ORAGE\src\Modules\Bases</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Bases\ModuleVideo.h">
+      <Filter>Blocks\ORAGE\src\Modules\Bases</Filter>
+    </ClInclude>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Bases\ModuleBase.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Bases</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Bases\ModulePiano.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Bases</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Bases\ModuleVideo.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Bases</Filter>
+    </ClCompile>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\BeatStepPro.h">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\CustomCC.h">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\Lfos.h">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\NanoKontrol.h">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\NoteOnOff.h">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\Osc.h">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Controllers\ProcessCV.h">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClInclude>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\BeatStepPro.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\CustomCC.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\Lfos.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\NanoKontrol.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\NoteOnOff.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\Osc.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\ProcessCV.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Controllers\Random.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Controllers</Filter>
+    </ClCompile>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Blur.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Cloud.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\ColorAdjustement.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Crossfader.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Delay.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Freezer.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Hilbert.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Kaleidoscope.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Matte.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Mosher.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Oscillator.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Output.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Player.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Resize.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Spliter.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\SyphonInput.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\Tile.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Modules\Videos\TintCorrector.h">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClInclude>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Blur.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Cloud.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\ColorAdjustement.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Crossfader.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Delay.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Freezer.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Hilbert.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Kaleidoscope.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Matte.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Mosher.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Oscillator.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Output.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Player.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Resize.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Spliter.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\SyphonInput.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Tile.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\TintCorrector.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Modules\Videos\Trail.cpp">
+      <Filter>Blocks\ORAGE\src\Modules\Videos</Filter>
+    </ClCompile>
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\Wire.h">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WireCV.h">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WirePiano.h">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\Wires.h">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WireVideo.h">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClInclude>
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\Wire.cpp">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WireCV.cpp">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WirePiano.cpp">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\Wires.cpp">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WireVideo.cpp">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClCompile>
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\Wire.h">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WireCV.h">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WirePiano.h">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\Wires.h">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\ORAGE\src\Wires\WireVideo.h">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClInclude>
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\Wire.cpp">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WireCV.cpp">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WirePiano.cpp">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\Wires.cpp">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\ORAGE\src\Wires\WireVideo.cpp">
+      <Filter>Blocks\ORAGE\src\Wires</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\OSC\src\cinder\osc\Osc.cpp">
+      <Filter>Blocks\OSC\src\cinder\osc</Filter>
+    </ClCompile>
+    <ClInclude Include="..\blocks\OSC\src\cinder\osc\Osc.h">
+      <Filter>Blocks\OSC\src\cinder\osc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
