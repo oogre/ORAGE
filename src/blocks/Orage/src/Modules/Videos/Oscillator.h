@@ -77,11 +77,11 @@ namespace ogre {
                     case 3 : data.phaseDy = lerp(-1.0f, 1.0f, nValue); break;
                     case 4 : data.modifier = lerp(.0f, 1.0f, nValue); break;
                     case 5 : trail = lerp(.0f, 1.0f, nValue); break;
-                    case 6 : data.sine = lerp(.0f, 1.0f, nValue); break;
-                    case 7 : data.rect = lerp(.0f, 1.0f, nValue); break;
-                    case 8 : data.saw = lerp(.0f, 1.0f, nValue); break;
-                    case 9 : data.tri = lerp(.0f, 1.0f, nValue); break;
-                    case 10 : data.noise = lerp(.0f, 1.0f, nValue); break;
+                    case 6 : data.sine = lerp(-1.0f, 1.0f, nValue); break;
+                    case 7 : data.rect = lerp(-1.0f, 1.0f, nValue); break;
+                    case 8 : data.saw = lerp(-1.0f, 1.0f, nValue); break;
+                    case 9 : data.tri = lerp(-1.0f, 1.0f, nValue); break;
+                    case 10 : data.noise = lerp(-1.0f, 1.0f, nValue); break;
                     case 11 : data.exp = lerp(0.064f, 10.0f, nValue); break;
                 }
             }

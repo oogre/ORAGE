@@ -425,12 +425,12 @@ void Orage::setup(){
                                                                         }
                                                                     });
     
-//    contextMenu->addButton("Delay", false)->setCallback(
-//                                                        [this](bool a) {
-//                                                            if(a){
-//                                                                addDelay(contextMenu->getOrigin());
-//                                                            }
-//                                                        });
+    contextMenu->addButton("Delay", false)->setCallback(
+                                                        [this](bool a) {
+                                                            if(a){
+                                                                addDelay(contextMenu->getOrigin());
+                                                            }
+                                                        });
     
     contextMenu->addButton("Resize", false)->setCallback(
                                                          [this](bool a) {

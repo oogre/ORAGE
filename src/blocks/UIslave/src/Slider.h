@@ -149,6 +149,7 @@ class SliderT : public ControlWithLabel {
     T cMin;
     T cMax;
 	double mValue;
+    double mValueTarget;
 	T *mValueRef;
 	bool mUseRef;
 	Format mFormat;

@@ -134,11 +134,11 @@ void Oscillator::setupUI(){
     mUi->addSpacer(false);
     mUi->addSpacer(false);
     
-    tools.addSlider(mUi, "Sine", this->id, &(data.sine), 0.0f, 1.0f);
-    tools.addSlider(mUi, "Rect", this->id, &(data.rect), 0.0f, 1.0f);
-    tools.addSlider(mUi, "Saw", this->id, &(data.saw), 0.0f, 1.0f);
-    tools.addSlider(mUi, "Tri", this->id, &(data.tri), 0.0f, 1.0f);
-    tools.addSlider(mUi, "Noise", this->id, &(data.noise), 0.0f, 1.0f);
+    tools.addSlider(mUi, "Sine", this->id, &(data.sine), -1.0f, 1.0f);
+    tools.addSlider(mUi, "Rect", this->id, &(data.rect),  -1.0f, 1.0f);
+    tools.addSlider(mUi, "Saw", this->id, &(data.saw),  -1.0f, 1.0f);
+    tools.addSlider(mUi, "Tri", this->id, &(data.tri),  -1.0f, 1.0f);
+    tools.addSlider(mUi, "Noise", this->id, &(data.noise),  -1.0f, 1.0f);
     tools.addSlider(mUi, "Exp", this->id, &(data.exp), 0.064f, 10.0f);
     
     mUi->addSpacer(false);

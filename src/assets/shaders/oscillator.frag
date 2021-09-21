@@ -78,7 +78,6 @@ float w13(in float x, in float height){
 
 
 
-
 float recWave(in float phase, in float height){
     if(sinWave(phase, height)>0.0){
         return 1.0;
@@ -97,27 +96,27 @@ void main(){
     
     float phase = phaseProcess(
                                vertTexCoord0,
-                               freq * 0.01f*1.6f,
+                               freq * 0.01f * 1.6f,
                                sync,
-                               phaseDx + modifier * (prevModValue.r + prevModValue.g + prevModValue.b));
+                               phaseDx  + modifier * (prevModValue.r + prevModValue.g + prevModValue.b));
     
     float value = 0;
     
-    if(saw > 0.0){
+    // if(saw > 0.0){
         value += saw   * sawWave(phase, phaseDy);
-    }
-    if(sine > 0.0){
+    //}
+    //if(sine > 0.0){
         value += sine  * sinWave(phase, phaseDy);
-    }
-    if(rect > 0.0){
+    //}
+    //if(rect > 0.0){
         value += rect  * recWave(phase, phaseDy);
-    }
-    if(tri > 0.0){
+    //}
+    //if(tri > 0.0){
         value += tri   * triWave(phase, phaseDy);
-    }
-    if(noise > 0.0){
-        value += noise * w13(phaseDx + modifier * (prevModValue.r + prevModValue.g + prevModValue.b) + phase * 1000, phaseDy);
-    }
+    //}
+    //if(noise > 0.0){
+        value += noise * nozWave(phase, phaseDy);//w13(phaseDx + modifier * (prevModValue.r + prevModValue.g + prevModValue.b) + phase * 1000, phaseDy);
+    //}
     
     value = clamp(value, 0.0, 1.0);
     

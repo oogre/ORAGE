@@ -77,7 +77,9 @@ namespace ogre {
             return;
         }
         ModuleVideo::update();
-        data.u_time = getElapsedSeconds();
+        float now = getElapsedSeconds();
+        data.u_time += 10 * data.move * data.move * data.move * (o_time - now);
+        o_time = now;
         
         gl::pushMatrices();
         gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );

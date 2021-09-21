@@ -20,7 +20,7 @@ using namespace std;
 namespace ogre {
     class Cloud : public ModuleVideo{
         gl::Context * mMainWinCtx;
-        
+        float o_time = 0.0f;
         struct DATA {
             float shiftx = 0.f;
             float shifty = 0.f;

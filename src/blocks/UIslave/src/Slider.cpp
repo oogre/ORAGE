@@ -103,6 +103,9 @@ void SliderT<T>::load( const ci::JsonTree &data )
 template <typename T>
 void SliderT<T>::setValue( T value )
 {
+    //mValueTarget = value
+    //mValueTarget = lerp((float)value, (float)mValueTarget, 0.9f);
+    
 	mValue = lmap<double>( value, mMin, mMax, 0.0, 1.0 );
 	updateValueRef();
 	updateLabel();
