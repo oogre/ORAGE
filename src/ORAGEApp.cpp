@@ -30,7 +30,7 @@ public :
     float getParameter(string name){
         return parameters[name];
     }
-    void setShader(string vertexFile, string fragmentFile){
+    void setShader(fs::path vertexFile, fs::path fragmentFile){
         mShader = gl::GlslProg::create(loadFile(vertexFile), loadFile(fragmentFile));
     }
     void update(){
@@ -68,7 +68,8 @@ class ORAGEApp : public App {
 
 void ORAGEApp::setup()
 {
-    fs::path saveFile = "/Users/ogre/Desktop/oscillator.rage";
+    fs::path saveFile = "C:/Users/vince/ORAGE/oscillator.rage";
+    //fs::path saveFile = "/Users/ogre/Desktop/oscillator.rage";
     fs::path configFile = saveFile;
     configFile += "/config.json";
     ci::JsonTree content = JsonTree( loadFile(configFile) );
