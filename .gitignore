@@ -1,5 +1,7 @@
 .DS_Store
 xcode/build/*
+xcode/ORAGE.xcodeproj/xcuserdata/ogre.xcuserdatad/xcdebugger/
+xcode/ORAGE.xcodeproj/project.xcworkspace/*
 proj/cmake/build/*
 vc2019/.vs/*
 vc2019/ORAGE.vcxproj.user
