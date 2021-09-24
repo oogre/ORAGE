@@ -1,0 +1,53 @@
+{
+	"modules" : [{
+		"vertexShaders" : "./shaders/oscillator.vert",
+		"fragmentShaders" : "./shaders/oscillator.frag",
+		"width" : 1080,
+		"height" : 720,
+		"parameters" : [{
+			"name" : "freq",
+			"type" : "float",
+			"value" : 60.0
+		},{
+			"name" : "sync",
+			"type" : "float",
+			"value" : 0.1
+		},{
+			"name" : "dX",
+			"type" : "float",
+			"value" : 0.0
+		},{
+			"name" : "dY",
+			"type" : "float",
+			"value" : 0.0
+		},{
+			"name" : "mod",
+			"type" : "float",
+			"value" : 0.0
+		},{
+			"name" : "sine",
+			"type" : "float",
+			"value" : 1.0
+		},{
+			"name" : "rect",
+			"type" : "float",
+			"value" : 0.0
+		},{
+			"name" : "saw",
+			"type" : "float",
+			"value" : 0.0
+		},{
+			"name" : "tri",
+			"type" : "float",
+			"value" : 0.0
+		},{
+			"name" : "noz",
+			"type" : "float",
+			"value" : 0.0
+		},{
+			"name" : "rev",
+			"type" : "float",
+			"value" : 1.0
+		}]
+	}]
+}
