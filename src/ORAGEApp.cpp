@@ -3,6 +3,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Json.h"
 #include "Modules/ModuleShader.h"
+#include "CLI.hpp"
 
 using namespace ci;
 using namespace ci::app;
@@ -11,7 +12,19 @@ using namespace ogre::ORAGE;
 
 class ORAGEApp : public App {
     vector<ModuleRef> modules;
-  public:
+public:
+    static void prepareSettings( Settings *settings ){
+        vector<string> args =  settings->getCommandLineArgs();
+        CLI::App app{"App description"};
+        std::string filename = "default";
+        app.add_option("-f,--file", filename, "A help string");
+        
+        try {
+            app.parse(args);
+        } catch (const CLI::ParseError &e) {
+            app.exit(e);
+        }
+    };
 	void setup() override;
 	void update() override;
 	void draw() override;
@@ -19,9 +32,9 @@ class ORAGEApp : public App {
 
 void ORAGEApp::setup(){
     #if defined( CINDER_MAC )
-    fs::path saveFile = "/Users/ogre/works/1202/ORAGE/oscillator.rage";
+        fs::path saveFile = "/Users/ogre/works/1202/ORAGE/oscillator.rage";
     #elif defined( CINDER_MSW )
-    fs::path saveFile = "C:/Users/vince/ORAGE/oscillator.rage";
+        fs::path saveFile = "C:/Users/vince/ORAGE/oscillator.rage";
     #endif
     
     fs::path configFile = saveFile;
@@ -60,11 +73,10 @@ void ORAGEApp::update(){
 }
 
 void ORAGEApp::draw(){
-    gl::clear( Color( 1, 0, 0 ) );
+    gl::clear( Color( 0,0,0 ) );
     for( const auto &moduleRef : modules ){
         moduleRef->update();
-        moduleRef->draw();
     }
 }
 
-CINDER_APP( ORAGEApp, RendererGl )
+CINDER_APP( ORAGEApp, RendererGl, &ORAGEApp::prepareSettings )

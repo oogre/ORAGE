@@ -9,6 +9,11 @@
 #define ModuleShader_hpp
 
 #include "Module.h"
+#if defined( CINDER_MAC )
+    #include "syphonServer.h"
+#elif defined( CINDER_MSW )
+    #include "..\SpoutGL\SpoutSender.h"
+#endif
 
 namespace ogre {
     namespace ORAGE {
@@ -17,14 +22,37 @@ namespace ogre {
             CameraPersp         mCam;
             gl::FboRef          mFbo;
             gl::GlslProgRef     mShader;
-            
-            ModuleShader() : Module() {}
-            public :
+            gl::TextureRef      mtexture;
+            #if defined( CINDER_MAC )
+                syphonServer * serverRef;
+            #elif defined( CINDER_MSW )
+                SpoutSender serverSpout;
+            #endif
+            ModuleShader() : Module() {
+                #if defined( CINDER_MAC )
+                    serverRef = new syphonServer();
+                    serverRef->setName("demo");
+                #elif defined( CINDER_MSW )
+                
+                #endif
+            }
+        public :
+            virtual ~ModuleShader(){
+                #if defined( CINDER_MAC )
+                
+                #elif defined( CINDER_MSW )
+                    sender.ReleaseSender();
+                #endif
+                mFbo.reset();
+            }
             static ModuleShaderRef create(){
                 return ModuleShaderRef( new ModuleShader() );
             }
             void setSize(ivec2 size){
-                mFbo = gl::Fbo::create( size.x, size.y, gl::Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, gl::Texture2d::create(size.x, size.y)));
+                mtexture = gl::Texture2d::create(size.x, size.y);
+                gl::Fbo::Format format;
+                format.attachment(GL_COLOR_ATTACHMENT0, mtexture);
+                mFbo = gl::Fbo::create( size.x, size.y, format);
                 mCam = CameraPersp(size.x, size.y, -60.0f, 1, 1000 );
             }
             void setParameter(string name, float value){
@@ -43,7 +71,6 @@ namespace ogre {
                 gl::setMatrices( mCam );
                 mFbo->bindFramebuffer();
                 {
-                    gl::clear( Color( 1, 0, 0 ) );
                     gl::ScopedGlslProg glslProg( mShader );
                     for( const auto &parameter : parameters ) {
                         mShader->uniform( parameter.first, parameter.second );
@@ -53,14 +80,11 @@ namespace ogre {
                 }
                 mFbo->unbindFramebuffer();
                 gl::popMatrices();
-            }
-            virtual void draw() override {
-                Module::draw();
-                gl::draw(getTextureRef(), Rectf( vec2(0, 0), getWindowSize() ));
-            }
-            
-            gl::TextureRef getTextureRef(){
-                return mFbo->getColorTexture();
+                #if defined( CINDER_MAC )
+                    serverRef->publishTexture(mtexture);
+                #elif defined( CINDER_MSW )
+                    serverSpout.SendFbo(mFbo->getId(), mFbo->getWidth(), mFbo->getHeight());
+                #endif
             }
         };
     }
