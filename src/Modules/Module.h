@@ -30,7 +30,6 @@ namespace ogre {
                 return parameters[name];
             }
             virtual void update(){}
-            virtual void draw(){}
         };
         typedef shared_ptr<class Module> ModuleRef;
         int Module::COUNT = 0;
