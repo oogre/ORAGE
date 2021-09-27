@@ -17,10 +17,11 @@ namespace ogre {
         class Module {
             typedef shared_ptr<class Module> ModuleRef;
             static int COUNT;
+            int ID;
         protected :
             map<string, float>  parameters;
             Module(){
-                Module::COUNT++;
+                ID = Module::COUNT++;
             }
         public :
             void setParameter(string name, float value){
@@ -30,6 +31,9 @@ namespace ogre {
                 return parameters[name];
             }
             virtual void update(){}
+            int getID(){
+                return ID;
+            }
         };
         typedef shared_ptr<class Module> ModuleRef;
         int Module::COUNT = 0;

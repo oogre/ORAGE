@@ -19,8 +19,9 @@ uniform float noz;
 uniform float rev;
 
 
+uniform vec2 resolution;
 
-in vec2         vertTexCoord0;
+//in vec2         vertTexCoord0;
 out vec4		oColor;
 
 float phaseProcess(in vec2 fs, in float fq, in float sync, in float mod){
@@ -54,7 +55,7 @@ float triWave(in float phase, in float height){
 
 void main(){
     
-
+    vec2 vertTexCoord0 = gl_FragCoord.xy / resolution.xy;
     vec4 prevModValue = texture(tex0, vertTexCoord0);
     
     float phase = phaseProcess(
