@@ -54,8 +54,10 @@ namespace ogre {
                 format.attachment(GL_COLOR_ATTACHMENT0, mtexture);
                 mFbo = gl::Fbo::create( size.x, size.y, format);
                 mCam = CameraPersp(size.x, size.y, -60.0f, 1, 1000 );
-                delete serverSpout;
-                serverSpout = new SpoutOut("cispout", size);
+                #if defined( CINDER_MSW_DESKTOP )
+                    delete serverSpout;
+                    serverSpout = new SpoutOut("cispout", size);
+                #endif
             }
             void setParameter(string name, float value){
                 parameters[name] = value;
