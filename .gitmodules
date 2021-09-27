@@ -1,0 +1,3 @@
+[submodule "blocks/blocks/Simple-WebSocket-Server"]
+	path = blocks/blocks/Simple-WebSocket-Server
+	url = https://gitlab.com/eidheim/Simple-WebSocket-Server.git
