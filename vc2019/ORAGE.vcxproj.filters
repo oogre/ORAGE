@@ -12,6 +12,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\Modules">
+      <UniqueIdentifier>{ac710ce0-08e0-491a-8fe4-a273b7e46fe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ORAGEApp.cpp">
@@ -27,6 +30,12 @@
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Modules\Module.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Modules\ModuleShader.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,3 +6,4 @@ proj/cmake/build/*
 vc2019/.vs/*
 vc2019/ORAGE.vcxproj.user
 vc2019/x64/*
+.vs/*

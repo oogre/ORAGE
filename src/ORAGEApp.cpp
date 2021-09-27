@@ -14,7 +14,7 @@ class ORAGEApp : public App {
     vector<ModuleRef> modules;
 public:
     static void prepareSettings( Settings *settings ){
-        vector<string> args =  settings->getCommandLineArgs();
+        vector<string> args = settings->getCommandLineArgs();
         CLI::App app{"App description"};
         std::string filename = "default";
         app.add_option("-f,--file", filename, "A help string");

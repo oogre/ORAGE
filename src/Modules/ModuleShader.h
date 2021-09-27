@@ -11,8 +11,8 @@
 #include "Module.h"
 #if defined( CINDER_MAC )
     #include "syphonServer.h"
-#elif defined( CINDER_MSW )
-    #include "..\SpoutGL\SpoutSender.h"
+#elif defined( CINDER_MSW_DESKTOP )
+    #include "CiSpoutOut.h"
 #endif
 
 namespace ogre {
@@ -25,23 +25,23 @@ namespace ogre {
             gl::TextureRef      mtexture;
             #if defined( CINDER_MAC )
                 syphonServer * serverRef;
-            #elif defined( CINDER_MSW )
-                SpoutSender serverSpout;
+            #elif defined( CINDER_MSW_DESKTOP )
+                SpoutOut     * serverSpout;
             #endif
             ModuleShader() : Module() {
                 #if defined( CINDER_MAC )
                     serverRef = new syphonServer();
                     serverRef->setName("demo");
-                #elif defined( CINDER_MSW )
-                
+                #elif defined( CINDER_MSW_DESKTOP )
+                    serverSpout = new SpoutOut("cispout", app::getWindowSize());
                 #endif
             }
         public :
             virtual ~ModuleShader(){
                 #if defined( CINDER_MAC )
                 
-                #elif defined( CINDER_MSW )
-                    sender.ReleaseSender();
+                #elif defined( CINDER_MSW_DESKTOP )
+                    delete serverSpout;
                 #endif
                 mFbo.reset();
             }
@@ -54,6 +54,8 @@ namespace ogre {
                 format.attachment(GL_COLOR_ATTACHMENT0, mtexture);
                 mFbo = gl::Fbo::create( size.x, size.y, format);
                 mCam = CameraPersp(size.x, size.y, -60.0f, 1, 1000 );
+                delete serverSpout;
+                serverSpout = new SpoutOut("cispout", size);
             }
             void setParameter(string name, float value){
                 parameters[name] = value;
@@ -82,8 +84,8 @@ namespace ogre {
                 gl::popMatrices();
                 #if defined( CINDER_MAC )
                     serverRef->publishTexture(mtexture);
-                #elif defined( CINDER_MSW )
-                    serverSpout.SendFbo(mFbo->getId(), mFbo->getWidth(), mFbo->getHeight());
+                #elif defined( CINDER_MSW_DESKTOP )
+                    serverSpout->sendTexture(mtexture);
                 #endif
             }
         };

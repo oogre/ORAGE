@@ -46,7 +46,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\source\repos\cinder_master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\source\repos\cinder_master\include;..\blocks\CLI;..\blocks\Spout\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -57,21 +57,26 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\..\source\repos\cinder_master\include;..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\source\repos\cinder_master\include;..\include;</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\source\repos\cinder_master\lib\msw\$(PlatformTarget);..\..\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies);..\blocks\Spout\lib\Spout.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\source\repos\cinder_master\lib\msw\$(PlatformTarget);..\..\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset);</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCPMT</IgnoreSpecificDefaultLibraries>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "..\blocks\Spout\lib\Spout.dll" "$(OutDir)"
+
+xcopy /y "..\blocks\Spout\lib\SpoutPanel.exe" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;"..\..\source\repos\cinder_master\include"</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\source\repos\cinder_master\include;..\blocks\CLI;..\blocks\Spout\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -84,11 +89,11 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\..\source\repos\cinder_master\include;..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\source\repos\cinder_master\include;..\include;</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\source\repos\cinder_master\lib\msw\$(PlatformTarget);..\..\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies);..\blocks\Spout\lib\Spout.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\source\repos\cinder_master\lib\msw\$(PlatformTarget);..\..\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset);</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -97,6 +102,11 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "..\blocks\Spout\lib\Spout.dll" "$(OutDir)"
+
+xcopy /y "..\blocks\Spout\lib\SpoutPanel.exe" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
@@ -108,6 +118,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\Modules\Module.h" />
+    <ClInclude Include="..\src\Modules\ModuleShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
