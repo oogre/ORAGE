@@ -89,6 +89,8 @@ namespace ogre {
                 #elif defined( CINDER_MSW_DESKTOP )
                     serverSpout->sendTexture(mtexture);
                 #endif
+                gl::color(Color::white());
+                gl::draw(mtexture, Rectf(0, 0, mFbo->getWidth(), mFbo->getHeight() ));
             }
         };
     }
