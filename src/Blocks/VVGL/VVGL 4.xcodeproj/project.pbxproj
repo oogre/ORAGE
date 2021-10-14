@@ -1,0 +1,185 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXFileReference section */
+		88F37CAD271897360095955A /* macos_universal_binary.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = macos_universal_binary.sh; sourceTree = "<group>"; };
+		88F37CAE271897360095955A /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		88F37CAF271897360095955A /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
+		88F37CB0271897360095955A /* VVGL 3.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "VVGL 3.xcodeproj"; sourceTree = "<group>"; };
+		88F37CB3271897360095955A /* Doxyfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
+		88F37CB4271897360095955A /* VVGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = VVGL.xcodeproj; sourceTree = "<group>"; };
+		88F37CB7271897360095955A /* VVGL 2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "VVGL 2.xcodeproj"; sourceTree = "<group>"; };
+		88F37CBA271897360095955A /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		88F37CA7271897360095955A = {
+			isa = PBXGroup;
+			children = (
+				88F37CAD271897360095955A /* macos_universal_binary.sh */,
+				88F37CAE271897360095955A /* Makefile */,
+				88F37CAF271897360095955A /* include */,
+				88F37CB0271897360095955A /* VVGL 3.xcodeproj */,
+				88F37CB3271897360095955A /* Doxyfile */,
+				88F37CB4271897360095955A /* VVGL.xcodeproj */,
+				88F37CB7271897360095955A /* VVGL 2.xcodeproj */,
+				88F37CBA271897360095955A /* src */,
+			);
+			sourceTree = "<group>";
+		};
+		88F37CB1271897360095955A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		88F37CB5271897360095955A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		88F37CB8271897360095955A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		88F37CAC271897360095955A /* VVGL */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 88F37CC1271897360095955A /* Build configuration list for PBXLegacyTarget "VVGL" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = /Users/ogre/works/1202/ORAGE/src/Blocks/VVGL;
+			dependencies = (
+			);
+			name = VVGL;
+			passBuildSettingsInEnvironment = 1;
+			productName = VVGL;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		88F37CA8271897360095955A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = 88F37CAB271897360095955A /* Build configuration list for PBXProject "VVGL 4" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 88F37CA7271897360095955A;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 88F37CB8271897360095955A /* Products */;
+					ProjectRef = 88F37CB7271897360095955A /* VVGL 2.xcodeproj */;
+				},
+				{
+					ProductGroup = 88F37CB1271897360095955A /* Products */;
+					ProjectRef = 88F37CB0271897360095955A /* VVGL 3.xcodeproj */;
+				},
+				{
+					ProductGroup = 88F37CB5271897360095955A /* Products */;
+					ProjectRef = 88F37CB4271897360095955A /* VVGL.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				88F37CAC271897360095955A /* VVGL */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		88F37CA9271897360095955A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		88F37CAA271897360095955A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		88F37CC2271897360095955A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = VVGL;
+			};
+			name = Debug;
+		};
+		88F37CC3271897360095955A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = VVGL;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		88F37CAB271897360095955A /* Build configuration list for PBXProject "VVGL 4" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				88F37CA9271897360095955A /* Debug */,
+				88F37CAA271897360095955A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		88F37CC1271897360095955A /* Build configuration list for PBXLegacyTarget "VVGL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				88F37CC2271897360095955A /* Debug */,
+				88F37CC3271897360095955A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 88F37CA8271897360095955A /* Project object */;
+}
