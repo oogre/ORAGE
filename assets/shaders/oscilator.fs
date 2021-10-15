@@ -147,7 +147,7 @@ void main()
     value = mix(1.0-value, value,rev);
 
     if(isTex1){
-    	gl_FragColor = value * IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy);	
+    	gl_FragColor = vec4(value * IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy).rgb, 1);	
     }
 	else{
 		gl_FragColor = vec4(value, value, value, 1);		

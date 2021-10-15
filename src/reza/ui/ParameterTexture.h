@@ -46,6 +46,11 @@ namespace reza {
             ParameterTexture( string name, TextureRef textureRef, Format format = Format()) :
             ParameterBase(name), mFormat(format)
             {
+                if(format.mInput){
+                    
+                }else{
+                    
+                }
                 ParameterBase::textureRef = textureRef;
                 type = PARAMETER_TYPE::TEXTURE | PLUG_TYPE::OUT;
                 
@@ -83,6 +88,17 @@ namespace reza {
                 });
             }
         public :
+            static TextureRef getDefaultInput(){
+                if(!!DEFAULT_INPUT) return DEFAULT_INPUT;
+                DEFAULT_INPUT = Texture2d::create(1, 1);
+                Fbo::Format format = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, DEFAULT_INPUT);
+                FboRef mFbo = Fbo::create(1, 1, format);
+                mFbo->bindFramebuffer();
+                ColorA c = ColorA(0, 0, 0, 0);
+                gl::clear( c );
+                mFbo->unbindFramebuffer();
+                return DEFAULT_INPUT;
+            }
             
             static ParameterTextureRef create( const string name, TextureRef textureRef, Format format = Format() )
             {
@@ -101,7 +117,6 @@ namespace reza {
             virtual void unplugTo(std::shared_ptr<ParameterBase> other) override {
                 textureRef = DEFAULT_INPUT;
             }
-            TextureViewRef textureViewRef;
             Format mFormat;
         };//ParameterTexture
         typedef shared_ptr<class ParameterTexture> ParameterTextureRef;

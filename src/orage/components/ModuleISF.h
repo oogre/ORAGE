@@ -26,15 +26,21 @@ namespace ORAGE {
         class ModuleISF : public Module {
             typedef shared_ptr<ModuleISF> ModuleISFRef;
             TextureRef output;
+            vector<TextureRef> outputs;
+            vector<TextureRef> inputs;
             FboRef mFbo;
             CameraPersp mCam;
             GlslProgRef mShader;
             ISFDocRef myDoc;
+            int inputCount = 0;
         public :
             ModuleISF(string name, ISFDocRef myDoc, int width, int height) :
                 Module(name), myDoc(myDoc)
             {
-                setSize(ivec2(width, height));
+                int nOutput = 1;
+                for(int i = 0 ; i < nOutput ; i ++){
+                    outputs.push_back(setSize(ivec2(width, height)));
+                }
 
                 string outputFrag;
                 string outputVert;
@@ -54,36 +60,52 @@ namespace ORAGE {
                 ISFVal FRAMEINDEXval(ISFValType::ISFValType_Long, 0);
                 addValue("FRAMEINDEX", "", "", ISFValType::ISFValType_Long, FRAMEINDEXmax, FRAMEINDEXval);
                 
+                
+                
                 ParameterTextureRef ref = UI->addOutput("output", output);
                 
-                int inputCount = 0;
+                
                 for(auto input : myDoc->inputs()){
                     if(input->currentVal().type() == ISFValType::ISFValType_Float){
                             UI->addParameter(input->name(), input->currentVal().getDoubleValPtr(), input->minVal().getDoubleVal(), input->maxVal().getDoubleVal(), ParameterFloat::Format().input(true));
                     }else{
-                        UI->addInputs("inputs", inputCount++,  ref->textureViewRef);
+                        inputs.push_back(ParameterTexture::getDefaultInput());
+                        UI->addInputs("inputs", inputs.back(), inputCount++,  ref->textureViewRef);
                     }
                 }
+                UI->addParameter("size_x", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+0, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[0], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[0], ParameterFloat::Format().input(true))->sliderRef->setCallback([&](double val){
+                    ivec2 size((int)val, (int)Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()[1]);
+                    for(int i = 0 ; i < nOutput ; i ++){
+                        outputs.at(i) = setSize(size);
+                    }
+                });
+                
+                UI->addParameter("size_y", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+1, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[1], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[1], ParameterFloat::Format().input(true))->sliderRef->setCallback([&](double val){
+                    ivec2 size((int)Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()[0], (int)val);
+                    for(int i = 0 ; i < nOutput ; i ++){
+                       outputs.at(i) = setSize(size);
+                    }
+                });
+                
                 UI->autoSizeToFitSubviews();
             }
             
-            void setSize(ivec2 size){
-                output = gl::Texture2d::create(size.x, size.y);
+            Texture2dRef setSize(ivec2 size){
+                Texture2dRef output = Texture2d::create(size.x, size.y);
                 gl::Fbo::Format format;
                 format.attachment(GL_COLOR_ATTACHMENT0, output);
                 mFbo = gl::Fbo::create( size.x, size.y, format);
                 mCam = CameraPersp(size.x, size.y, -60.0f, 1, 1000 );
                 ISFVal RENDERSIZEval (ISFValType::ISFValType_Point2D, (double)size.x, (double)size.y);
-                
                 if(hasValue("RENDERSIZE")){
                     setValue("RENDERSIZE", RENDERSIZEval);
                 }else{
                     ISFVal RENDERSIZEmin (ISFValType::ISFValType_Point2D, 1, 1);
-                    ISFVal RENDERSIZEmax (ISFValType::ISFValType_Point2D, 3840, 2160);
+                    ISFVal RENDERSIZEmax (ISFValType::ISFValType_Point2D, 1920, 1080);
                     ISFVal RENDERSIZEval (ISFValType::ISFValType_Point2D, 1280, 720);
                     addValue("RENDERSIZE", "", "", ISFValType::ISFValType_Point2D, RENDERSIZEmin, RENDERSIZEmax, RENDERSIZEval);
-                    cout<<RENDERSIZEval.getPointValPtr()[0] << " "<<RENDERSIZEval.getPointValPtr()[1]<<endl;
                 }
+                return output;
             }
             ivec2 getSize(){
                 return mFbo->getSize();
@@ -130,42 +152,28 @@ namespace ORAGE {
                     }
                     ParameterBaseRef ref;
                     
-                    if(Module::UI->parameters["inputs0"]->isTexture()){
-                        TextureRef tex = Module::UI->parameters["inputs0"]->textureRef;
-                        tex->bind(0);
-                        mShader->uniform( "_tex0_imgRect", vec4(0, 0, 1, 1));
-                        mShader->uniform( "_tex0_imgSize", vec2(tex->getWidth(), tex->getHeight()));
-                        mShader->uniform( "_tex0_flip", false);
+                    for(int i = 0 ; i < inputCount ; i ++){
+                        if(Module::UI->parameters["inputs"+to_string(i)]->isTexture()){
+                            TextureRef tex = Module::UI->parameters["inputs"+to_string(i)]->textureRef;
+                            cout<<vec2(tex->getWidth(), tex->getHeight())<<endl;
+                            tex->bind(i);
+                            mShader->uniform( "_tex"+to_string(i)+"_imgRect", vec4(0, 0, 1, 1));
+                            mShader->uniform( "_tex"+to_string(i)+"_imgSize", vec2(tex->getWidth(), tex->getHeight()));
+                            mShader->uniform( "_tex"+to_string(i)+"_flip", false);
+                        }
                     }
                     
-                    if(Module::UI->parameters["inputs1"]->isTexture()){
-                        TextureRef tex = Module::UI->parameters["inputs1"]->textureRef;
-                        tex->bind(1);
-                        mShader->uniform( "_tex1_imgRect", vec4(0, 0, 1, 1));
-                        mShader->uniform( "_tex1_imgSize", vec2(tex->getWidth(), tex->getHeight()));
-                        mShader->uniform( "_tex1_flip", false);
-                    }
                     gl::color(Color::white());
                     gl::drawSolidRect(Area( 0, 0, mFbo->getWidth(), mFbo->getHeight() ));
                     
-                    
-                    if(Module::UI->parameters["inputs0"]->isTexture()){
-                        Module::UI->parameters["inputs0"]->textureRef->unbind(0);
-                    }
-                    
-                    if(Module::UI->parameters["inputs1"]->isTexture()){
-                        Module::UI->parameters["inputs1"]->textureRef->unbind(1);
+                    for(int i = 0 ; i < inputCount ; i ++){
+                        if(Module::UI->parameters["inputs"+to_string(i)]->isTexture()){
+                            Module::UI->parameters["inputs"+to_string(i)]->textureRef->unbind(i);
+                        }
                     }
                 }
                 mFbo->unbindFramebuffer();
                 gl::popMatrices();
-                
-                
-                ParameterBaseRef ref = UI->parameters["inputs0"];
-                if(ref->isTexture()){
-                    ParameterTextureRef param= dynamic_pointer_cast<ParameterTexture>(ref);
-                    gl::draw(param->textureRef, Rectf(0, 0, 300, 300));
-                }
             }
             
         };//ModuleISF {

@@ -114,7 +114,7 @@ namespace reza {
                 return param;
             }
             
-            void addInputs(string name, int count, ViewRef refView, ParameterTexture::Format format = ParameterTexture::Format().input(true)){
+            void addInputs(string name, TextureRef textureRef, int count, ViewRef refView, ParameterTexture::Format format = ParameterTexture::Format().input(true)){
                 vec2 refOrigin = refView->getOrigin( false );
                 ParameterTextureRef param = ParameterTexture::create(name+to_string(count), format);
                 param->buttonRef->setSize( vec2( 18, 18 ) );
