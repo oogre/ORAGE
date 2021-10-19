@@ -52,15 +52,17 @@ void ORAGEApp::update()
 
 void ORAGEApp::draw()
 {
+    ci::gl::pushMatrices();
 	gl::clear( Color( 0, 0, 0 ) );
     for(auto module : modules){
         module->draw();
     }
-    
+    ci::gl::popMatrices();
     if(modules.size()>0){
         ORAGE::COMPONENTS::ModuleISFRef module = dynamic_pointer_cast<ORAGE::COMPONENTS::ModuleISF>(modules.back());
         reza::ui::ParameterTextureRef output = module->outputs.back();
-        gl::draw(output->textureRef, Area(vec2(0, 0), getWindowSize()));
+        
+        gl::draw(output->textureRef, Rectf(vec2(0), getWindowSize()));
     }
 }
 
@@ -79,7 +81,7 @@ void ORAGEApp::fileDrop(FileDropEvent evt){
 }
 
 void ORAGEApp::prepareSettings( Settings *settings ){
-    settings->setWindowSize( 1920, 640 );
+    settings->setWindowSize( 640, 480 );
 };
 
 CINDER_APP( ORAGEApp, RendererGl, &ORAGEApp::prepareSettings )

@@ -67,25 +67,27 @@ namespace reza {
         public :
             
             virtual void beginDraw() override {
-                //pushMatrices();
-                //ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
-                //setMatrices( mCam );
+                pushMatrices();
                 mFbo->bindFramebuffer();
+                
+                ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
+//                setMatrices( mCam );
             }
             virtual void endDraw() override {
                 mFbo->unbindFramebuffer();
-                //popMatrices();
+                popMatrices();
+                
             }
             void setSize(ivec2 size){
-                
                 ParameterBase::textureRef = Texture2d::create(size.x, size.y);
+                ParameterBase::textureRef->setTopDown();
                 Fbo::Format format = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureRef);;
                 mFbo = gl::Fbo::create( size.x, size.y, format);
-                //mCam = CameraPersp(size.x, size.y, 60.0f, 1, 1000 );
+                mCam = CameraPersp(size.x, size.y, 60.0f, 1, 1000 );
                 
-                mCam.setEyePoint( vec3( 0.0f, 0.0f, 10.0f) );
-                mCam.setPerspective( 60, getWindowWidth() * 0.5f / getWindowHeight(), 1, 1000 );
-                mCam.lookAt( vec3( 0 ) );
+//                mCam.setEyePoint( vec3( 0.0f, 0.0f, 10.0f) );
+//                mCam.setPerspective( 60, getWindowWidth() * 0.5f / getWindowHeight(), 1, 1000 );
+//                mCam.lookAt( vec3( 0 ) );
                 
                 if(!!textureViewRef){
                     textureViewRef->setTexture(ParameterBase::textureRef);

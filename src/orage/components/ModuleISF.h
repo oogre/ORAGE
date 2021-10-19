@@ -103,6 +103,7 @@ namespace ORAGE {
                 (*outputs.begin())->beginDraw();
                 gl::clear( ColorA(0, 0, 0, 0));
                 gl::ScopedGlslProg glslProg( mShader );
+              
                 Module::draw(&mShader);
                 for(auto input : myDoc->inputs()){
                     if(input->currentVal().isFloatVal()){
@@ -120,19 +121,19 @@ namespace ORAGE {
                     mShader->uniform( pName+"_flip", false);
                     i++;
                 }
+                
                 gl::color(Color::white());
                 gl::drawSolidRect(Area( vec2(0), (*outputs.begin())->textureRef->getSize() ));
-                //gl::drawCube(vec3( 200, 200, 0), vec3(100));
+                
                 int j = 0;
                 for(auto input : inputs){
                     input->textureRef->unbind(j++);
                 }
+                mat4 proj = glm::mat4(1.0f);
+                //mShader->uniform("", getModelViewProjection())
+                cout<<proj << endl<< endl;
                 (*outputs.begin())->endDraw();
                 
-                for(auto uniform : mShader->getActiveUniforms()){
-                    cout<<uniform.getName()<<endl;
-                }
-                cout<<endl;
             }
         };//ModuleISF {
         typedef shared_ptr<ModuleISF> ModuleISFRef;
