@@ -62,6 +62,8 @@ namespace reza {
             virtual void unplugTo(ParameterBaseRef other){}
             virtual ~ParameterBase(){
             }
+            virtual void beginDraw(){}
+            virtual void endDraw(){}
             TextureViewRef textureViewRef;
             ci::gl::TextureRef textureRef;
             ButtonRef buttonRef;

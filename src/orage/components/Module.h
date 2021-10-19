@@ -29,7 +29,6 @@ namespace ORAGE {
         class Module {
             typedef shared_ptr<Module> ModuleRef;
             static int ID;
-            static TextureRef DEFAULT_OUTPUT;
             int id;
             
             float oldTime;
@@ -41,16 +40,6 @@ namespace ORAGE {
             OrageCanvasRef UI;
             Module(string name){
                 id = Module::ID++;
-                if(!DEFAULT_OUTPUT){
-                    Rand r(id);
-                    DEFAULT_OUTPUT = gl::Texture2d::create(16, 16);
-                    Fbo::Format format = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, DEFAULT_OUTPUT);
-                    FboRef mFbo = Fbo::create(16,16, format);
-                    mFbo->bindFramebuffer();
-                    ColorA c = ColorA(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
-                    clear( c );
-                    mFbo->unbindFramebuffer();
-                }
                 time = oldTime  = getElapsedSeconds();
                 
                 ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
@@ -106,7 +95,31 @@ namespace ORAGE {
             void setOrigin(vec2 pos){
                 UI->setOrigin(pos);
             }
-            virtual void draw(){
+            virtual void draw(GlslProgRef * shader = nullptr){
+                if(!shader)return;
+                for(auto [key, param] : parameters){
+                    switch(param->currentVal().type()){
+                        case ISFValType::ISFValType_None: break;
+                        case ISFValType::ISFValType_Event: break;
+                        case ISFValType::ISFValType_Bool: break;
+                        case ISFValType::ISFValType_Long:
+                            (*shader)->uniform( param->name(), (int) param->currentVal().getLongVal());
+                            break;
+                        case ISFValType::ISFValType_Float:
+                            (*shader)->uniform( param->name(), (float) param->currentVal().getDoubleVal());
+                            break;
+                        case ISFValType::ISFValType_Point2D:
+                            (*shader)->uniform( param->name(), vec2(param->currentVal().getPointValByIndex(0), param->currentVal().getPointValByIndex(1)));
+                            break;
+                        case ISFValType::ISFValType_Color: break;
+                        case ISFValType::ISFValType_Cube: break;
+                        case ISFValType::ISFValType_Image: break;
+                        case ISFValType::ISFValType_Audio: break;
+                        case ISFValType::ISFValType_AudioFFT: break;
+                    }
+                }
+            }
+            virtual void update(){
                 time_t now = std::time(0);
                 tm *ltm = localtime(&now);
                 date = vec4(1900 + ltm->tm_year, 1 + ltm->tm_mon, ltm->tm_mday, 0);
@@ -115,14 +128,12 @@ namespace ORAGE {
                 setValue("TIMEDELTA", ISFFloatVal(time - oldTime));
                 oldTime = time;
                 incValue("FRAMEINDEX", 1);
-                UI->getNeedsDisplay();
+                UI->setNeedsDisplay();
             }
-            
             bool hasToDestroy(){
                 return UI->shouldDestroy;
             }
         };//Module {
-        TextureRef Module::DEFAULT_OUTPUT;
         int Module::ID = 0;
         typedef shared_ptr<Module> ModuleRef;
     }//namespace COMPONENTS {

@@ -129,6 +129,7 @@ void main()
 {
 
 	
+	bool isTex0 = _tex0_imgSize != vec2(1);
 	bool isTex1 = _tex1_imgSize != vec2(1);
 
     vec4 prevModValue = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy);
@@ -147,9 +148,10 @@ void main()
     value = mix(1.0-value, value,rev);
 
     if(isTex1){
-    	gl_FragColor = vec4(value * IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy).rgb, 1);	
+     	gl_FragColor = vec4(value * IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy).rgb, 1);	
     }
-	else{
-		gl_FragColor = vec4(value, value, value, 1);		
+    else{
+	 	gl_FragColor = vec4(value, value, value, 1);		
 	}
+	
 }

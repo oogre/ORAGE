@@ -14,7 +14,7 @@ namespace ORAGE {
         using namespace ci;
         using namespace ci::gl;
         using namespace reza::ui;
-        using namespace ORAGE::COMPONENTS;
+        using namespace COMPONENTS;
         
         class Cable {
             typedef shared_ptr<class Cable> CableRef;

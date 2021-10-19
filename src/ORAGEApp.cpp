@@ -21,23 +21,12 @@ class ORAGEApp : public App {
 	void update() override;
 	void draw() override;
     void fileDrop(FileDropEvent evt) override;
+    static void prepareSettings( Settings *settings );
 };
 
 void ORAGEApp::setup()
 {
     cables = Cables::create();
-//    
-//    vec2 loc (1280, 1);
-//    vec2 samplerImgSize (1280, 720);
-//    vec4 samplerImgRect (0, 0, 1, 1);
-//    
-//    
-//    cout<< 10.0/2*5.0<<endl;
-//    
-//    cout<<
-//        vec2(((loc.x/samplerImgSize.x*samplerImgRect.z)+samplerImgRect.x), ((loc.y/samplerImgSize.y*samplerImgRect.w)+samplerImgRect.y))
-//    <<endl;
-    
 }
 
 
@@ -56,6 +45,9 @@ void ORAGEApp::update()
         }
         it++;
     }
+    for(auto module : modules){
+        module->update();
+    }
 }
 
 void ORAGEApp::draw()
@@ -63,6 +55,12 @@ void ORAGEApp::draw()
 	gl::clear( Color( 0, 0, 0 ) );
     for(auto module : modules){
         module->draw();
+    }
+    
+    if(modules.size()>0){
+        ORAGE::COMPONENTS::ModuleISFRef module = dynamic_pointer_cast<ORAGE::COMPONENTS::ModuleISF>(modules.back());
+        reza::ui::ParameterTextureRef output = module->outputs.back();
+        gl::draw(output->textureRef, Area(vec2(0, 0), getWindowSize()));
     }
 }
 
@@ -75,6 +73,13 @@ void ORAGEApp::fileDrop(FileDropEvent evt){
             cables->addCable(event.target);
         });
         modules.push_back(module);
+         module->update();
+         module->draw();
     }
 }
-CINDER_APP( ORAGEApp, RendererGl )
+
+void ORAGEApp::prepareSettings( Settings *settings ){
+    settings->setWindowSize( 1920, 640 );
+};
+
+CINDER_APP( ORAGEApp, RendererGl, &ORAGEApp::prepareSettings )

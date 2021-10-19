@@ -94,19 +94,19 @@ namespace reza {
                 return param;
             }
             
-            ParameterTextureRef addOutput(string name, TextureRef textureRef, ParameterTexture::Format format = ParameterTexture::Format().input(false)){
-                ParameterTextureRef param = ParameterTexture::create(name, textureRef, format);
+            ParameterTextureRef addOutput(string name, int count){
+                name = name+to_string(count);
+                ParameterTextureRef param = ParameterTexture::create(name, ParameterTexture::Format().input(false));
                 int w = (int) (getWidth() - 18 - mPadding.mRight - 5 * mPadding.mLeft);
-                float h = w/textureRef->getAspectRatio();
+                float h = w/(16.0/9);
                 param->textureViewRef->setSize( vec2( w, h ) );
                 addSubViewDown(param->textureViewRef);
                 addSubViewToHeader(param->textureViewRef);
             
                 vec2 refOrigin = param->textureViewRef->getOrigin( false );
                 Rectf refRect = param->textureViewRef->getBounds( true );
-                
                 param->buttonRef->setSize( vec2( 18, 18 ) );
-                param->buttonRef->setOrigin(refOrigin + vec2(refRect.getWidth() + mPadding.mRight, 0));
+                param->buttonRef->setOrigin(refOrigin + vec2(refRect.getWidth() + mPadding.mRight, count * (18 + mPadding.mTop + mPadding.mBottom)));
                 addSubView(param->buttonRef);
                 
                 parameters[name] = param;
@@ -114,15 +114,16 @@ namespace reza {
                 return param;
             }
             
-            void addInputs(string name, TextureRef textureRef, int count, ViewRef refView, ParameterTexture::Format format = ParameterTexture::Format().input(true)){
+            ParameterTextureRef addInputs(string name, int count, ViewRef refView){
+                name = name+to_string(count);
                 vec2 refOrigin = refView->getOrigin( false );
-                ParameterTextureRef param = ParameterTexture::create(name+to_string(count), format);
+                ParameterTextureRef param = ParameterTexture::create(name, ParameterTexture::Format().input(true));
                 param->buttonRef->setSize( vec2( 18, 18 ) );
                 param->buttonRef->setOrigin(refOrigin + vec2(-18 - mPadding.mLeft, count * (18 + mPadding.mTop + mPadding.mBottom)));
                 addSubView(param->buttonRef);
-                parameters[name+to_string(count)] = param;
+                parameters[name] = param;
+                return param;
             }
-            
         };//OrageCanvas
         
         TextureRef OrageCanvas::CLOSE_PIC;

@@ -43,41 +43,18 @@ namespace reza {
                 friend class ParameterTexture;
             };
         private : 
-            ParameterTexture( string name, TextureRef textureRef, Format format = Format()) :
+            ParameterTexture( string name, Format format = Format()) :
             ParameterBase(name), mFormat(format)
             {
                 if(format.mInput){
-                    
+                    ParameterBase::textureRef = Texture2d::create(1, 1);
+                    *ParameterBase::textureRef = *getDefaultInput();
+                    type = PARAMETER_TYPE::TEXTURE |  PLUG_TYPE::IN;
                 }else{
-                    
+                    setSize(ivec2(1, 1));
+                    type = PARAMETER_TYPE::TEXTURE | PLUG_TYPE::OUT;
+                    textureViewRef = TextureView::create( name+"-Preview", ParameterBase::textureRef, TextureView::Format().height(150) );
                 }
-                ParameterBase::textureRef = textureRef;
-                type = PARAMETER_TYPE::TEXTURE | PLUG_TYPE::OUT;
-                
-                textureViewRef = TextureView::create( name+"-Preview", textureRef, TextureView::Format() );
-                buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false));
-                buttonRef->setCallback([&](bool a) {
-                    if(a){
-                        EvtHandler::eventTrigger({
-                            "plug", dynamic_pointer_cast<ParameterTexture>(shared_from_this())
-                        });
-                    }
-                });
-            }
-            ParameterTexture( string name, Format format = Format()) :
-                ParameterBase(name), mFormat(format)
-            {
-                if(DEFAULT_INPUT == nullptr){
-                    DEFAULT_INPUT = Texture2d::create(1, 1);
-                    Fbo::Format format = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, DEFAULT_INPUT);
-                    FboRef mFbo = Fbo::create(1, 1, format);
-                    mFbo->bindFramebuffer();
-                    ColorA c = ColorA(0, 0, 0, 0);
-                    gl::clear( c );
-                    mFbo->unbindFramebuffer();
-                }
-                ParameterBase::textureRef = DEFAULT_INPUT;
-                type = PARAMETER_TYPE::TEXTURE |  PLUG_TYPE::IN;
                 buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false));
                 buttonRef->setCallback([&](bool a) {
                     if(a){
@@ -88,35 +65,56 @@ namespace reza {
                 });
             }
         public :
-            static TextureRef getDefaultInput(){
+            
+            virtual void beginDraw() override {
+                //pushMatrices();
+                //ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
+                //setMatrices( mCam );
+                mFbo->bindFramebuffer();
+            }
+            virtual void endDraw() override {
+                mFbo->unbindFramebuffer();
+                //popMatrices();
+            }
+            void setSize(ivec2 size){
+                
+                ParameterBase::textureRef = Texture2d::create(size.x, size.y);
+                Fbo::Format format = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureRef);;
+                mFbo = gl::Fbo::create( size.x, size.y, format);
+                //mCam = CameraPersp(size.x, size.y, 60.0f, 1, 1000 );
+                
+                mCam.setEyePoint( vec3( 0.0f, 0.0f, 10.0f) );
+                mCam.setPerspective( 60, getWindowWidth() * 0.5f / getWindowHeight(), 1, 1000 );
+                mCam.lookAt( vec3( 0 ) );
+                
+                if(!!textureViewRef){
+                    textureViewRef->setTexture(ParameterBase::textureRef);
+                }
+            }
+            TextureRef getDefaultInput(){
                 if(!!DEFAULT_INPUT) return DEFAULT_INPUT;
                 DEFAULT_INPUT = Texture2d::create(1, 1);
                 Fbo::Format format = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, DEFAULT_INPUT);
-                FboRef mFbo = Fbo::create(1, 1, format);
+                FboRef mFbo = Fbo::create(DEFAULT_INPUT->getWidth(), DEFAULT_INPUT->getHeight(), format);
                 mFbo->bindFramebuffer();
                 ColorA c = ColorA(0, 0, 0, 0);
                 gl::clear( c );
                 mFbo->unbindFramebuffer();
                 return DEFAULT_INPUT;
             }
-            
-            static ParameterTextureRef create( const string name, TextureRef textureRef, Format format = Format() )
-            {
-                return ParameterTextureRef( new ParameterTexture( name, textureRef, format ) );
-            }
-            static ParameterTextureRef create( const string name, Format format = Format() )
-            {
+            static ParameterTextureRef create( const string name, Format format = Format()){
                 return ParameterTextureRef( new ParameterTexture( name, format ) );
             }
             virtual ~ParameterTexture(){
             }
             virtual void plugTo(std::shared_ptr<ParameterBase> other) override {
-                textureRef = std::dynamic_pointer_cast<ParameterTexture>(other)->textureRef;
+                *ParameterBase::textureRef = *other->textureRef;
             }
-            
             virtual void unplugTo(std::shared_ptr<ParameterBase> other) override {
-                textureRef = DEFAULT_INPUT;
+                *ParameterBase::textureRef = *getDefaultInput();
             }
+            FboRef mFbo;
+            CameraPersp mCam;
             Format mFormat;
         };//ParameterTexture
         typedef shared_ptr<class ParameterTexture> ParameterTextureRef;
