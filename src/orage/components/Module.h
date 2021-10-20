@@ -82,6 +82,10 @@ namespace ORAGE {
                 parameters[name]->setCurrentVal(value);
             }
             
+            CustomISFAttrRef getValue(string name){
+                return parameters[name];
+            }
+            
             void incValue(string name, int inc){
                 setValue(name, ISFLongVal(parameters[name]->currentVal().getLongVal() + inc));
             }
@@ -95,29 +99,8 @@ namespace ORAGE {
             void setOrigin(vec2 pos){
                 UI->setOrigin(pos);
             }
-            virtual void draw(GlslProgRef * shader = nullptr){
-                if(!shader)return;
-                for(auto [key, param] : parameters){
-                    switch(param->currentVal().type()){
-                        case ISFValType::ISFValType_None: break;
-                        case ISFValType::ISFValType_Event: break;
-                        case ISFValType::ISFValType_Bool: break;
-                        case ISFValType::ISFValType_Long:
-                            (*shader)->uniform( param->name(), (int) param->currentVal().getLongVal());
-                            break;
-                        case ISFValType::ISFValType_Float:
-                            (*shader)->uniform( param->name(), (float) param->currentVal().getDoubleVal());
-                            break;
-                        case ISFValType::ISFValType_Point2D:
-                            (*shader)->uniform( param->name(), vec2(param->currentVal().getPointValByIndex(0), param->currentVal().getPointValByIndex(1)));
-                            break;
-                        case ISFValType::ISFValType_Color: break;
-                        case ISFValType::ISFValType_Cube: break;
-                        case ISFValType::ISFValType_Image: break;
-                        case ISFValType::ISFValType_Audio: break;
-                        case ISFValType::ISFValType_AudioFFT: break;
-                    }
-                }
+            virtual void draw(){
+                
             }
             virtual void update(){
                 time_t now = std::time(0);

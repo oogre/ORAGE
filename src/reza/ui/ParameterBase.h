@@ -66,6 +66,7 @@ namespace reza {
             virtual void endDraw(){}
             TextureViewRef textureViewRef;
             ci::gl::TextureRef textureRef;
+            int textureSample = 0;
             ButtonRef buttonRef;
         };//ParameterBase
         typedef std::shared_ptr<class ParameterBase> ParameterBaseRef;

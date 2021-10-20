@@ -52,18 +52,13 @@ void ORAGEApp::update()
 
 void ORAGEApp::draw()
 {
-    ci::gl::pushMatrices();
 	gl::clear( Color( 0, 0, 0 ) );
     for(auto module : modules){
         module->draw();
     }
-    ci::gl::popMatrices();
-    if(modules.size()>0){
-        ORAGE::COMPONENTS::ModuleISFRef module = dynamic_pointer_cast<ORAGE::COMPONENTS::ModuleISF>(modules.back());
-        reza::ui::ParameterTextureRef output = module->outputs.back();
-        
-        gl::draw(output->textureRef, Rectf(vec2(0), getWindowSize()));
-    }
+    if(modules.size()==0)return;
+    Texture2dRef tex = dynamic_pointer_cast<ModuleISF>(modules.back())->outputs.back()->textureRef;
+    gl::draw(tex, Rectf(vec2(0), getWindowSize()));
 }
 
 void ORAGEApp::fileDrop(FileDropEvent evt){

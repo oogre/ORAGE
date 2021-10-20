@@ -25,35 +25,30 @@ namespace ORAGE {
         
         class ModuleISF : public Module {
             typedef shared_ptr<ModuleISF> ModuleISFRef;
-            ivec2 size;
             bool sizeChanged;
             GlslProgRef mShader;
             ISFDocRef myDoc;
-            int inputCount = 0;
+            mat4 mDefaultProjection;
             vector<ParameterTextureRef> inputs;
         public :
             vector<ParameterTextureRef> outputs;
             
             ModuleISF(string name, ISFDocRef myDoc, int width, int height) :
-                Module(name), myDoc(myDoc), size(ivec2(width, height))
+                Module(name), myDoc(myDoc)
             {
-                
                 string outputFrag;
                 string outputVert;
                 VVGL::GLVersion version = VVGL::GLVersion::GLVersion_4;
                 myDoc->generateShaderSource(&outputFrag, &outputVert, version);
-                
                 mShader = gl::GlslProg::create( gl::GlslProg::Format()
                                                .vertex( loadAsset(getAssetPath("./shaders/default.vs")))
                                                .fragment(outputFrag));
-                
-                ;
-                
                 
                 ISFVal PASSINDEXmin (ISFValType::ISFValType_Long, 0);
                 ISFVal PASSINDEXmax (ISFValType::ISFValType_Long, numeric_limits<int>::max());
                 ISFVal PASSINDEXval (ISFValType::ISFValType_Long, 0);
                 addValue("PASSINDEX", "", "", ISFValType::ISFValType_Long, PASSINDEXmin, PASSINDEXmax, PASSINDEXval);
+                
                 ISFVal FRAMEINDEXmin(ISFValType::ISFValType_Long, 0);
                 ISFVal FRAMEINDEXmax(ISFValType::ISFValType_Long, numeric_limits<int>::max());
                 ISFVal FRAMEINDEXval(ISFValType::ISFValType_Long, 0);
@@ -64,28 +59,33 @@ namespace ORAGE {
                 ISFVal RENDERSIZEval (ISFValType::ISFValType_Point2D, (double)width, (double)height);
                 addValue("RENDERSIZE", "", "", ISFValType::ISFValType_Point2D, RENDERSIZEmin, RENDERSIZEmax, RENDERSIZEval);
                 
-                outputs.push_back(UI->addOutput("output", 0));
+                outputs.push_back(UI->addOutput("output", outputs.size()));
                 outputs.back()->setSize(ivec2(width, height));
                 
                 for(auto input : myDoc->inputs()){
-                    if(input->currentVal().type() == ISFValType::ISFValType_Float){
-                            UI->addParameter(input->name(), input->currentVal().getDoubleValPtr(), input->minVal().getDoubleVal(), input->maxVal().getDoubleVal(), ParameterFloat::Format().input(true));
-                    }else{
-                        inputs.push_back(UI->addInputs("inputs", inputCount++, (*outputs.begin())->textureViewRef));
+                    if(input->type() == ISFValType::ISFValType_Float){
+                        string name = input->name();
+                        addValue(input->name(), "", "", ISFValType::ISFValType_Float, input->minVal(), input->maxVal(), input->currentVal());
+                        UI->addParameter(input->name(), input->currentVal().getDoubleValPtr(), input->minVal().getDoubleVal(), input->maxVal().getDoubleVal(), ParameterFloat::Format().input(true))
+                        ->sliderRef->setCallback([&, name](double val){
+                            setValue(name, ISFVal(ISFValType::ISFValType_Float, val));
+                        });
+                    }else if(input->type() == ISFValType::ISFValType_Image){
+                        inputs.push_back(UI->addInputs("inputs", inputs.size(), (*outputs.begin())->textureViewRef));
                     }
                 }
                 
                 UI->addParameter("size_x", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+0, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[0], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[0], ParameterFloat::Format().input(true))->sliderRef->setCallback([&](double val)
                 {
                     sizeChanged = true;
-                    size = ivec2((int)val, (int)Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()[1]);
                 });
                 UI->addParameter("size_y", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+1, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[1], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[1], ParameterFloat::Format().input(true))->sliderRef->setCallback([&](double val)
                 {
                     sizeChanged = true;
-                    size = ivec2((int)Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()[0], (int)val);
                 });
                 UI->autoSizeToFitSubviews();
+                
+                mDefaultProjection = gl::context()->getProjectionMatrixStack()[0];
             }
             
             
@@ -93,24 +93,62 @@ namespace ORAGE {
             static ModuleISFRef create(string name, ISFDocRef myDoc, int width = getWindowSize().x, int height = getWindowSize().y){
                 return ModuleISFRef(new ModuleISF(name, myDoc, width, height));
             }
-            virtual void draw(GlslProgRef * shader = nullptr) override {
+            virtual void draw() override {
                 if(sizeChanged){
+                    vec2 size = vec2(*(getValue("RENDERSIZE")->currentVal().getPointValPtr()+0), *(getValue("RENDERSIZE")->currentVal().getPointValPtr()+1));
                     for(auto it = outputs.begin() ; it != outputs.end() ; it ++){
                         (*it)->setSize(size);
                     }
                     sizeChanged = false;
                 }
-                (*outputs.begin())->beginDraw();
+                ScopedFramebuffer fbScp( (*outputs.begin())->mFbo );
+                ScopedViewport scpVp( ivec2( 0 ), (*outputs.begin())->mFbo->getSize() );
+                gl::ScopedProjectionMatrix matrix(mDefaultProjection);
                 gl::clear( ColorA(0, 0, 0, 0));
                 gl::ScopedGlslProg glslProg( mShader );
               
-                Module::draw(&mShader);
-                for(auto input : myDoc->inputs()){
-                    if(input->currentVal().isFloatVal()){
-                        mShader->uniform( input->name(), (float) input->currentVal().getDoubleVal());
+                for(auto [key, param] : parameters){
+                    switch(param->type()){
+                        case ISFValType::ISFValType_None:
+                            //cout<< " none : " <<param->name()<<endl;
+                            break;
+                        case ISFValType::ISFValType_Event:
+                            //cout<< " event : " <<param->name()<<endl;
+                            break;
+                        case ISFValType::ISFValType_Bool:
+                            //cout<< " bool : " <<param->name()<<endl;
+                            break;
+                        case ISFValType::ISFValType_Long:
+                            mShader->uniform( param->name(), (int) param->currentVal().getLongVal());
+                            //cout<< " long : " <<param->name() << " : " << (int) param->currentVal().getLongVal()<<endl;
+                            break;
+                        case ISFValType::ISFValType_Float:
+                            mShader->uniform( param->name(), (float) param->currentVal().getDoubleVal());
+                            //cout<< " float : " <<param->name() << " : " << (float) param->currentVal().getDoubleVal()<<endl;
+                            break;
+                        case ISFValType::ISFValType_Point2D:
+                            mShader->uniform( param->name(), vec2(param->currentVal().getPointValByIndex(0), param->currentVal().getPointValByIndex(1)));
+                            //cout<< " vec2 : " <<param->name() << " : " << vec2(param->currentVal().getPointValByIndex(0), param->currentVal().getPointValByIndex(1))<<endl;
+                            break;
+                        case ISFValType::ISFValType_Color:
+                            //cout<< " color : " <<param->name()<<endl;
+                            break;
+                        case ISFValType::ISFValType_Cube:
+                            //cout<< " Cube : " <<param->name()<<endl;
+                            break;
+                        case ISFValType::ISFValType_Image:
+                            //cout<< " Image : " <<param->name()<<endl;
+                            break;
+                        case ISFValType::ISFValType_Audio:
+                            //cout<< " audio : " <<param->name()<<endl;
+                            break;
+                        case ISFValType::ISFValType_AudioFFT:
+                            //cout<< " audiofft : " <<param->name()<<endl;
+                            break;
                     }
                 }
                 int i = 0 ;
+                cout<<UI->getName()<<endl;
                 for(auto input : inputs){
                     string bName = "tex"+to_string(i);
                     string pName = "_"+bName;
@@ -118,22 +156,15 @@ namespace ORAGE {
                     mShader->uniform( bName, i );
                     mShader->uniform( pName+"_imgRect", vec4(0, 0, 1, 1));
                     mShader->uniform( pName+"_imgSize", (vec2)input->textureRef->getSize());
-                    mShader->uniform( pName+"_flip", false);
+                    mShader->uniform( pName+"_flip",    !input->textureRef->isTopDown());
+                    mShader->uniform( pName+"_sample",  input->textureSample);
                     i++;
+                    
+                    cout<<pName+"_imgSize" << " : " << (vec2)input->textureRef->getSize()<<endl;
                 }
-                
+                cout<<endl;
                 gl::color(Color::white());
                 gl::drawSolidRect(Area( vec2(0), (*outputs.begin())->textureRef->getSize() ));
-                
-                int j = 0;
-                for(auto input : inputs){
-                    input->textureRef->unbind(j++);
-                }
-                mat4 proj = glm::mat4(1.0f);
-                //mShader->uniform("", getModelViewProjection())
-                cout<<proj << endl<< endl;
-                (*outputs.begin())->endDraw();
-                
             }
         };//ModuleISF {
         typedef shared_ptr<ModuleISF> ModuleISFRef;

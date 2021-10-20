@@ -9,19 +9,17 @@
   	{
       "NAME" :  "tex0",
       "TYPE" :  "image"
+    },
+    {
+      "NAME" :  "_tex0_sample",
+      "TYPE" :  "long",
+      "DEFAULT": 0
     }
   ]
 }*/
 
 void main()
 {
-  bool isTex0 = _tex0_imgSize != vec2(1);
-  if(isTex0){  
-    gl_FragColor = vec4(IMG_PIXEL(tex0, isf_FragNormCoord.xy).rgb, 1);
-  }else{  
-    gl_FragColor = vec4(isf_FragNormCoord.x, isf_FragNormCoord.y, 0, 1);
-  }
-
-
+  gl_FragColor = vec4(mix(vec3(isf_FragNormCoord.x, isf_FragNormCoord.y, 0), IMG_PIXEL(tex0, isf_FragNormCoord.xy).rgb, vec3(_tex0_sample)), 1);
 }
 

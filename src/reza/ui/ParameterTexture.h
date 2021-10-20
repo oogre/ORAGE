@@ -65,43 +65,20 @@ namespace reza {
                 });
             }
         public :
-            
-            virtual void beginDraw() override {
-                pushMatrices();
-                mFbo->bindFramebuffer();
-                
-                ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
-//                setMatrices( mCam );
-            }
-            virtual void endDraw() override {
-                mFbo->unbindFramebuffer();
-                popMatrices();
-                
-            }
             void setSize(ivec2 size){
-                ParameterBase::textureRef = Texture2d::create(size.x, size.y);
-                ParameterBase::textureRef->setTopDown();
-                Fbo::Format format = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureRef);;
-                mFbo = gl::Fbo::create( size.x, size.y, format);
-                mCam = CameraPersp(size.x, size.y, 60.0f, 1, 1000 );
+                Texture2d::Format tFormat = Texture2d::Format().loadTopDown();
+                ParameterBase::textureRef = Texture2d::create(size.x, size.y, tFormat);
                 
-//                mCam.setEyePoint( vec3( 0.0f, 0.0f, 10.0f) );
-//                mCam.setPerspective( 60, getWindowWidth() * 0.5f / getWindowHeight(), 1, 1000 );
-//                mCam.lookAt( vec3( 0 ) );
-                
+                Fbo::Format fFormat = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureRef);;
+                mFbo = Fbo::create( size.x, size.y, fFormat);
                 if(!!textureViewRef){
                     textureViewRef->setTexture(ParameterBase::textureRef);
                 }
             }
             TextureRef getDefaultInput(){
                 if(!!DEFAULT_INPUT) return DEFAULT_INPUT;
-                DEFAULT_INPUT = Texture2d::create(1, 1);
-                Fbo::Format format = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, DEFAULT_INPUT);
-                FboRef mFbo = Fbo::create(DEFAULT_INPUT->getWidth(), DEFAULT_INPUT->getHeight(), format);
-                mFbo->bindFramebuffer();
-                ColorA c = ColorA(0, 0, 0, 0);
-                gl::clear( c );
-                mFbo->unbindFramebuffer();
+                Texture2d::Format tFormat = Texture2d::Format().loadTopDown();
+                DEFAULT_INPUT = Texture2d::create(1, 1, tFormat);
                 return DEFAULT_INPUT;
             }
             static ParameterTextureRef create( const string name, Format format = Format()){
@@ -111,9 +88,11 @@ namespace reza {
             }
             virtual void plugTo(std::shared_ptr<ParameterBase> other) override {
                 *ParameterBase::textureRef = *other->textureRef;
+                ParameterBase::textureSample = 1;
             }
             virtual void unplugTo(std::shared_ptr<ParameterBase> other) override {
                 *ParameterBase::textureRef = *getDefaultInput();
+                ParameterBase::textureSample = 0;
             }
             FboRef mFbo;
             CameraPersp mCam;
