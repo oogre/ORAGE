@@ -20,6 +20,10 @@
 
 void main()
 {
-  gl_FragColor = vec4(mix(vec3(isf_FragNormCoord.x, isf_FragNormCoord.y, 0), IMG_PIXEL(tex0, isf_FragNormCoord.xy).rgb, vec3(_tex0_sample)), 1);
+  vec3 A = vec3(isf_FragNormCoord.x, isf_FragNormCoord.y, 0);
+  vec3 B = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
+  vec3 m = vec3(_tex0_sample);
+  vec3 color = mix(A, B, m);
+  gl_FragColor = vec4(color, 1);
 }
 

@@ -48,7 +48,9 @@ namespace reza {
             {
                 if(format.mInput){
                     ParameterBase::textureRef = Texture2d::create(1, 1);
-                    *ParameterBase::textureRef = *getDefaultInput();
+                    getDefaultInput();
+                    ParameterBase::textureInRef = &ParameterTexture::DEFAULT_INPUT;
+                    ParameterBase::textureSample = 0;
                     type = PARAMETER_TYPE::TEXTURE |  PLUG_TYPE::IN;
                 }else{
                     setSize(ivec2(1, 1));
@@ -87,11 +89,11 @@ namespace reza {
             virtual ~ParameterTexture(){
             }
             virtual void plugTo(std::shared_ptr<ParameterBase> other) override {
-                *ParameterBase::textureRef = *other->textureRef;
+                ParameterBase::textureInRef = &other->textureRef;
                 ParameterBase::textureSample = 1;
             }
             virtual void unplugTo(std::shared_ptr<ParameterBase> other) override {
-                *ParameterBase::textureRef = *getDefaultInput();
+                ParameterBase::textureInRef = &ParameterTexture::DEFAULT_INPUT;
                 ParameterBase::textureSample = 0;
             }
             FboRef mFbo;

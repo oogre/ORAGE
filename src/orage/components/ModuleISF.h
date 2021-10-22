@@ -101,8 +101,13 @@ namespace ORAGE {
                     }
                     sizeChanged = false;
                 }
-                ScopedFramebuffer fbScp( (*outputs.begin())->mFbo );
-                ScopedViewport scpVp( ivec2( 0 ), (*outputs.begin())->mFbo->getSize() );
+                
+                ParameterTextureRef output = (*outputs.begin());
+                ScopedFramebuffer fbScp( output->mFbo );
+                ScopedViewport scpVp( ivec2( 0 ), output->mFbo->getSize() );
+                for(auto mat : gl::context()->getViewMatrixStack()){
+                    cout << mat << endl;
+                }
                 gl::ScopedProjectionMatrix matrix(mDefaultProjection);
                 gl::clear( ColorA(0, 0, 0, 0));
                 gl::ScopedGlslProg glslProg( mShader );
@@ -148,23 +153,23 @@ namespace ORAGE {
                     }
                 }
                 int i = 0 ;
-                cout<<UI->getName()<<endl;
+               // cout<<UI->getName() << " : "<< output->mFbo->getSize() <<endl;
                 for(auto input : inputs){
                     string bName = "tex"+to_string(i);
                     string pName = "_"+bName;
-                    input->textureRef->bind(i);
+                    Texture2dRef inTex = (*input->textureInRef);
+                    inTex->bind(i);
                     mShader->uniform( bName, i );
                     mShader->uniform( pName+"_imgRect", vec4(0, 0, 1, 1));
-                    mShader->uniform( pName+"_imgSize", (vec2)input->textureRef->getSize());
-                    mShader->uniform( pName+"_flip",    !input->textureRef->isTopDown());
+                    mShader->uniform( pName+"_imgSize", (vec2)inTex->getSize());
+                    mShader->uniform( pName+"_flip",    !(inTex->isTopDown()));
                     mShader->uniform( pName+"_sample",  input->textureSample);
                     i++;
-                    
-                    cout<<pName+"_imgSize" << " : " << (vec2)input->textureRef->getSize()<<endl;
+//                    cout<<pName+"_imgSize" << " : " << (vec2)inTex->getSize()<<endl;
                 }
-                cout<<endl;
+//                cout<<endl;
                 gl::color(Color::white());
-                gl::drawSolidRect(Area( vec2(0), (*outputs.begin())->textureRef->getSize() ));
+                gl::drawSolidRect(Area( vec2(0), output->mFbo->getSize() ));
             }
         };//ModuleISF {
         typedef shared_ptr<ModuleISF> ModuleISFRef;

@@ -16,7 +16,16 @@ using namespace ORAGE::CONNECTIONS;
 class ORAGEApp : public App {
     vector<ModuleRef> modules;
     CablesRef cables;
+    
+    ci::gl::Texture2dRef A;
+    ci::gl::Texture2dRef B;
+    ci::gl::Texture2dRef * C;
   public:
+    virtual ~ORAGEApp(){
+        
+        //A.reset();
+        //B.reset();
+    }
 	void setup() override;
 	void update() override;
 	void draw() override;

@@ -66,6 +66,7 @@ namespace reza {
             virtual void endDraw(){}
             TextureViewRef textureViewRef;
             ci::gl::TextureRef textureRef;
+            ci::gl::Texture2dRef * textureInRef;
             int textureSample = 0;
             ButtonRef buttonRef;
         };//ParameterBase
