@@ -24,7 +24,6 @@
 		88F37D5A271899020095955A /* VVGL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 88F37D55271898F70095955A /* VVGL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		88F37D5B271899050095955A /* VVISF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F37D56271898F70095955A /* VVISF.framework */; };
 		88F37D5C271899050095955A /* VVISF.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 88F37D56271898F70095955A /* VVISF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		88F37DA8271899AB0095955A /* src.zip in Resources */ = {isa = PBXBuildFile; fileRef = 88F37D5E271899AB0095955A /* src.zip */; };
 		88F37DA9271899AB0095955A /* Dialer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D62271899AB0095955A /* Dialer.cpp */; };
 		88F37DAA271899AB0095955A /* Range.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D63271899AB0095955A /* Range.cpp */; };
 		88F37DAB271899AB0095955A /* ColorPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D64271899AB0095955A /* ColorPicker.cpp */; };
@@ -180,7 +179,6 @@
 		88F37D4B271897370095955A /* GLBufferPool_CocoaAdditions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GLBufferPool_CocoaAdditions.mm; sourceTree = "<group>"; };
 		88F37D55271898F70095955A /* VVGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVGL.framework; sourceTree = "<group>"; };
 		88F37D56271898F70095955A /* VVISF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VVISF.framework; sourceTree = "<group>"; };
-		88F37D5E271899AB0095955A /* src.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = src.zip; sourceTree = "<group>"; };
 		88F37D60271899AB0095955A /* Fps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fps.h; sourceTree = "<group>"; };
 		88F37D61271899AB0095955A /* ColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPicker.h; sourceTree = "<group>"; };
 		88F37D62271899AB0095955A /* Dialer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dialer.cpp; sourceTree = "<group>"; };
@@ -262,7 +260,7 @@
 		88F37DD227189A230095955A /* cables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cables.h; sourceTree = "<group>"; };
 		88F37DD327189A230095955A /* cable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cable.h; sourceTree = "<group>"; };
 		88F37DD527189A230095955A /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; };
-		88F37DD727189A230095955A /* Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Math.h; sourceTree = "<group>"; };
+		88F37DD727189A230095955A /* OrageMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrageMath.h; sourceTree = "<group>"; };
 		88F37DD827189A230095955A /* EventTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTemplate.h; sourceTree = "<group>"; };
 		88F37DD927189D0B0095955A /* ModuleISF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleISF.h; sourceTree = "<group>"; };
 		88F37DDA2718A6060095955A /* CustomISFAttr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomISFAttr.h; sourceTree = "<group>"; };
@@ -613,7 +611,6 @@
 		88F37D5D271899AB0095955A /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				88F37D5E271899AB0095955A /* src.zip */,
 				88F37D5F271899AB0095955A /* src */,
 			);
 			path = UI;
@@ -756,7 +753,7 @@
 		88F37DD627189A230095955A /* common */ = {
 			isa = PBXGroup;
 			children = (
-				88F37DD727189A230095955A /* Math.h */,
+				88F37DD727189A230095955A /* OrageMath.h */,
 				88F37DD827189A230095955A /* EventTemplate.h */,
 				88F37DDA2718A6060095955A /* CustomISFAttr.h */,
 			);
@@ -846,7 +843,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88F37DA8271899AB0095955A /* src.zip in Resources */,
 				807E8053D4B44512BB045048 /* CinderApp.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

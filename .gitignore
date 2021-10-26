@@ -1,3 +1,4 @@
 .DS_Store
 xcode/build/*
 proj/cmake/build/*
+xcode/ORAGE.xcodeproj/project.xcworkspace/xcuserdata/ogre.xcuserdatad/UserInterfaceState.xcuserstate
