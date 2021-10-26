@@ -45,10 +45,7 @@ namespace reza {
             {
                 disable();
                 enable();
-                
                 if(!CLOSE_PIC)CLOSE_PIC = Texture::create(loadImage(loadAsset(getAssetPath("./textures/close.png"))));
-               
-               
             }
             
             virtual ~OrageCanvas(){}

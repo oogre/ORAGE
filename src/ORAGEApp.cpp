@@ -3,6 +3,8 @@
 #include "cinder/gl/gl.h"
 #include "ModuleISF.h"
 #include "cables.h"
+#include "OrageMenu.h"
+#include "ModuleTypes.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -16,16 +18,8 @@ using namespace ORAGE::CONNECTIONS;
 class ORAGEApp : public App {
     vector<ModuleRef> modules;
     CablesRef cables;
-    
-    ci::gl::Texture2dRef A;
-    ci::gl::Texture2dRef B;
-    ci::gl::Texture2dRef * C;
+    OrageMenuRef menu;
   public:
-    virtual ~ORAGEApp(){
-        
-        //A.reset();
-        //B.reset();
-    }
 	void setup() override;
 	void update() override;
 	void draw() override;
@@ -36,10 +30,25 @@ class ORAGEApp : public App {
 void ORAGEApp::setup()
 {
     cables = Cables::create();
+    menu = OrageMenu::create();
+    menu->addEventListener("menu", [&](EvtMenu evt){
+        ModuleRef module;
+        if(evt.moduleType == TYPES::ISF){
+            module = ModuleISF::create(evt.target.filename(), CreateISFDocRef(string(evt.target)));
+        }
+        else if(evt.moduleType == TYPES::CONTROLLER){
+            
+        }
+        if(!module)return;
+        module->setOrigin(vec2(100, 100));
+        module->addEventListener("plug", [&](Evt event){
+            cables->addCable(event.target);
+        });
+        modules.push_back(module);
+//        module->update();
+//        module->draw();
+    });
 }
-
-
-
 
 void ORAGEApp::update()
 {
@@ -65,27 +74,11 @@ void ORAGEApp::draw()
     for(auto module : modules){
         module->draw();
     }
-    if(modules.size()==0)return;
-    Texture2dRef tex = dynamic_pointer_cast<ModuleISF>(modules.back())->outputs.back()->textureRef;
-    gl::draw(tex, Rectf(vec2(0), getWindowSize()));
 }
 
 void ORAGEApp::fileDrop(FileDropEvent evt){
-    for(auto file : evt.getFiles()){
-        cout<<file<<endl;
-        ModuleRef module = ModuleISF::create("basic", CreateISFDocRef(string(file)));
-        module->setOrigin(evt.getPos());
-        module->addEventListener("plug", [&](Evt event){
-            cables->addCable(event.target);
-        });
-        modules.push_back(module);
-         module->update();
-         module->draw();
-    }
+    
 }
 
-void ORAGEApp::prepareSettings( Settings *settings ){
-    settings->setWindowSize( 640, 480 );
-};
 
-CINDER_APP( ORAGEApp, RendererGl, &ORAGEApp::prepareSettings )
+CINDER_APP( ORAGEApp, RendererGl )

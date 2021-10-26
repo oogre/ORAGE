@@ -30,6 +30,9 @@ namespace ORAGE {
             ISFDocRef myDoc;
             mat4 mDefaultProjection;
             vector<ParameterTextureRef> inputs;
+            vec2 defSize;
+            map <string, WindowCanvasRef> windowCanvas;
+            int winOutCOUNT = 0;
         public :
             vector<ParameterTextureRef> outputs;
             
@@ -59,6 +62,13 @@ namespace ORAGE {
                 ISFVal RENDERSIZEval (ISFValType::ISFValType_Point2D, (double)width, (double)height);
                 addValue("RENDERSIZE", "", "", ISFValType::ISFValType_Point2D, RENDERSIZEmin, RENDERSIZEmax, RENDERSIZEval);
                 
+//                UI->addButton("New Window", false)->setCallback(
+//                                                                 [this](bool a) {
+//                                                                     if(a){
+//                                                                         createOutputWindow();
+//                                                                     }
+//                                                                 });
+                
                 outputs.push_back(UI->addOutput("output", outputs.size()));
                 outputs.back()->setSize(ivec2(width, height));
                 
@@ -86,6 +96,8 @@ namespace ORAGE {
                 UI->autoSizeToFitSubviews();
                 
                 mDefaultProjection = gl::context()->getProjectionMatrixStack()[0];
+                
+                defSize = vec2(*(getValue("RENDERSIZE")->defaultVal().getPointValPtr()+0), *(getValue("RENDERSIZE")->defaultVal().getPointValPtr()+1));
             }
             
             
@@ -101,15 +113,12 @@ namespace ORAGE {
                     }
                     sizeChanged = false;
                 }
-                
                 ParameterTextureRef output = (*outputs.begin());
                 ScopedFramebuffer fbScp( output->mFbo );
                 ScopedViewport scpVp( ivec2( 0 ), output->mFbo->getSize() );
-                for(auto mat : gl::context()->getViewMatrixStack()){
-                    cout << mat << endl;
-                }
                 gl::ScopedProjectionMatrix matrix(mDefaultProjection);
-                gl::clear( ColorA(0, 0, 0, 0));
+                
+                gl::clear( ColorA(0, 0, 0, 1));
                 gl::ScopedGlslProg glslProg( mShader );
               
                 for(auto [key, param] : parameters){
@@ -122,18 +131,16 @@ namespace ORAGE {
                             break;
                         case ISFValType::ISFValType_Bool:
                             //cout<< " bool : " <<param->name()<<endl;
+                            mShader->uniform( param->name(), (int) param->currentVal().getBoolVal());
                             break;
                         case ISFValType::ISFValType_Long:
                             mShader->uniform( param->name(), (int) param->currentVal().getLongVal());
-                            //cout<< " long : " <<param->name() << " : " << (int) param->currentVal().getLongVal()<<endl;
                             break;
                         case ISFValType::ISFValType_Float:
                             mShader->uniform( param->name(), (float) param->currentVal().getDoubleVal());
-                            //cout<< " float : " <<param->name() << " : " << (float) param->currentVal().getDoubleVal()<<endl;
                             break;
                         case ISFValType::ISFValType_Point2D:
                             mShader->uniform( param->name(), vec2(param->currentVal().getPointValByIndex(0), param->currentVal().getPointValByIndex(1)));
-                            //cout<< " vec2 : " <<param->name() << " : " << vec2(param->currentVal().getPointValByIndex(0), param->currentVal().getPointValByIndex(1))<<endl;
                             break;
                         case ISFValType::ISFValType_Color:
                             //cout<< " color : " <<param->name()<<endl;
@@ -153,7 +160,6 @@ namespace ORAGE {
                     }
                 }
                 int i = 0 ;
-               // cout<<UI->getName() << " : "<< output->mFbo->getSize() <<endl;
                 for(auto input : inputs){
                     string bName = "tex"+to_string(i);
                     string pName = "_"+bName;
@@ -165,12 +171,30 @@ namespace ORAGE {
                     mShader->uniform( pName+"_flip",    !(inTex->isTopDown()));
                     mShader->uniform( pName+"_sample",  input->textureSample);
                     i++;
-//                    cout<<pName+"_imgSize" << " : " << (vec2)inTex->getSize()<<endl;
                 }
-//                cout<<endl;
                 gl::color(Color::white());
-                gl::drawSolidRect(Area( vec2(0), output->mFbo->getSize() ));
+                gl::drawSolidRect(Area(vec2(0), defSize));
             }
+//            void createOutputWindow(){
+//                gl::Context* mMainWinCtx = gl::Context::getCurrent();
+//                string name = UI->getName()+toString(winOutCOUNT++);
+//                windowCanvas[name] = WindowCanvas::create(name);
+//                app::WindowRef window = windowCanvas[name]->getWindow();
+//                mMainWinCtx->makeCurrent();
+//                window->getSignalClose().connect( [this, window] {
+//                    windowCanvas.erase(window->getTitle());
+//                });
+//                window->getSignalDraw().connect( [this, window] {
+//                    cout<<"hello"<<endl;
+//                    ParameterTextureRef output = (*outputs.begin());
+//                    gl::draw(output->textureRef, Rectf(vec2(0), getWindowSize()));
+////                    gl::clear(ColorA(1, 0, 0, 1));
+//
+////                    if(modules.size()==0)return;
+////                    Texture2dRef tex = dynamic_pointer_cast<ModuleISF>(modules.back())->outputs.back()->textureRef;
+////                    gl::draw(tex, Rectf(vec2(0), getWindowSize()));
+//                });
+//            }
         };//ModuleISF {
         typedef shared_ptr<ModuleISF> ModuleISFRef;
     }//namespace COMPONENTS {

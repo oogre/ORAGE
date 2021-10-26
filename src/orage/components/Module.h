@@ -9,12 +9,9 @@
 #define Module_h
 
 #include "OrageCanvas.h"
-#include "cinder/Rand.h"
 #include "CustomISFAttr.h"
 #include <ctime>
 #include <limits>
-
-
 
 namespace ORAGE {
     namespace COMPONENTS {

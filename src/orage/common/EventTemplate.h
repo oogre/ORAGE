@@ -10,7 +10,7 @@
 #include "Math.h"
 #include "boost/signals2.hpp"
 // https://scicomp.ethz.ch/public/manual/Boost/1.55.0/signals2.pdf
-
+#include "ModuleTypes.h"
 namespace ORAGE {
     namespace COMMON {
         using namespace std;
@@ -28,6 +28,19 @@ namespace ORAGE {
             {
             }
         };//struct BaseEvent
+        
+        template<typename T>
+        struct MenuEvent : public BaseEvent{
+            public :
+            T target;
+            COMPONENTS::TYPES moduleType;
+            MenuEvent(string type, T target, COMPONENTS::TYPES moduleType) :
+            BaseEvent(type),
+            target(target),
+            moduleType(moduleType)
+            {
+            }
+        };//struct MenuEvent<T>
         
         template<typename T>
         struct Event : public BaseEvent{
