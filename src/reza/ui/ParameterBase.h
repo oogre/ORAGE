@@ -16,7 +16,6 @@
 namespace reza {
     namespace ui {
         typedef std::shared_ptr<class ParameterBase> ParameterBaseRef;
-        
         typedef ORAGE::COMMON::Event<ParameterBase> Evt;
         typedef ORAGE::COMMON::EventTemplate<ParameterBase, Evt> EvtHandler;
         

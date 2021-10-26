@@ -58,11 +58,11 @@ namespace reza {
                 setColorBack(ColorA(1, 0, 0, 0.75));
                 setColorBounds(ColorA(1, 1, 1, 1));
                 
-                std::string path = getAssetPath("modules");
+                std::string path = getAssetPath("modules").string();
                 for (const auto & entry : fs::directory_iterator(path)){
                     if(entry.is_directory()){
                         Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
-                        OrageMenuItemRef btn = OrageMenuItem::create(entry.path().filename(), format);
+                        OrageMenuItemRef btn = OrageMenuItem::create(entry.path().filename().string(), format);
                         btn->setSize(vec2(100, 25));
                         if(btns.size()==0){
                             addSubView(btn);

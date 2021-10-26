@@ -8,7 +8,6 @@
 #ifndef ModuleISF_h
 #define ModuleISF_h
 
-
 #include "ISFDoc.hpp"
 #include "Module.h"
 
