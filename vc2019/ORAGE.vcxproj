@@ -13,19 +13,20 @@
     <ProjectGuid>{BA47ED47-9613-4969-9B43-33B268113F69}</ProjectGuid>
     <RootNamespace>ORAGE</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -45,8 +46,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\..\Frameworks\Cinder\include"</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\VVISF\src;..\src\Blocks\VVISF\include;..\src\Blocks\VVGL\src;..\src\Blocks\VVGL\include;..\src\Blocks\common;..\src\Blocks\external\GLEW\include;..\src\Blocks\external\OpenGL-Win</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_HAS_AUTO_PTR_ETC=1;VVGL_SDK_WIN;WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader />
@@ -56,11 +57,11 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>"..\..\..\..\Frameworks\Cinder\include";..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\VVISF\src;..\src\Blocks\VVISF\include;..\src\Blocks\VVGL\src;..\src\Blocks\VVGL\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\..\Frameworks\Cinder\lib\msw\$(PlatformTarget)";"..\..\..\..\Frameworks\Cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)"</AdditionalLibraryDirectories>
+      <AdditionalDependencies>VVGL.lib;VVISF.lib;cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget);$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset);..\src\Blocks\VVGL.win64;..\src\Blocks\VVISF.win64</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -70,24 +71,26 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\..\Frameworks\Cinder\include"</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\VVISF\src;..\src\Blocks\VVISF\include;..\src\Blocks\VVGL\src;..\src\Blocks\VVGL\include;..\src\Blocks\external\GLEW\include;..\src\Blocks\external\OpenGL-Win;..\src\Blocks\common</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_HAS_AUTO_PTR_ETC=1;VVGL_SDK_WIN;WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>"..\..\..\..\Frameworks\Cinder\include";..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\VVISF\src;..\src\Blocks\VVISF\include;..\src\Blocks\VVGL\src;..\src\Blocks\VVGL\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\..\Frameworks\Cinder\lib\msw\$(PlatformTarget)";"..\..\..\..\Frameworks\Cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)"</AdditionalLibraryDirectories>
+      <AdditionalDependencies>VVGL.lib;VVISF.lib;cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget);$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset);..\src\Blocks\VVGL.win64;..\src\Blocks\VVISF.win64</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -95,18 +98,190 @@
       <EnableCOMDATFolding />
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup />
   <ItemGroup>
+    <None Include="..\src\Blocks\UI\src\CocoaWindowCanvas.mm" />
+    <None Include="..\src\Blocks\VVGL.win64\VVGL.dll" />
+    <None Include="..\src\Blocks\VVGL.win64\VVGL.exp" />
+    <None Include="..\src\Blocks\VVGL.win64\VVGL.iobj" />
+    <None Include="..\src\Blocks\VVGL.win64\VVGL.ipdb" />
+    <None Include="..\src\Blocks\VVGL.win64\VVGL.pdb" />
+    <None Include="..\src\Blocks\VVGL\Doxyfile" />
+    <None Include="..\src\Blocks\VVGL\macos_universal_binary.sh" />
+    <None Include="..\src\Blocks\VVGL\Makefile" />
+    <None Include="..\src\Blocks\VVISF.win64\VVISF.dll" />
+    <None Include="..\src\Blocks\VVISF.win64\VVISF.exp" />
+    <None Include="..\src\Blocks\VVISF.win64\VVISF.iobj" />
+    <None Include="..\src\Blocks\VVISF.win64\VVISF.ipdb" />
+    <None Include="..\src\Blocks\VVISF.win64\VVISF.pdb" />
+    <None Include="..\src\Blocks\VVISF\macos_universal_binary.sh" />
+    <None Include="..\src\Blocks\VVISF\Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\src\Blocks\VVGL.win64\VVGL.lib" />
+    <Library Include="..\src\Blocks\VVISF.win64\VVISF.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\Blocks\UI\src\BSplineEditor.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Button.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Canvas.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\ColorPicker.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Colors.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Control.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\ControlWithLabel.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Dialer.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Envelope.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Fps.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Globals.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Graph.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Label.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\MultiSlider.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Plotter.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\QuaternionOrderer.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Radio.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Range.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Responder.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Slider.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Spacer.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Spectrum.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\SuperCanvas.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\TextInput.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\TextureView.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Toggle.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\View.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\Waveform.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\WindowCanvas.cpp" />
+    <ClCompile Include="..\src\Blocks\UI\src\XYPad.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLBuffer.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLBufferPool.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLCachedProperty.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLContext.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLContextWindowBacking.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLCPUToTexCopier.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLQtCtxWrapper.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLScene.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLTexToCPUCopier.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLTexToTexCopier.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\VVGL_Geom.cpp" />
+    <ClCompile Include="..\src\Blocks\VVGL\src\VVGL_StringUtils.cpp" />
+    <ClCompile Include="..\src\Blocks\VVISF\src\ISFAttr.cpp" />
+    <ClCompile Include="..\src\Blocks\VVISF\src\ISFDoc.cpp" />
+    <ClCompile Include="..\src\Blocks\VVISF\src\ISFPassTarget.cpp" />
+    <ClCompile Include="..\src\Blocks\VVISF\src\ISFScene.cpp" />
+    <ClCompile Include="..\src\Blocks\VVISF\src\ISFVal.cpp" />
+    <ClCompile Include="..\src\Blocks\VVISF\src\VVISF_Base.cpp" />
+    <ClCompile Include="..\src\Blocks\VVISF\src\VVISF_StringUtils.cpp" />
     <ClCompile Include="..\src\ORAGEApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Alignments.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\BSplineEditor.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Button.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Canvas.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\CocoaWindowCanvas.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\ColorPicker.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Colors.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Control.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Controls.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\ControlWithLabel.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Dialer.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Directions.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Envelope.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\FontSizes.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Fps.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Globals.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Graph.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Helpers.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Label.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\MultiSlider.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Padding.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Plotter.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\QuaternionOrderer.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Radio.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Range.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\RenderData.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Responder.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Slider.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Spacer.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Spectrum.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\States.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\SuperCanvas.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\TextInput.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\TextureView.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Toggle.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Triggers.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\UI.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\View.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\Waveform.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\WindowCanvas.h" />
+    <ClInclude Include="..\src\Blocks\UI\src\XYPad.h" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBufferPool.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBufferPool_CocoaAdditions.h" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_GLFW.h" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_IOS.h" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Mac.h" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Qt.h" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_RPI.h" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Win.h" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLCachedProperty.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLContext.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLContextWindowBacking.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLCPUToTexCopier.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLQtCtxWrapper.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLScene.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLTexToCPUCopier.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLTexToTexCopier.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\stb\stb_image.h" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Base.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Defines.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Doxygen.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Geom.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_HardCodedDefines.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\vvgl_qt_global.h" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Range.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_StringUtils.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Time.hpp" />
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Win_global.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\exprtk\exprtk.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\ISFAttr.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\ISFDoc.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\ISFPassTarget.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\ISFScene.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\ISFVal.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\nlohmann_json\json.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Base.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Constants.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Doxygen.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Err.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Qt_global.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_StringUtils.hpp" />
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Win_global.hpp" />
+    <ClInclude Include="..\src\orage\common\CustomISFAttr.h" />
+    <ClInclude Include="..\src\orage\common\EventTemplate.h" />
+    <ClInclude Include="..\src\orage\common\OrageMath.h" />
+    <ClInclude Include="..\src\orage\components\Module.h" />
+    <ClInclude Include="..\src\orage\components\ModuleISF.h" />
+    <ClInclude Include="..\src\orage\components\ModuleTypes.h" />
+    <ClInclude Include="..\src\orage\connections\cable.h" />
+    <ClInclude Include="..\src\orage\connections\cables.h" />
+    <ClInclude Include="..\src\reza\ui\OrageButton.h" />
+    <ClInclude Include="..\src\reza\ui\OrageCanvas.h" />
+    <ClInclude Include="..\src\reza\ui\OrageMenu.h" />
+    <ClInclude Include="..\src\reza\ui\OrageMenuItem.h" />
+    <ClInclude Include="..\src\reza\ui\OrageMenuList.h" />
+    <ClInclude Include="..\src\reza\ui\OrageSliderT.h" />
+    <ClInclude Include="..\src\reza\ui\ParameterBase.h" />
+    <ClInclude Include="..\src\reza\ui\ParameterFloat.h" />
+    <ClInclude Include="..\src\reza\ui\ParameterTexture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

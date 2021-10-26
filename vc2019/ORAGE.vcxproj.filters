@@ -12,6 +12,45 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\reza">
+      <UniqueIdentifier>{cec082c0-6077-4210-9ac5-21eabfd9e602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\reza\ui">
+      <UniqueIdentifier>{dd35fe29-5421-4ec3-b985-e61f4b20ef08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\orage">
+      <UniqueIdentifier>{57d88be3-d4f3-4894-9f3c-f898d5062856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\orage\common">
+      <UniqueIdentifier>{dfed4969-04f8-472f-ac28-c8e02a02f658}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\orage\components">
+      <UniqueIdentifier>{fede924c-2332-4e1d-a6ab-d4ad2a2bfa14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\orage\connections">
+      <UniqueIdentifier>{8bf522e8-5619-43d9-9f77-afface66e357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Blocks">
+      <UniqueIdentifier>{6c3aab93-6ecd-47ac-83de-074b16cbf240}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Blocks\UI">
+      <UniqueIdentifier>{00009af5-96bb-4c7a-b39a-35baff433a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Blocks\UI\src">
+      <UniqueIdentifier>{2cdcfd9f-6cba-45ba-b0fb-2664590ec53f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Blocks\VVGL">
+      <UniqueIdentifier>{74767515-27d4-4a1a-afcd-3afc1fcd03c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Blocks\VVISF">
+      <UniqueIdentifier>{f7b41768-8e49-4f68-a00c-58d1613bd5c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Blocks\VVISF\lib">
+      <UniqueIdentifier>{df9fffd2-3b29-4ab9-ba9a-a737bd357072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Blocks\VVGL\lib">
+      <UniqueIdentifier>{edfa6340-279b-4c64-a81e-83f770be1ee9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ORAGEApp.cpp">
@@ -23,15 +62,526 @@
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClCompile Include="..\src\Blocks\UI\src\BSplineEditor.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Button.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Canvas.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\ColorPicker.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Colors.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Control.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\ControlWithLabel.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Dialer.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Envelope.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Fps.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Globals.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Graph.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Label.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\MultiSlider.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Plotter.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\QuaternionOrderer.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Radio.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Range.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Responder.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Slider.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Spacer.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Spectrum.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\SuperCanvas.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\TextInput.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\TextureView.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Toggle.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\View.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\Waveform.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\WindowCanvas.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\UI\src\XYPad.cpp">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLBuffer.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLBufferPool.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLCachedProperty.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLContext.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLContextWindowBacking.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLCPUToTexCopier.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLQtCtxWrapper.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLScene.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLTexToCPUCopier.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\GLTexToTexCopier.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\VVGL_Geom.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVGL\src\VVGL_StringUtils.cpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVISF\src\ISFAttr.cpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVISF\src\ISFDoc.cpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVISF\src\ISFPassTarget.cpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVISF\src\ISFScene.cpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVISF\src\ISFVal.cpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVISF\src\VVISF_Base.cpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\VVISF\src\VVISF_StringUtils.cpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageButton.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageCanvas.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageMenu.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageMenuItem.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageMenuList.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageSliderT.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\ParameterBase.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\ParameterFloat.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\ParameterTexture.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\common\CustomISFAttr.h">
+      <Filter>Source Files\orage\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\common\EventTemplate.h">
+      <Filter>Source Files\orage\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\common\OrageMath.h">
+      <Filter>Source Files\orage\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\Module.h">
+      <Filter>Source Files\orage\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\ModuleISF.h">
+      <Filter>Source Files\orage\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\ModuleTypes.h">
+      <Filter>Source Files\orage\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\connections\cable.h">
+      <Filter>Source Files\orage\connections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\connections\cables.h">
+      <Filter>Source Files\orage\connections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Alignments.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\BSplineEditor.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Button.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Canvas.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\CocoaWindowCanvas.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\ColorPicker.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Colors.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Control.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Controls.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\ControlWithLabel.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Dialer.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Directions.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Envelope.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\FontSizes.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Fps.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Globals.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Graph.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Helpers.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Label.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\MultiSlider.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Padding.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Plotter.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\QuaternionOrderer.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Radio.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Range.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\RenderData.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Responder.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Slider.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Spacer.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Spectrum.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\States.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\SuperCanvas.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\TextInput.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\TextureView.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Toggle.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Triggers.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\UI.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\View.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\Waveform.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\WindowCanvas.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\UI\src\XYPad.h">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBufferPool.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBufferPool_CocoaAdditions.h">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_GLFW.h">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_IOS.h">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Mac.h">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Qt.h">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_RPI.h">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Win.h">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLCachedProperty.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLContext.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLContextWindowBacking.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLCPUToTexCopier.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLQtCtxWrapper.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLScene.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLTexToCPUCopier.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\GLTexToTexCopier.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\stb\stb_image.h">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Base.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Defines.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Doxygen.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Geom.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_HardCodedDefines.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\vvgl_qt_global.h">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Range.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_StringUtils.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Time.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Win_global.hpp">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\exprtk\exprtk.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\ISFAttr.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\ISFDoc.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\ISFPassTarget.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\ISFScene.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\ISFVal.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\nlohmann_json\json.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Base.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Constants.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Doxygen.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Err.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Qt_global.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_StringUtils.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Win_global.hpp">
+      <Filter>Source Files\Blocks\VVISF</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\Blocks\UI\src\CocoaWindowCanvas.mm">
+      <Filter>Source Files\Blocks\UI\src</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVGL\Doxyfile">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVGL\macos_universal_binary.sh">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVGL\Makefile">
+      <Filter>Source Files\Blocks\VVGL</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVISF\macos_universal_binary.sh">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVISF\Makefile">
+      <Filter>Source Files\Blocks\VVISF</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVISF.win64\VVISF.dll">
+      <Filter>Source Files\Blocks\VVISF\lib</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVISF.win64\VVISF.exp">
+      <Filter>Source Files\Blocks\VVISF\lib</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVISF.win64\VVISF.iobj">
+      <Filter>Source Files\Blocks\VVISF\lib</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVISF.win64\VVISF.ipdb">
+      <Filter>Source Files\Blocks\VVISF\lib</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVISF.win64\VVISF.pdb">
+      <Filter>Source Files\Blocks\VVISF\lib</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVGL.win64\VVGL.exp">
+      <Filter>Source Files\Blocks\VVGL\lib</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVGL.win64\VVGL.iobj">
+      <Filter>Source Files\Blocks\VVGL\lib</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVGL.win64\VVGL.ipdb">
+      <Filter>Source Files\Blocks\VVGL\lib</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVGL.win64\VVGL.pdb">
+      <Filter>Source Files\Blocks\VVGL\lib</Filter>
+    </None>
+    <None Include="..\src\Blocks\VVGL.win64\VVGL.dll">
+      <Filter>Source Files\Blocks\VVGL\lib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\src\Blocks\VVISF.win64\VVISF.lib">
+      <Filter>Source Files\Blocks\VVISF\lib</Filter>
+    </Library>
+    <Library Include="..\src\Blocks\VVGL.win64\VVGL.lib">
+      <Filter>Source Files\Blocks\VVGL\lib</Filter>
+    </Library>
   </ItemGroup>
 </Project>

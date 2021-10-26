@@ -3,8 +3,8 @@
 #include "cinder/gl/gl.h"
 #include "ModuleISF.h"
 #include "cables.h"
-#include "OrageMenu.h"
 #include "ModuleTypes.h"
+#include "OrageMenu.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -24,7 +24,6 @@ class ORAGEApp : public App {
 	void update() override;
 	void draw() override;
     void fileDrop(FileDropEvent evt) override;
-    static void prepareSettings( Settings *settings );
 };
 
 void ORAGEApp::setup()
@@ -34,7 +33,7 @@ void ORAGEApp::setup()
     menu->addEventListener("menu", [&](EvtMenu evt){
         ModuleRef module;
         if(evt.moduleType == TYPES::ISF){
-            module = ModuleISF::create(evt.target.filename(), CreateISFDocRef(string(evt.target)));
+            module = ModuleISF::create(evt.target.filename().string(), CreateISFDocRef(evt.target.string()));
         }
         else if(evt.moduleType == TYPES::CONTROLLER){
             
@@ -45,8 +44,6 @@ void ORAGEApp::setup()
             cables->addCable(event.target);
         });
         modules.push_back(module);
-//        module->update();
-//        module->draw();
     });
 }
 
@@ -70,7 +67,7 @@ void ORAGEApp::update()
 
 void ORAGEApp::draw()
 {
-	gl::clear( Color( 0, 0, 0 ) );
+    gl::clear( Color( 0, 0, 0 ) );
     for(auto module : modules){
         module->draw();
     }

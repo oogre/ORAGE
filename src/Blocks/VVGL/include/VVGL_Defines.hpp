@@ -2,7 +2,6 @@
 #define VVGL_Defines_h
 
 
-#define VVGL_SDK_MAC
 
 /*
 developers need to define one of these during compilation:

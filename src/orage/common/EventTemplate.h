@@ -7,7 +7,7 @@
 
 #ifndef EventTemplate_h
 #define EventTemplate_h
-#include "Math.h"
+#include "OrageMath.h"
 #include "boost/signals2.hpp"
 // https://scicomp.ethz.ch/public/manual/Boost/1.55.0/signals2.pdf
 #include "ModuleTypes.h"
@@ -72,11 +72,11 @@ namespace ORAGE {
         struct ClockEvent : public BaseEvent{
             float timeUnit;
             float progress;
-            Math::FRACTION_LIST list;
+            OrageMath::FRACTION_LIST list;
             bool is(int num, int den){
                 return find(list.begin(), list.end(), make_pair(num, den)) != list.end();
             }
-            ClockEvent(string type, float timeUnit, float progress, Math::FRACTION_LIST list):
+            ClockEvent(string type, float timeUnit, float progress, OrageMath::FRACTION_LIST list):
             BaseEvent(type),
             timeUnit(timeUnit),
             progress(progress),
