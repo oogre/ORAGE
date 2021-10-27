@@ -23,7 +23,6 @@ namespace reza {
             vector<ViewRef> btns;
             OrageMenuList(string name, const WindowRef &window) : SuperCanvas(name, window){
                 cRand = Rand(ID++);
-                setColorBack(ColorA(cRand.nextFloat(), cRand.nextFloat(), cRand.nextFloat() ,0.75));
                 onMouseEnter([&](ci::app::MouseEvent &event){
                     setVisible(true);
                 });

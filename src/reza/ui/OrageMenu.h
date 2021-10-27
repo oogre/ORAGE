@@ -17,8 +17,7 @@ namespace reza {
         using namespace ci::app;
         using namespace std;
         using namespace reza::ui;
-        
-        
+        using namespace ORAGE::COMPONENTS;
         typedef ORAGE::COMMON::MenuEvent<fs::path> EvtMenu;
         typedef ORAGE::COMMON::EventTemplate<fs::path, EvtMenu> EvtMenuHandler;
         
@@ -48,27 +47,17 @@ namespace reza {
                 return OrageMenuRef(new OrageMenu(ci::app::getWindow()));
             }
             void init(){
-                for(auto btn : btns){
-                    removeSubView(btn->getName());
-                    btn->clear();
-                }
-                btns.clear();
-                clear();
                 setSize(vec2(getWindowWidth(), 25));
-                setColorBack(ColorA(1, 0, 0, 0.75));
+                setColorBack(ColorA(1, 1, 1, 0.25));
                 setColorBounds(ColorA(1, 1, 1, 1));
                 
-                std::string path = getAssetPath("modules").string();
-                for (const auto & entry : fs::directory_iterator(path)){
+                for (const auto & entry : fs::directory_iterator(getAssetPath("modules").string())){
                     if(entry.is_directory()){
                         Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
                         OrageMenuItemRef btn = OrageMenuItem::create(entry.path().filename().string(), format);
                         btn->setSize(vec2(100, 25));
-                        if(btns.size()==0){
-                            addSubView(btn);
-                        }else{
-                            addSubViewEastOf(btn, btns.back()->getName());
-                        }
+                        if(btns.size()==0) addSubView(btn);
+                        else addSubViewEastOf(btn, btns.back()->getName());
                         addSubViewToHeader(btn);
                         btns.push_back(btn);
                         for (const auto & subEntry : fs::directory_iterator(entry.path())){
@@ -76,19 +65,18 @@ namespace reza {
                                 string name = subEntry.path().filename().string();
                                 string ext = subEntry.path().extension().string();
                                 name = name.substr(0, name.length() - ext.length());
-                                if(ext == ".fs"){
-                                    btn->addEntry(name)->setCallback([&, subEntry](bool a){
-                                        if(a){
-                                            EvtMenuHandler::eventTrigger({"menu", subEntry.path(), ORAGE::COMPONENTS::TYPES::ISF});
-                                        }
-                                    });
-                                }else if(ext == ".json"){
-                                    btn->addEntry(name)->setCallback([&, subEntry](bool a){
-                                        if(a){
-                                            EvtMenuHandler::eventTrigger({"menu", subEntry.path(), ORAGE::COMPONENTS::TYPES::CONTROLLER});
-                                        }
-                                    });
-                                }
+                                TYPES currentType = TYPES::NONE;
+                                if(ext == ".fs") currentType = TYPES::ISF;
+                                else if(ext == ".js") currentType = TYPES::CONTROLLER;
+                                if (currentType == TYPES::NONE) continue;
+                                btn->addEntry(name)->setCallback([&, subEntry, currentType](bool a){
+                                    if(a){
+                                        EvtMenuHandler::eventTrigger({"menu", subEntry.path(), currentType});
+                                    }
+                                });
+                                Conf conf = Config::getConfig(currentType);
+                                btn->setColorBack(conf.bgColor);
+                                btn->subMenu->setColorBack(conf.bgColor);
                             }
                         }
                     }

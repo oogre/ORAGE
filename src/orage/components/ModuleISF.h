@@ -38,6 +38,8 @@ namespace ORAGE {
             ModuleISF(string name, ISFDocRef myDoc, int width, int height) :
                 Module(name), myDoc(myDoc)
             {
+                moduleType = TYPES::ISF;
+                UI->setColorBack(Config::getConfig(moduleType).bgColor);
                 string outputFrag;
                 string outputVert;
                 VVGL::GLVersion version = VVGL::GLVersion::GLVersion_4;
@@ -50,11 +52,6 @@ namespace ORAGE {
                 ISFVal PASSINDEXmax (ISFValType::ISFValType_Long, numeric_limits<int>::max());
                 ISFVal PASSINDEXval (ISFValType::ISFValType_Long, 0);
                 addValue("PASSINDEX", "", "", ISFValType::ISFValType_Long, PASSINDEXmin, PASSINDEXmax, PASSINDEXval);
-                
-                ISFVal FRAMEINDEXmin(ISFValType::ISFValType_Long, 0);
-                ISFVal FRAMEINDEXmax(ISFValType::ISFValType_Long, numeric_limits<int>::max());
-                ISFVal FRAMEINDEXval(ISFValType::ISFValType_Long, 0);
-                addValue("FRAMEINDEX", "", "", ISFValType::ISFValType_Long, FRAMEINDEXmax, FRAMEINDEXval);
                 
                 ISFVal RENDERSIZEmin (ISFValType::ISFValType_Point2D, 1, 1);
                 ISFVal RENDERSIZEmax (ISFValType::ISFValType_Point2D, 1920, 1080);

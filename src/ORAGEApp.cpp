@@ -2,6 +2,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "ModuleISF.h"
+#include "ModuleController.h"
 #include "cables.h"
 #include "ModuleTypes.h"
 #include "OrageMenu.h"
@@ -36,7 +37,7 @@ void ORAGEApp::setup()
             module = ModuleISF::create(evt.target.filename().string(), CreateISFDocRef(evt.target.string()));
         }
         else if(evt.moduleType == TYPES::CONTROLLER){
-            
+            module = ModuleController::create(evt.target.filename().string(), evt.target.string());
         }
         if(!module)return;
         module->setOrigin(vec2(100, 100));

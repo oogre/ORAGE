@@ -18,6 +18,7 @@
 		00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		807E8053D4B44512BB045048 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8BA52D4002A743949D082A1F /* CinderApp.icns */; };
+		885EA28C27297FE200F2E0EB /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 885EA28427297FE200F2E0EB /* duktape.c */; };
 		88F37D57271898F70095955A /* VVGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F37D55271898F70095955A /* VVGL.framework */; };
 		88F37D58271898F80095955A /* VVISF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F37D56271898F70095955A /* VVISF.framework */; };
 		88F37D59271899020095955A /* VVGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F37D55271898F70095955A /* VVGL.framework */; };
@@ -92,6 +93,10 @@
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		883F880A2725944C0074272E /* OrageMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenu.h; sourceTree = "<group>"; };
 		883F880B27259F490074272E /* OrageMenuItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenuItem.h; sourceTree = "<group>"; };
+		885EA28227297FE200F2E0EB /* duk_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_config.h; sourceTree = "<group>"; };
+		885EA28327297FE200F2E0EB /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
+		885EA28427297FE200F2E0EB /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
+		885EA28D272989A100F2E0EB /* ModuleController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleController.h; sourceTree = "<group>"; };
 		88F37CDE271897370095955A /* macos_universal_binary.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = macos_universal_binary.sh; sourceTree = "<group>"; };
 		88F37CDF271897370095955A /* VVISF 3.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "VVISF 3.xcodeproj"; sourceTree = "<group>"; };
 		88F37CE2271897370095955A /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -301,6 +306,7 @@
 		01B97315FEAEA392516A2CEA /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				885EA28127297FE200F2E0EB /* Ducktape */,
 				88F37D5D271899AB0095955A /* UI */,
 				88F37D09271897370095955A /* VVGL */,
 				88F37CDC271897370095955A /* VVISF */,
@@ -394,6 +400,16 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		885EA28127297FE200F2E0EB /* Ducktape */ = {
+			isa = PBXGroup;
+			children = (
+				885EA28227297FE200F2E0EB /* duk_config.h */,
+				885EA28327297FE200F2E0EB /* duktape.h */,
+				885EA28427297FE200F2E0EB /* duktape.c */,
+			);
+			path = Ducktape;
 			sourceTree = "<group>";
 		};
 		88F37CDC271897370095955A /* VVISF */ = {
@@ -746,6 +762,7 @@
 				88F37DD527189A230095955A /* Module.h */,
 				88F37DD927189D0B0095955A /* ModuleISF.h */,
 				88F3E2F627285D6800B5731B /* ModuleTypes.h */,
+				885EA28D272989A100F2E0EB /* ModuleController.h */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -870,6 +887,7 @@
 				88F37DC3271899AB0095955A /* Spacer.cpp in Sources */,
 				88F37DC2271899AB0095955A /* CocoaWindowCanvas.mm in Sources */,
 				88F37DB7271899AB0095955A /* Plotter.cpp in Sources */,
+				885EA28C27297FE200F2E0EB /* duktape.c in Sources */,
 				88F37DBB271899AB0095955A /* WindowCanvas.cpp in Sources */,
 				88F37DB3271899AB0095955A /* XYPad.cpp in Sources */,
 				88F37DC4271899AB0095955A /* MultiSlider.cpp in Sources */,

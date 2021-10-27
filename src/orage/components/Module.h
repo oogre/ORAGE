@@ -32,10 +32,13 @@ namespace ORAGE {
             float time;
             float dTime;
             vec4 date;
+        protected :
+            TYPES moduleType;
         public :
             map<string, CustomISFAttrRef> parameters;
             OrageCanvasRef UI;
             Module(string name){
+                moduleType = TYPES::NONE;
                 id = Module::ID++;
                 time = oldTime  = getElapsedSeconds();
                 
@@ -48,6 +51,11 @@ namespace ORAGE {
                 ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<float>::max());
                 ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
                 parameters["TIMEDELTA"] = CustomISFAttr::create("TIMEDELTA", "", "", ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                
+                ISFVal FRAMEINDEXmin(ISFValType::ISFValType_Long, 0);
+                ISFVal FRAMEINDEXmax(ISFValType::ISFValType_Long, numeric_limits<int>::max());
+                ISFVal FRAMEINDEXval(ISFValType::ISFValType_Long, 0);
+                addValue("FRAMEINDEX", "", "", ISFValType::ISFValType_Long, FRAMEINDEXmax, FRAMEINDEXval);
                 
                 UI = OrageCanvas::create( name + to_string(id) );
                 UI->init();

@@ -20,6 +20,7 @@ namespace reza {
             typedef std::shared_ptr<class OrageMenuItem> OrageMenuItemRef;
             bool initialized = false;
             State oldState = State::NORMAL;
+            std::function<void( ci::app::MouseEvent &event )> onMouseOverFn;
             std::function<void( ci::app::MouseEvent &event )> onMouseEnterFn;
             std::function<void( ci::app::MouseEvent &event )> onMouseLeaveFn;
         public :
@@ -27,12 +28,10 @@ namespace reza {
             {
                 return OrageMenuItemRef( new OrageMenuItem( name, format));
             }
-            
             OrageMenuItem( std::string name, const Format &format = Format()) :
             Button(name, false, format)
             {
             }
-            
             ButtonRef addEntry(string name){
                 if(!subMenu){
                     subMenu = OrageMenuList::create("");
@@ -41,9 +40,12 @@ namespace reza {
                         subMenu->setVisible(true);
                     });
                     onMouseLeave([&](ci::app::MouseEvent &event){
-                        if( !subMenu->isHit( event.getPos() ) ) {
+                        if( !subMenu->isHit( event.getPos()) ) {
                             subMenu->setVisible(false);
                         }
+                    });
+                    onMouseOver([&](ci::app::MouseEvent &event){
+                        subMenu->setVisible(true);
                     });
                 }
                 Button::Format format = Button::Format().label(true).align(Alignment::CENTER).size(25);
@@ -56,17 +58,16 @@ namespace reza {
                 btn->setVisible(false);
                 return btn;
             }
-            
-            
             virtual void draw() override{
                 Button::draw();
             }
-            
             virtual ~OrageMenuItem(){
             }
-            
             virtual void onMouseEnter( const std::function<void( ci::app::MouseEvent &event )> &callback ){
                 onMouseEnterFn = callback;
+            }
+            virtual void onMouseOver( const std::function<void( ci::app::MouseEvent &event )> &callback ){
+                onMouseOverFn = callback;
             }
             virtual void onMouseLeave( const std::function<void( ci::app::MouseEvent &event )> &callback ){
                 onMouseLeaveFn = callback;
@@ -75,15 +76,17 @@ namespace reza {
                 Button::mouseMove(event);
                 State newState = getState();
                 if(newState == State::OVER && oldState == State::NORMAL && onMouseEnterFn){
-                    onMouseEnterFn(event);
+                    if(!!onMouseEnterFn)onMouseEnterFn(event);
                 }
                 if(newState == State::NORMAL && oldState == State::OVER && onMouseLeaveFn){
-                    onMouseLeaveFn(event);
+                    if(!!onMouseLeaveFn)onMouseLeaveFn(event);
+                }
+                if(newState == State::OVER){
+                    if(!!onMouseEnterFn)onMouseEnterFn(event);
                 }
                 oldState = newState;
             }
             OrageMenuListRef subMenu;
-            
         };//OrageMenuItem
         typedef std::shared_ptr<class OrageMenuItem> OrageMenuItemRef;
     }// ui
