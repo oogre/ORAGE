@@ -95,10 +95,10 @@ namespace ORAGE {
             }
             public :
             virtual bool addEventListener(const string type, const typename EventSignal::slot_type slot) {
-                if(sigMap.find(type) == sigMap.end()){
-                    sigMap.insert(pair<string, EventSignal>(type,EventSignal()));
-                }
-                sigMap.at(type).connect(slot);
+                //if(sigMap.find(type) == sigMap.end()){
+                //    sigMap.insert(pair<string, EventSignal>(type,EventSignal()));
+                //}
+                //sigMap.at(type).connect(slot);
                 return true;
             }
             template<typename Callable>

@@ -51,6 +51,9 @@
     <Filter Include="Source Files\Blocks\VVGL\lib">
       <UniqueIdentifier>{edfa6340-279b-4c64-a81e-83f770be1ee9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Blocks\Ducktape">
+      <UniqueIdentifier>{87a7416f-61ec-407f-8465-5aaedb57c401}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ORAGEApp.cpp">
@@ -208,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Blocks\VVISF\src\VVISF_StringUtils.cpp">
       <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\Ducktape\duktape.c">
+      <Filter>Source Files\Blocks\Ducktape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -519,6 +525,12 @@
     </ClInclude>
     <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Win_global.hpp">
       <Filter>Source Files\Blocks\VVISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\Ducktape\duk_config.h">
+      <Filter>Source Files\Blocks\Ducktape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\Ducktape\duktape.h">
+      <Filter>Source Files\Blocks\Ducktape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
