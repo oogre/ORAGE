@@ -8,7 +8,7 @@
 #ifndef EventTemplate_h
 #define EventTemplate_h
 #include "OrageMath.h"
-#include "boost/signals2.hpp"
+#include <boost/signals2.hpp>
 // https://scicomp.ethz.ch/public/manual/Boost/1.55.0/signals2.pdf
 #include "ModuleTypes.h"
 namespace ORAGE {

@@ -8,7 +8,7 @@
 #ifndef ModuleController_h
 #define ModuleController_h
 #include "Module.h"
-#include "duktape.h"
+#include <dukglue/dukglue.h>
 
 namespace ORAGE {
     namespace COMPONENTS {
@@ -20,19 +20,44 @@ namespace ORAGE {
         class ModuleController : public Module{
             typedef shared_ptr<ModuleController> ModuleControllerRef;
             string source;
+            duk_context *ctx;
+            DukValue testObj;
+            char * _path;
         public :
+            DukValue push_file_as_string(const char *filename) {
+                std::ifstream t(filename);
+                std::stringstream buffer;
+                buffer << t.rdbuf();
+                std::string s = buffer.str();
+                char* pString = new char[s.length() + 1];
+                std::copy(s.c_str(), s.c_str() + s.length() + 1, pString);
+                return dukglue_peval<DukValue>(ctx, pString);
+                
+            }
+            static duk_ret_t native_print(duk_context *ctx) {
+                duk_push_string(ctx, " ");
+                duk_insert(ctx, 0);
+                duk_join(ctx, duk_get_top(ctx) - 1);
+                printf("%s\n", duk_to_string(ctx, -1));
+                return 0;
+            }
+            
             ModuleController(string name, string path) :
-                Module(name)
+                Module(name), _path(&path[0])
             {
                 moduleType = TYPES::CONTROLLER;
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
                 
-                std::ifstream t(path);
-                std::stringstream buffer;
-                buffer << t.rdbuf();
-                source = buffer.str();
+                ctx = duk_create_heap_default();
+                duk_push_c_function(ctx, native_print, DUK_VARARGS);
+                duk_put_global_string(ctx, "print");
+                testObj = push_file_as_string(_path);
+                string value = dukglue_pcall_method<string>(ctx, testObj, "getConf", NULL);
+                cout<<value<<endl;
             }
-            virtual ~ModuleController(){}
+            virtual ~ModuleController(){
+                //duk_destroy_heap(ctx);
+            }
             static ModuleControllerRef create(string name, string path){
                 return ModuleControllerRef(new ModuleController(name, path));
             }
@@ -52,12 +77,12 @@ namespace ORAGE {
             }
             virtual void draw() override {
                 Module::draw();
-                string src = source;
-                updateSource(&src);
-                duk_context *ctx = duk_create_heap_default();
-                duk_eval_string(ctx, &src[0]);
-                cout<<duk_get_string(ctx, -1)<<endl;;
-                duk_destroy_heap(ctx);
+                //string src = source;
+                //updateSource(&src);
+                //duk_eval_string(ctx, &src[0]);
+                //https://github.com/Aloshi/dukglue
+                string value = dukglue_pcall_method<string>(ctx, testObj, "main", getValue("TIME")->currentVal().getDoubleVal());
+                cout<<value<<endl;
             }
         };
         typedef shared_ptr<ModuleController> ModuleControllerRef;
