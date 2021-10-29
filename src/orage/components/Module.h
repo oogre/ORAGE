@@ -67,7 +67,7 @@ namespace ORAGE {
                 }
                 return this;
             }
-            void addValue(const std::string & inName,
+            CustomISFAttrRef addValue(const std::string & inName,
                           const std::string & inDesc,
                           const std::string & inLabel,
                           const ISFValType & inType,
@@ -78,6 +78,7 @@ namespace ORAGE {
                           const std::vector<std::string> * inLabels=nullptr,
                           const std::vector<int32_t> * inVals=nullptr){
                 parameters[inName] = CustomISFAttr::create(inName, inDesc, inLabel, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals);
+                return parameters[inName];
             }
             
             bool hasValue(string name){

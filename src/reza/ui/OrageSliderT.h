@@ -125,6 +125,7 @@ namespace reza {
             virtual void setValue( T value ) override {
                 double nValue = lmap<double>( value, SliderT<T>::getMin(), SliderT<T>::getMax(), 0.0, 1.0 );
                 SliderT<T>::setValue(value);
+                SliderT<T>::trigger(true);
                 auto it = slaves.begin(), end = slaves.end();
                 while(it != end){
                     T lValue = lmap<T>( nValue, 0.0, 1.0, (*it)->getMin(), (*it)->getMax() );

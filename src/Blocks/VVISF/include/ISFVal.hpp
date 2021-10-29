@@ -119,6 +119,11 @@ struct VVISF_EXPORT ISFVal	{
 		inline double getPointValByIndex(const int & inIndex) { if (_type!=ISFValType_Point2D || inIndex<0 || inIndex>1) return 0.; return _val.pointVal[inIndex]; }
 		//!	Does nothing if the receiver's value type isn't Point2D or the passed index is out of bounds, otherwise it sets the value at the passed index.
 		inline void setPointValByIndex(const int & inIndex, const double & inVal) { if (_type!=ISFValType_Point2D || inIndex<0 || inIndex>1) return; _val.pointVal[inIndex]=inVal; }
+    
+        inline void putValue(const ISFVal inVal) {
+            _type = inVal._type;
+            _val = inVal._val;
+        }
 		//!	Returns a null if the receiver isn't a color-type object, otherwise it returns a pointer to the four-element array containing the color values.  This pointer is only valid for the lifetime of the receiver.
 		inline double * getColorValPtr() { if (_type!=ISFValType_Color) return nullptr; return &(_val.colorVal[0]); }
 		//!	Does nothing if the receiver's value type isn't color or the passed index is out of bounds, otherwise it returns the value of the color channel at the passed index.
