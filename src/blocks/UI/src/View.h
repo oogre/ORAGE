@@ -47,7 +47,7 @@ class View : public Responder, public std::enable_shared_from_this<class View> {
 	virtual void setEnabled( bool enabled );
 
 	bool isVisible();
-	void setVisible( bool visible );
+	virtual void setVisible( bool visible );
 
 	virtual void setOrigin( glm::vec2 origin );
 	virtual glm::vec2 getOrigin( bool recursive = true );
@@ -68,6 +68,7 @@ class View : public Responder, public std::enable_shared_from_this<class View> {
 	}
 	const Paddingf &getPadding();
 
+    virtual ViewWeakRef getSuperView();
 	virtual void addSubView( ViewRef subView );
     virtual void removeSubView( std::string subViewName );
 

@@ -26,6 +26,7 @@ namespace ORAGE {
         class Module {
             typedef shared_ptr<Module> ModuleRef;
             static int ID;
+            static map<string, int> IDS;
             int id;
             
             float oldTime;
@@ -40,6 +41,11 @@ namespace ORAGE {
             Module(string name){
                 moduleType = TYPES::NONE;
                 id = Module::ID++;
+                if(Module::IDS.count(name)==0){
+                    Module::IDS[name] = 0;
+                }else{
+                    Module::IDS[name]++;
+                }
                 time = oldTime  = getElapsedSeconds();
                 
                 ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
@@ -57,7 +63,7 @@ namespace ORAGE {
                 ISFVal FRAMEINDEXval(ISFValType::ISFValType_Long, 0);
                 addValue("FRAMEINDEX", "", "", ISFValType::ISFValType_Long, FRAMEINDEXmax, FRAMEINDEXval);
                 
-                UI = OrageCanvas::create( name + to_string(id) );
+                UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
                 UI->init();
             }
             
@@ -124,6 +130,7 @@ namespace ORAGE {
             }
         };//Module {
         int Module::ID = 0;
+        map<string, int> Module::IDS;
         typedef shared_ptr<Module> ModuleRef;
     }//namespace COMPONENTS {
 }//namespace ORAGE {

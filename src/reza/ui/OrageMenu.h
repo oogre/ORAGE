@@ -47,10 +47,9 @@ namespace reza {
                 return OrageMenuRef(new OrageMenu(ci::app::getWindow()));
             }
             void init(){
-                setSize(vec2(getWindowWidth(), 25));
+                
                 setColorBack(ColorA(1, 1, 1, 0.25));
                 setColorBounds(ColorA(1, 1, 1, 1));
-                
                 for (const auto & entry : fs::directory_iterator(getAssetPath("modules").string())){
                     if(entry.is_directory()){
                         Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
@@ -65,26 +64,29 @@ namespace reza {
                                 string name = subEntry.path().filename().string();
                                 string ext = subEntry.path().extension().string();
                                 name = name.substr(0, name.length() - ext.length());
-                                TYPES currentType = TYPES::NONE;
-                                if(ext == ".fs") currentType = TYPES::ISF;
-                                else if(ext == ".js") currentType = TYPES::CONTROLLER;
+                                ORAGE::COMPONENTS::TYPES currentType = ORAGE::COMPONENTS::TYPES::NONE;
+                                if(ext == ".fs") currentType = ORAGE::COMPONENTS::TYPES::ISF;
+                                else if(ext == ".js") currentType = ORAGE::COMPONENTS::TYPES::CONTROLLER;
                                 if (currentType == TYPES::NONE) continue;
                                 btn->addEntry(name)->setCallback([&, subEntry, currentType](bool a){
                                     if(a){
                                         EvtMenuHandler::eventTrigger({"menu", subEntry.path(), currentType});
                                     }
                                 });
-                                Conf conf = Config::getConfig(currentType);
+                                ORAGE::COMPONENTS::Conf conf = ORAGE::COMPONENTS::Config::getConfig(currentType);
                                 btn->setColorBack(conf.bgColor);
                                 btn->subMenu->setColorBack(conf.bgColor);
                             }
                         }
                     }
                 }
+                
+                
                 initialized = true;
             }
             virtual void draw() override {
                 if(!initialized)init();
+                setSize(vec2(getWindowWidth(), 25));
                 SuperCanvas::draw();
                 if(isMinified()){
                     setMinified(false);

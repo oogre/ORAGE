@@ -20,6 +20,7 @@ class ORAGEApp : public App {
     vector<ModuleRef> modules;
     CablesRef cables;
     OrageMenuRef menu;
+    gl::Context * mMainWinCtx;
   public:
 	void setup() override;
 	void update() override;
@@ -33,11 +34,14 @@ void ORAGEApp::setup()
     menu = OrageMenu::create();
     menu->addEventListener("menu", [&](EvtMenu evt){
         ModuleRef module;
+        string name = evt.target.filename().string();
+        string ext = evt.target.extension().string();
+        name = name.substr(0, name.length() - ext.length());
         if(evt.moduleType == TYPES::ISF){
-            module = ModuleISF::create(evt.target.filename().string(), CreateISFDocRef(evt.target.string()));
+            module = ModuleISF::create(name, CreateISFDocRef(evt.target.string()));
         }
         else if(evt.moduleType == TYPES::CONTROLLER){
-            module = ModuleController::create(evt.target.filename().string(), evt.target.string());
+            module = ModuleController::create(name, evt.target.string());
         }
         if(!module)return;
         module->setOrigin(vec2(100, 100));
@@ -46,6 +50,7 @@ void ORAGEApp::setup()
         });
         modules.push_back(module);
     });
+    mMainWinCtx = gl::Context::getCurrent();
 }
 
 void ORAGEApp::update()
@@ -68,9 +73,11 @@ void ORAGEApp::update()
 
 void ORAGEApp::draw()
 {
-    gl::clear( Color( 0, 0, 0 ) );
-    for(auto module : modules){
-        module->draw();
+    if(mMainWinCtx == gl::Context::getCurrent()){
+        gl::clear( Color( 0, 0, 0 ) );
+        for(auto module : modules){
+            module->draw();
+        }
     }
 }
 

@@ -58,6 +58,10 @@ namespace reza {
                     textureViewRef = TextureView::create( name+"-Preview", ParameterBase::textureRef, TextureView::Format().height(150) );
                 }
                 buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false));
+                auto bgColor = getCableColor(true);
+                bgColor *= 0.5;
+                bgColor.a = 1.0f;
+                buttonRef->setColorBack(bgColor);
                 buttonRef->setCallback([&](bool a) {
                     if(a){
                         EvtHandler::eventTrigger({
@@ -96,6 +100,11 @@ namespace reza {
                 ParameterBase::textureInRef = &ParameterTexture::DEFAULT_INPUT;
                 ParameterBase::textureSample = 0;
             }
+            virtual void setVisible( bool visible ) override{
+                ParameterBase::setVisible(visible);
+                buttonRef->setVisible(visible);
+            }
+            
             FboRef mFbo;
             CameraPersp mCam;
             Format mFormat;

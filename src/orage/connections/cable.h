@@ -69,17 +69,47 @@ namespace ORAGE {
                 if(!!mousePos){
                     render();
                 }
-                if(isMouseOver()){
-                    gl::color( Color( 1.0f, 0.5f, 0.25f ) );
-                }else{
-                    gl::color( Color::white() );
-                }
+                gl::color(A->getCableColor(isMouseOver()));
                 gl::draw( path );
                 gl::color( Color::white() );
             }
             void render(){
                 vec2 pStart = A->buttonRef->getBounds().getCenter();
                 vec2 pStop  = !!B ? B->buttonRef->getBounds().getCenter() : vec2(mousePos->x, mousePos->y);
+                
+                if( !!A && !A->buttonRef->isVisible() && !A->buttonRef->getSuperView().expired() ) {
+                    auto parent = A->buttonRef->getSuperView().lock();
+                    auto subViews = parent->getSubViews();
+                    for (int i = 0 ; i < subViews.size() ; i ++){
+                        if(subViews.at(i) == A->buttonRef){
+                            int len = subViews.size();
+                            pStart.y = parent->getBounds().getUpperRight().y + parent->getHeight() * (i/(float)len);
+                            if(A->isInput()){
+                                pStart.x = parent->getBounds().getUpperLeft().x;
+                            }else{
+                                pStart.x = parent->getBounds().getUpperRight().x;
+                            }
+                            break;
+                        }
+                    }
+                }
+                if(!!B && !B->buttonRef->isVisible() && !B->buttonRef->getSuperView().expired() ) {
+                    auto parent = B->buttonRef->getSuperView().lock();
+                    auto subViews = parent->getSubViews();
+                    for (int i = 0 ; i < subViews.size() ; i ++){
+                        if(subViews.at(i) == B->buttonRef){
+                            int len = subViews.size();
+                            pStop.y = parent->getBounds().getUpperRight().y + parent->getHeight() * (i/(float)len);
+                            if(B->isInput()){
+                                pStop.x = parent->getBounds().getUpperLeft().x;
+                            }else{
+                                pStop.x = parent->getBounds().getUpperRight().x;
+                            }
+                            break;
+                        }
+                    }
+                }
+                
                 vec2 pCenter = (pStart + pStop)*0.5f;
                 vec2 p1 = vec2(pCenter.x, pStart.y);
                 vec2 p2 = vec2(pCenter.x, pStop.y);

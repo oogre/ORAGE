@@ -62,7 +62,6 @@ namespace reza {
                 Rectf refRect = getBounds( true );
                 closeBtn->setOrigin(refOrigin + vec2(refRect.getWidth() - 50, 2.5));
                 addSubView(closeBtn);
-                addSubViewToHeader(closeBtn);
             }
             
             ParameterFloatRef addParameter(const std::string name, double *value, double min = 0.0f, double max = 1.0f, ParameterFloat::Format format = ParameterFloat::Format())

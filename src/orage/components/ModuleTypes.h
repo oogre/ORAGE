@@ -12,31 +12,35 @@
 
 namespace ORAGE {
     namespace COMPONENTS {
+        using namespace ci;
+        using namespace std;
+        
+        
         enum TYPES {
             NONE = 0,
             ISF = 1,
-            CONTROLLER = 2
+            CONTROLLER = 3
         };
         
         struct Conf{
-            ci::ColorA bgColor;
+            ColorA bgColor;
         };
         
         class Config {
-            ci::Rand r;
+            Rand r;
             static std::map<TYPES, Conf> configs;
         public :
             static Conf getConfig(TYPES type){
                 if(configs.count(type) == 0){
-                    ci::Rand r = ci::Rand((int)type);
+                    Rand r = Rand((int)type);
                     configs[type] = {
-                        ci::ColorA(r.nextFloat(), r.nextFloat(), r.nextFloat(), 0.75)
+                        ColorA(CM_HSV, r.nextFloat(), 1.0, 0.15, 1.0)
                     };
                 }
                 return configs[type];
             }
         };
-        std::map<TYPES, Conf> Config::configs;
+        map<TYPES, Conf> Config::configs;
     }
 }
 

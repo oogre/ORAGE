@@ -48,6 +48,10 @@ namespace reza {
                 }
                 sliderRef = OrageSliderT<double>::create( name, value, min, max, OrageSliderT<double>::Format().value(true).precision(2).label(true).crossFader(true) );
                 buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false));
+                auto bgColor = getCableColor(true);
+                bgColor *= 0.5;
+                bgColor.a = 1.0f;
+                buttonRef->setColorBack(bgColor);
                 buttonRef->setCallback([&](bool a) {
                     if(a){
                         EvtHandler::eventTrigger({
@@ -84,6 +88,12 @@ namespace reza {
                 ParameterFloatRef _other = std::dynamic_pointer_cast<reza::ui::ParameterFloat>(other);
                 sliderRef->removeSlave(_other->sliderRef);
                 _other->sliderRef->removeSlave(sliderRef);
+            }
+            virtual void setVisible( bool visible ) override{
+                ParameterBase::setVisible(visible);
+                buttonRef->setVisible(visible);
+                limiterRef->setVisible(visible);
+                sliderRef->setVisible(visible);
             }
             OrageSliderdRef sliderRef;
             RangedRef limiterRef;

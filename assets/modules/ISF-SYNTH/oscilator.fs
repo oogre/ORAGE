@@ -27,9 +27,9 @@
 	{
 			"NAME" :	"freq",
 			"TYPE" :	"float",
-			"DEFAULT" :	60.0,
+			"DEFAULT" :	1.0,
 			"MIN" :	0.0,
-			"MAX" :	600.0
+			"MAX" :	10.0
 	},
 	{
 			"NAME" :	"sync",
@@ -143,7 +143,7 @@ void main()
 	float modFactor = mix(0, modI, _tex0_sample);
 
 	float phase = phaseProcess( isf_FragNormCoord.xy,
-                                freq * 0.016,
+                                freq ,
                                 sync,
                                 dX + mod * modFactor );
     float value = 0.0;

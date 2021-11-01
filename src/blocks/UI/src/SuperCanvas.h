@@ -30,7 +30,7 @@ class SuperCanvas : public Canvas {
 	bool isHitHeader( const glm::vec2 &pt );
 	void addSubViewToHeader( ViewRef view );
 
-	void setVisible( bool visible );
+	virtual void setVisible( bool visible ) override;
 
   protected:
 	void setup() override;

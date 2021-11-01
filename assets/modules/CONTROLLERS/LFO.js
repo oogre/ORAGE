@@ -117,7 +117,7 @@ var LFO = {
     this.conf.OUTPUTS[this.conf.MAP_OUT["SIN"]].VALUE = Math.sin(saw * 6.28);
     this.conf.OUTPUTS[this.conf.MAP_OUT["COS"]].VALUE = Math.cos(saw * 6.28);
     this.conf.OUTPUTS[this.conf.MAP_OUT["REC"]].VALUE = saw > 0.5;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["TRI"]].VALUE = Math.pow(Math.abs(value * 2 - 1), exp);
+    this.conf.OUTPUTS[this.conf.MAP_OUT["TRI"]].VALUE = Math.abs(saw * 2 - 1);
     return JSON.stringify(this.conf.OUTPUTS); 
   },
   getConf : function() {

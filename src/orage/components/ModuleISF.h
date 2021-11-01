@@ -10,8 +10,11 @@
 
 #include "ISFDoc.hpp"
 #include "Module.h"
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/wrapper.h"
 
-
+#include <exception>
 namespace ORAGE {
     namespace COMPONENTS {
         using namespace ci;
@@ -30,8 +33,9 @@ namespace ORAGE {
             mat4 mDefaultProjection;
             vector<ParameterTextureRef> inputs;
             vec2 defSize;
-            map <string, WindowCanvasRef> windowCanvas;
-            int winOutCOUNT = 0;
+            vector<ci::signals::Connection> signalDrawHandlers;
+            vector<WindowRef> windows;
+            int count =0;
         public :
             vector<ParameterTextureRef> outputs;
             
@@ -58,21 +62,14 @@ namespace ORAGE {
                 ISFVal RENDERSIZEval (ISFValType::ISFValType_Point2D, (double)width, (double)height);
                 addValue("RENDERSIZE", "", "", ISFValType::ISFValType_Point2D, RENDERSIZEmin, RENDERSIZEmax, RENDERSIZEval);
                 
-//                UI->addButton("New Window", false)->setCallback(
-//                                                                 [this](bool a) {
-//                                                                     if(a){
-//                                                                         createOutputWindow();
-//                                                                     }
-//                                                                 });
-                
                 outputs.push_back(UI->addOutput("output", outputs.size()));
                 outputs.back()->setSize(ivec2(width, height));
                 
                 for(auto input : myDoc->inputs()){
                     if(input->type() == ISFValType::ISFValType_Float){
                         string name = input->name();
-                        addValue(input->name(), "", "", ISFValType::ISFValType_Float, input->minVal(), input->maxVal(), input->currentVal());
-                        UI->addParameter(input->name(), input->currentVal().getDoubleValPtr(), input->minVal().getDoubleVal(), input->maxVal().getDoubleVal(), ParameterFloat::Format().input(true))
+                        addValue(name, "", "", ISFValType::ISFValType_Float, input->minVal(), input->maxVal(), input->currentVal());
+                        UI->addParameter(name, input->currentVal().getDoubleValPtr(), input->minVal().getDoubleVal(), input->maxVal().getDoubleVal(), ParameterFloat::Format().input(true))
                         ->sliderRef->setCallback([&, name](double val){
                             setValue(name, ISFVal(ISFValType::ISFValType_Float, val));
                         });
@@ -81,23 +78,68 @@ namespace ORAGE {
                     }
                 }
                 
-                UI->addParameter("size_x", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+0, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[0], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[0], ParameterFloat::Format().input(true))->sliderRef->setCallback([&](double val)
+                Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
+                UI->addToggle("MORE", false, format)
+                ->setCallback([&](bool value){
+                    UI->getSubView("New Window")->setVisible(value);
+                    UI->parameters["size_x"]->setVisible(value);
+                    UI->parameters["size_y"]->setVisible(value);
+                    UI->autoSizeToFitSubviews();
+                });
+                
+                UI->addButton("New Window", false, format)
+                ->setCallback([&, name](bool a) {
+                    if(a){
+                        RendererGl::Options option = RendererGl::Options().msaa( 0 );
+                        RendererGlRef rendererRef = RendererGl::create( option );
+                        Window::Format format = Window::Format().renderer( rendererRef ).size( vec2(800, 600) );
+                        WindowRef window = App::get()->createWindow(format);
+                        window->setTitle( UI->getName() );
+                        getWindowIndex(0)->getSignalClose().connect(0, [&, window]() {
+                            window->close();
+                        });
+                        auto handler = window->getSignalDraw().connect( [&, window] {
+                            gl::setMatricesWindow( window->getSize() );
+                            gl::clear( ColorA::white() );
+                            gl::draw(outputs.back()->textureRef, Rectf(vec2(0, 0), window->getSize()));
+                        });
+                        signalDrawHandlers.push_back(handler);
+                        windows.push_back(window);
+                    }
+                });
+                UI->addParameter("size_x", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+0, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[0], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[0], ParameterFloat::Format().input(true))->sliderRef
+                ->setCallback([&](double val)
                 {
                     sizeChanged = true;
                 });
-                UI->addParameter("size_y", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+1, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[1], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[1], ParameterFloat::Format().input(true))->sliderRef->setCallback([&](double val)
+                UI->addParameter("size_y", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+1, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[1], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[1], ParameterFloat::Format().input(true))->sliderRef
+                ->setCallback([&](double val)
                 {
                     sizeChanged = true;
                 });
+                
+                UI->parameters["size_x"]->setVisible(false);
+                UI->parameters["size_y"]->setVisible(false);
+                UI->getSubView("New Window")->setVisible(false);
                 UI->autoSizeToFitSubviews();
                 
                 mDefaultProjection = gl::context()->getProjectionMatrixStack()[0];
-                
                 defSize = vec2(*(getValue("RENDERSIZE")->defaultVal().getPointValPtr()+0), *(getValue("RENDERSIZE")->defaultVal().getPointValPtr()+1));
             }
             
             
-            virtual ~ModuleISF(){}
+            virtual ~ModuleISF(){
+                for(auto handler : signalDrawHandlers){
+                    handler.disconnect();
+                }
+                signalDrawHandlers.clear();
+                for(auto window : windows){
+                    try{
+                        window->close();
+                    }catch(cinder::app::ExcInvalidWindow e){}
+                }
+                windows.clear();
+            }
             static ModuleISFRef create(string name, ISFDocRef myDoc, int width = getWindowSize().x, int height = getWindowSize().y){
                 return ModuleISFRef(new ModuleISF(name, myDoc, width, height));
             }
@@ -113,9 +155,8 @@ namespace ORAGE {
                 ScopedFramebuffer fbScp( output->mFbo );
                 ScopedViewport scpVp( ivec2( 0 ), output->mFbo->getSize() );
                 gl::ScopedProjectionMatrix matrix(mDefaultProjection);
-                
-                gl::clear( ColorA(0, 0, 0, 1));
                 gl::ScopedGlslProg glslProg( mShader );
+                gl::clear( ColorA(0, 0, 0, 1));
               
                 for(auto [key, param] : parameters){
                     switch(param->type()){
@@ -126,17 +167,16 @@ namespace ORAGE {
                             //cout<< " event : " <<param->name()<<endl;
                             break;
                         case ISFValType::ISFValType_Bool:
-                            //cout<< " bool : " <<param->name()<<endl;
-                            mShader->uniform( param->name(), (int) param->currentVal().getBoolVal());
+                            mShader->uniform(param->name(), (int) param->currentVal().getBoolVal());
                             break;
                         case ISFValType::ISFValType_Long:
-                            mShader->uniform( param->name(), (int) param->currentVal().getLongVal());
+                            mShader->uniform(param->name(), (int) param->currentVal().getLongVal());
                             break;
                         case ISFValType::ISFValType_Float:
-                            mShader->uniform( param->name(), (float) param->currentVal().getDoubleVal());
+                            mShader->uniform(param->name(), (float) param->currentVal().getDoubleVal());
                             break;
                         case ISFValType::ISFValType_Point2D:
-                            mShader->uniform( param->name(), vec2(param->currentVal().getPointValByIndex(0), param->currentVal().getPointValByIndex(1)));
+                            mShader->uniform(param->name(), vec2(param->currentVal().getPointValByIndex(0), param->currentVal().getPointValByIndex(1)));
                             break;
                         case ISFValType::ISFValType_Color:
                             //cout<< " color : " <<param->name()<<endl;
@@ -171,26 +211,6 @@ namespace ORAGE {
                 gl::color(Color::white());
                 gl::drawSolidRect(Area(vec2(0), defSize));
             }
-//            void createOutputWindow(){
-//                gl::Context* mMainWinCtx = gl::Context::getCurrent();
-//                string name = UI->getName()+toString(winOutCOUNT++);
-//                windowCanvas[name] = WindowCanvas::create(name);
-//                app::WindowRef window = windowCanvas[name]->getWindow();
-//                mMainWinCtx->makeCurrent();
-//                window->getSignalClose().connect( [this, window] {
-//                    windowCanvas.erase(window->getTitle());
-//                });
-//                window->getSignalDraw().connect( [this, window] {
-//                    cout<<"hello"<<endl;
-//                    ParameterTextureRef output = (*outputs.begin());
-//                    gl::draw(output->textureRef, Rectf(vec2(0), getWindowSize()));
-////                    gl::clear(ColorA(1, 0, 0, 1));
-//
-////                    if(modules.size()==0)return;
-////                    Texture2dRef tex = dynamic_pointer_cast<ModuleISF>(modules.back())->outputs.back()->textureRef;
-////                    gl::draw(tex, Rectf(vec2(0), getWindowSize()));
-//                });
-//            }
         };//ModuleISF {
         typedef shared_ptr<ModuleISF> ModuleISFRef;
     }//namespace COMPONENTS {

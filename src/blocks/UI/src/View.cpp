@@ -226,6 +226,9 @@ const Paddingf &View::getPadding()
 	return mPadding;
 }
 
+ViewWeakRef View::getSuperView(){
+    return mSuperView;
+}
 void View::addSubView( ViewRef subView )
 {
 	subView->setup();
