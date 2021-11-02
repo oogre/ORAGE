@@ -29,8 +29,8 @@ namespace ORAGE {
             static map<string, int> IDS;
             int id;
             
-            float oldTime;
-            float time;
+            double oldTime;
+            double time;
             float dTime;
             vec4 date;
         protected :

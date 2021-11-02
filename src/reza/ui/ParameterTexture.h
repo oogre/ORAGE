@@ -57,11 +57,11 @@ namespace reza {
                     type = PARAMETER_TYPE::TEXTURE | PLUG_TYPE::OUT;
                     textureViewRef = TextureView::create( name+"-Preview", ParameterBase::textureRef, TextureView::Format().height(150) );
                 }
-                buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false));
+                buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false).circle(true));
                 auto bgColor = getCableColor(true);
-                bgColor *= 0.5;
                 bgColor.a = 1.0f;
-                buttonRef->setColorBack(bgColor);
+                buttonRef->setColorOutline(getCableColor(true));
+                buttonRef->setColorOutlineHighlight(bgColor);
                 buttonRef->setCallback([&](bool a) {
                     if(a){
                         EvtHandler::eventTrigger({

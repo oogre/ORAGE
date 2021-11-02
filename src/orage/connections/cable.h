@@ -111,6 +111,7 @@ namespace ORAGE {
                 }
                 
                 vec2 pCenter = (pStart + pStop)*0.5f;
+                
                 vec2 p1 = vec2(pCenter.x, pStart.y);
                 vec2 p2 = vec2(pCenter.x, pStop.y);
                 path.clear();

@@ -75,7 +75,7 @@ namespace reza {
                 addSubViewDown(param->sliderRef);
                 /*===========*/
                 /*===========*/
-                param->buttonRef->setSize( vec2( 18, 18 ) );
+                param->buttonRef->setSize( vec2(15) );
                 if(param->isInput()){
                     addSubViewLeft(param->buttonRef);
                 }else if(param->isOutput()){
@@ -101,8 +101,8 @@ namespace reza {
             
                 vec2 refOrigin = param->textureViewRef->getOrigin( false );
                 Rectf refRect = param->textureViewRef->getBounds( true );
-                param->buttonRef->setSize( vec2( 18, 18 ) );
-                param->buttonRef->setOrigin(refOrigin + vec2(refRect.getWidth() + mPadding.mRight, count * (18 + mPadding.mTop + mPadding.mBottom)));
+                param->buttonRef->setSize( vec2(15) );
+                param->buttonRef->setOrigin(refOrigin + vec2(refRect.getWidth() + mPadding.mRight, count * (15 + mPadding.mTop + mPadding.mBottom)));
                 addSubView(param->buttonRef);
                 
                 parameters[name] = param;
@@ -114,8 +114,8 @@ namespace reza {
                 name = name+to_string(count);
                 vec2 refOrigin = refView->getOrigin( false );
                 ParameterTextureRef param = ParameterTexture::create(name, ParameterTexture::Format().input(true));
-                param->buttonRef->setSize( vec2( 18, 18 ) );
-                param->buttonRef->setOrigin(refOrigin + vec2(-18 - mPadding.mLeft, count * (18 + mPadding.mTop + mPadding.mBottom)));
+                param->buttonRef->setSize( vec2(15) );
+                param->buttonRef->setOrigin(refOrigin + vec2(-15 - mPadding.mLeft, count * (15 + mPadding.mTop + mPadding.mBottom)));
                 addSubView(param->buttonRef);
                 parameters[name] = param;
                 return param;

@@ -595,6 +595,18 @@ void View::addRect( vector<RenderData> &data, const ColorA &color, const Rectf &
 	data[offset + 5].uv = vec2( 0, 0 );
 }
 
+void View::addCircleOutline( std::vector<RenderData> &data, const ci::ColorA &color, const glm::vec2 &p, float radius, int resolution, float lineWidth){
+    vec3 pt = vec3( p, 0.0f );
+    float incAngle = 2.0f * (float)M_PI / (float)resolution;
+    for( int i = 0; i < resolution; i++ ) {
+        float theta = i * incAngle;
+        float thetaNext = ( i + 1 ) * incAngle;
+        vec3 pt1 = pt + radius * vec3( sinf( theta ), cosf( theta ), 0.0f );
+        vec3 pt2 = pt + radius * vec3( sinf( thetaNext ), cosf( thetaNext ), 0.0f );
+        addLine( data, color, pt1, pt2, lineWidth );
+    }
+}
+
 void View::addRectOutline( vector<RenderData> &data, const ColorA &color, const Rectf &rect, float lineWidth )
 {
 	vec2 tl = vec2( rect.x1, rect.y1 );

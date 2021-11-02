@@ -12,7 +12,6 @@
 #include "ParameterBase.h"
 
 
-
 namespace reza {
     namespace ui {
         typedef std::shared_ptr<class ParameterFloat> ParameterFloatRef;
@@ -20,7 +19,6 @@ namespace reza {
         class ParameterFloat
         : public ParameterBase {
             typedef std::shared_ptr<class ParameterFloat> ParameterFloatRef;
-            
         public:
             struct Format {
             public:
@@ -47,11 +45,11 @@ namespace reza {
                     type = PARAMETER_TYPE::FLOAT | PLUG_TYPE::IN;
                 }
                 sliderRef = OrageSliderT<double>::create( name, value, min, max, OrageSliderT<double>::Format().value(true).precision(2).label(true).crossFader(true) );
-                buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false));
+                buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false).circle(true));
                 auto bgColor = getCableColor(true);
-                bgColor *= 0.5;
                 bgColor.a = 1.0f;
-                buttonRef->setColorBack(bgColor);
+                buttonRef->setColorOutline(getCableColor(true));
+                buttonRef->setColorOutlineHighlight(ColorA::white());
                 buttonRef->setCallback([&](bool a) {
                     if(a){
                         EvtHandler::eventTrigger({

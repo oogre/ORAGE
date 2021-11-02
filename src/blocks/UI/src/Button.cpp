@@ -36,10 +36,25 @@ Button::~Button()
 bool Button::isHit( const glm::vec2 &pt )
 {
 	if( mVisible ) {
-		if( mLabelRef ) {
-			return ( Control::isHit( pt ) || mLabelRef->isHit( pt ) );
-		}
-		return Control::isHit( pt );
+        if(mFormat.mCircle){
+            Rectf r = mHitRect;
+            r.offset( getOrigin() );;
+            vec2 c = r.getCenter();
+            float dX = abs(c.x - pt.x);
+            float dY = abs(c.y - pt.y);
+            float dHsq = (dX * dX) + (dY * dY);
+            float d = mHitRect.getWidth() * 0.5f;
+            float dsq = d * d;
+            if( mLabelRef ) {
+                return ( dHsq < dsq || mLabelRef->isHit( pt ) );
+            }
+            return dHsq < dsq;
+        }else{
+            if( mLabelRef ) {
+                return ( Control::isHit( pt ) || mLabelRef->isHit( pt ) );
+            }
+            return Control::isHit( pt );
+        }
 	}
 	return false;
 }
@@ -177,6 +192,51 @@ void Button::toggleValue()
 {
 	setValue( !getValue() );
 }
+
+void Button::drawBounds( std::vector<RenderData> &data, const ci::ColorA &color )
+{
+    addBounds( data, color );
+}
+
+void Button::drawBoundsOutline( std::vector<RenderData> &data, const ci::ColorA &color )
+{
+    addBoundsOutline( data, color );
+}
+
+void Button::drawBack( std::vector<RenderData> &data, const ci::ColorA &color )
+{
+    if(mFormat.mCircle){
+        addCircle(data, color, mHitRect.getCenter(), mHitRect.getWidth()*0.5f);
+    }else{
+        addRect( data, color, mHitRect );
+    }
+}
+
+void Button::drawFill( std::vector<RenderData> &data, const ci::ColorA &color )
+{
+    drawBack( data, color );
+}
+
+void Button::drawFillHighlight( std::vector<RenderData> &data, const ci::ColorA &color )
+{
+    drawFill( data, color );
+}
+
+void Button::drawOutline( std::vector<RenderData> &data, const ci::ColorA &color )
+{
+    if(mFormat.mCircle){
+        addCircleOutline(data, color, mHitRect.getCenter(), mHitRect.getWidth()*0.5f);
+    }else{
+        addRectOutline( data, color, mHitRect );
+    }
+}
+
+void Button::drawOutlineHighlight( std::vector<RenderData> &data, const ci::ColorA &color )
+{
+    drawOutline( data, color );
+}
+
+
 
 Button *Button::setCallback( const std::function<void( bool )> &callback )
 {

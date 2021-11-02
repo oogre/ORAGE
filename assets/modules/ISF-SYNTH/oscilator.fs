@@ -145,7 +145,7 @@ void main()
 	float phase = phaseProcess( isf_FragNormCoord.xy,
                                 freq ,
                                 sync,
-                                dX + mod * modFactor );
+                                (1.0-dX) + mod * modFactor );
     float value = 0.0;
     value += saw * sawWave(phase, dY);
     value += cos * sinWave(phase, dY);

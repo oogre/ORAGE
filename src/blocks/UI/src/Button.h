@@ -18,17 +18,23 @@ class Button : public ControlWithLabel {
 			mLabel = copy.mLabel;
 			mAlign = copy.mAlign;
 			mSize = copy.mSize;
+            mCircle = copy.mCircle;
 		}
 		Format &fontSize( FontSize fontSize )
 		{
 			mFontSize = fontSize;
 			return *this;
 		}
-		Format &label( bool label )
-		{
-			mLabel = label;
-			return *this;
-		}
+        Format &label( bool label )
+        {
+            mLabel = label;
+            return *this;
+        }
+        Format &circle( bool value = true )
+        {
+            mCircle = value;
+            return *this;
+        }
 		Format &align( Alignment align )
 		{
 			mAlign = align;
@@ -43,6 +49,7 @@ class Button : public ControlWithLabel {
 	  protected:
 		Alignment mAlign;
 		bool mLabel;
+        bool mCircle = false;
 		int mSize;
 		FontSize mFontSize;
 		friend class Button;
@@ -67,6 +74,13 @@ class Button : public ControlWithLabel {
 
 	virtual ~Button();
 
+    virtual void drawBounds( std::vector<RenderData> &data, const ci::ColorA &color ) override;
+    virtual void drawBoundsOutline( std::vector<RenderData> &data, const ci::ColorA &color ) override;
+    virtual void drawBack( std::vector<RenderData> &data, const ci::ColorA &color ) override;
+    virtual void drawFill( std::vector<RenderData> &data, const ci::ColorA &color ) override;
+    virtual void drawFillHighlight( std::vector<RenderData> &data, const ci::ColorA &color ) override;
+    virtual void drawOutline( std::vector<RenderData> &data, const ci::ColorA &color ) override;
+    virtual void drawOutlineHighlight( std::vector<RenderData> &data, const ci::ColorA &color ) override;
   protected:
 	Button( std::string name, bool value, const Format &format = Format() );
 	Button( std::string name, bool *value, const Format &format = Format() );

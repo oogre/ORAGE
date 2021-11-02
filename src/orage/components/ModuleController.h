@@ -64,10 +64,7 @@ namespace ORAGE {
                                          attr->currentVal().getDoubleValPtr(),
                                          attr->minVal().getDoubleVal(),
                                          attr->maxVal().getDoubleVal(),
-                                         ParameterFloat::Format().input(true))
-                        ->sliderRef->setCallback([&, name](double val){
-                            getValue(name)->currentVal().putValue(ISFVal(ISFValType::ISFValType_Float, val));
-                        });
+                                         ParameterFloat::Format().input(true));
                     }
                 }
                 for(auto output : conf.getChild("OUTPUTS").getChildren()){
@@ -81,10 +78,7 @@ namespace ORAGE {
                                          attr->currentVal().getDoubleValPtr(),
                                          attr->minVal().getDoubleVal(),
                                          attr->maxVal().getDoubleVal(),
-                                         ParameterFloat::Format().input(false))
-                        ->sliderRef->setCallback([&, name](double val){
-                            setValue(name, ISFVal(ISFValType::ISFValType_Float, val));
-                        });
+                                         ParameterFloat::Format().input(false));
                     }
                 }
                 
@@ -113,6 +107,8 @@ namespace ORAGE {
                                                             );
                 
                 JsonTree outputs (value);
+                
+                
                 for(auto output : outputs){
                     string name = output.getChild("NAME").getValue();
                     setValue(name, ISFVal(ISFValType::ISFValType_Float, output.getChild("VALUE").getValue<double>()));

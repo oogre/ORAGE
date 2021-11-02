@@ -97,8 +97,9 @@ class View : public Responder, public std::enable_shared_from_this<class View> {
 	void addBounds( std::vector<RenderData> &data, const ci::ColorA &color );
 	void addBoundsOutline( std::vector<RenderData> &data, const ci::ColorA &color, float lineWidth = 1.0f );
 	void addRect( std::vector<RenderData> &data, const ci::ColorA &color, const ci::Rectf &rect, float z = 0.0f );
-	void addRectOutline( std::vector<RenderData> &data, const ci::ColorA &color, const ci::Rectf &rect, float lineWidth = 1.0f );
-	void addPointGrid( std::vector<RenderData> &data, const ci::ColorA &color, const ci::Rectf rect, float gridInterval, float pointSize = 1.0f );
+    void addRectOutline( std::vector<RenderData> &data, const ci::ColorA &color, const ci::Rectf &rect, float lineWidth = 1.0f );
+    void addCircleOutline( std::vector<RenderData> &data, const ci::ColorA &color, const glm::vec2 &p, float radius = 1.0f, int resolution = 30, float lineWidth = 1.0f );
+    void addPointGrid( std::vector<RenderData> &data, const ci::ColorA &color, const ci::Rectf rect, float gridInterval, float pointSize = 1.0f );
 	void addCenterLines( std::vector<RenderData> &data, const ci::ColorA &color, const ci::Rectf rect, float lineWidth = 1.0f );
 	void addTriangle( std::vector<RenderData> &data, const ci::ColorA &color, const glm::vec2 &p0, const glm::vec2 &p1, const glm::vec2 &p2 );
 
