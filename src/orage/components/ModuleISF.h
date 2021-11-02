@@ -28,6 +28,7 @@ namespace ORAGE {
         class ModuleISF : public Module {
             typedef shared_ptr<ModuleISF> ModuleISFRef;
             bool sizeChanged;
+            bool antiAliazing = false;
             GlslProgRef mShader;
             ISFDocRef myDoc;
             mat4 mDefaultProjection;
@@ -48,6 +49,7 @@ namespace ORAGE {
                 string outputVert;
                 VVGL::GLVersion version = VVGL::GLVersion::GLVersion_4;
                 myDoc->generateShaderSource(&outputFrag, &outputVert, version);
+                cout<<outputFrag<<endl;
                 mShader = gl::GlslProg::create( gl::GlslProg::Format()
                                                .vertex( loadAsset(getAssetPath("./shaders/default.vs")))
                                                .fragment(outputFrag));
@@ -63,7 +65,7 @@ namespace ORAGE {
                 addValue("RENDERSIZE", "", "", ISFValType::ISFValType_Point2D, RENDERSIZEmin, RENDERSIZEmax, RENDERSIZEval);
                 
                 outputs.push_back(UI->addOutput("output", outputs.size()));
-                outputs.back()->setSize(ivec2(width, height));
+                outputs.back()->setSize(ivec2(width, height), antiAliazing);
                 
                 for(auto input : myDoc->inputs()){
                     if(input->type() == ISFValType::ISFValType_Float){
@@ -84,9 +86,9 @@ namespace ORAGE {
                     UI->getSubView("New Window")->setVisible(value);
                     UI->parameters["size_x"]->setVisible(value);
                     UI->parameters["size_y"]->setVisible(value);
+                    UI->getSubView("AntiAliazing")->setVisible(value);
                     UI->autoSizeToFitSubviews();
                 });
-                
                 UI->addButton("New Window", false, format)
                 ->setCallback([&, name](bool a) {
                     if(a){
@@ -107,6 +109,11 @@ namespace ORAGE {
                         windows.push_back(window);
                     }
                 });
+                UI->addToggle("AntiAliazing", false, format)
+                ->setCallback([&](bool value) {
+                    sizeChanged = true;
+                    antiAliazing = value;
+                });
                 UI->addParameter("size_x", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+0, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[0], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[0], ParameterFloat::Format().input(true))->sliderRef
                 ->setCallback([&](double val)
                 {
@@ -121,6 +128,7 @@ namespace ORAGE {
                 UI->parameters["size_x"]->setVisible(false);
                 UI->parameters["size_y"]->setVisible(false);
                 UI->getSubView("New Window")->setVisible(false);
+                UI->getSubView("AntiAliazing")->setVisible(false);
                 UI->autoSizeToFitSubviews();
                 
                 mDefaultProjection = gl::context()->getProjectionMatrixStack()[0];
@@ -147,7 +155,7 @@ namespace ORAGE {
                 if(sizeChanged){
                     vec2 size = vec2(*(getValue("RENDERSIZE")->currentVal().getPointValPtr()+0), *(getValue("RENDERSIZE")->currentVal().getPointValPtr()+1));
                     for(auto it = outputs.begin() ; it != outputs.end() ; it ++){
-                        (*it)->setSize(size);
+                        (*it)->setSize(size, antiAliazing);
                     }
                     sizeChanged = false;
                 }

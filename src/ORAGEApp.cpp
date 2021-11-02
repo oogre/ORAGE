@@ -22,6 +22,9 @@ class ORAGEApp : public App {
     OrageMenuRef menu;
     gl::Context * mMainWinCtx;
   public:
+    static void prepare( Settings *settings ){
+        settings->setTitle("ORAGE - VISUAL MODULAR SYNTHESIS");
+    }
 	void setup() override;
 	void update() override;
 	void draw() override;
@@ -51,6 +54,8 @@ void ORAGEApp::setup()
         modules.push_back(module);
     });
     mMainWinCtx = gl::Context::getCurrent();
+    gl::enableVerticalSync( false );
+    gl::disableAlphaBlending();
 }
 
 void ORAGEApp::update()
@@ -86,4 +91,4 @@ void ORAGEApp::fileDrop(FileDropEvent evt){
 }
 
 
-CINDER_APP( ORAGEApp, RendererGl )
+CINDER_APP( ORAGEApp, RendererGl, &ORAGEApp::prepare )

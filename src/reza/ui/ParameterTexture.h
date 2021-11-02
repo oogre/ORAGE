@@ -71,11 +71,14 @@ namespace reza {
                 });
             }
         public :
-            void setSize(ivec2 size){
+            void setSize(ivec2 size, bool antiAliazing = false){
                 Texture2d::Format tFormat = Texture2d::Format().loadTopDown();
+                tFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
+                tFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
                 ParameterBase::textureRef = Texture2d::create(size.x, size.y, tFormat);
                 
-                Fbo::Format fFormat = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureRef);;
+                Fbo::Format fFormat = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureRef);
+                fFormat.setColorTextureFormat( tFormat );
                 mFbo = Fbo::create( size.x, size.y, fFormat);
                 if(!!textureViewRef){
                     textureViewRef->setTexture(ParameterBase::textureRef);
@@ -104,7 +107,6 @@ namespace reza {
                 ParameterBase::setVisible(visible);
                 buttonRef->setVisible(visible);
             }
-            
             FboRef mFbo;
             CameraPersp mCam;
             Format mFormat;

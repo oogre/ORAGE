@@ -73,9 +73,9 @@ namespace ORAGE {
                 for(auto output : conf.getChild("OUTPUTS").getChildren()){
                     if(output.getChild("TYPE").getValue() == "float"){
                         string name = output.getChild("NAME").getValue();
-                        ISFVal min (ISFValType::ISFValType_Float, output.getChild("MIN").getValue<float>());
-                        ISFVal max (ISFValType::ISFValType_Float, output.getChild("MAX").getValue<float>());
-                        ISFVal val (ISFValType::ISFValType_Float, output.getChild("DEFAULT").getValue<float>());
+                        ISFVal min (ISFValType::ISFValType_Float, output.getChild("MIN").getValue<double>());
+                        ISFVal max (ISFValType::ISFValType_Float, output.getChild("MAX").getValue<double>());
+                        ISFVal val (ISFValType::ISFValType_Float, output.getChild("DEFAULT").getValue<double>());
                         CustomISFAttrRef attr = addValue(name, "", "", ISFValType::ISFValType_Float, min, max, val);
                         UI->addParameter(name,
                                          attr->currentVal().getDoubleValPtr(),
@@ -111,10 +111,11 @@ namespace ORAGE {
                                                             getValue("TIMEDELTA")->currentVal().getDoubleVal(),
                                                             getValue("FRAMEINDEX")->currentVal().getLongVal()
                                                             );
+                
                 JsonTree outputs (value);
                 for(auto output : outputs){
                     string name = output.getChild("NAME").getValue();
-                    setValue(name, ISFVal(ISFValType::ISFValType_Float, output.getChild("VALUE").getValue<float>()));
+                    setValue(name, ISFVal(ISFValType::ISFValType_Float, output.getChild("VALUE").getValue<double>()));
                 }
             }
         };
