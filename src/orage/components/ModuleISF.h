@@ -32,12 +32,13 @@ namespace ORAGE {
             GlslProgRef mShader;
             ISFDocRef myDoc;
             mat4 mDefaultProjection;
-            vector<ParameterTextureRef> inputs;
+            
             vec2 defSize;
             vector<ci::signals::Connection> signalDrawHandlers;
             vector<WindowRef> windows;
             int count =0;
         public :
+            vector<ParameterTextureRef> inputs;
             vector<ParameterTextureRef> outputs;
             
             ModuleISF(string name, ISFDocRef myDoc, int width, int height) :
@@ -49,7 +50,6 @@ namespace ORAGE {
                 string outputVert;
                 VVGL::GLVersion version = VVGL::GLVersion::GLVersion_4;
                 myDoc->generateShaderSource(&outputFrag, &outputVert, version);
-                cout<<outputFrag<<endl;
                 mShader = gl::GlslProg::create( gl::GlslProg::Format()
                                                .vertex( loadAsset(getAssetPath("./shaders/default.vs")))
                                                .fragment(outputFrag));
@@ -70,11 +70,12 @@ namespace ORAGE {
                 for(auto input : myDoc->inputs()){
                     if(input->type() == ISFValType::ISFValType_Float){
                         string name = input->name();
-                        addValue(name, "", "", ISFValType::ISFValType_Float, input->minVal(), input->maxVal(), input->currentVal());
-                        UI->addParameter(name, input->currentVal().getDoubleValPtr(), input->minVal().getDoubleVal(), input->maxVal().getDoubleVal(), ParameterFloat::Format().input(true))
-                        ->sliderRef->setCallback([&, name](double val){
-                            setValue(name, ISFVal(ISFValType::ISFValType_Float, val));
-                        });
+                        CustomISFAttrRef attr = addValue(input);
+                        UI->addParameter(name,
+                                         attr->currentVal().getDoubleValPtr(),
+                                         attr->minVal().getDoubleVal(),
+                                         attr->maxVal().getDoubleVal(),
+                                         ParameterFloat::Format().input(true));
                     }else if(input->type() == ISFValType::ISFValType_Image){
                         inputs.push_back(UI->addInputs("inputs", inputs.size(), (*outputs.begin())->textureViewRef));
                     }
@@ -160,20 +161,15 @@ namespace ORAGE {
                     sizeChanged = false;
                 }
                 ParameterTextureRef output = (*outputs.begin());
+                
                 ScopedFramebuffer fbScp( output->mFbo );
                 ScopedViewport scpVp( ivec2( 0 ), output->mFbo->getSize() );
                 gl::ScopedProjectionMatrix matrix(mDefaultProjection);
                 gl::ScopedGlslProg glslProg( mShader );
                 gl::clear( ColorA(0, 0, 0, 1));
-              
+                
                 for(auto [key, param] : parameters){
                     switch(param->type()){
-                        case ISFValType::ISFValType_None:
-                            //cout<< " none : " <<param->name()<<endl;
-                            break;
-                        case ISFValType::ISFValType_Event:
-                            //cout<< " event : " <<param->name()<<endl;
-                            break;
                         case ISFValType::ISFValType_Bool:
                             mShader->uniform(param->name(), (int) param->currentVal().getBoolVal());
                             break;
@@ -181,25 +177,11 @@ namespace ORAGE {
                             mShader->uniform(param->name(), (int) param->currentVal().getLongVal());
                             break;
                         case ISFValType::ISFValType_Float:
+                            //if(param->name()=="dX")incValue(param->name(), 0.0001f);
                             mShader->uniform(param->name(), (float) param->currentVal().getDoubleVal());
                             break;
                         case ISFValType::ISFValType_Point2D:
                             mShader->uniform(param->name(), vec2(param->currentVal().getPointValByIndex(0), param->currentVal().getPointValByIndex(1)));
-                            break;
-                        case ISFValType::ISFValType_Color:
-                            //cout<< " color : " <<param->name()<<endl;
-                            break;
-                        case ISFValType::ISFValType_Cube:
-                            //cout<< " Cube : " <<param->name()<<endl;
-                            break;
-                        case ISFValType::ISFValType_Image:
-                            //cout<< " Image : " <<param->name()<<endl;
-                            break;
-                        case ISFValType::ISFValType_Audio:
-                            //cout<< " audio : " <<param->name()<<endl;
-                            break;
-                        case ISFValType::ISFValType_AudioFFT:
-                            //cout<< " audiofft : " <<param->name()<<endl;
                             break;
                     }
                 }

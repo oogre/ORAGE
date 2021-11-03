@@ -33,9 +33,8 @@ namespace ORAGE {
             double time;
             float dTime;
             vec4 date;
-        protected :
-            TYPES moduleType;
         public :
+            TYPES moduleType;
             map<string, CustomISFAttrRef> parameters;
             OrageCanvasRef UI;
             Module(string name){
@@ -74,17 +73,23 @@ namespace ORAGE {
                 return this;
             }
             CustomISFAttrRef addValue(const std::string & inName,
-                          const std::string & inDesc,
-                          const std::string & inLabel,
-                          const ISFValType & inType,
-                          const ISFVal & inMinVal=ISFNullVal(),
-                          const ISFVal & inMaxVal=ISFNullVal(),
-                          const ISFVal & inDefVal=ISFNullVal(),
-                          const ISFVal & inIdenVal=ISFNullVal(),
-                          const std::vector<std::string> * inLabels=nullptr,
-                          const std::vector<int32_t> * inVals=nullptr){
+                                      const std::string & inDesc,
+                                      const std::string & inLabel,
+                                      const ISFValType & inType,
+                                      const ISFVal & inMinVal=ISFNullVal(),
+                                      const ISFVal & inMaxVal=ISFNullVal(),
+                                      const ISFVal & inDefVal=ISFNullVal(),
+                                      const ISFVal & inIdenVal=ISFNullVal(),
+                                      const std::vector<std::string> * inLabels=nullptr,
+                                      const std::vector<int32_t> * inVals=nullptr){
                 parameters[inName] = CustomISFAttr::create(inName, inDesc, inLabel, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals);
                 return parameters[inName];
+            }
+            
+            
+            CustomISFAttrRef addValue(const ISFAttrRef attr){
+                parameters[attr->name()] = CustomISFAttr::create(attr);
+                return parameters[attr->name()];
             }
             
             bool hasValue(string name){
@@ -100,6 +105,9 @@ namespace ORAGE {
             
             void incValue(string name, int inc){
                 setValue(name, ISFLongVal(parameters[name]->currentVal().getLongVal() + inc));
+            }
+            void incValue(string name, float inc){
+                setValue(name, ISFFloatVal(parameters[name]->currentVal().getDoubleVal() + inc));
             }
                  
             virtual ~Module(){

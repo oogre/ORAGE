@@ -129,7 +129,7 @@ namespace reza {
                 auto it = slaves.begin(), end = slaves.end();
                 while(it != end){
                     T lValue = lmap<T>( nValue, 0.0, 1.0, (*it)->getMin(), (*it)->getMax() );
-                    if(abs((*it)->getValue() - lValue) >= 0.01 ){
+                    if(abs((*it)->getValue() - lValue) >= 0.0001 ){
                         (*it)->setValue(lValue);
                     }
                     it++;

@@ -80,6 +80,7 @@ namespace reza {
                 Fbo::Format fFormat = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureRef);
                 fFormat.setColorTextureFormat( tFormat );
                 mFbo = Fbo::create( size.x, size.y, fFormat);
+
                 if(!!textureViewRef){
                     textureViewRef->setTexture(ParameterBase::textureRef);
                 }
@@ -108,6 +109,7 @@ namespace reza {
                 buttonRef->setVisible(visible);
             }
             FboRef mFbo;
+            FboRef mFboOut;
             CameraPersp mCam;
             Format mFormat;
         };//ParameterTexture

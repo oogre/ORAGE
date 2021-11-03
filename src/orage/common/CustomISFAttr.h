@@ -29,6 +29,11 @@ namespace ORAGE {
             ISFAttr(inName, inDesc, inLabel, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals){
                 
             }
+            
+            CustomISFAttr(const ISFAttrRef & attr) :
+            ISFAttr(attr->name(), attr->description(), attr->label(), attr->type(), attr->minVal(), attr->maxVal(), attr->defaultVal(), attr->identityVal(), &attr->labelArray(), &attr->valArray()){
+                
+            }
             public :
             static CustomISFAttrRef create(const std::string & inName,
                                            const std::string & inDesc,
@@ -41,6 +46,9 @@ namespace ORAGE {
                                            const std::vector<std::string> * inLabels=nullptr,
                                            const std::vector<int32_t> * inVals=nullptr){
                 return CustomISFAttrRef(new CustomISFAttr(inName, inDesc, inLabel, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals));
+            }
+            static CustomISFAttrRef create(const ISFAttrRef attr){
+                return CustomISFAttrRef(new CustomISFAttr(attr));
             }
         };//CustomISFAttr
         typedef shared_ptr<CustomISFAttr> CustomISFAttrRef;

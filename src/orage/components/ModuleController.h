@@ -105,10 +105,7 @@ namespace ORAGE {
                                                             getValue("TIMEDELTA")->currentVal().getDoubleVal(),
                                                             getValue("FRAMEINDEX")->currentVal().getLongVal()
                                                             );
-                
                 JsonTree outputs (value);
-                
-                
                 for(auto output : outputs){
                     string name = output.getChild("NAME").getValue();
                     setValue(name, ISFVal(ISFValType::ISFValType_Float, output.getChild("VALUE").getValue<double>()));
