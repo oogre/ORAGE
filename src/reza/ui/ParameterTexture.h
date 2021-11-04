@@ -61,7 +61,8 @@ namespace reza {
                 auto bgColor = getCableColor(true);
                 bgColor.a = 1.0f;
                 buttonRef->setColorOutline(getCableColor(true));
-                buttonRef->setColorOutlineHighlight(bgColor);
+                buttonRef->setColorOutlineHighlight(ColorA::white());
+                
                 buttonRef->setCallback([&](bool a) {
                     if(a){
                         EvtHandler::eventTrigger({
@@ -76,13 +77,20 @@ namespace reza {
                 tFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
                 tFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
                 ParameterBase::textureRef = Texture2d::create(size.x, size.y, tFormat);
-                
                 Fbo::Format fFormat = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureRef);
                 fFormat.setColorTextureFormat( tFormat );
                 mFbo = Fbo::create( size.x, size.y, fFormat);
+                
+                Texture2d::Format tOldFormat = Texture2d::Format();
+                tOldFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
+                tOldFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
+                ParameterBase::textureOldRef = Texture2d::create(size.x, size.y, tOldFormat);
+                Fbo::Format fOutFormat = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureOldRef);
+                fOutFormat.setColorTextureFormat( tOldFormat );
+                mFboOut = Fbo::create( size.x, size.y, fOutFormat);
 
                 if(!!textureViewRef){
-                    textureViewRef->setTexture(ParameterBase::textureRef);
+                    textureViewRef->setTexture(ParameterBase::textureOldRef);
                 }
             }
             TextureRef getDefaultInput(){
@@ -97,7 +105,7 @@ namespace reza {
             virtual ~ParameterTexture(){
             }
             virtual void plugTo(std::shared_ptr<ParameterBase> other) override {
-                ParameterBase::textureInRef = &other->textureRef;
+                ParameterBase::textureInRef = &other->textureOldRef;
                 ParameterBase::textureSample = 1;
             }
             virtual void unplugTo(std::shared_ptr<ParameterBase> other) override {

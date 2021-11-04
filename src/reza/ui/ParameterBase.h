@@ -98,7 +98,7 @@ namespace reza {
             }
             TextureViewRef textureViewRef;
             ci::gl::TextureRef textureRef;
-//            ci::gl::TextureRef textureOldRef;
+            ci::gl::TextureRef textureOldRef;
             ci::gl::Texture2dRef * textureInRef;
             int textureSample = 0;
             ButtonRef buttonRef;

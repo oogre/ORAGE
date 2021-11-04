@@ -82,6 +82,7 @@ namespace ORAGE {
                     }
                 }
                 
+                
                 UI->autoSizeToFitSubviews();
             }
             virtual ~ModuleController(){

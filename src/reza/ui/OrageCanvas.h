@@ -78,11 +78,12 @@ namespace reza {
                 param->buttonRef->setSize( vec2(15) );
                 if(param->isInput()){
                     addSubViewLeft(param->buttonRef);
-                }else if(param->isOutput()){
+                }else{
                     addSubViewRight(param->buttonRef);
                 }
                 /*===========*/
                 /*===========*/
+            
                 param->limiterRef->setSize( vec2( width-5, 15 * 0.75) );
                 addSubViewSouthOf(param->limiterRef, param->sliderRef->getName());
                 
