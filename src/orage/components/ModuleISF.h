@@ -32,7 +32,7 @@ namespace ORAGE {
             GlslProgRef mShader;
             ISFDocRef myDoc;
             mat4 mDefaultProjection;
-            
+            bool isInitialized = false;
             vec2 defSize;
             vector<ci::signals::Connection> signalDrawHandlers;
             vector<WindowRef> windows;
@@ -77,7 +77,9 @@ namespace ORAGE {
                                          attr->maxVal().getDoubleVal(),
                                          ParameterFloat::Format().input(true));
                     }else if(input->type() == ISFValType::ISFValType_Image){
-                        inputs.push_back(UI->addInputs("inputs", inputs.size(), (*outputs.begin())->textureViewRef));
+                        string name = input->name();
+                        inputs.push_back(UI->addInputs(name, inputs.size(), (*outputs.begin())->textureViewRef));
+                        
                     }
                 }
                 
@@ -135,8 +137,6 @@ namespace ORAGE {
                 mDefaultProjection = gl::context()->getProjectionMatrixStack()[0];
                 defSize = vec2(*(getValue("RENDERSIZE")->defaultVal().getPointValPtr()+0), *(getValue("RENDERSIZE")->defaultVal().getPointValPtr()+1));
             }
-            
-            
             virtual ~ModuleISF(){
                 for(auto handler : signalDrawHandlers){
                     handler.disconnect();
@@ -153,6 +153,19 @@ namespace ORAGE {
                 return ModuleISFRef(new ModuleISF(name, myDoc, width, height));
             }
             virtual void draw() override {
+                if(!isInitialized){
+                    for(auto input : inputs){
+                        if(input->getName() == "OLD"){
+                            input->eventTrigger({
+                                "plug", input
+                            });
+                            outputs.back()->eventTrigger({
+                                "plug", outputs.back()
+                            });
+                        }
+                    }
+                    isInitialized = true;
+                }
                 if(sizeChanged){
                     vec2 size = vec2(*(getValue("RENDERSIZE")->currentVal().getPointValPtr()+0), *(getValue("RENDERSIZE")->currentVal().getPointValPtr()+1));
                     for(auto it = outputs.begin() ; it != outputs.end() ; it ++){
@@ -160,6 +173,7 @@ namespace ORAGE {
                     }
                     sizeChanged = false;
                 }
+                
                 ParameterTextureRef output = (*outputs.begin());
                 
                 gl::ScopedProjectionMatrix matrix(mDefaultProjection);
@@ -191,7 +205,7 @@ namespace ORAGE {
                     }
                     int i = 0 ;
                     for(auto input : inputs){
-                        string bName = "tex"+to_string(i);
+                        string bName = input->getName();
                         string pName = "_"+bName;
                         Texture2dRef inTex = (*input->textureInRef);
                         inTex->bind(i);

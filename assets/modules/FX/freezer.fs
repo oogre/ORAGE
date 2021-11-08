@@ -16,11 +16,11 @@
       "DEFAULT": 0
     },
     {
-      "NAME" :  "tex1",
+      "NAME" :  "OLD",
       "TYPE" :  "image"
     },
     {
-      "NAME" :  "_tex1_sample",
+      "NAME" :  "_OLD_sample",
       "TYPE" :  "long",
       "DEFAULT": 0
     },
@@ -60,11 +60,13 @@
 void main()
 {
   vec3 A = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
-  vec3 B = IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy).rgb;
-  vec3 V = IMG_NORM_PIXEL(tex2, isf_FragNormCoord.xy).rgb;
+  vec3 B = IMG_NORM_PIXEL(OLD, isf_FragNormCoord.xy).rgb;
+  vec3 V = mix(vec3(1.0), IMG_NORM_PIXEL(tex2, isf_FragNormCoord.xy).rgb, _tex2_sample);
   vec3 m = vec3(_tex0_sample);
   vec3 C = mix(A, B, amount * smoothstep(black, white, vec3(1)));
   vec3 D = mix(A, B, amount * smoothstep(black, white, V));
+
+
   vec3 color = mix(C, D, m);
   gl_FragColor = vec4(color, 1);
 

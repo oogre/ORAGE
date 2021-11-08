@@ -48,19 +48,19 @@ namespace ORAGE {
                 time = oldTime  = getElapsedSeconds();
                 
                 ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
-                ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<float>::max());
+                ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEval (ISFValType::ISFValType_Float, 0.0);
                 parameters["TIME"] = CustomISFAttr::create("TIME", "", "", ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval);
                 
                 ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
-                ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<float>::max());
+                ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
                 parameters["TIMEDELTA"] = CustomISFAttr::create("TIMEDELTA", "", "", ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
                 
-                ISFVal FRAMEINDEXmin(ISFValType::ISFValType_Long, 0);
-                ISFVal FRAMEINDEXmax(ISFValType::ISFValType_Long, numeric_limits<int>::max());
-                ISFVal FRAMEINDEXval(ISFValType::ISFValType_Long, 0);
-                addValue("FRAMEINDEX", "", "", ISFValType::ISFValType_Long, FRAMEINDEXmax, FRAMEINDEXval);
+                ISFVal FRAMEINDEXmin(ISFValType::ISFValType_Float, 0.0);
+                ISFVal FRAMEINDEXmax(ISFValType::ISFValType_Float, numeric_limits<double>::max());
+                ISFVal FRAMEINDEXval(ISFValType::ISFValType_Float, 0.0);
+                parameters["FRAMEINDEX"] = CustomISFAttr::create("FRAMEINDEX", "", "", ISFValType::ISFValType_Float, FRAMEINDEXmin, FRAMEINDEXmax, FRAMEINDEXval);
                 
                 UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
                 UI->init();
@@ -103,10 +103,7 @@ namespace ORAGE {
                 return parameters[name];
             }
             
-            void incValue(string name, int inc){
-                setValue(name, ISFLongVal(parameters[name]->currentVal().getLongVal() + inc));
-            }
-            void incValue(string name, float inc){
+            void incValue(string name, double inc){
                 setValue(name, ISFFloatVal(parameters[name]->currentVal().getDoubleVal() + inc));
             }
                  
@@ -130,7 +127,7 @@ namespace ORAGE {
                 setValue("TIME", ISFFloatVal(time));
                 setValue("TIMEDELTA", ISFFloatVal(time - oldTime));
                 oldTime = time;
-                incValue("FRAMEINDEX", 1);
+                incValue("FRAMEINDEX", 1.0);
                 UI->setNeedsDisplay();
             }
             bool hasToDestroy(){

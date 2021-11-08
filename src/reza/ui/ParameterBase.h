@@ -11,10 +11,13 @@
 
 
 #include "EventTemplate.h"
-
+#include "CustomISFAttr.h"
 
 namespace reza {
     namespace ui {
+        
+        using namespace ORAGE::COMMON;
+        
         typedef std::shared_ptr<class ParameterBase> ParameterBaseRef;
         typedef ORAGE::COMMON::Event<ParameterBase> Evt;
         typedef ORAGE::COMMON::EventTemplate<ParameterBase, Evt> EvtHandler;
@@ -22,7 +25,8 @@ namespace reza {
         enum PARAMETER_TYPE {
             NONE = 0x00,
             TEXTURE = 0x01,
-            FLOAT = 0x03
+            FLOAT = 0x03,
+            CLOCK = 0x07
         };
         enum PLUG_TYPE {
             IN = 0x00,
@@ -63,7 +67,7 @@ namespace reza {
             ParameterBase( std::string name):
             EvtHandler()
             {
-                setName(name+"-Parameter");
+                setName(name);
             }
             bool isInput(){
                 return getPlugType() == PLUG_TYPE::IN;
@@ -100,6 +104,10 @@ namespace reza {
             ci::gl::TextureRef textureRef;
             ci::gl::TextureRef textureOldRef;
             ci::gl::Texture2dRef * textureInRef;
+            
+            CustomISFAttrRef clockAttr;
+            CustomISFAttrRef * clockAttrIn;
+            
             int textureSample = 0;
             ButtonRef buttonRef;
         };//ParameterBase

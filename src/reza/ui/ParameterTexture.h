@@ -80,7 +80,13 @@ namespace reza {
                 Fbo::Format fFormat = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureRef);
                 fFormat.setColorTextureFormat( tFormat );
                 mFbo = Fbo::create( size.x, size.y, fFormat);
-                
+                {
+//                    gl::ScopedProjectionMatrix matrix(gl::context()->getProjectionMatrixStack()[0]);
+//                    ScopedViewport scpVp( ivec2( 0 ), size );
+                    ScopedFramebuffer fbScp( mFbo );
+                    gl::clear(ColorA(0, 0, 0, 1));
+                    gl::draw(ParameterBase::textureOldRef, Area(vec2(0), size));
+                }
                 Texture2d::Format tOldFormat = Texture2d::Format();
                 tOldFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
                 tOldFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
@@ -88,7 +94,13 @@ namespace reza {
                 Fbo::Format fOutFormat = Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, ParameterBase::textureOldRef);
                 fOutFormat.setColorTextureFormat( tOldFormat );
                 mFboOut = Fbo::create( size.x, size.y, fOutFormat);
-
+                {
+//                    gl::ScopedProjectionMatrix matrix(gl::context()->getProjectionMatrixStack()[0]);
+//                    ScopedViewport scpVp( ivec2( 0 ), size );
+                    ScopedFramebuffer fbScp( mFboOut );
+                    gl::clear(ColorA(0, 0, 0, 1));
+                    gl::draw(ParameterBase::textureRef, Area(vec2(0), size));
+                }
                 if(!!textureViewRef){
                     textureViewRef->setTexture(ParameterBase::textureOldRef);
                 }

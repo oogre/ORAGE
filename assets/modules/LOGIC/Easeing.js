@@ -1,93 +1,69 @@
 /*----------------------------------------*\
-  assets - MATH.js
+  assets - Easeing.js
   @author Evrard Vincent (vincent@ogre.be)
-  @Date:   2021-10-30 18:10:59
-  @Last Modified time: 2021-11-08 22:41:18
+  @Date:   2021-11-08 15:27:53
+  @Last Modified time: 2021-11-08 16:34:45
 \*----------------------------------------*/
 var timeCounter = 0;
-var LOGIC = {
+var EASEING = {
   conf : {
     CREDIT: "by vincent evrard",
-    DESCRIPTION: "basic noise",
+    DESCRIPTION: "basic easeing",
     ISFVSN: "2",
     CATEGORIES: [
       "orage"
       ],
     INPUTS: [{
-      NAME :  "A",
+      NAME :  "TARGET",
       TYPE :  "float",
-      DEFAULT : 0,
-      MIN : 0.0,
-      MAX : 1.0
-    },{
-      NAME :  "B",
-      TYPE :  "float",
-      DEFAULT : 0,
+      DEFAULT : 0.0,
       MIN : 0.0,
       MAX : 1.0
     }],
     OUTPUTS: [{
-      NAME :  "ADD",
+      NAME :  "Sin",
       TYPE :  "float",
       DEFAULT : 0.0,
-      MIN : 0.0,
-      MAX : 2.0
-    },{
-      NAME :  "DIF",
-      TYPE :  "float",
-      DEFAULT : 0.0,
-      MIN : -1.0,
-      MAX : 1.0
-    },{
-      NAME :  "MUL",
-      TYPE :  "float",
-      DEFAULT : 0.0,
+      VALUE : 0.0,
       MIN : 0.0,
       MAX : 1.0
     },{
-      NAME :  "MOD",
+      NAME :  "Rec",
       TYPE :  "float",
       DEFAULT : 0.0,
+      VALUE : 0.0,
       MIN : 0.0,
       MAX : 1.0
     },{
-      NAME :  "MIN",
+      NAME :  "InQuint",
       TYPE :  "float",
       DEFAULT : 0.0,
+      VALUE : 0.0,
       MIN : 0.0,
       MAX : 1.0
     },{
-      NAME :  "MAX",
+      NAME :  "OutQuint",
       TYPE :  "float",
       DEFAULT : 0.0,
+      VALUE : 0.0,
       MIN : 0.0,
       MAX : 1.0
     },{
-      NAME :  "LGT",
+      NAME :  "InOutCirc",
       TYPE :  "float",
       DEFAULT : 0.0,
-      MIN : 0.0,
-      MAX : 1.0
-    },{
-      NAME :  "SMT",
-      TYPE :  "float",
-      DEFAULT : 0.0,
+      VALUE : 0.0,
       MIN : 0.0,
       MAX : 1.0
     }]
   },
   main : function(time, deltaTime, frameIndex) {
-    var a = this.conf.INPUTS[this.conf.MAP_IN["A"]].VALUE;
-    var b = this.conf.INPUTS[this.conf.MAP_IN["B"]].VALUE;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["ADD"]].VALUE = a + b;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["DIF"]].VALUE = a - b;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["MUL"]].VALUE = a * b;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["MOD"]].VALUE = a % b;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["MIN"]].VALUE = Math.min(a, b);
-    this.conf.OUTPUTS[this.conf.MAP_OUT["MAX"]].VALUE = Math.max(a, b);
-    this.conf.OUTPUTS[this.conf.MAP_OUT["LGT"]].VALUE = a > b;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["SMT"]].VALUE = a < b;
-    
+    var x = this.conf.INPUTS[this.conf.MAP_IN["TARGET"]].VALUE;
+    this.conf.OUTPUTS[this.conf.MAP_OUT["Sin"]].VALUE = Math.cos((0.5-x) * Math.PI * 2) * 0.5 + 0.5;
+    this.conf.OUTPUTS[this.conf.MAP_OUT["Rec"]].VALUE = x < 0.5 ? 0 : 1;
+    this.conf.OUTPUTS[this.conf.MAP_OUT["InQuint"]].VALUE = x * x * x * x * x;
+    this.conf.OUTPUTS[this.conf.MAP_OUT["OutQuint"]].VALUE = 1 - Math.pow(1 - x, 5);
+    this.conf.OUTPUTS[this.conf.MAP_OUT["InOutCirc"]].VALUE = x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2;
     return JSON.stringify(this.conf.OUTPUTS); 
   },
   getConf : function() {
@@ -105,4 +81,4 @@ var LOGIC = {
     this.conf.INPUTS[this.conf.MAP_IN[name]].VALUE = value;
   }
 };
-LOGIC;
+EASEING;

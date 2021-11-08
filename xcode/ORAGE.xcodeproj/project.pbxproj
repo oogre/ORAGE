@@ -97,6 +97,7 @@
 		8845DF7C272BD3B6002A3253 /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
 		8845DF7D272BD3B6002A3253 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
 		885EA28D272989A100F2E0EB /* ModuleController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleController.h; sourceTree = "<group>"; };
+		886CFFE527397D2D00062EFF /* ParameterClock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterClock.h; sourceTree = "<group>"; };
 		88F37CDE271897370095955A /* macos_universal_binary.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = macos_universal_binary.sh; sourceTree = "<group>"; };
 		88F37CDF271897370095955A /* VVISF 3.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "VVISF 3.xcodeproj"; sourceTree = "<group>"; };
 		88F37CE2271897370095955A /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -732,6 +733,7 @@
 				88F37DCD27189A230095955A /* OrageSliderT.h */,
 				88F37DCE27189A230095955A /* ParameterTexture.h */,
 				88F37DCF27189A230095955A /* ParameterBase.h */,
+				886CFFE527397D2D00062EFF /* ParameterClock.h */,
 			);
 			path = ui;
 			sourceTree = "<group>";

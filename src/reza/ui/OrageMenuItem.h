@@ -52,6 +52,8 @@ namespace reza {
                 ButtonRef btn = Button::create(name, false, format);
                 btn->setSize(vec2(100, 25));
                 btn->setColorBack(ColorA(0, 0, 0, 0.0));
+                btn->setColorFillHighlight(ColorA(0, 0, 0, 0.0));
+                btn->setColorOutlineHighlight(ColorA(0, 0, 0, 0.0));
                 btn->setColorBounds(ColorA(1, 1, 1, 1));
                 subMenu->addSubViewDown(btn);
                 subMenu->addSubViewToHeader(btn);

@@ -25,31 +25,17 @@
       "DEFAULT": 0
     },
     {
-      "NAME" :  "x1",
+      "NAME" :  "x",
       "TYPE" :  "float",
       "DEFAULT" : 0.0,
-      "MIN" : 0.0,
+      "MIN" : -1.0,
       "MAX" : 1.0
     },
     {
-      "NAME" :  "y1",
+      "NAME" :  "y",
       "TYPE" :  "float",
       "DEFAULT" : 0.0,
-      "MIN" : 0.0,
-      "MAX" : 1.0
-    },
-    {
-      "NAME" :  "x2",
-      "TYPE" :  "float",
-      "DEFAULT" : 1.0,
-      "MIN" : 0.0,
-      "MAX" : 1.0
-    },
-    {
-      "NAME" :  "y2",
-      "TYPE" :  "float",
-      "DEFAULT" : 1.0,
-      "MIN" : 0.0,
+      "MIN" : -1.0,
       "MAX" : 1.0
     },
     {
@@ -71,19 +57,28 @@
 
 void main()
 {
-  vec3 B = IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy).rgb;
+   vec2 fs = isf_FragNormCoord.xy;
 
-  vec2 fs = isf_FragNormCoord.xy;
   fs -= vec2(0.5);
-  fs *= vec2(w, h);
+  
+  fs /= vec2(w, h);
+  fs += vec2(x * (1.0-abs(w)), y * (1.0-abs(h)));
   fs += vec2(0.5);
-  fs = mix(vec2(x1, y1), vec2(x2, y2), fs);
-  fs = mix(isf_FragNormCoord.xy, fs, vec2(max(B.r, max(B.g, B.b))));
 
-  vec2 m = vec2(_tex1_sample);
-  fs = mix(isf_FragNormCoord.xy, fs, m);
+  vec2 areaTL = step(vec2(0), fs);
+  vec2 areaBR = step(vec2(1), fs);
+  vec3 select = vec3(areaTL.x==1.0 && areaTL.y==1.0 && areaBR.x==0.0 && areaBR.y==0.0);
 
-  vec3 A = IMG_NORM_PIXEL(tex0, fs).rgb;
+
+
+  vec3 A = mix(IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy).rgb, IMG_NORM_PIXEL(tex0, fs).rgb, select);
+
+  
+  // fs = mix(isf_FragNormCoord.xy, fs, vec2(max(B.r, max(B.g, B.b))));
+
+  // vec2 m = vec2(_tex1_sample);
+  // fs = mix(isf_FragNormCoord.xy, fs, m);
+
   
   
   gl_FragColor = vec4(A, 1);

@@ -33,11 +33,13 @@ namespace ORAGE {
         struct MenuEvent : public BaseEvent{
             public :
             T target;
+            ci::vec2 origin;
             COMPONENTS::TYPES moduleType;
-            MenuEvent(string type, T target, COMPONENTS::TYPES moduleType) :
+            MenuEvent(string type, T target, COMPONENTS::TYPES moduleType, ci::vec2 origin = ci::vec2(0)) :
             BaseEvent(type),
             target(target),
-            moduleType(moduleType)
+            moduleType(moduleType),
+            origin(origin)
             {
             }
         };//struct MenuEvent<T>

@@ -53,6 +53,7 @@ namespace ORAGE {
                 jsObject = push_file_as_string(&path[0]);
                 string value = dukglue_pcall_method<string>(ctx, jsObject, "getConf", NULL);
                 conf = JsonTree(value);
+                
                 for(auto input : conf.getChild("INPUTS").getChildren()){
                     if(input.getChild("TYPE").getValue() == "float"){
                         string name = input.getChild("NAME").getValue();
@@ -65,6 +66,14 @@ namespace ORAGE {
                                          attr->minVal().getDoubleVal(),
                                          attr->maxVal().getDoubleVal(),
                                          ParameterFloat::Format().input(true));
+                    }
+                    if(input.getChild("TYPE").getValue() == "CLOCK"){
+                        string name = input.getChild("NAME").getValue();
+                        ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
+                        ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
+                        ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
+                        CustomISFAttrRef attr = addValue(name, "", "", ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                        UI->addClock(name, attr, ParameterClock::Format().input(true));
                     }
                 }
                 for(auto output : conf.getChild("OUTPUTS").getChildren()){
@@ -80,9 +89,15 @@ namespace ORAGE {
                                          attr->maxVal().getDoubleVal(),
                                          ParameterFloat::Format().input(false));
                     }
+                    if(output.getChild("TYPE").getValue() == "CLOCK"){
+                        string name = output.getChild("NAME").getValue();
+                        ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
+                        ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
+                        ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
+                        CustomISFAttrRef attr = addValue(name, "", "", ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                        UI->addClock(name, attr, ParameterClock::Format().input(false));
+                    }
                 }
-                
-                
                 UI->autoSizeToFitSubviews();
             }
             virtual ~ModuleController(){
@@ -97,14 +112,21 @@ namespace ORAGE {
                 
                 for(auto input : conf.getChild("INPUTS").getChildren()){
                     string name = input.getChild("NAME").getValue();
-                    CustomISFAttrRef attr  = getValue(name);
-                    dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, attr->currentVal().getDoubleVal());
+                    string type = input.getChild("TYPE").getValue();
+                    if(type == "CLOCK"){
+                        CustomISFAttrRef attr =  *(UI->parameters[name]->clockAttrIn);
+                        dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, attr->currentVal().getDoubleVal());
+                    }else{
+                        CustomISFAttrRef attr  = getValue(name);
+                        dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, attr->currentVal().getDoubleVal());
+                    }
                 }
+                cout<<endl;
                 
                 string value = dukglue_pcall_method<string>(ctx, jsObject, "main",
                                                             getValue("TIME")->currentVal().getDoubleVal(),
                                                             getValue("TIMEDELTA")->currentVal().getDoubleVal(),
-                                                            getValue("FRAMEINDEX")->currentVal().getLongVal()
+                                                            getValue("FRAMEINDEX")->currentVal().getDoubleVal()
                                                             );
                 JsonTree outputs (value);
                 for(auto output : outputs){

@@ -305,13 +305,16 @@ var NOISE = {
       "orage"
       ],
     INPUTS: [{
+      NAME :  "CLOCK",
+      TYPE :  "CLOCK"
+    },{
       NAME :  "SEED",
       TYPE :  "float",
       DEFAULT : Math.random(),
       MIN : 0.0,
       MAX : 1.0
     },{
-      NAME :  "FST",
+      NAME :  "SPEED",
       TYPE :  "float",
       DEFAULT : 1,
       MIN : -1.0,
@@ -343,13 +346,14 @@ var NOISE = {
       MAX : 1.0
     }]
   },
-  main : function(time, deltaTime, frameIndex) {
+  main : function() {
+    var deltaTime = this.conf.INPUTS[this.conf.MAP_IN["CLOCK"]].VALUE;
     var s = this.conf.INPUTS[this.conf.MAP_IN["SEED"]].VALUE;
     var dX = this.conf.INPUTS[this.conf.MAP_IN["DX"]].VALUE;
     var dY = this.conf.INPUTS[this.conf.MAP_IN["DY"]].VALUE;
-    var f = this.conf.INPUTS[this.conf.MAP_IN["FST"]].VALUE;
+    var dir = this.conf.INPUTS[this.conf.MAP_IN["SPEED"]].VALUE;
     noise.seed(s);
-    timeCounter += deltaTime * f;
+    timeCounter += deltaTime * dir;
     this.conf.OUTPUTS[this.conf.MAP_OUT["SIMPLEX3"]].VALUE = noise.simplex3(dX, dY, timeCounter);
     this.conf.OUTPUTS[this.conf.MAP_OUT["PERLIN3"]].VALUE = noise.perlin3(dX, dY, timeCounter);
     return JSON.stringify(this.conf.OUTPUTS); 

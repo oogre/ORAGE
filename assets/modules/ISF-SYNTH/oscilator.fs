@@ -24,6 +24,15 @@
 			"TYPE" :  "long",
 			"DEFAULT": 0
 	},
+    {
+			"NAME" :	"tex2",
+			"TYPE" :	"image"
+	},
+	{
+			"NAME" :  "_tex2_sample",
+			"TYPE" :  "long",
+			"DEFAULT": 0
+	},
 	{
 			"NAME" :	"freq",
 			"TYPE" :	"float",
@@ -156,9 +165,9 @@ void main()
     value = mix(1.0-value, value,rev);
 
     vec3 A = vec3(value);
-	vec3 B = value * IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy).rgb;
-	vec3 m = vec3(_tex1_sample);
-	vec3 color = mix(A, B, m);
-  
+	vec3 B = mix(vec3(1), IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy).rgb, vec3(_tex1_sample));
+	vec3 C = mix(vec3(0), IMG_NORM_PIXEL(tex2, isf_FragNormCoord.xy).rgb, vec3(_tex2_sample));
+	vec3 color = mix(C, B, A);
+
  	gl_FragColor = vec4(color, 1);			
 }

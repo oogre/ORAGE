@@ -47,7 +47,7 @@ void ORAGEApp::setup()
             module = ModuleController::create(name, evt.target.string());
         }
         if(!module)return;
-        module->setOrigin(vec2(100, 100));
+        module->setOrigin(evt.origin + vec2(0, 25));
         module->addEventListener("plug", [&](Evt event){
             cables->addCable(event.target);
         });

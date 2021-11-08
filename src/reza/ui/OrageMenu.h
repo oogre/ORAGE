@@ -68,9 +68,11 @@ namespace reza {
                                 if(ext == ".fs") currentType = ORAGE::COMPONENTS::TYPES::ISF;
                                 else if(ext == ".js") currentType = ORAGE::COMPONENTS::TYPES::CONTROLLER;
                                 if (currentType == TYPES::NONE) continue;
-                                btn->addEntry(name)->setCallback([&, subEntry, currentType](bool a){
-                                    if(a){
-                                        EvtMenuHandler::eventTrigger({"menu", subEntry.path(), currentType});
+                                vec2 origin = btn->getOrigin();
+                                btn->addEntry(name)->setCallback([&, subEntry, currentType, origin, btn](bool a){
+                                    if(!a){
+                                        EvtMenuHandler::eventTrigger({"menu", subEntry.path(), currentType, origin});
+                                        btn->subMenu->setVisible(false);
                                     }
                                 });
                                 ORAGE::COMPONENTS::Conf conf = ORAGE::COMPONENTS::Config::getConfig(currentType);

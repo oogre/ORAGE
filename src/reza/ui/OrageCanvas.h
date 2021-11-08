@@ -11,6 +11,7 @@
 #include "UI.h"
 #include "ParameterFloat.h"
 #include "ParameterTexture.h"
+#include "ParameterClock.h"
 #include "OrageButton.h"
 namespace reza {
     namespace ui {
@@ -64,6 +65,26 @@ namespace reza {
                 addSubView(closeBtn);
             }
             
+            
+            
+            ParameterClockRef addClock(const std::string name, CustomISFAttrRef clockAttr, ParameterClock::Format format = ParameterClock::Format())
+            {
+                ParameterClockRef param = ParameterClock::create(name, clockAttr, format);;
+                
+                int width = (int) (getWidth() - 18 - mPadding.mRight - 2 * mPadding.mLeft);
+                /*===========*/
+                /*===========*/
+                param->buttonRef->setSize( vec2(15) );
+                if(param->isInput()){
+                    addSubViewLeft(param->buttonRef);
+                }else{
+                    addSubViewRight(param->buttonRef);
+                }
+                parameters[name] = param;
+                return param;
+            }
+            
+            
             ParameterFloatRef addParameter(const std::string name, double *value, double min = 0.0f, double max = 1.0f, ParameterFloat::Format format = ParameterFloat::Format())
             {
                 ParameterFloatRef param = ParameterFloat::create(name, value, min, max, format);;
@@ -92,7 +113,7 @@ namespace reza {
             }
             
             ParameterTextureRef addOutput(string name, int count){
-                name = name+to_string(count);
+//                name = name+to_string(count);
                 ParameterTextureRef param = ParameterTexture::create(name, ParameterTexture::Format().input(false));
                 int w = (int) (getWidth() - 18 - mPadding.mRight - 5 * mPadding.mLeft);
                 float h = w/(16.0/9);
@@ -112,7 +133,7 @@ namespace reza {
             }
             
             ParameterTextureRef addInputs(string name, int count, ViewRef refView){
-                name = name+to_string(count);
+//                name = name+to_string(count);
                 vec2 refOrigin = refView->getOrigin( false );
                 ParameterTextureRef param = ParameterTexture::create(name, ParameterTexture::Format().input(true));
                 param->buttonRef->setSize( vec2(15) );

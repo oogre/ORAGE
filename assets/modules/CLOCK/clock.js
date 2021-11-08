@@ -1,50 +1,41 @@
 /*----------------------------------------*\
-  assets - MATH.js
+  assets - clock.js
   @author Evrard Vincent (vincent@ogre.be)
-  @Date:   2021-10-30 18:10:59
-  @Last Modified time: 2021-11-08 16:31:54
+  @Date:   2021-11-08 16:59:24
+  @Last Modified time: 2021-11-08 22:14:31
 \*----------------------------------------*/
-var timeCounter = 0;
-var SMOOTH = {
+var CLOCK = {
   conf : {
     CREDIT: "by vincent evrard",
-    DESCRIPTION: "basic noise",
+    DESCRIPTION: "basic CLOCK",
     ISFVSN: "2",
     CATEGORIES: [
       "orage"
       ],
     INPUTS: [{
-      NAME :  "TARGET",
+      NAME :  "BPM",
       TYPE :  "float",
-      DEFAULT : 1.0,
-      MIN : 0.0,
-      MAX : 1.0
-    },{
-      NAME :  "SPEED",
-      TYPE :  "float",
-      DEFAULT : 0.0,
-      MIN : 0.0,
-      MAX : 0.5
+      DEFAULT : 60.0,
+      MIN : 1.0,
+      MAX : 200.0
     }],
     OUTPUTS: [{
-      NAME :  "VALUE",
-      TYPE :  "float",
-      DEFAULT : 0.0,
-      VALUE : 0.0,
-      MIN : 0.0,
-      MAX : 1.0
+      NAME :  "CLOCK",
+      TYPE :  "CLOCK"
     }]
   },
   main : function(time, deltaTime, frameIndex) {
-    var target = this.conf.INPUTS[this.conf.MAP_IN["TARGET"]].VALUE;
-    var speed = this.conf.INPUTS[this.conf.MAP_IN["SPEED"]].VALUE;
-    var value = this.conf.OUTPUTS[this.conf.MAP_OUT["VALUE"]].VALUE;
-
-    value += (target - value) * speed;
-
-    this.conf.OUTPUTS[this.conf.MAP_OUT["VALUE"]].VALUE = value;
-    
-    return JSON.stringify(this.conf.OUTPUTS); 
+  	var B = Math.floor(this.conf.INPUTS[this.conf.MAP_IN["BPM"]].VALUE);
+    return JSON.stringify([{
+        NAME : "CLOCK", 
+        TYPE :  "CLOCK", 
+        VALUE : deltaTime * B * 0.0166667
+      }, {
+        NAME : "BPM", 
+        TYPE :  "float", 
+        VALUE : B
+      }
+    ]); 
   },
   getConf : function() {
     this.conf.MAP_OUT = new Object();
@@ -61,4 +52,4 @@ var SMOOTH = {
     this.conf.INPUTS[this.conf.MAP_IN[name]].VALUE = value;
   }
 };
-SMOOTH;
+CLOCK;

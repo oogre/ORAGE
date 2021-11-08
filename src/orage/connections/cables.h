@@ -61,26 +61,23 @@ namespace ORAGE {
                 return  !!A && !!B &&
                         A->getParameterType() == B->getParameterType() &&
                         A.get() != B.get() &&
-                        !(  A->isTexture() &&
-                            B->isTexture() &&
-                            A->getPlugType() == B->getPlugType()
-                        ) &&
+                        A->getPlugType() != B->getPlugType() &&
                         cables.count(std::minmax(A.get(), B.get())) == 0 ;
             }
             
             bool addCable(ParameterBaseRef A, ParameterBaseRef B){
                 if(isValidCable(A, B)){
                     CablesID id = std::minmax(A.get(), B.get());
-                    if(A->isTexture() && B->isTexture()){// Texture inputs can only receive one output
-                        ParameterBaseRef C = A->isInput() ? A : B;
-                        for(auto it = cables.begin(); it != cables.end() ; ){
-                            if(it->second->contains(C)){
-                                it = cables.erase(it);
-                            }else{
-                                it++;
-                            }
+                    
+                    ParameterBaseRef C = A->isInput() ? A : B;
+                    for(auto it = cables.begin(); it != cables.end() ; ){
+                        if(it->second->contains(C)){
+                            it = cables.erase(it);
+                        }else{
+                            it++;
                         }
                     }
+                    
                     cables[id] = Cable::create(A, B, &mousePos);
                     return true;
                 }
