@@ -10,6 +10,7 @@
 
 #include "OrageCanvas.h"
 #include "CustomISFAttr.h"
+#include "EventTemplate.h"
 #include <ctime>
 #include <limits>
 
@@ -22,8 +23,11 @@ namespace ORAGE {
         using namespace reza::ui;
         using namespace VVISF;
         using namespace ORAGE::COMMON;
+    
+        typedef Event<class Module> EvtModule;
+        typedef EventTemplate<class Module, EvtModule> EvtModuleHandler;
         
-        class Module {
+        class Module : public EvtModuleHandler, public enable_shared_from_this<class Module> {
             typedef shared_ptr<Module> ModuleRef;
             static int ID;
             static map<string, int> IDS;
@@ -37,7 +41,9 @@ namespace ORAGE {
             TYPES moduleType;
             map<string, CustomISFAttrRef> parameters;
             OrageCanvasRef UI;
-            Module(string name){
+            Module(string name) :
+                EvtModuleHandler()
+            {
                 moduleType = TYPES::NONE;
                 id = Module::ID++;
                 if(Module::IDS.count(name)==0){
@@ -64,9 +70,12 @@ namespace ORAGE {
                 
                 UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
                 UI->init();
+                UI->addEventListener("mouseDown", [&](EvtCanvas evt){
+                    EvtModuleHandler::eventTrigger({"putAtTop", shared_from_this()});
+                });
             }
             
-            Module * addEventListener(const string type, const typename boost::signals2::signal<void(ORAGE::COMMON::Event<ParameterBase>)>::slot_type slot) {
+            Module * addEventListenerOnParameters(const string type, const typename boost::signals2::signal<void(ORAGE::COMMON::Event<ParameterBase>)>::slot_type slot) {
                 for(auto [key, parameter] : UI->parameters){
                     parameter->addEventListener(type, slot);
                 }
@@ -117,7 +126,7 @@ namespace ORAGE {
                 UI->setOrigin(pos);
             }
             virtual void draw(){
-                
+                UI->draw();
             }
             virtual void update(){
                 time_t now = std::time(0);
@@ -128,7 +137,8 @@ namespace ORAGE {
                 setValue("TIMEDELTA", ISFFloatVal(time - oldTime));
                 oldTime = time;
                 incValue("FRAMEINDEX", 1.0);
-                UI->setNeedsDisplay();
+//                UI->setNeedsDisplay();
+                UI->update();
             }
             bool hasToDestroy(){
                 return UI->shouldDestroy;

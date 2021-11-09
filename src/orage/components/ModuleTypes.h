@@ -19,7 +19,8 @@ namespace ORAGE {
         enum TYPES {
             NONE = 0,
             ISF = 1,
-            CONTROLLER = 3
+            CONTROLLER = 3,
+            CLOCK = 4
         };
         
         struct Conf{

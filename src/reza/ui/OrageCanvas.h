@@ -13,24 +13,27 @@
 #include "ParameterTexture.h"
 #include "ParameterClock.h"
 #include "OrageButton.h"
+#include "EventTemplate.h"
+
 namespace reza {
     namespace ui {
         using namespace ci;
         using namespace std;
         using namespace ci::gl;
         using namespace ci::app;
+        using namespace ORAGE::COMMON;
         
-        class OrageCanvas : public SuperCanvas {
+        class OrageCanvas;
+        
+        typedef Event<OrageCanvas> EvtCanvas;
+        typedef EventTemplate<OrageCanvas, EvtCanvas> EvtCanvasHandler;
+        
+        class OrageCanvas : public SuperCanvas, public EvtCanvasHandler{
             typedef shared_ptr<class OrageCanvas> OrageCanvasRef;
             typedef map<string, ParameterBaseRef> ParameterWrapper;
             static TextureRef CLOSE_PIC;
             
-            virtual void enableUpdateCallback() override {
-                mPostDrawCb = mWindowRef->getSignalPostDraw().connect(1, [this]() {
-                    update();
-                    draw();
-                } );
-            }
+            virtual void enableUpdateCallback() override {/*DISABLE AUTO DRAWING AND UPDATE*/}
         public :
             ViewRef closeBtn;
             bool shouldDestroy = false;
@@ -42,7 +45,8 @@ namespace reza {
             }
             
             OrageCanvas(std::string name, const ci::app::WindowRef &window = ci::app::getWindow()) :
-                SuperCanvas(name, window)
+                SuperCanvas(name, window),
+                EvtCanvasHandler()
             {
                 disable();
                 enable();
@@ -88,7 +92,6 @@ namespace reza {
             ParameterFloatRef addParameter(const std::string name, double *value, double min = 0.0f, double max = 1.0f, ParameterFloat::Format format = ParameterFloat::Format())
             {
                 ParameterFloatRef param = ParameterFloat::create(name, value, min, max, format);;
-                
                 int width = (int) (getWidth() - 18 - mPadding.mRight - 2 * mPadding.mLeft);
                 /*===========*/
                 /*===========*/
@@ -113,7 +116,6 @@ namespace reza {
             }
             
             ParameterTextureRef addOutput(string name, int count){
-//                name = name+to_string(count);
                 ParameterTextureRef param = ParameterTexture::create(name, ParameterTexture::Format().input(false));
                 int w = (int) (getWidth() - 18 - mPadding.mRight - 5 * mPadding.mLeft);
                 float h = w/(16.0/9);
@@ -133,7 +135,6 @@ namespace reza {
             }
             
             ParameterTextureRef addInputs(string name, int count, ViewRef refView){
-//                name = name+to_string(count);
                 vec2 refOrigin = refView->getOrigin( false );
                 ParameterTextureRef param = ParameterTexture::create(name, ParameterTexture::Format().input(true));
                 param->buttonRef->setSize( vec2(15) );
@@ -142,6 +143,14 @@ namespace reza {
                 parameters[name] = param;
                 return param;
             }
+            
+            virtual void mouseDown( ci::app::MouseEvent &event ) override {
+                SuperCanvas::mouseDown(event);
+                if( isHit( event.getPos()) ){
+                    EvtCanvasHandler::eventTrigger({"mouseDown", dynamic_pointer_cast<OrageCanvas>(shared_from_this())});
+                }
+            };
+            
         };//OrageCanvas
         
         TextureRef OrageCanvas::CLOSE_PIC;

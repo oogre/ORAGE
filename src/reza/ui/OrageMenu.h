@@ -27,8 +27,14 @@ namespace reza {
             ci::signals::Connection resizeHandler;
             bool initialized = false;
             vector<ViewRef> btns;
+            virtual void enableUpdateCallback() override {/*DISABLE AUTO DRAWING AND UPDATE*/}
             
-            OrageMenu(const WindowRef &window) : SuperCanvas("", window), EvtMenuHandler(){
+            OrageMenu(const WindowRef &window) :
+                SuperCanvas("", window),
+                EvtMenuHandler()
+            {
+                disable();
+                enable();
                 resizeHandler = window->getSignalResize().connect(0 , [&](){
                     setSize(vec2(getWindowWidth(), 25));
                 });
@@ -65,9 +71,14 @@ namespace reza {
                                 string ext = subEntry.path().extension().string();
                                 name = name.substr(0, name.length() - ext.length());
                                 ORAGE::COMPONENTS::TYPES currentType = ORAGE::COMPONENTS::TYPES::NONE;
-                                if(ext == ".fs") currentType = ORAGE::COMPONENTS::TYPES::ISF;
-                                else if(ext == ".js") currentType = ORAGE::COMPONENTS::TYPES::CONTROLLER;
-                                if (currentType == TYPES::NONE) continue;
+                                if(ext == ".fs")
+                                    currentType = ORAGE::COMPONENTS::TYPES::ISF;
+                                else if(name.find(".clk") != std::string::npos && ext == ".js")
+                                    currentType = ORAGE::COMPONENTS::TYPES::CLOCK;
+                                else if(ext == ".js")
+                                    currentType = ORAGE::COMPONENTS::TYPES::CONTROLLER;
+                                else
+                                    continue;
                                 vec2 origin = btn->getOrigin();
                                 btn->addEntry(name)->setCallback([&, subEntry, currentType, origin, btn](bool a){
                                     if(!a){

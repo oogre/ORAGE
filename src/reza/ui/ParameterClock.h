@@ -60,7 +60,7 @@ namespace reza {
                 buttonRef->setCallback([&](bool a) {
                     if(a){
                         EvtHandler::eventTrigger({
-                            "plug", std::dynamic_pointer_cast<reza::ui::ParameterClock>(shared_from_this())
+                            "plug", std::dynamic_pointer_cast<ParameterClock>(shared_from_this())
                         });
                     }
                 });
@@ -75,11 +75,11 @@ namespace reza {
                 
             }
             virtual void plugTo(std::shared_ptr<ParameterBase> other) override {
-                ParameterClockRef _other = std::dynamic_pointer_cast<reza::ui::ParameterClock>(other);
+                ParameterClockRef _other = std::dynamic_pointer_cast<ParameterClock>(other);
                 ParameterBase::clockAttrIn = &_other->clockAttr;
             }
             virtual void unplugTo(std::shared_ptr<ParameterBase> other) override {
-                ParameterClockRef _other = std::dynamic_pointer_cast<reza::ui::ParameterClock>(other);
+                ParameterClockRef _other = std::dynamic_pointer_cast<ParameterClock>(other);
                 ParameterBase::clockAttrIn = &(ParameterBase::clockAttr);
             }
             virtual void setVisible( bool visible ) override{

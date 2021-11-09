@@ -1,94 +1,45 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "ModuleISF.h"
-#include "ModuleController.h"
-#include "cables.h"
-#include "ModuleTypes.h"
+
 #include "OrageMenu.h"
+#include "ModuleManager.h"
 
 using namespace ci;
+using namespace ci::gl;
 using namespace ci::app;
-using namespace std;
-using namespace reza::ui;
-using namespace ORAGE;
 using namespace ORAGE::COMMON;
-using namespace ORAGE::COMPONENTS;
-using namespace ORAGE::CONNECTIONS;
 
 class ORAGEApp : public App {
-    vector<ModuleRef> modules;
-    CablesRef cables;
-    OrageMenuRef menu;
     gl::Context * mMainWinCtx;
-  public:
+    ModuleManagerRef modules;
+    OrageMenuRef menu;
+public:
     static void prepare( Settings *settings ){
         settings->setTitle("ORAGE - VISUAL MODULAR SYNTHESIS");
     }
-	void setup() override;
-	void update() override;
-	void draw() override;
-    void fileDrop(FileDropEvent evt) override;
-};
-
-void ORAGEApp::setup()
-{
-    cables = Cables::create();
-    menu = OrageMenu::create();
-    menu->addEventListener("menu", [&](EvtMenu evt){
-        ModuleRef module;
-        string name = evt.target.filename().string();
-        string ext = evt.target.extension().string();
-        name = name.substr(0, name.length() - ext.length());
-        if(evt.moduleType == TYPES::ISF){
-            module = ModuleISF::create(name, CreateISFDocRef(evt.target.string()));
-        }
-        else if(evt.moduleType == TYPES::CONTROLLER){
-            module = ModuleController::create(name, evt.target.string());
-        }
-        if(!module)return;
-        module->setOrigin(evt.origin + vec2(0, 25));
-        module->addEventListener("plug", [&](Evt event){
-            cables->addCable(event.target);
+    void setup() override {
+        mMainWinCtx = Context::getCurrent();
+        modules = ModuleManager::create();
+        menu = OrageMenu::create();
+        menu->addEventListener("menu", [&](EvtMenu evt){
+            modules->add(evt.target, evt.origin, evt.moduleType);
         });
-        modules.push_back(module);
-    });
-    mMainWinCtx = gl::Context::getCurrent();
-    gl::enableVerticalSync( false );
-    gl::disableAlphaBlending();
-}
-
-void ORAGEApp::update()
-{
-    auto it = modules.begin();
-    while(it != modules.end()){
-        if((*it)->hasToDestroy()){
-            for(auto [key, param] : (*it)->UI->parameters){
-                cables->removeCablesPlugTo(param);
-            }
-            modules.erase(it);
-            continue;
-        }
-        it++;
-    }
-    for(auto module : modules){
-        module->update();
-    }
-}
-
-void ORAGEApp::draw()
-{
-    if(mMainWinCtx == gl::Context::getCurrent()){
-        gl::clear( Color( 0, 0, 0 ) );
-        for(auto module : modules){
-            module->draw();
-        }
-    }
-}
-
-void ORAGEApp::fileDrop(FileDropEvent evt){
-    
-}
-
+        enableVerticalSync( false );
+        disableAlphaBlending();
+    };
+    void update() override {
+        modules->update();
+        menu->update();
+    };
+    void draw() override {
+        if(mMainWinCtx != gl::Context::getCurrent()) return;
+        clear( Color( 0, 0, 0 ) );
+        modules->draw();
+        menu->draw();
+    };
+    void fileDrop(FileDropEvent evt) override {
+    };
+};
 
 CINDER_APP( ORAGEApp, RendererGl, &ORAGEApp::prepare )

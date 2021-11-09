@@ -42,10 +42,11 @@ namespace ORAGE {
                 return 0;
             }
             
-            ModuleController(string name, string path) :
+            ModuleController(string name, string path, TYPES type) :
                 Module(name)
             {
-                moduleType = TYPES::CONTROLLER;
+                moduleType = type;
+                
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
                 ctx = duk_create_heap_default();
                 duk_push_c_function(ctx, native_print, DUK_VARARGS);
@@ -103,31 +104,24 @@ namespace ORAGE {
             virtual ~ModuleController(){
                 //duk_destroy_heap(ctx);
             }
-            static ModuleControllerRef create(string name, string path){
-                return ModuleControllerRef(new ModuleController(name, path));
+            static ModuleControllerRef create(string name, string path, TYPES type = TYPES::CONTROLLER){
+                return ModuleControllerRef(new ModuleController(name, path, type));
             }
-            virtual void draw() override {
-                Module::draw();
+            virtual void update() override {
+                Module::update();
                 //https://github.com/Aloshi/dukglue
-                
                 for(auto input : conf.getChild("INPUTS").getChildren()){
                     string name = input.getChild("NAME").getValue();
                     string type = input.getChild("TYPE").getValue();
-                    if(type == "CLOCK"){
-                        CustomISFAttrRef attr =  *(UI->parameters[name]->clockAttrIn);
-                        dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, attr->currentVal().getDoubleVal());
-                    }else{
-                        CustomISFAttrRef attr  = getValue(name);
-                        dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, attr->currentVal().getDoubleVal());
-                    }
+                    
+                    CustomISFAttrRef attr = type != "CLOCK" ? getValue(name) : *(UI->parameters[name]->clockAttrIn);
+                    dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, attr->currentVal().getDoubleVal());
                 }
-                cout<<endl;
                 
                 string value = dukglue_pcall_method<string>(ctx, jsObject, "main",
                                                             getValue("TIME")->currentVal().getDoubleVal(),
                                                             getValue("TIMEDELTA")->currentVal().getDoubleVal(),
-                                                            getValue("FRAMEINDEX")->currentVal().getDoubleVal()
-                                                            );
+                                                            getValue("FRAMEINDEX")->currentVal().getDoubleVal());
                 JsonTree outputs (value);
                 for(auto output : outputs){
                     string name = output.getChild("NAME").getValue();

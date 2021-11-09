@@ -61,7 +61,7 @@ namespace ORAGE {
                 return  !!A && !!B &&
                         A->getParameterType() == B->getParameterType() &&
                         A.get() != B.get() &&
-                        A->getPlugType() != B->getPlugType() &&
+                        (A->isFloat() || (!A->isFloat() && A->getPlugType() != B->getPlugType())) &&
                         cables.count(std::minmax(A.get(), B.get())) == 0 ;
             }
             
@@ -69,12 +69,14 @@ namespace ORAGE {
                 if(isValidCable(A, B)){
                     CablesID id = std::minmax(A.get(), B.get());
                     
-                    ParameterBaseRef C = A->isInput() ? A : B;
-                    for(auto it = cables.begin(); it != cables.end() ; ){
-                        if(it->second->contains(C)){
-                            it = cables.erase(it);
-                        }else{
-                            it++;
+                    if(A->isInput() != B->isInput()){
+                        ParameterBaseRef C = A->isInput() ? A : B;
+                        for(auto it = cables.begin(); it != cables.end() ; ){
+                            if(it->second->A->isInput() != it->second->B->isInput() && it->second->contains(C)){
+                                it = cables.erase(it);
+                            }else{
+                                it++;
+                            }
                         }
                     }
                     

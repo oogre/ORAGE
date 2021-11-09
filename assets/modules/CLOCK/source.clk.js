@@ -2,7 +2,7 @@
   assets - clock.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-11-08 16:59:24
-  @Last Modified time: 2021-11-08 22:14:31
+  @Last Modified time: 2021-11-09 08:43:50
 \*----------------------------------------*/
 var CLOCK = {
   conf : {

@@ -53,7 +53,7 @@ namespace reza {
                 buttonRef->setCallback([&](bool a) {
                     if(a){
                         EvtHandler::eventTrigger({
-                            "plug", std::dynamic_pointer_cast<reza::ui::ParameterFloat>(shared_from_this())
+                            "plug", std::dynamic_pointer_cast<ParameterFloat>(shared_from_this())
                         });
                     }
                 });
@@ -78,12 +78,12 @@ namespace reza {
                 
             }
             virtual void plugTo(std::shared_ptr<ParameterBase> other) override {
-                ParameterFloatRef _other = std::dynamic_pointer_cast<reza::ui::ParameterFloat>(other);
+                ParameterFloatRef _other = std::dynamic_pointer_cast<ParameterFloat>(other);
                 sliderRef->setSlave(_other->sliderRef);
                 _other->sliderRef->setSlave(sliderRef);
             }
             virtual void unplugTo(std::shared_ptr<ParameterBase> other) override {
-                ParameterFloatRef _other = std::dynamic_pointer_cast<reza::ui::ParameterFloat>(other);
+                ParameterFloatRef _other = std::dynamic_pointer_cast<ParameterFloat>(other);
                 sliderRef->removeSlave(_other->sliderRef);
                 _other->sliderRef->removeSlave(sliderRef);
             }

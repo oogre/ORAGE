@@ -19,8 +19,8 @@ namespace reza {
         using namespace ORAGE::COMMON;
         
         typedef std::shared_ptr<class ParameterBase> ParameterBaseRef;
-        typedef ORAGE::COMMON::Event<ParameterBase> Evt;
-        typedef ORAGE::COMMON::EventTemplate<ParameterBase, Evt> EvtHandler;
+        typedef Event<ParameterBase> Evt;
+        typedef EventTemplate<ParameterBase, Evt> EvtHandler;
         
         enum PARAMETER_TYPE {
             NONE = 0x00,
