@@ -62,7 +62,7 @@ void main()
   fs -= vec2(0.5);
   
   fs /= vec2(w, h);
-  fs += vec2(x * (1.0-abs(w)), y * (1.0-abs(h)));
+  fs -= vec2(x * (1.0-abs(w)), y * (1.0-abs(h)));
   fs += vec2(0.5);
 
   vec2 areaTL = step(vec2(0), fs);

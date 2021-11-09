@@ -18,9 +18,8 @@ namespace reza {
         
         using namespace ORAGE::COMMON;
         
-        typedef std::shared_ptr<class ParameterBase> ParameterBaseRef;
-        typedef Event<ParameterBase> Evt;
-        typedef EventTemplate<ParameterBase, Evt> EvtHandler;
+        typedef Event<class ParameterBase> Evt;
+        typedef EventTemplate<class ParameterBase, Evt> EvtHandler;
         
         enum PARAMETER_TYPE {
             NONE = 0x00,
@@ -60,7 +59,7 @@ namespace reza {
         std::map<PARAMETER_TYPE, Conf> Config::configs;
         
         class ParameterBase : public View, public EvtHandler{
-            typedef std::shared_ptr<class ParameterBase> ParameterBaseRef;
+            typedef std::shared_ptr<ParameterBase> ParameterBaseRef;
             
         public:
             uint8_t type = PARAMETER_TYPE::NONE | PLUG_TYPE::IN;
@@ -111,7 +110,7 @@ namespace reza {
             int textureSample = 0;
             ButtonRef buttonRef;
         };//ParameterBase
-        typedef std::shared_ptr<class ParameterBase> ParameterBaseRef;
+        typedef std::shared_ptr<ParameterBase> ParameterBaseRef;
     }//ui {
 }//reza {
 

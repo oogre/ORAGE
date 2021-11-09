@@ -20,7 +20,10 @@ namespace ORAGE {
             NONE = 0,
             ISF = 1,
             CONTROLLER = 3,
-            CLOCK = 4
+            CLOCK = 4,
+            OUTPUT = 7,
+            FX = 8,
+            MATH = 9,
         };
         
         struct Conf{

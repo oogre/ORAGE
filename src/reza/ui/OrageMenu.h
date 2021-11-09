@@ -56,7 +56,14 @@ namespace reza {
                 
                 setColorBack(ColorA(1, 1, 1, 0.25));
                 setColorBounds(ColorA(1, 1, 1, 1));
+                
+                
+                map<string, fs::directory_entry> sorted_by_name;
                 for (const auto & entry : fs::directory_iterator(getAssetPath("modules").string())){
+                    sorted_by_name[entry.path().filename().string()] = entry;
+                }
+                
+                for (const auto & [key, entry] : sorted_by_name){
                     if(entry.is_directory()){
                         Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
                         OrageMenuItemRef btn = OrageMenuItem::create(entry.path().filename().string(), format);
@@ -71,15 +78,22 @@ namespace reza {
                                 string ext = subEntry.path().extension().string();
                                 name = name.substr(0, name.length() - ext.length());
                                 ORAGE::COMPONENTS::TYPES currentType = ORAGE::COMPONENTS::TYPES::NONE;
-                                if(ext == ".fs")
+                                if(name.find(".fx") != std::string::npos && ext == ".fs")
+                                    currentType = ORAGE::COMPONENTS::TYPES::FX;
+                                else if(name.find(".out") != std::string::npos && ext == ".fs")
+                                    currentType = ORAGE::COMPONENTS::TYPES::OUTPUT;
+                                else if(ext == ".fs")
                                     currentType = ORAGE::COMPONENTS::TYPES::ISF;
                                 else if(name.find(".clk") != std::string::npos && ext == ".js")
                                     currentType = ORAGE::COMPONENTS::TYPES::CLOCK;
+                                else if(name.find(".math") != std::string::npos && ext == ".js")
+                                    currentType = ORAGE::COMPONENTS::TYPES::MATH;
                                 else if(ext == ".js")
                                     currentType = ORAGE::COMPONENTS::TYPES::CONTROLLER;
                                 else
                                     continue;
                                 vec2 origin = btn->getOrigin();
+                                
                                 btn->addEntry(name)->setCallback([&, subEntry, currentType, origin, btn](bool a){
                                     if(!a){
                                         EvtMenuHandler::eventTrigger({"menu", subEntry.path(), currentType, origin});

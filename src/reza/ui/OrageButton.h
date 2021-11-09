@@ -18,7 +18,7 @@ namespace reza {
         
         
         class OrageButton : public Button {
-            typedef std::shared_ptr<class OrageButton> OrageButtonRef;
+            typedef std::shared_ptr<OrageButton> OrageButtonRef;
         public :
             static OrageButtonRef create( std::string name, bool *value, const Format &format = Format(), const ci::gl::TextureRef textureRef = nullptr )
             {
@@ -49,7 +49,7 @@ namespace reza {
             }
             ci::gl::TextureRef mTextureRef;
         };//OrageButton
-        typedef std::shared_ptr<class OrageButton> OrageButtonRef;
+        typedef std::shared_ptr<OrageButton> OrageButtonRef;
     }// ui
 }// reza
 #endif /* OrageButton_h */

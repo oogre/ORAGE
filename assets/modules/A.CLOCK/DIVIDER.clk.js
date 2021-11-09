@@ -2,7 +2,7 @@
   assets - DIVIDER.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-11-08 22:13:00
-  @Last Modified time: 2021-11-08 22:17:56
+  @Last Modified time: 2021-11-09 21:42:30
 \*----------------------------------------*/
 var DIVIDER = {
   conf : {

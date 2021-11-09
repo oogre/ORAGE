@@ -55,7 +55,7 @@ namespace ORAGE {
             }
         };//struct Event<T>
         
-        template<class T>
+        template<typename T>
         struct MouseEvent : public COMMON::Event<T>{
             ci::app::MouseEvent mouseEvent;
             ci::ivec2 oldMousePos;

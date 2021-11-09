@@ -18,7 +18,7 @@ namespace ORAGE {
         
 
         class Cables {
-            typedef shared_ptr<class Cables> CablesRef;
+            typedef shared_ptr<Cables> CablesRef;
             typedef pair<ParameterBase*, ParameterBase*> CablesID;
             typedef map<CablesID, CableRef> CablesWrapper;
             ci::signals::Connection mouseMoveHandler;
@@ -32,7 +32,7 @@ namespace ORAGE {
             Cables()
             {
                 mouseMoveHandler = getWindow()->getSignalMouseMove().connect(boost::bind(&Cables::onMouseMove, this, _1));
-                keyUpHandler = getWindow()->getSignalKeyUp().connect(boost::bind(&Cables::onKeyUp, this, _1));
+                keyUpHandler = getWindow()->getSignalKeyDown().connect(boost::bind(&Cables::onKeyUp, this, _1));
                 postDrawHandler = getWindow()->getSignalPostDraw().connect(0, [this]() {
                     draw();
                 });
@@ -137,7 +137,7 @@ namespace ORAGE {
                 keyCode = 0;
             };
         };//Cables
-        typedef shared_ptr<class Cables> CablesRef;
+        typedef shared_ptr<Cables> CablesRef;
     }//CONNECTIONS
 }//ORAGE
 

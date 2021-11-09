@@ -18,7 +18,7 @@ namespace reza {
         
         template <typename T>
         class OrageSliderT : public SliderT<T> {
-            typedef std::shared_ptr<class OrageSliderT<T>> OrageSliderRef;
+            typedef std::shared_ptr<OrageSliderT<T>> OrageSliderRef;
         public :
             struct Format {
             public:
@@ -160,9 +160,9 @@ namespace reza {
         typedef OrageSliderT<float> OrageSliderf;
         typedef OrageSliderT<double> OrageSliderd;
         
-        typedef std::shared_ptr<class OrageSliderT<int>> OrageSlideriRef;
-        typedef std::shared_ptr<class OrageSliderT<float>> OrageSliderfRef;
-        typedef std::shared_ptr<class OrageSliderT<double>> OrageSliderdRef;
+        typedef std::shared_ptr<OrageSliderT<int>> OrageSlideriRef;
+        typedef std::shared_ptr<OrageSliderT<float>> OrageSliderfRef;
+        typedef std::shared_ptr<OrageSliderT<double>> OrageSliderdRef;
         
     }//ui
 }//reza

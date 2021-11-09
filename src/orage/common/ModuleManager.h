@@ -41,10 +41,13 @@ namespace ORAGE {
                 ModuleRef module;
                 switch(type){
                     case TYPES::ISF :
-                        module = ModuleISF::create(name, CreateISFDocRef(filePath.string()));
+                    case TYPES::FX :
+                    case TYPES::OUTPUT :
+                        module = ModuleISF::create(name, filePath.string(), type);
                     break;
                     case TYPES::CONTROLLER :
                     case TYPES::CLOCK :
+                    case TYPES::MATH :
                         module = ModuleController::create(name, filePath.string(), type);
                     break;
                     default :

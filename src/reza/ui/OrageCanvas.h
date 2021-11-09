@@ -23,13 +23,11 @@ namespace reza {
         using namespace ci::app;
         using namespace ORAGE::COMMON;
         
-        class OrageCanvas;
-        
-        typedef Event<OrageCanvas> EvtCanvas;
-        typedef EventTemplate<OrageCanvas, EvtCanvas> EvtCanvasHandler;
+        typedef Event<class OrageCanvas> EvtCanvas;
+        typedef EventTemplate<class OrageCanvas, EvtCanvas> EvtCanvasHandler;
         
         class OrageCanvas : public SuperCanvas, public EvtCanvasHandler{
-            typedef shared_ptr<class OrageCanvas> OrageCanvasRef;
+            typedef shared_ptr<OrageCanvas> OrageCanvasRef;
             typedef map<string, ParameterBaseRef> ParameterWrapper;
             static TextureRef CLOSE_PIC;
             
@@ -154,7 +152,7 @@ namespace reza {
         };//OrageCanvas
         
         TextureRef OrageCanvas::CLOSE_PIC;
-        typedef shared_ptr<class OrageCanvas> OrageCanvasRef;
+        typedef shared_ptr<OrageCanvas> OrageCanvasRef;
     }//ui
 }//reza
 

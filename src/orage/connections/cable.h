@@ -17,7 +17,7 @@ namespace ORAGE {
         using namespace COMPONENTS;
         
         class Cable {
-            typedef shared_ptr<class Cable> CableRef;
+            typedef shared_ptr<Cable> CableRef;
             typedef map<string, shared_ptr<View>> Parameter;
             
             Path2d  path;
@@ -119,7 +119,7 @@ namespace ORAGE {
                 path.curveTo( p1, p2, pStop );
             }
         };
-        typedef shared_ptr<class Cable> CableRef;
+        typedef shared_ptr<Cable> CableRef;
     }//CONNECTIONS
 }//ORAGE
 #endif /* cable_h */

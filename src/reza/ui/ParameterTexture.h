@@ -19,11 +19,8 @@ namespace reza {
         using namespace std;
         using namespace ci::gl;
         
-        typedef shared_ptr<class ParameterTexture> ParameterTextureRef;
-        
-        class ParameterTexture
-        : public ParameterBase {
-            typedef shared_ptr<class ParameterTexture> ParameterTextureRef;
+        class ParameterTexture : public ParameterBase {
+            typedef shared_ptr<ParameterTexture> ParameterTextureRef;
             static TextureRef DEFAULT_INPUT;
         public:
             struct Format {
@@ -40,7 +37,7 @@ namespace reza {
                 }
                 bool mInput;
             protected:
-                friend class ParameterTexture;
+                friend ParameterTexture;
             };
         private : 
             ParameterTexture( string name, Format format = Format()) :
@@ -133,7 +130,7 @@ namespace reza {
             CameraPersp mCam;
             Format mFormat;
         };//ParameterTexture
-        typedef shared_ptr<class ParameterTexture> ParameterTextureRef;
+        typedef shared_ptr<ParameterTexture> ParameterTextureRef;
         ci::gl::TextureRef ParameterTexture::DEFAULT_INPUT;
     }//ui {
 }//reza {

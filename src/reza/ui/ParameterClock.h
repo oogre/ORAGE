@@ -16,11 +16,8 @@ namespace reza {
         
         using namespace VVISF;
         
-        typedef std::shared_ptr<class ParameterClock> ParameterClockRef;
-        
-        class ParameterClock
-        : public ParameterBase {
-            typedef std::shared_ptr<class ParameterClock> ParameterClockRef;
+        class ParameterClock : public ParameterBase {
+            typedef std::shared_ptr<ParameterClock> ParameterClockRef;
         public:
             struct Format {
             public:
@@ -36,7 +33,7 @@ namespace reza {
                 }
                 bool mInput;
             protected:
-                friend class ParameterClock;
+                friend ParameterClock;
             };
             private :
             ParameterClock( std::string name, CustomISFAttrRef clockAttr, Format format = Format()) :
@@ -88,7 +85,7 @@ namespace reza {
             }
             Format mFormat;
         };//ParameterClock
-        typedef std::shared_ptr<class ParameterClock> ParameterClockRef;
+        typedef std::shared_ptr<ParameterClock> ParameterClockRef;
     }//ui {
 }//reza {
 

@@ -17,7 +17,7 @@ namespace reza {
         using namespace ci::app;
         using namespace std;
         class OrageMenuItem : public Button {
-            typedef std::shared_ptr<class OrageMenuItem> OrageMenuItemRef;
+            typedef std::shared_ptr<OrageMenuItem> OrageMenuItemRef;
             bool initialized = false;
             State oldState = State::NORMAL;
             std::function<void( ci::app::MouseEvent &event )> onMouseOverFn;
@@ -48,6 +48,12 @@ namespace reza {
                         subMenu->setVisible(true);
                     });
                 }
+                
+                auto index = name.find_last_of(".");
+                if(index != std::string::npos){
+                    name.erase( name.begin() + index, name.end());
+                }
+                
                 Button::Format format = Button::Format().label(true).align(Alignment::CENTER).size(25);
                 ButtonRef btn = Button::create(name, false, format);
                 btn->setSize(vec2(100, 25));
@@ -90,7 +96,7 @@ namespace reza {
             }
             OrageMenuListRef subMenu;
         };//OrageMenuItem
-        typedef std::shared_ptr<class OrageMenuItem> OrageMenuItemRef;
+        typedef std::shared_ptr<OrageMenuItem> OrageMenuItemRef;
     }// ui
 }// reza
 

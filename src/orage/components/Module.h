@@ -13,6 +13,7 @@
 #include "EventTemplate.h"
 #include <ctime>
 #include <limits>
+#include <regex>
 
 namespace ORAGE {
     namespace COMPONENTS {
@@ -44,6 +45,10 @@ namespace ORAGE {
             Module(string name) :
                 EvtModuleHandler()
             {
+                auto index = name.find_last_of(".");
+                if(index != std::string::npos){
+                    name.erase( name.begin() + index, name.end());
+                }
                 moduleType = TYPES::NONE;
                 id = Module::ID++;
                 if(Module::IDS.count(name)==0){
@@ -137,7 +142,6 @@ namespace ORAGE {
                 setValue("TIMEDELTA", ISFFloatVal(time - oldTime));
                 oldTime = time;
                 incValue("FRAMEINDEX", 1.0);
-//                UI->setNeedsDisplay();
                 UI->update();
             }
             bool hasToDestroy(){

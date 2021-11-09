@@ -14,11 +14,8 @@
 
 namespace reza {
     namespace ui {
-        typedef std::shared_ptr<class ParameterFloat> ParameterFloatRef;
-        
-        class ParameterFloat
-        : public ParameterBase {
-            typedef std::shared_ptr<class ParameterFloat> ParameterFloatRef;
+        class ParameterFloat : public ParameterBase {
+            typedef std::shared_ptr<ParameterFloat> ParameterFloatRef;
         public:
             struct Format {
             public:
@@ -34,7 +31,7 @@ namespace reza {
                 }
                 bool mInput;
             protected:
-                friend class ParameterFloat;
+                friend ParameterFloat;
             };
         private : 
             ParameterFloat( std::string name, double * value, double min, double max, Format format = Format()) : ParameterBase(name), mFormat(format)
@@ -97,7 +94,7 @@ namespace reza {
             RangedRef limiterRef;
             Format mFormat;
         };//ParameterFloat
-        typedef std::shared_ptr<class ParameterFloat> ParameterFloatRef;
+        typedef std::shared_ptr<ParameterFloat> ParameterFloatRef;
     }//ui {
 }//reza {
 
