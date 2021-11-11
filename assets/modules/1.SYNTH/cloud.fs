@@ -85,6 +85,12 @@
 			"MIN" :	-1.0,
 			"MAX" :	1.0
 	}
+  ],
+  "OUTPUTS": [
+    {
+      "NAME" :  "out0",
+      "TYPE" :  "image"
+    }
   ]
 }*/
 float random (in vec2 _st) {
@@ -137,5 +143,5 @@ void main(){
     q.g = fbm( st + vec2(seedGreen) * t + greenShift * i.g);
     q.b = fbm( st + vec2(seedBlue)  * t + blueShift  * i.b);
 
-    gl_FragColor = vec4(vec3(q), 1);
+    out0 = vec4(vec3(q), 1);
 }

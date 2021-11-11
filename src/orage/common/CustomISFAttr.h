@@ -8,10 +8,11 @@
 #ifndef CustomISFAttr_h
 #define CustomISFAttr_h
 
-#include "ISFAttr.hpp"
+#include "ISFAttr.h"
+
 namespace ORAGE {
     namespace COMMON {
-        using namespace VVISF;
+        using namespace ISF;
         using namespace std;
         
         class CustomISFAttr : public ISFAttr {
@@ -19,6 +20,7 @@ namespace ORAGE {
             CustomISFAttr(const std::string & inName,
                           const std::string & inDesc,
                           const std::string & inLabel,
+                          const ISFAttr_IO io,
                           const ISFValType & inType,
                           const ISFVal & inMinVal=ISFNullVal(),
                           const ISFVal & inMaxVal=ISFNullVal(),
@@ -26,18 +28,19 @@ namespace ORAGE {
                           const ISFVal & inIdenVal=ISFNullVal(),
                           const std::vector<std::string> * inLabels=nullptr,
                           const std::vector<int32_t> * inVals=nullptr) :
-            ISFAttr(inName, inDesc, inLabel, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals){
+            ISFAttr(inName, inDesc, inLabel, io, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals){
                 
             }
             
-            CustomISFAttr(const ISFAttrRef & attr) :
-            ISFAttr(attr->name(), attr->description(), attr->label(), attr->type(), attr->minVal(), attr->maxVal(), attr->defaultVal(), attr->identityVal(), &attr->labelArray(), &attr->valArray()){
+            CustomISFAttr(const ISF::ISFAttrRef & attr) :
+            ISFAttr(attr->name(), attr->description(), attr->label(), attr->IO(), attr->type(), attr->minVal(), attr->maxVal(), attr->defaultVal(), attr->identityVal(), &attr->labelArray(), &attr->valArray()){
                 
             }
             public :
             static CustomISFAttrRef create(const std::string & inName,
                                            const std::string & inDesc,
                                            const std::string & inLabel,
+                                           const ISFAttr_IO io,
                                            const ISFValType & inType,
                                            const ISFVal & inMinVal=ISFNullVal(),
                                            const ISFVal & inMaxVal=ISFNullVal(),
@@ -45,9 +48,9 @@ namespace ORAGE {
                                            const ISFVal & inIdenVal=ISFNullVal(),
                                            const std::vector<std::string> * inLabels=nullptr,
                                            const std::vector<int32_t> * inVals=nullptr){
-                return CustomISFAttrRef(new CustomISFAttr(inName, inDesc, inLabel, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals));
+                return CustomISFAttrRef(new CustomISFAttr(inName, inDesc, inLabel, io, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals));
             }
-            static CustomISFAttrRef create(const ISFAttrRef attr){
+            static CustomISFAttrRef create(const ISF::ISFAttrRef attr){
                 return CustomISFAttrRef(new CustomISFAttr(attr));
             }
         };//CustomISFAttr

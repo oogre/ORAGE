@@ -102,7 +102,7 @@ namespace reza {
             TextureViewRef textureViewRef;
             ci::gl::TextureRef textureRef;
             ci::gl::TextureRef textureOldRef;
-            ci::gl::Texture2dRef * textureInRef;
+            ci::gl::TextureRef * textureInRef;
             
             CustomISFAttrRef clockAttr;
             CustomISFAttrRef * clockAttrIn;

@@ -59,6 +59,12 @@
       "MIN" : 0.0,
       "MAX" : 1.0
     }
+  ],
+  "OUTPUTS": [
+    {
+      "NAME" :  "out0",
+      "TYPE" :  "image"
+    }
   ]
 }*/
 
@@ -122,7 +128,7 @@ void main()
    fs = mix(isf_FragNormCoord.xy, fs, vec2(max(B.r, max(B.g, B.b))));
   }
   vec3 color = IMG_NORM_PIXEL(tex0, fs).rgb;
-  gl_FragColor = vec4(color, 1);
+  out0 = vec4(color, 1);
 
 }
 

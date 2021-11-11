@@ -14,8 +14,6 @@
 namespace reza {
     namespace ui {
         
-        using namespace VVISF;
-        
         class ParameterClock : public ParameterBase {
             typedef std::shared_ptr<ParameterClock> ParameterClockRef;
         public:

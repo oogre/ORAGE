@@ -36,6 +36,12 @@
       "MIN" : -0.5,
       "MAX" : 0.5
     }
+  ],
+  "OUTPUTS": [
+    {
+      "NAME" :  "out0",
+      "TYPE" :  "image"
+    }
   ]
 }*/
 
@@ -50,6 +56,6 @@ void main()
   vec3 m = vec3(_tex0_sample);
   vec3 C = mix(vec3(0), A, B);
   vec3 color = mix(A, C, m);
-  gl_FragColor = vec4(color, 1);
+  out0 = vec4(color, 1);
 }
 

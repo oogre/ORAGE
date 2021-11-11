@@ -8,12 +8,12 @@
 #ifndef ModuleISF_h
 #define ModuleISF_h
 
-#include "ISFDoc.hpp"
+//#include "ISFDoc.hpp"
 #include "Module.h"
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/wrapper.h"
-
+#include "ISFDoc.h"
 #include <exception>
 namespace ORAGE {
     namespace COMPONENTS {
@@ -22,7 +22,7 @@ namespace ORAGE {
         using namespace ci::app;
         using namespace std;
         using namespace reza::ui;
-        using namespace VVISF;
+        using namespace ISF;
 
         
         class ModuleISF : public Module {
@@ -30,7 +30,6 @@ namespace ORAGE {
             bool sizeChanged;
             bool antiAliazing = false;
             GlslProgRef mShader;
-            ISFDocRef myDoc;
             mat4 mDefaultProjection;
             bool isInitialized = false;
             vec2 defSize;
@@ -46,32 +45,34 @@ namespace ORAGE {
             {
                 try{
                     moduleType = type;
-                    string outputFrag;
-                    string outputVert;
+                    string outFrag;
+                    string outVert;
                     
-                    myDoc = CreateISFDocRef(path);
-                    VVGL::GLVersion version = VVGL::GLVersion::GLVersion_4;
-                    myDoc->generateShaderSource(&outputFrag, &outputVert, version);
-                    mShader = gl::GlslProg::create( gl::GlslProg::Format()
-                                                   .vertex( loadAsset(getAssetPath("./shaders/default.vs")))
-                                                   .fragment(outputFrag));
-                
+                    ISF::ISFDocRef doc = ISF::ISFDoc::create(path);
+                    ISF::GLVersion v = ISF::GLVersion::GLVersion_4;
+                    
+                    doc->generateShaderSource(&outFrag, &outVert, v);
+                    
+                    mShader = gl::GlslProg::create( gl::GlslProg::Format().vertex(outVert).fragment(outFrag) );
+                    
+                    ISFAttr_IO io = ISFAttr_IO::IN;
+                    
                     ISFVal PASSINDEXmin (ISFValType::ISFValType_Long, 0);
                     ISFVal PASSINDEXmax (ISFValType::ISFValType_Long, numeric_limits<int>::max());
                     ISFVal PASSINDEXval (ISFValType::ISFValType_Long, 0);
-                    addValue("PASSINDEX", "", "", ISFValType::ISFValType_Long, PASSINDEXmin, PASSINDEXmax, PASSINDEXval);
+                    addValue("PASSINDEX", "", "", io, ISFValType::ISFValType_Long, PASSINDEXmin, PASSINDEXmax, PASSINDEXval);
                     
                     ISFVal RENDERSIZEmin (ISFValType::ISFValType_Point2D, 1, 1);
                     ISFVal RENDERSIZEmax (ISFValType::ISFValType_Point2D, 1920, 1080);
                     ISFVal RENDERSIZEval (ISFValType::ISFValType_Point2D, (double)width, (double)height);
-                    addValue("RENDERSIZE", "", "", ISFValType::ISFValType_Point2D, RENDERSIZEmin, RENDERSIZEmax, RENDERSIZEval);
+                    addValue("RENDERSIZE", "", "", io, ISFValType::ISFValType_Point2D, RENDERSIZEmin, RENDERSIZEmax, RENDERSIZEval);
                     
                     UI->setColorBack(Config::getConfig(moduleType).bgColor);
                     
                     outputs.push_back(UI->addOutput("output", outputs.size()));
                     outputs.back()->setSize(ivec2(width, height), antiAliazing);
                     
-                    for(auto input : myDoc->inputs()){
+                    for(auto input : doc->inputs()){
                         if(input->type() == ISFValType::ISFValType_Float){
                             string name = input->name();
                             CustomISFAttrRef attr = addValue(input);
@@ -83,7 +84,6 @@ namespace ORAGE {
                         }else if(input->type() == ISFValType::ISFValType_Image){
                             string name = input->name();
                             inputs.push_back(UI->addInputs(name, inputs.size(), (*outputs.begin())->textureViewRef));
-                            
                         }
                     }
                     

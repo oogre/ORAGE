@@ -15,6 +15,12 @@
       "TYPE" :  "long",
       "DEFAULT": 0
     }
+  ],
+  "OUTPUTS": [
+    {
+      "NAME" :  "out0",
+      "TYPE" :  "image"
+    }
   ]
 }*/
 
@@ -24,6 +30,6 @@ void main()
   vec3 B = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
   vec3 m = vec3(_tex0_sample);
   vec3 color = mix(A, B, m);
-  gl_FragColor = vec4(color, 1);
+  out0 = vec4(color, 1);
 }
 

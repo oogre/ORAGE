@@ -9,7 +9,6 @@
 #define ModuleController_h
 #include "Module.h"
 #include <dukglue/dukglue.h>
-#include "json.hpp"
 //https://duktape.org/
 //https://github.com/Aloshi/dukglue
 namespace ORAGE {
@@ -62,7 +61,8 @@ namespace ORAGE {
                             ISFVal min (ISFValType::ISFValType_Float, input.getChild("MIN").getValue<float>());
                             ISFVal max (ISFValType::ISFValType_Float, input.getChild("MAX").getValue<float>());
                             ISFVal val (ISFValType::ISFValType_Float, input.getChild("DEFAULT").getValue<float>());
-                            CustomISFAttrRef attr = addValue(name, "", "", ISFValType::ISFValType_Float, min, max, val);
+                            ISFAttr_IO io = ISFAttr_IO::IN;
+                            CustomISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, min, max, val);
                             UI->addParameter(name,
                                              attr->currentVal().getDoubleValPtr(),
                                              attr->minVal().getDoubleVal(),
@@ -74,7 +74,8 @@ namespace ORAGE {
                             ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                             ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                            CustomISFAttrRef attr = addValue(name, "", "", ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                            ISFAttr_IO io = ISFAttr_IO::IN;
+                            CustomISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
                             UI->addClock(name, attr, ParameterClock::Format().input(true));
                         }
                     }
@@ -84,7 +85,8 @@ namespace ORAGE {
                             ISFVal min (ISFValType::ISFValType_Float, output.getChild("MIN").getValue<double>());
                             ISFVal max (ISFValType::ISFValType_Float, output.getChild("MAX").getValue<double>());
                             ISFVal val (ISFValType::ISFValType_Float, output.getChild("DEFAULT").getValue<double>());
-                            CustomISFAttrRef attr = addValue(name, "", "", ISFValType::ISFValType_Float, min, max, val);
+                            ISFAttr_IO io = ISFAttr_IO::OUT;
+                            CustomISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, min, max, val);
                             UI->addParameter(name,
                                              attr->currentVal().getDoubleValPtr(),
                                              attr->minVal().getDoubleVal(),
@@ -96,7 +98,8 @@ namespace ORAGE {
                             ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                             ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                            CustomISFAttrRef attr = addValue(name, "", "", ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                            ISFAttr_IO io = ISFAttr_IO::OUT;
+                            CustomISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
                             UI->addClock(name, attr, ParameterClock::Format().input(false));
                         }
                     }

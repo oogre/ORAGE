@@ -110,6 +110,12 @@
 			"MIN" :	0.0,
 			"MAX" :	1.0
     }
+  ],
+  "OUTPUTS": [
+  	{
+			"NAME" :	"out0",
+			"TYPE" :	"image"
+	}
   ]
 }*/
 
@@ -164,10 +170,11 @@ void main()
     value = clamp(value, 0.0, 1.0);
     value = mix(1.0-value, value,rev);
 
+    vec3 R = IMG_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
     vec3 A = vec3(value);
 	vec3 B = mix(vec3(1), IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy).rgb, vec3(_tex1_sample));
 	vec3 C = mix(vec3(0), IMG_NORM_PIXEL(tex2, isf_FragNormCoord.xy).rgb, vec3(_tex2_sample));
 	vec3 color = mix(C, B, A);
 
- 	gl_FragColor = vec4(color, 1);			
+ 	out0 = vec4(color, 1);			
 }

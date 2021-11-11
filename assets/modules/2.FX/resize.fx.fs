@@ -52,6 +52,12 @@
       "MIN" : -1.0,
       "MAX" : 1.0
     }
+  ],
+  "OUTPUTS": [
+    {
+      "NAME" :  "out0",
+      "TYPE" :  "image"
+    }
   ]
 }*/
 
@@ -81,7 +87,7 @@ void main()
 
   
   
-  gl_FragColor = vec4(A, 1);
+  out0 = vec4(A, 1);
 
 }
 
