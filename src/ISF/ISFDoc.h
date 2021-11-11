@@ -36,7 +36,6 @@ namespace ISF {
         std::vector<ISFAttrRef> _audioInputs; // array of ISFAttrRef instances for the audio inputs
         std::vector<ISFAttrRef> _imageImports; // array of ISFAttrRef instances that describe imported images. attrib's 'attribName' is the name of the sampler, attrib's 'description' is the path to the file.
         
-        
         std::string *_jsonSourceString = nullptr; // the JSON std::string from the source *including the comments and any linebreaks before/after it*
         std::string *_jsonString = nullptr; // the JSON std::string copied from the source- doesn't include any comments before/after it
         std::string *_vertShaderSource = nullptr; // the raw vert shader source before being find-and-replaced
@@ -82,7 +81,46 @@ namespace ISF {
             
         }
         virtual ~ISFDoc(){
+            lock_guard<recursive_mutex>        lock(_propLock);
             
+            if (_path != nullptr)    {
+                delete _path;
+                _path = nullptr;
+            }
+            if (_name != nullptr)    {
+                delete _name;
+                _name = nullptr;
+            }
+            if (_description != nullptr)    {
+                delete _description;
+                _description = nullptr;
+            }
+            if (_credit != nullptr)    {
+                delete _credit;
+                _credit = nullptr;
+            }
+            if (_vsn != nullptr)    {
+                delete _vsn;
+                _vsn = nullptr;
+            }
+            
+            
+            if (_jsonSourceString != nullptr)    {
+                delete _jsonSourceString;
+                _jsonSourceString = nullptr;
+            }
+            if (_jsonString != nullptr)    {
+                delete _jsonString;
+                _jsonString = nullptr;
+            }
+            if (_vertShaderSource != nullptr)    {
+                delete _vertShaderSource;
+                _vertShaderSource = nullptr;
+            }
+            if (_fragShaderSource != nullptr)    {
+                delete _fragShaderSource;
+                _fragShaderSource = nullptr;
+            }
         }
         
         //!    Returns the path of the ISF file for the receiver.  This is probably the path to the frag shader.
@@ -360,71 +398,6 @@ namespace ISF {
             string            newVertShaderSrc = string("");
             newVertShaderSrc.reserve( uint32_t(2.5 * (vsVarDeclarations.size()+_vertShaderSource->size())) );
             {
-//                //    remove any lines containing #version tags
-//                searchString = string("#version");
-//                tmpRange = Range(newVertShaderSrc.find(searchString), searchString.size());
-//                do    {
-//                    if (tmpRange.loc != string::npos)    {
-//                        tmpIndex = modSrcString.find_first_of("\n\r\f", tmpRange.max());
-//                        if (tmpIndex != string::npos)    {
-//                            tmpRange.len = tmpIndex - tmpRange.loc;
-//                            newVertShaderSrc.erase(tmpRange.loc, tmpRange.len);
-//
-//                            tmpRange = Range(newVertShaderSrc.find(searchString), searchString.size());
-//                        }
-//                    }
-//                } while (tmpRange.loc != string::npos);
-//                //    add the #version tag for the min version of GLSL supported by this major vsn of openGL
-//                switch (inGLVers)    {
-//                    case GLVersion_Unknown:
-//                    case GLVersion_2:
-//                        newVertShaderSrc.insert(0, string("#version 110\n"));
-//                        break;
-//                    case GLVersion_ES:
-//                    case GLVersion_ES2:
-//                        newVertShaderSrc.insert(0, string("#version 100\n"));
-//                        break;
-//                    case GLVersion_ES3:
-//                        newVertShaderSrc.insert(0, string("#version 300 es\n"));
-//                        break;
-//                    case GLVersion_33:
-//                        newVertShaderSrc.insert(0, string("#version 330\n"));
-//                        break;
-//                    case GLVersion_4:
-//                        newVertShaderSrc.insert(0, string("#version 400\n"));
-//                        break;
-//                }
-//
-//                //    add the compatibility define
-//                switch (inGLVers)    {
-//                    case GLVersion_Unknown:
-//                    case GLVersion_2:
-//                        //    intentionally blank
-//                        break;
-//                    case GLVersion_ES:
-//                    case GLVersion_ES2:
-//                    case GLVersion_ES3:
-//                    case GLVersion_33:
-//                    case GLVersion_4:
-//                        newVertShaderSrc.append(ISF_ES_Compatibility);
-//                        break;
-//                }
-//                //    load any specific vars or function declarations for the vertex shader from an included file
-//                switch (inGLVers)    {
-//                    case GLVersion_Unknown:
-//                    case GLVersion_2:
-//                    case GLVersion_ES:
-//                    case GLVersion_ES2:
-//                        newVertShaderSrc.append(ISFVertVarDec_GLES2);
-//                        break;
-//                    case GLVersion_ES3:
-//                    case GLVersion_33:
-//                    case GLVersion_4:
-//                        newVertShaderSrc.append(ISFVertVarDec_GL3);
-//                        break;
-//                }
-//                //    append the variable declarations i assembled earlier with the frag shader
-//                newVertShaderSrc.append(vsVarDeclarations);
                 modSrcString = string("");
                 modSrcString.reserve(newVertShaderSrc.capacity());
                 modSrcString.append(*_vertShaderSource);

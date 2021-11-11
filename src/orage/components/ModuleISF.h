@@ -48,8 +48,8 @@ namespace ORAGE {
                     string outFrag;
                     string outVert;
                     
-                    ISF::ISFDocRef doc = ISF::ISFDoc::create(path);
-                    ISF::GLVersion v = ISF::GLVersion::GLVersion_4;
+                    ISFDocRef doc = ISFDoc::create(path);
+                    ISF::GLVersion v = GLVersion_4;
                     
                     doc->generateShaderSource(&outFrag, &outVert, v);
                     
@@ -69,8 +69,11 @@ namespace ORAGE {
                     
                     UI->setColorBack(Config::getConfig(moduleType).bgColor);
                     
-                    outputs.push_back(UI->addOutput("output", outputs.size()));
-                    outputs.back()->setSize(ivec2(width, height), antiAliazing);
+                    for(auto & outAttr : doc->imageOutputs()){
+                        ParameterTextureRef output = UI->addOutput(outAttr->name(), outputs.size());
+                        output->setSize(ivec2(width, height), antiAliazing);
+                        outputs.push_back(output);
+                    }
                     
                     for(auto input : doc->inputs()){
                         if(input->type() == ISFValType::ISFValType_Float){
