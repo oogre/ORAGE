@@ -91,37 +91,37 @@ namespace ORAGE {
         class EventTemplate {
             typedef boost::signals2::signal<void(E)> EventSignal;
             typedef typename EventSignal::slot_type EventSignalSlot;
-            typedef map<string, EventSignal> MapType;
-            MapType sigMap;
-            protected :
+            //typedef map<string, EventSignal> MapType;
+            //MapType sigMap;
+            EventSignal signal;
+        protected :
             EventTemplate(){
             }
         public :
-            virtual bool addEventListener(const string type, EventSignalSlot slot) {
-                if (sigMap.find(type) == sigMap.end()) {
-//                    sigMap.insert(MapType::value_type({ type, EventSignal() }));
-//                    sigMap.insert(pair<string, boost::signals2::signal<void(Event<T>)>>(type, EventSignal()));
-                    //auto e = EventSignal();
-                    //sigMap.insert(make_pair(type, EventSignal()));
-                    sigMap.emplace(type, EventSignal());
-                }
-                sigMap.at(type).connect(slot);
+            virtual bool addEventListener(EventSignalSlot slot) {
+//                if (sigMap.find(type) == sigMap.end()) {
+////                    sigMap.insert(MapType::value_type({ type, EventSignal() }));
+////                    sigMap.insert(pair<string, boost::signals2::signal<void(Event<T>)>>(type, EventSignal()));
+//                    //auto e = EventSignal();
+//                    //sigMap.insert(make_pair(type, EventSignal()));
+//                    sigMap.emplace(type, EventSignal());
+//                }
+                signal.connect(slot);
 //                cout << type << endl;
                 return true;
             }
 
             template<typename Callable>
-            bool removeEventListener(const string type, Callable slot) {
-                if(sigMap.find(type) != sigMap.end()){
-                    sigMap.at(type).disconnect(slot);
-                }
+            bool removeEventListener(Callable slot) {
+//                if(sigMap.find(type) != sigMap.end()){
+                    signal.disconnect(slot);
+//                }
                 return true;
             }
             virtual bool eventTrigger(E event) {
-                typename MapType::iterator signal = sigMap.find(event.type);
-                if(signal == sigMap.end())return false;
-                (sigMap.at(event.type))(event);
-                
+//                typename MapType::iterator signal = sigMap.find(event.type);
+//                if(signal == sigMap.end())return false;
+                signal(event);
                 return true;
             }
         };//class EventTemplate

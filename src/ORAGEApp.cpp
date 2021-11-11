@@ -22,7 +22,7 @@ public:
         mMainWinCtx = Context::getCurrent();
         modules = ModuleManager::create();
         menu = OrageMenu::create();
-        menu->addEventListener("menu", [&](EvtMenu evt){
+        menu->addEventListener([&](EvtMenu evt){
             modules->add(evt.target, evt.origin, evt.moduleType);
         });
         enableVerticalSync( false );

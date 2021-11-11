@@ -76,16 +76,16 @@ namespace ORAGE {
                 
                 UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
                 UI->init();
-                UI->addEventListener("mouseDown", [&](EvtCanvas evt){
+                UI->addEventListener([&](EvtCanvas evt){
                     EvtModuleHandler::eventTrigger({
                         "putAtTop", shared_from_this()
                     });
                 });
             }
             
-            Module * addEventListenerOnParameters(const string type, EvtSlot slot) {
+            Module * addEventListenerOnParameters(EvtSlot slot) {
                 for(auto [key, parameter] : UI->parameters){
-                    parameter->addEventListener(type, slot);
+                    parameter->addEventListener(slot);
                 }
                 return this;
             }
