@@ -124,7 +124,7 @@ void main()
   vec3 B = IMG_NORM_PIXEL(tex1, fs).rgb;
 
   fs = mirrorTilePattern(fs, size, center);
-  if(_tex1_sample == 1){
+  if(_tex1_sample){
    fs = mix(isf_FragNormCoord.xy, fs, vec2(max(B.r, max(B.g, B.b))));
   }
   vec3 color = IMG_NORM_PIXEL(tex0, fs).rgb;
