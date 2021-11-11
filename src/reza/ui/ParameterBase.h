@@ -18,8 +18,8 @@ namespace reza {
         
         using namespace ORAGE::COMMON;
         
-        typedef Event<class ParameterBase> Evt;
-        typedef EventTemplate<class ParameterBase, Evt> EvtHandler;
+        typedef ORAGE::COMMON::Event<class ParameterBase> Evt;
+        typedef ORAGE::COMMON::EventTemplate<class ParameterBase, Evt> EvtHandler;
         
         enum PARAMETER_TYPE {
             NONE = 0x00,

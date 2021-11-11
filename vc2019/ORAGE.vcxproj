@@ -46,7 +46,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\VVISF\src;..\src\Blocks\VVISF\include;..\src\Blocks\VVGL\src;..\src\Blocks\VVGL\include;..\src\Blocks\common;..\src\Blocks\external\GLEW\include;..\src\Blocks\external\OpenGL-Win;..\src\Blocks\Ducktape</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\Ducktape;..\src\ISF;$(USERPROFILE)\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\usr\local\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_HAS_AUTO_PTR_ETC=1;VVGL_SDK_WIN;WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -57,11 +57,11 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\VVISF\src;..\src\Blocks\VVISF\include;..\src\Blocks\VVGL\src;..\src\Blocks\VVGL\include;..\src\Blocks\Ducktape</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\Ducktape;..\src\ISF;$(USERPROFILE)\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\usr\local\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>glew32.lib;VVGL.lib;VVISF.lib;cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget);$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset);..\src\Blocks\VVGL.win64;..\src\Blocks\VVISF.win64;..\src\Blocks\external\GLEW\win_x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget);$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -71,7 +71,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\VVISF\src;..\src\Blocks\VVISF\include;..\src\Blocks\VVGL\src;..\src\Blocks\VVGL\include;..\src\Blocks\external\GLEW\include;..\src\Blocks\external\OpenGL-Win;..\src\Blocks\common;..\src\Blocks\Ducktape</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\Ducktape;..\src\ISF;$(USERPROFILE)\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\usr\local\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_HAS_AUTO_PTR_ETC=1;VVGL_SDK_WIN;WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -86,11 +86,11 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\VVISF\src;..\src\Blocks\VVISF\include;..\src\Blocks\VVGL\src;..\src\Blocks\VVGL\include;..\src\Blocks\Ducktape</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\Ducktape;..\src\ISF;$(USERPROFILE)\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\usr\local\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>glew32.lib;VVGL.lib;VVISF.lib;cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget);$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset);..\src\Blocks\VVGL.win64;..\src\Blocks\VVISF.win64;..\src\Blocks\external\GLEW\win_x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget);$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -106,25 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\Blocks\UI\src\CocoaWindowCanvas.mm" />
-    <None Include="..\src\Blocks\VVGL.win64\VVGL.dll" />
-    <None Include="..\src\Blocks\VVGL.win64\VVGL.exp" />
-    <None Include="..\src\Blocks\VVGL.win64\VVGL.iobj" />
-    <None Include="..\src\Blocks\VVGL.win64\VVGL.ipdb" />
-    <None Include="..\src\Blocks\VVGL.win64\VVGL.pdb" />
-    <None Include="..\src\Blocks\VVGL\Doxyfile" />
-    <None Include="..\src\Blocks\VVGL\macos_universal_binary.sh" />
-    <None Include="..\src\Blocks\VVGL\Makefile" />
-    <None Include="..\src\Blocks\VVISF.win64\VVISF.dll" />
-    <None Include="..\src\Blocks\VVISF.win64\VVISF.exp" />
-    <None Include="..\src\Blocks\VVISF.win64\VVISF.iobj" />
-    <None Include="..\src\Blocks\VVISF.win64\VVISF.ipdb" />
-    <None Include="..\src\Blocks\VVISF.win64\VVISF.pdb" />
-    <None Include="..\src\Blocks\VVISF\macos_universal_binary.sh" />
-    <None Include="..\src\Blocks\VVISF\Makefile" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\src\Blocks\VVGL.win64\VVGL.lib" />
-    <Library Include="..\src\Blocks\VVISF.win64\VVISF.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Blocks\Ducktape\duktape.c" />
@@ -158,25 +139,6 @@
     <ClCompile Include="..\src\Blocks\UI\src\Waveform.cpp" />
     <ClCompile Include="..\src\Blocks\UI\src\WindowCanvas.cpp" />
     <ClCompile Include="..\src\Blocks\UI\src\XYPad.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLBuffer.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLBufferPool.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLCachedProperty.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLContext.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLContextWindowBacking.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLCPUToTexCopier.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLQtCtxWrapper.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLScene.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLTexToCPUCopier.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLTexToTexCopier.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\VVGL_Geom.cpp" />
-    <ClCompile Include="..\src\Blocks\VVGL\src\VVGL_StringUtils.cpp" />
-    <ClCompile Include="..\src\Blocks\VVISF\src\ISFAttr.cpp" />
-    <ClCompile Include="..\src\Blocks\VVISF\src\ISFDoc.cpp" />
-    <ClCompile Include="..\src\Blocks\VVISF\src\ISFPassTarget.cpp" />
-    <ClCompile Include="..\src\Blocks\VVISF\src\ISFScene.cpp" />
-    <ClCompile Include="..\src\Blocks\VVISF\src\ISFVal.cpp" />
-    <ClCompile Include="..\src\Blocks\VVISF\src\VVISF_Base.cpp" />
-    <ClCompile Include="..\src\Blocks\VVISF\src\VVISF_StringUtils.cpp" />
     <ClCompile Include="..\src\ORAGEApp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -224,50 +186,16 @@
     <ClInclude Include="..\src\Blocks\UI\src\Waveform.h" />
     <ClInclude Include="..\src\Blocks\UI\src\WindowCanvas.h" />
     <ClInclude Include="..\src\Blocks\UI\src\XYPad.h" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBufferPool.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBufferPool_CocoaAdditions.h" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_GLFW.h" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_IOS.h" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Mac.h" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Qt.h" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_RPI.h" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Win.h" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLCachedProperty.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLContext.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLContextWindowBacking.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLCPUToTexCopier.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLQtCtxWrapper.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLScene.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLTexToCPUCopier.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLTexToTexCopier.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\stb\stb_image.h" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Base.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Defines.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Doxygen.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Geom.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_HardCodedDefines.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\vvgl_qt_global.h" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Range.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_StringUtils.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Time.hpp" />
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Win_global.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\exprtk\exprtk.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\ISFAttr.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\ISFDoc.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\ISFPassTarget.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\ISFScene.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\ISFVal.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\nlohmann_json\json.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Base.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Constants.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Doxygen.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Err.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Qt_global.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_StringUtils.hpp" />
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Win_global.hpp" />
+    <ClInclude Include="..\src\ISF\exprtk\exprtk.hpp" />
+    <ClInclude Include="..\src\ISF\ISFAttr.h" />
+    <ClInclude Include="..\src\ISF\ISFBase.h" />
+    <ClInclude Include="..\src\ISF\ISFConstants.h" />
+    <ClInclude Include="..\src\ISF\ISFDoc.h" />
+    <ClInclude Include="..\src\ISF\ISFErr.h" />
+    <ClInclude Include="..\src\ISF\ISFRange.h" />
+    <ClInclude Include="..\src\ISF\ISFStringUtils.h" />
+    <ClInclude Include="..\src\ISF\ISFStringUtils_2.h" />
+    <ClInclude Include="..\src\ISF\ISFVal.h" />
     <ClInclude Include="..\src\orage\common\CustomISFAttr.h" />
     <ClInclude Include="..\src\orage\common\EventTemplate.h" />
     <ClInclude Include="..\src\orage\common\OrageMath.h" />

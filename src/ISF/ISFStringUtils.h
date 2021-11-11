@@ -9,7 +9,7 @@
 #define ISFStringUtils__h
 
 #include "ISFRange.h"
-
+#include <stdarg.h>
 namespace ISF {
     using namespace std;
     

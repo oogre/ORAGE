@@ -55,7 +55,7 @@ namespace ORAGE {
                     
                     mShader = gl::GlslProg::create( gl::GlslProg::Format().vertex(outVert).fragment(outFrag) );
                     
-                    ISFAttr_IO io = ISFAttr_IO::IN;
+                    ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
                     
                     ISFVal PASSINDEXmin (ISFValType::ISFValType_Long, 0);
                     ISFVal PASSINDEXmax (ISFValType::ISFValType_Long, numeric_limits<int>::max());

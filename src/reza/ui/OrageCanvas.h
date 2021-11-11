@@ -23,8 +23,8 @@ namespace reza {
         using namespace ci::app;
         using namespace ORAGE::COMMON;
         
-        typedef Event<class OrageCanvas> EvtCanvas;
-        typedef EventTemplate<class OrageCanvas, EvtCanvas> EvtCanvasHandler;
+        typedef ORAGE::COMMON::Event<class OrageCanvas> EvtCanvas;
+        typedef ORAGE::COMMON::EventTemplate<class OrageCanvas, EvtCanvas> EvtCanvasHandler;
         
         class OrageCanvas : public SuperCanvas, public EvtCanvasHandler{
             typedef shared_ptr<OrageCanvas> OrageCanvasRef;

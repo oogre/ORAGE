@@ -95,14 +95,20 @@ namespace ORAGE {
             protected :
             EventTemplate(){
             }
-            public :
+        public :
             virtual bool addEventListener(const string type, const typename EventSignal::slot_type slot) {
-                if(sigMap.find(type) == sigMap.end()){
-                    sigMap.insert(pair<string, EventSignal>(type,EventSignal()));
+                if (sigMap.find(type) == sigMap.end()) {
+                    //sigMap.insert(MapType::value_type({ type, EventSignal() }));
+                    //sigMap.insert(pair<string, boost::signals2::signal<void(Event<T>)>>(type, EventSignal()));
+                    //auto e = EventSignal();
+                    //sigMap.insert(make_pair(type, EventSignal()));
+                    //.emplace(type, EventSignal());
                 }
-                sigMap.at(type).connect(slot);
+                //sigMap.at(type).connect(slot);
+                cout << type << endl;
                 return true;
             }
+
             template<typename Callable>
             bool removeEventListener(const string type, Callable slot) {
                 if(sigMap.find(type) != sigMap.end()){

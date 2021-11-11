@@ -57,7 +57,7 @@ namespace ORAGE {
                     Module::IDS[name]++;
                 }
                 time = oldTime  = getElapsedSeconds();
-                ISFAttr_IO io = ISFAttr_IO::IN;
+                ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
                 ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
                 ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEval (ISFValType::ISFValType_Float, 0.0);

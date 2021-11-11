@@ -39,20 +39,14 @@
     <Filter Include="Source Files\Blocks\UI\src">
       <UniqueIdentifier>{2cdcfd9f-6cba-45ba-b0fb-2664590ec53f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Blocks\VVGL">
-      <UniqueIdentifier>{74767515-27d4-4a1a-afcd-3afc1fcd03c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Blocks\VVISF">
-      <UniqueIdentifier>{f7b41768-8e49-4f68-a00c-58d1613bd5c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Blocks\VVISF\lib">
-      <UniqueIdentifier>{df9fffd2-3b29-4ab9-ba9a-a737bd357072}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Blocks\VVGL\lib">
-      <UniqueIdentifier>{edfa6340-279b-4c64-a81e-83f770be1ee9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Blocks\Ducktape">
       <UniqueIdentifier>{87a7416f-61ec-407f-8465-5aaedb57c401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ISF">
+      <UniqueIdentifier>{63d2b90a-6001-4af1-a1a5-14e2fbb97f84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ISF\exprtk">
+      <UniqueIdentifier>{367affd8-df99-409b-a2ae-edce9f6607ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -154,63 +148,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Blocks\UI\src\XYPad.cpp">
       <Filter>Source Files\Blocks\UI\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLBuffer.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLBufferPool.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLCachedProperty.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLContext.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLContextWindowBacking.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLCPUToTexCopier.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLQtCtxWrapper.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLScene.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLTexToCPUCopier.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\GLTexToTexCopier.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\VVGL_Geom.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVGL\src\VVGL_StringUtils.cpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVISF\src\ISFAttr.cpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVISF\src\ISFDoc.cpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVISF\src\ISFPassTarget.cpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVISF\src\ISFScene.cpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVISF\src\ISFVal.cpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVISF\src\VVISF_Base.cpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Blocks\VVISF\src\VVISF_StringUtils.cpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Blocks\Ducktape\duktape.c">
       <Filter>Source Files\Blocks\Ducktape</Filter>
@@ -394,143 +331,41 @@
     <ClInclude Include="..\src\Blocks\UI\src\XYPad.h">
       <Filter>Source Files\Blocks\UI\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBufferPool.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBufferPool_CocoaAdditions.h">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_GLFW.h">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_IOS.h">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Mac.h">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Qt.h">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_RPI.h">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLBuffer_Enums_Win.h">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLCachedProperty.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLContext.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLContextWindowBacking.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLCPUToTexCopier.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLQtCtxWrapper.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLScene.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLTexToCPUCopier.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\GLTexToTexCopier.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\stb\stb_image.h">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Base.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Defines.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Doxygen.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Geom.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_HardCodedDefines.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\vvgl_qt_global.h">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Range.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_StringUtils.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Time.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVGL\include\VVGL_Win_global.hpp">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\exprtk\exprtk.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\ISFAttr.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\ISFDoc.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\ISFPassTarget.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\ISFScene.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\ISFVal.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\nlohmann_json\json.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Base.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Constants.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Doxygen.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Err.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Qt_global.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_StringUtils.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Blocks\VVISF\include\VVISF_Win_global.hpp">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Blocks\Ducktape\duk_config.h">
       <Filter>Source Files\Blocks\Ducktape</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Blocks\Ducktape\duktape.h">
       <Filter>Source Files\Blocks\Ducktape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ISF\ISFAttr.h">
+      <Filter>Source Files\ISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ISF\ISFBase.h">
+      <Filter>Source Files\ISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ISF\ISFConstants.h">
+      <Filter>Source Files\ISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ISF\ISFDoc.h">
+      <Filter>Source Files\ISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ISF\ISFErr.h">
+      <Filter>Source Files\ISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ISF\ISFRange.h">
+      <Filter>Source Files\ISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ISF\ISFStringUtils.h">
+      <Filter>Source Files\ISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ISF\ISFStringUtils_2.h">
+      <Filter>Source Files\ISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ISF\ISFVal.h">
+      <Filter>Source Files\ISF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ISF\exprtk\exprtk.hpp">
+      <Filter>Source Files\ISF\exprtk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -542,58 +377,5 @@
     <None Include="..\src\Blocks\UI\src\CocoaWindowCanvas.mm">
       <Filter>Source Files\Blocks\UI\src</Filter>
     </None>
-    <None Include="..\src\Blocks\VVGL\Doxyfile">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVGL\macos_universal_binary.sh">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVGL\Makefile">
-      <Filter>Source Files\Blocks\VVGL</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVISF\macos_universal_binary.sh">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVISF\Makefile">
-      <Filter>Source Files\Blocks\VVISF</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVISF.win64\VVISF.dll">
-      <Filter>Source Files\Blocks\VVISF\lib</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVISF.win64\VVISF.exp">
-      <Filter>Source Files\Blocks\VVISF\lib</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVISF.win64\VVISF.iobj">
-      <Filter>Source Files\Blocks\VVISF\lib</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVISF.win64\VVISF.ipdb">
-      <Filter>Source Files\Blocks\VVISF\lib</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVISF.win64\VVISF.pdb">
-      <Filter>Source Files\Blocks\VVISF\lib</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVGL.win64\VVGL.exp">
-      <Filter>Source Files\Blocks\VVGL\lib</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVGL.win64\VVGL.iobj">
-      <Filter>Source Files\Blocks\VVGL\lib</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVGL.win64\VVGL.ipdb">
-      <Filter>Source Files\Blocks\VVGL\lib</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVGL.win64\VVGL.pdb">
-      <Filter>Source Files\Blocks\VVGL\lib</Filter>
-    </None>
-    <None Include="..\src\Blocks\VVGL.win64\VVGL.dll">
-      <Filter>Source Files\Blocks\VVGL\lib</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\src\Blocks\VVISF.win64\VVISF.lib">
-      <Filter>Source Files\Blocks\VVISF\lib</Filter>
-    </Library>
-    <Library Include="..\src\Blocks\VVGL.win64\VVGL.lib">
-      <Filter>Source Files\Blocks\VVGL\lib</Filter>
-    </Library>
   </ItemGroup>
 </Project>

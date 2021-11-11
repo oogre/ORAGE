@@ -15,8 +15,8 @@ namespace ISF {
     using namespace std;
     
     enum ISFAttr_IO {
-        IN = 0x00,
-        OUT = 0x10
+        _IN = 0x00,
+        _OUT = 0x10
     };
     
     class ISFAttr{
@@ -35,7 +35,7 @@ namespace ISF {
         vector<string> _labelArray; // only used if it's a LONG. std::vector containing strings that correspond to the values in "_valArray"
         vector<int32_t> _valArray; // only used if it's a LONG. std::vector containing ints with the values that correspond to the accompanying labels
         
-        ISFAttr_IO _io = ISFAttr_IO::IN;
+        ISF::ISFAttr_IO _io = ISF::ISFAttr_IO::_IN;
         
     public :
         ISFAttr(const string & inName,

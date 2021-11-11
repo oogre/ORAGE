@@ -187,13 +187,13 @@ namespace ISF {
             lock_guard<recursive_mutex>        lock(_propLock);
             
             if (outFragSrc==nullptr || outVertSrc==nullptr || _vertShaderSource==nullptr || _fragShaderSource==nullptr)    {
-                    throw ISFErr(ISFErrType_ErrorParsingFS, "Preflight failed", __PRETTY_FUNCTION__);
+                    throw ISFErr(ISFErrType_ErrorParsingFS, "Preflight failed" , __FILE__ );
             }
             
             string        vsVarDeclarations = string("");
             string        fsVarDeclarations = string("");
             if (!_assembleShaderSource_VarDeclarations(&vsVarDeclarations, &fsVarDeclarations, inGLVers))    {
-                throw ISFErr(ISFErrType_ErrorParsingFS, "Var Dec failed", __PRETTY_FUNCTION__);
+                throw ISFErr(ISFErrType_ErrorParsingFS, "Var Dec failed", __FILE__);
             }
             //cout << "vs var declarations:\n*******************\n" << vsVarDeclarations << "*******************\n";
             //cout << "fs var declarations:\n*******************\n" << fsVarDeclarations << "*******************\n";
@@ -509,7 +509,8 @@ namespace ISF {
                     string typeStringJ = input.getChild("TYPE").getValue<string>();
                     string descString = input.hasChild("DESCRIPTION") ? jblob.getChild("DESCRIPTION").getValue<string>() : "";
                     string labelString = input.hasChild("LABEL") ? jblob.getChild("LABEL").getValue<string>() : "";
-                    ISFAttr_IO io = ISFAttr_IO::IN;
+                    ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
+
                     bool isImageInput = false;
                     
                     //    clear some state vars
@@ -587,7 +588,7 @@ namespace ISF {
                         continue;
                     string inputKeyJ = ouput.getChild("NAME").getValue<string>();
                     string typeStringJ = ouput.getChild("TYPE").getValue<string>();
-                    ISFAttr_IO io = ISFAttr_IO::OUT;
+                    ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_OUT;
                     
                     if (typeStringJ == "image") {
                         ISFAttrRef newAttribRef = ISFAttr::create(inputKeyJ, "", "", io, ISFValType_Image);
