@@ -20,7 +20,7 @@ namespace reza {
         using namespace ORAGE::COMPONENTS;
         typedef ORAGE::COMMON::MenuEvent<fs::path> EvtMenu;
         typedef ORAGE::COMMON::EventTemplate<fs::path, EvtMenu> EvtMenuHandler;
-        
+        typedef boost::signals2::signal<void(EvtMenu)>::slot_type EvtMenuSlot;
         
         class OrageMenu : public SuperCanvas, public EvtMenuHandler{
             typedef shared_ptr<OrageMenu> OrageMenuRef;

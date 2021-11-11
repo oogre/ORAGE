@@ -25,6 +25,7 @@ namespace reza {
         
         typedef ORAGE::COMMON::Event<class OrageCanvas> EvtCanvas;
         typedef ORAGE::COMMON::EventTemplate<class OrageCanvas, EvtCanvas> EvtCanvasHandler;
+        typedef boost::signals2::signal<void(EvtCanvas)>::slot_type EvtCanvasSlot;
         
         class OrageCanvas : public SuperCanvas, public EvtCanvasHandler{
             typedef shared_ptr<OrageCanvas> OrageCanvasRef;

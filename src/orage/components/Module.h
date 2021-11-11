@@ -27,6 +27,7 @@ namespace ORAGE {
     
         typedef Event<class Module> EvtModule;
         typedef EventTemplate<class Module, EvtModule> EvtModuleHandler;
+        typedef boost::signals2::signal<void(EvtModule)>::slot_type EvtModuleSlot;
         
         class Module : public EvtModuleHandler, public enable_shared_from_this<class Module> {
             typedef shared_ptr<Module> ModuleRef;
@@ -80,12 +81,14 @@ namespace ORAGE {
                 });
             }
             
-            Module * addEventListenerOnParameters(const string type, const typename boost::signals2::signal<void(ORAGE::COMMON::Event<ParameterBase>)>::slot_type slot) {
+            Module * addEventListenerOnParameters(const string type, EvtSlot slot) {
                 for(auto [key, parameter] : UI->parameters){
                     parameter->addEventListener(type, slot);
                 }
                 return this;
             }
+            
+            
             CustomISFAttrRef addValue(const std::string & inName,
                                       const std::string & inDesc,
                                       const std::string & inLabel,
