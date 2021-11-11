@@ -77,9 +77,11 @@ namespace ORAGE {
                 UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
                 UI->init();
                 UI->addEventListener([&](EvtCanvas evt){
-                    EvtModuleHandler::eventTrigger({
-                        "putAtTop", shared_from_this()
-                    });
+                    if(evt.is("mouseDown")){
+                        EvtModuleHandler::eventTrigger({
+                            "putAtTop", shared_from_this()
+                        });
+                    }
                 });
             }
             

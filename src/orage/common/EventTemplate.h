@@ -27,6 +27,9 @@ namespace ORAGE {
             timeStamp(time(0))
             {
             }
+            bool is(string eventName){
+                return eventName == type;
+            }
         };//struct BaseEvent
         
         template<typename T>

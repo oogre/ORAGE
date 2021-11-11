@@ -28,7 +28,7 @@ namespace ORAGE {
         class ModuleISF : public Module {
             typedef shared_ptr<ModuleISF> ModuleISFRef;
             bool sizeChanged;
-            bool antiAliazing = false;
+            bool antiAliazing = true;
             GlslProgRef mShader;
             mat4 mDefaultProjection;
             bool isInitialized = false;
@@ -119,7 +119,7 @@ namespace ORAGE {
                             windows.push_back(window);
                         }
                     });
-                    UI->addToggle("AntiAliazing", false, format)
+                    UI->addToggle("AntiAliazing", antiAliazing, format)
                     ->setCallback([&](bool value) {
                         sizeChanged = true;
                         antiAliazing = value;

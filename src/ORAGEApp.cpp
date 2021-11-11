@@ -23,7 +23,9 @@ public:
         modules = ModuleManager::create();
         menu = OrageMenu::create();
         menu->addEventListener([&](EvtMenu evt){
-            modules->add(evt.target, evt.origin, evt.moduleType);
+            if(evt.is("menu")){
+                modules->add(evt.target, evt.origin, evt.moduleType);
+            }
         });
         enableVerticalSync( false );
         disableAlphaBlending();

@@ -55,13 +55,17 @@ namespace ORAGE {
                     break;
                 }
                 module->setOrigin(pos + vec2(0, 25));
-                module->addEventListenerOnParameters([&](Evt event){
-                    cables->addCable(event.target);
+                module->addEventListenerOnParameters([&](Evt evt){
+                    if(evt.is("plug")){
+                        cables->addCable(evt.target);
+                    }
                 });
                 module->addEventListener([&](EvtModule evt){
-                    auto it = std::find(modules.begin(), modules.end(), evt.target);
-                    if(it != modules.end() && it != modules.end() - 1){
-                        std::rotate(it, it + 1, modules.end());
+                    if(evt.is("putAtTop")){
+                        auto it = std::find(modules.begin(), modules.end(), evt.target);
+                        if(it != modules.end() && it != modules.end() - 1){
+                            std::rotate(it, it + 1, modules.end());
+                        }
                     }
                 });
                 modules.push_back(module);
