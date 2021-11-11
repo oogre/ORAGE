@@ -18,7 +18,7 @@ namespace reza {
         
         using namespace ORAGE::COMMON;
         
-        typedef Event<class ParameterBase> Evt;
+        typedef ORAGE::COMMON::Event<class ParameterBase> Evt;
         typedef EventTemplate<Evt> EvtHandler;
         typedef boost::signals2::signal<void(Evt)>::slot_type EvtSlot;
         

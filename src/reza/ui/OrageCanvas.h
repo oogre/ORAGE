@@ -23,7 +23,7 @@ namespace reza {
         using namespace ci::app;
         using namespace ORAGE::COMMON;
         
-        typedef Event<class OrageCanvas> EvtCanvas;
+        typedef ORAGE::COMMON::Event<class OrageCanvas> EvtCanvas;
         typedef EventTemplate<EvtCanvas> EvtCanvasHandler;
         typedef boost::signals2::signal<void(EvtCanvas)>::slot_type EvtCanvasSlot;
         
