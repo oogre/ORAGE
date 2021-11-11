@@ -23,8 +23,8 @@ namespace reza {
         using namespace ci::app;
         using namespace ORAGE::COMMON;
         
-        typedef ORAGE::COMMON::Event<class OrageCanvas> EvtCanvas;
-        typedef ORAGE::COMMON::EventTemplate<class OrageCanvas, EvtCanvas> EvtCanvasHandler;
+        typedef Event<class OrageCanvas> EvtCanvas;
+        typedef EventTemplate<EvtCanvas> EvtCanvasHandler;
         typedef boost::signals2::signal<void(EvtCanvas)>::slot_type EvtCanvasSlot;
         
         class OrageCanvas : public SuperCanvas, public EvtCanvasHandler{
@@ -146,7 +146,9 @@ namespace reza {
             virtual void mouseDown( ci::app::MouseEvent &event ) override {
                 SuperCanvas::mouseDown(event);
                 if( isHit( event.getPos()) ){
-                    EvtCanvasHandler::eventTrigger({"mouseDown", dynamic_pointer_cast<OrageCanvas>(shared_from_this())});
+                    EvtCanvasHandler::eventTrigger({
+                        "mouseDown", dynamic_pointer_cast<OrageCanvas>(shared_from_this())
+                    });
                 }
             };
             

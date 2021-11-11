@@ -18,8 +18,10 @@ namespace reza {
         using namespace std;
         using namespace reza::ui;
         using namespace ORAGE::COMPONENTS;
-        typedef ORAGE::COMMON::MenuEvent<fs::path> EvtMenu;
-        typedef ORAGE::COMMON::EventTemplate<fs::path, EvtMenu> EvtMenuHandler;
+        using namespace ORAGE::COMMON;
+        
+        typedef MenuEvent<ci::fs::path> EvtMenu;
+        typedef EventTemplate<EvtMenu> EvtMenuHandler;
         typedef boost::signals2::signal<void(EvtMenu)>::slot_type EvtMenuSlot;
         
         class OrageMenu : public SuperCanvas, public EvtMenuHandler{
@@ -56,7 +58,6 @@ namespace reza {
                 
                 setColorBack(ColorA(1, 1, 1, 0.25));
                 setColorBounds(ColorA(1, 1, 1, 1));
-                
                 
                 map<string, fs::directory_entry> sorted_by_name;
                 for (const auto & entry : fs::directory_iterator(getAssetPath("modules").string())){
@@ -96,7 +97,9 @@ namespace reza {
                                 
                                 btn->addEntry(name)->setCallback([&, subEntry, currentType, origin, btn](bool a){
                                     if(!a){
-                                        EvtMenuHandler::eventTrigger({"menu", subEntry.path(), currentType, origin});
+                                        EvtMenuHandler::eventTrigger({
+                                            "menu", subEntry.path(), currentType, origin
+                                        });
                                         btn->subMenu->setVisible(false);
                                     }
                                 });
@@ -107,8 +110,6 @@ namespace reza {
                         }
                     }
                 }
-                
-                
                 initialized = true;
             }
             virtual void draw() override {
@@ -119,9 +120,8 @@ namespace reza {
                     setMinified(false);
                 }
             }
-            
-            virtual void mouseDrag( ci::app::MouseEvent &event ) override{}
-            virtual void mouseDown( ci::app::MouseEvent &event ) override{
+            virtual void mouseDrag( ci::app::MouseEvent &event ) override { }
+            virtual void mouseDown( ci::app::MouseEvent &event ) override {
                 Canvas::mouseDown( event );
             }
         };//OrageMenu

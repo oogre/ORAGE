@@ -87,22 +87,23 @@ namespace ORAGE {
             }
         };//struct ClockEvent
         
-        template<typename T, typename E = Event<T>>
+        template<typename E>
         class EventTemplate {
             typedef boost::signals2::signal<void(E)> EventSignal;
+            typedef typename EventSignal::slot_type EventSignalSlot;
             typedef map<string, EventSignal> MapType;
             MapType sigMap;
             protected :
             EventTemplate(){
             }
         public :
-            virtual bool addEventListener(const string type, typename EventSignal::slot_type slot) {
+            virtual bool addEventListener(const string type, EventSignalSlot slot) {
                 if (sigMap.find(type) == sigMap.end()) {
 //                    sigMap.insert(MapType::value_type({ type, EventSignal() }));
 //                    sigMap.insert(pair<string, boost::signals2::signal<void(Event<T>)>>(type, EventSignal()));
                     //auto e = EventSignal();
                     //sigMap.insert(make_pair(type, EventSignal()));
-                    //sigMap.emplace(type, EventSignal());
+                    sigMap.emplace(type, EventSignal());
                 }
                 sigMap.at(type).connect(slot);
 //                cout << type << endl;

@@ -24,9 +24,9 @@ namespace ORAGE {
         using namespace reza::ui;
         using namespace ISF;
         using namespace ORAGE::COMMON;
-    
+        
         typedef Event<class Module> EvtModule;
-        typedef EventTemplate<class Module, EvtModule> EvtModuleHandler;
+        typedef EventTemplate<EvtModule> EvtModuleHandler;
         typedef boost::signals2::signal<void(EvtModule)>::slot_type EvtModuleSlot;
         
         class Module : public EvtModuleHandler, public enable_shared_from_this<class Module> {
@@ -77,7 +77,9 @@ namespace ORAGE {
                 UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
                 UI->init();
                 UI->addEventListener("mouseDown", [&](EvtCanvas evt){
-                    EvtModuleHandler::eventTrigger({"putAtTop", shared_from_this()});
+                    EvtModuleHandler::eventTrigger({
+                        "putAtTop", shared_from_this()
+                    });
                 });
             }
             
