@@ -101,7 +101,7 @@ namespace ORAGE {
 //                    sigMap.insert(MapType::value_type({ type, EventSignal() }));
 //                    sigMap.insert(pair<string, boost::signals2::signal<void(Event<T>)>>(type, EventSignal()));
                     //auto e = EventSignal();
-                    sigMap.insert(make_pair(type, EventSignal()));
+                    //sigMap.insert(make_pair(type, EventSignal()));
                     //sigMap.emplace(type, EventSignal());
                 }
                 sigMap.at(type).connect(slot);
