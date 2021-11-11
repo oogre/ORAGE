@@ -174,7 +174,6 @@
 		88F37DD727189A230095955A /* OrageMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrageMath.h; sourceTree = "<group>"; };
 		88F37DD827189A230095955A /* EventTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTemplate.h; sourceTree = "<group>"; };
 		88F37DD927189D0B0095955A /* ModuleISF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleISF.h; sourceTree = "<group>"; };
-		88F37DDA2718A6060095955A /* CustomISFAttr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomISFAttr.h; sourceTree = "<group>"; };
 		88F3E2F52727FF5D00B5731B /* OrageMenuList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenuList.h; sourceTree = "<group>"; };
 		88F3E2F627285D6800B5731B /* ModuleTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleTypes.h; sourceTree = "<group>"; };
 		8BA52D4002A743949D082A1F /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
@@ -487,7 +486,6 @@
 			children = (
 				88F37DD727189A230095955A /* OrageMath.h */,
 				88F37DD827189A230095955A /* EventTemplate.h */,
-				88F37DDA2718A6060095955A /* CustomISFAttr.h */,
 				8848043B273A8909003618E7 /* ModuleManager.h */,
 			);
 			path = common;

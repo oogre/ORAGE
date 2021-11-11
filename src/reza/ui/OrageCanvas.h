@@ -22,6 +22,7 @@ namespace reza {
         using namespace ci::gl;
         using namespace ci::app;
         using namespace ORAGE::COMMON;
+        using namespace ISF;
         
         typedef ORAGE::COMMON::Event<class OrageCanvas> EvtCanvas;
         typedef EventTemplate<EvtCanvas> EvtCanvasHandler;
@@ -70,7 +71,7 @@ namespace reza {
             
             
             
-            ParameterClockRef addClock(const std::string name, CustomISFAttrRef clockAttr, ParameterClock::Format format = ParameterClock::Format())
+            ParameterClockRef addClock(const std::string name, ISFAttrRef clockAttr, ParameterClock::Format format = ParameterClock::Format())
             {
                 ParameterClockRef param = ParameterClock::create(name, clockAttr, format);;
                 

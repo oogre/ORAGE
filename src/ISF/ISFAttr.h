@@ -67,18 +67,31 @@ namespace ISF {
             
         }
         static ISFAttrRef create(  const string & inName,
-                                   const string & inDesc,
-                                   const string & inLabel,
-                                   const ISFAttr_IO io,
-                                   const ISFValType & inType,
-                                   const ISFVal & inMinVal=ISFNullVal(),
-                                   const ISFVal & inMaxVal=ISFNullVal(),
-                                   const ISFVal & inDefVal=ISFNullVal(),
-                                   const ISFVal & inIdenVal=ISFNullVal(),
-                                   const vector<std::string> * inLabels=nullptr,
-                                   const vector<int32_t> * inVals=nullptr)
-        {
+                                 const string & inDesc,
+                                 const string & inLabel,
+                                 const ISFAttr_IO io,
+                                 const ISFValType & inType,
+                                 const ISFVal & inMinVal=ISFNullVal(),
+                                 const ISFVal & inMaxVal=ISFNullVal(),
+                                 const ISFVal & inDefVal=ISFNullVal(),
+                                 const ISFVal & inIdenVal=ISFNullVal(),
+                                 const vector<std::string> * inLabels=nullptr,
+                                 const vector<int32_t> * inVals=nullptr){
             return ISFAttrRef(new ISFAttr(inName, inDesc, inLabel, io, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals));
+        }
+        
+        static ISFAttrRef create(  const ISFAttrRef & attr){
+            return ISFAttrRef(new ISFAttr(  attr->name(),
+                                            attr->description(),
+                                            attr->label(),
+                                            attr->IO(),
+                                            attr->type(),
+                                            attr->minVal(),
+                                            attr->maxVal(),
+                                          	attr->defaultVal(),
+                                            attr->identityVal(),
+                                            &attr->labelArray(),
+                                            &attr->valArray()));
         }
         
         //!    Returns the attribute's name, or null

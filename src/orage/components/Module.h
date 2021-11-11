@@ -9,7 +9,7 @@
 #define Module_h
 
 #include "OrageCanvas.h"
-#include "CustomISFAttr.h"
+#include "ISFAttr.h"
 #include "EventTemplate.h"
 #include <ctime>
 #include <limits>
@@ -41,7 +41,7 @@ namespace ORAGE {
             vec4 date;
         public :
             TYPES moduleType;
-            map<string, CustomISFAttrRef> parameters;
+            map<string, ISFAttrRef> parameters;
             OrageCanvasRef UI;
             Module(string name) :
                 EvtModuleHandler()
@@ -62,17 +62,17 @@ namespace ORAGE {
                 ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
                 ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEval (ISFValType::ISFValType_Float, 0.0);
-                parameters["TIME"] = CustomISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval);
+                parameters["TIME"] = ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval);
                 
                 ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                 ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                parameters["TIMEDELTA"] = CustomISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                parameters["TIMEDELTA"] = ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
                 
                 ISFVal FRAMEINDEXmin(ISFValType::ISFValType_Float, 0.0);
                 ISFVal FRAMEINDEXmax(ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal FRAMEINDEXval(ISFValType::ISFValType_Float, 0.0);
-                parameters["FRAMEINDEX"] = CustomISFAttr::create("FRAMEINDEX", "", "", io, ISFValType::ISFValType_Float, FRAMEINDEXmin, FRAMEINDEXmax, FRAMEINDEXval);
+                parameters["FRAMEINDEX"] = ISFAttr::create("FRAMEINDEX", "", "", io, ISFValType::ISFValType_Float, FRAMEINDEXmin, FRAMEINDEXmax, FRAMEINDEXval);
                 
                 UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
                 UI->init();
@@ -91,24 +91,24 @@ namespace ORAGE {
             }
             
             
-            CustomISFAttrRef addValue(const std::string & inName,
-                                      const std::string & inDesc,
-                                      const std::string & inLabel,
-                                      const ISFAttr_IO io,
-                                      const ISFValType & inType,
-                                      const ISFVal & inMinVal=ISFNullVal(),
-                                      const ISFVal & inMaxVal=ISFNullVal(),
-                                      const ISFVal & inDefVal=ISFNullVal(),
-                                      const ISFVal & inIdenVal=ISFNullVal(),
-                                      const std::vector<std::string> * inLabels=nullptr,
-                                      const std::vector<int32_t> * inVals=nullptr){
-                parameters[inName] = CustomISFAttr::create(inName, inDesc, inLabel, io, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals);
+            ISFAttrRef addValue(  const std::string & inName,
+                                  const std::string & inDesc,
+                                  const std::string & inLabel,
+                                  const ISFAttr_IO io,
+                                  const ISFValType & inType,
+                                  const ISFVal & inMinVal=ISFNullVal(),
+                                  const ISFVal & inMaxVal=ISFNullVal(),
+                                  const ISFVal & inDefVal=ISFNullVal(),
+                                  const ISFVal & inIdenVal=ISFNullVal(),
+                                  const std::vector<std::string> * inLabels=nullptr,
+                                  const std::vector<int32_t> * inVals=nullptr){
+                parameters[inName] = ISFAttr::create(inName, inDesc, inLabel, io, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals);
                 return parameters[inName];
             }
             
             
-            CustomISFAttrRef addValue(const ISFAttrRef attr){
-                parameters[attr->name()] = CustomISFAttr::create(attr);
+            ISFAttrRef addValue(const ISFAttrRef attr){
+                parameters[attr->name()] = ISFAttr::create(attr);
                 return parameters[attr->name()];
             }
             
@@ -119,7 +119,7 @@ namespace ORAGE {
                 parameters[name]->setCurrentVal(value);
             }
             
-            CustomISFAttrRef getValue(string name){
+            ISFAttrRef getValue(string name){
                 return parameters[name];
             }
             

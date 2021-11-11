@@ -9,6 +9,7 @@
 #define ModuleController_h
 #include "Module.h"
 #include <dukglue/dukglue.h>
+
 //https://duktape.org/
 //https://github.com/Aloshi/dukglue
 namespace ORAGE {
@@ -17,7 +18,8 @@ namespace ORAGE {
         using namespace ci::gl;
         using namespace ci::app;
         using namespace std;
-
+        using namespace ISF;
+        
         class ModuleController : public Module{
             typedef shared_ptr<ModuleController> ModuleControllerRef;
             duk_context *ctx;
@@ -62,7 +64,7 @@ namespace ORAGE {
                             ISFVal max (ISFValType::ISFValType_Float, input.getChild("MAX").getValue<float>());
                             ISFVal val (ISFValType::ISFValType_Float, input.getChild("DEFAULT").getValue<float>());
                             ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
-                            CustomISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, min, max, val);
+                            ISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, min, max, val);
                             UI->addParameter(name,
                                              attr->currentVal().getDoubleValPtr(),
                                              attr->minVal().getDoubleVal(),
@@ -75,7 +77,7 @@ namespace ORAGE {
                             ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
                             ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
-                            CustomISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                            ISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
                             UI->addClock(name, attr, ParameterClock::Format().input(true));
                         }
                     }
@@ -86,7 +88,7 @@ namespace ORAGE {
                             ISFVal max (ISFValType::ISFValType_Float, output.getChild("MAX").getValue<double>());
                             ISFVal val (ISFValType::ISFValType_Float, output.getChild("DEFAULT").getValue<double>());
                             ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_OUT;
-                            CustomISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, min, max, val);
+                            ISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, min, max, val);
                             UI->addParameter(name,
                                              attr->currentVal().getDoubleValPtr(),
                                              attr->minVal().getDoubleVal(),
@@ -99,7 +101,7 @@ namespace ORAGE {
                             ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
                             ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_OUT;
-                            CustomISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                            ISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
                             UI->addClock(name, attr, ParameterClock::Format().input(false));
                         }
                     }
@@ -129,7 +131,7 @@ namespace ORAGE {
                         string name = input.getChild("NAME").getValue();
                         string type = input.getChild("TYPE").getValue();
                         
-                        CustomISFAttrRef attr = type != "CLOCK" ? getValue(name) : *(UI->parameters[name]->clockAttrIn);
+                        ISFAttrRef attr = type != "CLOCK" ? getValue(name) : *(UI->parameters[name]->clockAttrIn);
                         dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, attr->currentVal().getDoubleVal());
                     }
                     

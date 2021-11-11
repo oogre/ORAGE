@@ -13,6 +13,7 @@
 
 namespace reza {
     namespace ui {
+        using namespace ISF;
         
         class ParameterClock : public ParameterBase {
             typedef std::shared_ptr<ParameterClock> ParameterClockRef;
@@ -34,7 +35,7 @@ namespace reza {
                 friend ParameterClock;
             };
             private :
-            ParameterClock( std::string name, CustomISFAttrRef clockAttr, Format format = Format()) :
+            ParameterClock( std::string name, ISFAttrRef clockAttr, Format format = Format()) :
                 ParameterBase(name),
                 mFormat(format)
             {
@@ -62,7 +63,7 @@ namespace reza {
             }
         public :
             
-            static ParameterClockRef create( const std::string name, CustomISFAttrRef clockAttr, Format format = Format() )
+            static ParameterClockRef create( const std::string name, ISFAttrRef clockAttr, Format format = Format() )
             {
                 return ParameterClockRef( new ParameterClock( name, clockAttr, format ) );
             }

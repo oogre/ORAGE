@@ -78,7 +78,7 @@ namespace ORAGE {
                     for(auto input : doc->inputs()){
                         if(input->type() == ISFValType::ISFValType_Float){
                             string name = input->name();
-                            CustomISFAttrRef attr = addValue(input);
+                            ISFAttrRef attr = addValue(input);
                             UI->addParameter(name,
                                              attr->currentVal().getDoubleValPtr(),
                                              attr->minVal().getDoubleVal(),

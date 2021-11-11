@@ -11,12 +11,13 @@
 
 
 #include "EventTemplate.h"
-#include "CustomISFAttr.h"
+#include "ISFAttr.h"
 
 namespace reza {
     namespace ui {
         
         using namespace ORAGE::COMMON;
+        using namespace ISF;
         
         typedef ORAGE::COMMON::Event<class ParameterBase> Evt;
         typedef EventTemplate<Evt> EvtHandler;
@@ -105,8 +106,8 @@ namespace reza {
             ci::gl::TextureRef textureOldRef;
             ci::gl::TextureRef * textureInRef;
             
-            CustomISFAttrRef clockAttr;
-            CustomISFAttrRef * clockAttrIn;
+            ISFAttrRef clockAttr;
+            ISFAttrRef * clockAttrIn;
             
             int textureSample = 0;
             ButtonRef buttonRef;
