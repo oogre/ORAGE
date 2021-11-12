@@ -18,7 +18,7 @@ namespace ISF {
         //cout << __PRETTY_FUNCTION__ << endl;
         vector<string>        returnMe(0);
         //    count the # of the path delineators in the string, reserve space in the vector we're returning
-#if defined(VVGL_SDK_WIN)
+#if defined(CINDER_MSW)
         size_t                delimCount = count(n.begin(), n.end(), '\\') + 1;
 #else
         size_t                delimCount = count(n.begin(), n.end(), '/') + 1;
@@ -27,7 +27,7 @@ namespace ISF {
         //    get the ptr to the string data
         char                *inString = const_cast<char*>(n.data());
         //    tokenize the string data, creating strings in the vector we'll be returning
-#if defined(VVGL_SDK_WIN)
+#if defined(CINDER_MSW)
         const char            *delimPtr = "\\";
 #else
         const char            *delimPtr = "/";
@@ -41,7 +41,7 @@ namespace ISF {
         return returnMe;
     }
     std::string LastPathComponent(const std::string & n){
-#if defined(VVGL_SDK_WIN)
+#if defined(CINDER_MSW)
         size_t        lastSlashIndex = n.find_last_of('\\');
 #else
         size_t        lastSlashIndex = n.find_last_of('/');
@@ -53,7 +53,7 @@ namespace ISF {
         return n.substr(lastSlashIndex+1);
     }
     std::string StringByDeletingLastPathComponent(const std::string & n){
-#if defined(VVGL_SDK_WIN)
+#if defined(CINDER_MSW)
         size_t        lastSlashIndex = n.find_last_of('\\');
 #else
         size_t        lastSlashIndex = n.find_last_of('/');
@@ -83,7 +83,7 @@ namespace ISF {
             return string("");
         
         int            tmpLen = int(n.size());
-#if defined(VVGL_SDK_WIN)
+#if defined(CINDER_MSW)
         bool        hasFirst = (n[0] == '\\') ? true : false;
         bool        hasLast = (n[tmpLen - 1] == '\\') ? true : false;
 #else
@@ -97,7 +97,7 @@ namespace ISF {
             }
         }
         if (!hasFirst)    {
-#if defined(VVGL_SDK_WIN)
+#if defined(CINDER_MSW)
             returnMe.insert(0, 1, '\\');
 #else
             returnMe.insert(0, 1, '/');
@@ -111,7 +111,7 @@ namespace ISF {
         
         //bool        hasFirst = (n[0]=='/') ? true : false;
         int            tmpLen = int(n.size());
-#if defined(VVGL_SDK_WIN)
+#if defined(CINDER_MSW)
         bool        hasLast = (n[tmpLen - 1] == '\\') ? true : false;
 #else
         bool        hasLast = (n[tmpLen-1]=='/') ? true : false;

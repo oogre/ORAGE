@@ -8,14 +8,14 @@
 #ifndef ISFRange_h
 #define ISFRange_h
 
-#if defined(VVGL_SDK_WIN)
+#if defined(CINDER_MSW)
     #ifdef max
         #undef max
     #endif      //    max
     #ifdef min
         #undef min
     #endif      //    min
-#endif          //    VVGL_SDK_WIN
+#endif          //    CINDER_MSW
 
 namespace ISF
 {

@@ -12,10 +12,13 @@
 #include <exception>
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
+#include "cinder/qtime/AvfWriter.h"
 #include "cinder/gl/wrapper.h"
 #include "Syphon_Spout.h"
 #include "Module.h"
 #include "ISFDoc.h"
+
+
 
 namespace ORAGE {
     namespace COMPONENTS {
@@ -33,14 +36,16 @@ namespace ORAGE {
             bool sizeChanged;
             bool antiAliazing = true;
             bool share = false;
+            bool record = false;
             SyphonSpoutServerRef shareRef;
             GlslProgRef mShader;
+            qtime::MovieWriterRef mMovieExporter;
             
             mat4 mDefaultProjection;
             bool isInitialized = false;
             vec2 defSize;
             vector<ci::signals::Connection> signalDrawHandlers;
-            vector<WindowRef> windows;
+            vector<ci::app::WindowRef> windows;
             int count =0;
         public :
             vector<ParameterTextureRef> inputs;
@@ -106,6 +111,7 @@ namespace ORAGE {
                         UI->parameters["size_y"]->setVisible(value);
                         UI->getSubView("Share")->setVisible(value);
                         UI->getSubView("AntiAliazing")->setVisible(value);
+                        UI->getSubView("Record")->setVisible(value);
                         UI->autoSizeToFitSubviews();
                     });
                     UI->addButton("New Window", false, format)
@@ -114,7 +120,7 @@ namespace ORAGE {
                             RendererGl::Options option = RendererGl::Options().msaa( 0 );
                             RendererGlRef rendererRef = RendererGl::create( option );
                             Window::Format format = Window::Format().renderer( rendererRef ).size( vec2(800, 600) );
-                            WindowRef window = App::get()->createWindow(format);
+                            ci::app::WindowRef window = App::get()->createWindow(format);
                             window->setTitle( UI->getName() );
                             getWindowIndex(0)->getSignalClose().connect(0, [&, window]() {
                                 window->close();
@@ -142,6 +148,25 @@ namespace ORAGE {
                         sizeChanged = true;
                         antiAliazing = value;
                     });
+                    UI->addToggle("Record", record, format)
+                    ->setCallback([&](bool value) {
+                        if(value){
+                            fs::path path = getSaveFilePath();
+                            if( !path.empty() ) {
+                                mMovieExporter = qtime::MovieWriter::create(
+                                    path,
+                                    outputs.back()->textureRef->getWidth(),
+                                    outputs.back()->textureRef->getHeight(),
+                                    qtime::MovieWriter::Format()
+                                        .codec( qtime::MovieWriter::H264 )
+                                        .fileType( qtime::MovieWriter::MPEG4 ) );
+                            }
+                        }else{
+                           mMovieExporter->finish();
+                           mMovieExporter.reset();
+                       }
+                   });
+                    
                     UI->addParameter("size_x", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+0, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[0], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[0], ParameterFloat::Format().input(true))->sliderRef
                     ->setCallback([&](double val)
                     {
@@ -158,6 +183,8 @@ namespace ORAGE {
                     UI->getSubView("New Window")->setVisible(false);
                     UI->getSubView("Share")->setVisible(false);
                     UI->getSubView("AntiAliazing")->setVisible(false);
+                    UI->getSubView("Record")->setVisible(false);
+                    
                     UI->autoSizeToFitSubviews();
                     
                     mDefaultProjection = gl::context()->getProjectionMatrixStack()[0];
@@ -204,7 +231,7 @@ namespace ORAGE {
                     }
                     isInitialized = true;
                 }
-                if(sizeChanged){
+                if(sizeChanged && !mMovieExporter){
                     vec2 size = vec2(*(getValue("RENDERSIZE")->currentVal().getPointValPtr()+0), *(getValue("RENDERSIZE")->currentVal().getPointValPtr()+1));
                     for(auto it = outputs.begin() ; it != outputs.end() ; it ++){
                         (*it)->setSize(size, antiAliazing);
@@ -264,6 +291,9 @@ namespace ORAGE {
                 }
                 output->textureViewRef->setNeedsDisplay();
                 shareRef->draw();
+                if(mMovieExporter){
+                    mMovieExporter->addFrame(Surface8u(outputs.back()->textureRef->createSource()));
+                }
                 Module::draw();
             }
         };//ModuleISF {

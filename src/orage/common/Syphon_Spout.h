@@ -10,11 +10,9 @@
 
 #include "cinder/app/App.h"
 #include "ParameterTexture.h"
-#if defined(VVGL_SDK_MAC)
+#if defined(CINDER_MAC)
 #include "cinderSyphon.h"
-#endif
-
-#if defined(VVGL_SDK_WIN)
+#elif defined(CINDER_MSW)
 #include "SpoutLibrary.h"
 #endif
 
@@ -26,35 +24,32 @@ namespace ORAGE {
         
         class SyphonSpoutClient {
             typedef shared_ptr<SyphonSpoutClient> SyphonSpoutClientRef;
-        #if defined(VVGL_SDK_MAC)
+        #if defined(CINDER_MAC)
             syphonClient * client;
             syphonServerDirectory * serverDir;
             int dirIdx;
-        #endif
-        #if defined(VVGL_SDK_WIN)
+        #elif defined(CINDER_MSW)
             SPOUTLIBRARY * client;
             Texture2dRef texIn;
         #endif
             SyphonSpoutClient(){
-            #if defined(VVGL_SDK_MAC)
+            #if defined(CINDER_MAC)
                 client = new syphonClient();
                 client->setup();
                 serverDir = new syphonServerDirectory();
                 serverDir->setup();
                 dirIdx = 0;
-            #endif
-            #if defined(VVGL_SDK_WIN)
+            #elif defined(CINDER_MSW)
                 client = GetSpout();
                 texIn = Texture2d::create(800, 600);
             #endif
             }
         public :
             virtual ~SyphonSpoutClient(){
-            #if defined(VVGL_SDK_MAC)
+            #if defined(CINDER_MAC)
                 delete client;
                 delete serverDir;
-            #endif
-            #if defined(VVGL_SDK_WIN)
+            #elif defined(CINDER_MSW)
                 client->ReleaseReceiver();
                 client->Release();
             #endif
@@ -63,7 +58,7 @@ namespace ORAGE {
                 return SyphonSpoutClientRef(new SyphonSpoutClient());
             }
             void nextClient(){
-             #if defined(VVGL_SDK_MAC)
+             #if defined(CINDER_MAC)
                 dirIdx++;
                 if(dirIdx >= serverDir->size()){
                     dirIdx = 0;
@@ -73,17 +68,15 @@ namespace ORAGE {
                     client->set(desc);
                     client->bind();
                 }
-            #endif
-            #if defined(VVGL_SDK_WIN)
+            #elif defined(CINDER_MSW)
                 client->SelectSender();
             #endif
             }
             Texture2dRef draw(ci::vec2 origine = ci::vec2(0), ci::vec2 size = ci::vec2(0)){
-            #if defined(VVGL_SDK_MAC)
+            #if defined(CINDER_MAC)
                 if(serverDir->isValidIndex(dirIdx))
                     client->draw(origine, size);
-            #endif
-            #if defined(VVGL_SDK_WIN)
+            #elif defined(CINDER_MSW)
                 if (client->IsUpdated()) {
                     texIn = Texture2d::create(client->GetSenderWidth(), client->GetSenderHeight());
                 }
@@ -101,10 +94,9 @@ namespace ORAGE {
             string name;
             reza::ui::ParameterTextureRef tex;
             bool isActive = false;
-        #if defined(VVGL_SDK_MAC)
+        #if defined(CINDER_MAC)
             syphonServer * server;
-        #endif
-        #if defined(VVGL_SDK_WIN)
+        #elif defined(CINDER_MSW)
             SPOUTLIBRARY * server;
         #endif
             SyphonSpoutServer(string name, reza::ui::ParameterTextureRef tex) :
@@ -123,21 +115,19 @@ namespace ORAGE {
             
             void draw(){
                 if(isActive){
-                #if defined(VVGL_SDK_MAC)
+                #if defined(CINDER_MAC)
                     server->publishTexture(tex->textureRef);
-                #endif
-                #if defined(VVGL_SDK_WIN)
+                #elif defined(CINDER_MSW)
                     server->SendTexture(tex->textureRef->getId(), tex->textureRef->getTarget(), tex->textureRef->getWidth(), tex->textureRef->getHeight(), false);
                 #endif
                 }
             }
             void enable(){
                 if(!isActive){
-                #if defined(VVGL_SDK_MAC)
+                #if defined(CINDER_MAC)
                     server = new syphonServer();
                     server->setName(name);
-                #endif
-                #if defined(VVGL_SDK_WIN)
+                #elif defined(CINDER_MSW)
                     server = GetSpout();
                     server->SetSenderName(&name[0]);
                 #endif
@@ -146,10 +136,9 @@ namespace ORAGE {
             }
             void disable(){
                 if(isActive){
-                 #if defined(VVGL_SDK_MAC)
+                 #if defined(CINDER_MAC)
                     delete server;
-                #endif
-                #if defined(VVGL_SDK_WIN)
+                #elif defined(CINDER_MSW)
                     server->ReleaseSender();
                     server->Release();
                 #endif

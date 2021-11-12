@@ -30,12 +30,14 @@ namespace ORAGE {
             vec2 defSize;
             mat4 mDefaultProjection;
             vector<ci::signals::Connection> signalDrawHandlers;
-            vector<WindowRef> windows;
+            vector<ci::app::WindowRef> windows;
             ParameterTextureRef output;
             ModuleSyphonSpout(string name, TYPES type, int width, int height) :
                 Module(name)
             {
                 moduleType = type;
+                
+                UI->setColorBack(Config::getConfig(moduleType).bgColor);
                 
                 sscRef = SyphonSpoutClient::create();
                 
@@ -54,7 +56,7 @@ namespace ORAGE {
                         RendererGl::Options option = RendererGl::Options().msaa( 0 );
                         RendererGlRef rendererRef = RendererGl::create( option );
                         Window::Format format = Window::Format().renderer( rendererRef ).size( vec2(800, 600) );
-                        WindowRef window = App::get()->createWindow(format);
+                        ci::app::WindowRef window = App::get()->createWindow(format);
                         window->setTitle( UI->getName() );
                         getWindowIndex(0)->getSignalClose().connect(0, [&, window]() {
                             window->close();
@@ -108,15 +110,15 @@ namespace ORAGE {
                         gl::clear( ColorA(0, 0, 0, 1));
                         gl::draw(output->textureRef, Area(vec2(0), defSize));
                     }
-                    #if defined(VVGL_SDK_MAC)
+                    #if defined(CINDER_MAC)
                     {
                         ScopedFramebuffer fbScp(output->mFbo);
-                        gl::clear(ColorA(1, 0, 0, 1));
+                        gl::clear(ColorA(0, 0, 0, 1));
                         gl::color(Color::white());
-                        sscRef->draw(Area(vec2(0), defSize));
+                        sscRef->draw(vec2(0), defSize);
                     }
                     #endif
-                    #if defined(VVGL_SDK_WIN)
+                    #if defined(CINDER_MSW)
                     auto tex = sscRef->draw();
                     if (!!tex) {
                         ScopedFramebuffer fbScp(output->mFbo);
