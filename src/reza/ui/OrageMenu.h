@@ -110,6 +110,28 @@ namespace reza {
                         }
                     }
                 }
+                ORAGE::COMPONENTS::TYPES currentType = ORAGE::COMPONENTS::TYPES::INPUT;
+                
+                Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
+                OrageMenuItemRef btn = OrageMenuItem::create("INPUT", format);
+                btn->setSize(vec2(100, 25));
+                if(btns.size()==0) addSubView(btn);
+                else addSubViewEastOf(btn, btns.back()->getName());
+                btns.push_back(btn);
+                vec2 origin = btn->getOrigin();
+                
+                btn->addEntry("SyphonSpout")->setCallback([&, currentType, origin, btn](bool a){
+                    if(!a){
+                        EvtMenuHandler::eventTrigger({
+                            "menu", "SyphonSpout", currentType, origin
+                        });
+                        btn->subMenu->setVisible(false);
+                    }
+                });
+                ORAGE::COMPONENTS::Conf conf = ORAGE::COMPONENTS::Config::getConfig(currentType);
+                btn->setColorBack(conf.bgColor);
+                btn->subMenu->setColorBack(conf.bgColor);
+                
                 initialized = true;
             }
             virtual void draw() override {

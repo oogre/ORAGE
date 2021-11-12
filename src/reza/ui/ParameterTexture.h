@@ -78,8 +78,6 @@ namespace reza {
                 fFormat.setColorTextureFormat( tFormat );
                 mFbo = Fbo::create( size.x, size.y, fFormat);
                 {
-//                    gl::ScopedProjectionMatrix matrix(gl::context()->getProjectionMatrixStack()[0]);
-//                    ScopedViewport scpVp( ivec2( 0 ), size );
                     ScopedFramebuffer fbScp( mFbo );
                     gl::clear(ColorA(0, 0, 0, 1));
                     gl::draw(ParameterBase::textureOldRef, Area(vec2(0), size));
@@ -92,8 +90,6 @@ namespace reza {
                 fOutFormat.setColorTextureFormat( tOldFormat );
                 mFboOut = Fbo::create( size.x, size.y, fOutFormat);
                 {
-//                    gl::ScopedProjectionMatrix matrix(gl::context()->getProjectionMatrixStack()[0]);
-//                    ScopedViewport scpVp( ivec2( 0 ), size );
                     ScopedFramebuffer fbScp( mFboOut );
                     gl::clear(ColorA(0, 0, 0, 1));
                     gl::draw(ParameterBase::textureRef, Area(vec2(0), size));

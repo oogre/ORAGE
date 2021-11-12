@@ -17,13 +17,14 @@ namespace ORAGE {
         
         
         enum TYPES {
-            NONE = 0,
-            ISF = 1,
-            CONTROLLER = 3,
-            CLOCK = 4,
-            OUTPUT = 7,
-            FX = 8,
-            MATH = 9,
+            NONE = 0x00,
+            ISF = 0x01,
+            CONTROLLER = 0x03,
+            CLOCK = 0x04,
+            OUTPUT = 0x07,
+            FX = 0x08,
+            MATH = 0x09,
+            INPUT = 0x0A,
         };
         
         struct Conf{

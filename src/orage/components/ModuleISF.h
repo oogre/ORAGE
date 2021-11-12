@@ -9,12 +9,14 @@
 #define ModuleISF_h
 
 //#include "ISFDoc.hpp"
-#include "Module.h"
+#include <exception>
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/wrapper.h"
+#include "Syphon_Spout.h"
+#include "Module.h"
 #include "ISFDoc.h"
-#include <exception>
+
 namespace ORAGE {
     namespace COMPONENTS {
         using namespace ci;
@@ -23,13 +25,17 @@ namespace ORAGE {
         using namespace std;
         using namespace reza::ui;
         using namespace ISF;
+        using namespace ORAGE::COMMON;
 
         
         class ModuleISF : public Module {
             typedef shared_ptr<ModuleISF> ModuleISFRef;
             bool sizeChanged;
             bool antiAliazing = true;
+            bool share = false;
+            SyphonSpoutServerRef shareRef;
             GlslProgRef mShader;
+            
             mat4 mDefaultProjection;
             bool isInitialized = false;
             vec2 defSize;
@@ -43,6 +49,7 @@ namespace ORAGE {
             ModuleISF(string name, string path, TYPES type, int width, int height) :
                 Module(name)
             {
+                
                 try{
                     moduleType = type;
                     string outFrag;
@@ -74,6 +81,7 @@ namespace ORAGE {
                         output->setSize(ivec2(width, height), antiAliazing);
                         outputs.push_back(output);
                     }
+                    shareRef = SyphonSpoutServer::create(name, outputs.back());
                     
                     for(auto input : doc->inputs()){
                         if(input->type() == ISFValType::ISFValType_Float){
@@ -96,6 +104,7 @@ namespace ORAGE {
                         UI->getSubView("New Window")->setVisible(value);
                         UI->parameters["size_x"]->setVisible(value);
                         UI->parameters["size_y"]->setVisible(value);
+                        UI->getSubView("Share")->setVisible(value);
                         UI->getSubView("AntiAliazing")->setVisible(value);
                         UI->autoSizeToFitSubviews();
                     });
@@ -119,6 +128,15 @@ namespace ORAGE {
                             windows.push_back(window);
                         }
                     });
+                    UI->addToggle("Share", share, format)
+                    ->setCallback([&](bool value) {
+                        if(value){
+                            shareRef->enable();
+                        }else{
+                            shareRef->disable();
+                        }
+                    });
+                    
                     UI->addToggle("AntiAliazing", antiAliazing, format)
                     ->setCallback([&](bool value) {
                         sizeChanged = true;
@@ -138,6 +156,7 @@ namespace ORAGE {
                     UI->parameters["size_x"]->setVisible(false);
                     UI->parameters["size_y"]->setVisible(false);
                     UI->getSubView("New Window")->setVisible(false);
+                    UI->getSubView("Share")->setVisible(false);
                     UI->getSubView("AntiAliazing")->setVisible(false);
                     UI->autoSizeToFitSubviews();
                     
@@ -244,6 +263,7 @@ namespace ORAGE {
                     }
                 }
                 output->textureViewRef->setNeedsDisplay();
+                shareRef->draw();
                 Module::draw();
             }
         };//ModuleISF {

@@ -75,7 +75,7 @@ namespace reza {
             {
                 ParameterClockRef param = ParameterClock::create(name, clockAttr, format);;
                 
-                int width = (int) (getWidth() - 18 - mPadding.mRight - 2 * mPadding.mLeft);
+//                int width = (int) (getWidth() - 18 - mPadding.mRight - 2 * mPadding.mLeft);
                 /*===========*/
                 /*===========*/
                 param->buttonRef->setSize( vec2(15) );
@@ -126,11 +126,14 @@ namespace reza {
                 vec2 refOrigin = param->textureViewRef->getOrigin( false );
                 Rectf refRect = param->textureViewRef->getBounds( true );
                 param->buttonRef->setSize( vec2(15) );
-                param->buttonRef->setOrigin(refOrigin + vec2(refRect.getWidth() + mPadding.mRight, count * (15 + mPadding.mTop + mPadding.mBottom)));
+                param->buttonRef->setOrigin(
+                    refOrigin + vec2(
+                        refRect.getWidth() + mPadding.mRight,
+                        count * (15 + mPadding.mTop + mPadding.mBottom)
+                    )
+                );
                 addSubView(param->buttonRef);
-                
                 parameters[name] = param;
-                
                 return param;
             }
             

@@ -10,6 +10,7 @@
 
 #include "ModuleISF.h"
 #include "ModuleController.h"
+#include "ModuleSyphonSpout.h"
 #include "cables.h"
 #include "ModuleTypes.h"
 
@@ -49,6 +50,9 @@ namespace ORAGE {
                     case TYPES::CLOCK :
                     case TYPES::MATH :
                         module = ModuleController::create(name, filePath.string(), type);
+                    break;
+                    case TYPES::INPUT :
+                        module = ModuleSyphonSpout::create(name, type);
                     break;
                     default :
                         return;
