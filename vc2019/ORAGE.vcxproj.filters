@@ -48,6 +48,9 @@
     <Filter Include="Source Files\ISF\exprtk">
       <UniqueIdentifier>{367affd8-df99-409b-a2ae-edce9f6607ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Blocks\Spout">
+      <UniqueIdentifier>{afb3fdaa-6beb-4b9a-8fed-41d5a7920cff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ORAGEApp.cpp">
@@ -183,9 +186,6 @@
     </ClInclude>
     <ClInclude Include="..\src\reza\ui\ParameterTexture.h">
       <Filter>Source Files\reza\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\orage\common\CustomISFAttr.h">
-      <Filter>Source Files\orage\common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\orage\common\EventTemplate.h">
       <Filter>Source Files\orage\common</Filter>
@@ -367,6 +367,24 @@
     <ClInclude Include="..\src\ISF\exprtk\exprtk.hpp">
       <Filter>Source Files\ISF\exprtk</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Blocks\Spout\SpoutLibrary.h">
+      <Filter>Source Files\Blocks\Spout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\ParameterClock.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\ModuleSyphonSpout.h">
+      <Filter>Source Files\orage\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\ModuleController.h">
+      <Filter>Source Files\orage\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\common\ModuleManager.h">
+      <Filter>Source Files\orage\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\common\Syphon_Spout.h">
+      <Filter>Source Files\orage\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
@@ -377,5 +395,13 @@
     <None Include="..\src\Blocks\UI\src\CocoaWindowCanvas.mm">
       <Filter>Source Files\Blocks\UI\src</Filter>
     </None>
+    <None Include="..\src\Blocks\Spout\SpoutLibrary.dll">
+      <Filter>Source Files\Blocks\Spout</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\src\Blocks\Spout\SpoutLibrary.lib">
+      <Filter>Source Files\Blocks\Spout</Filter>
+    </Library>
   </ItemGroup>
 </Project>

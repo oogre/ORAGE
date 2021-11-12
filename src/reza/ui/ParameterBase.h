@@ -30,8 +30,8 @@ namespace reza {
             CLOCK = 0x07
         };
         enum PLUG_TYPE {
-            IN = 0x00,
-            OUT = 0x10
+            _IN = 0x00,
+            _OUT = 0x10
         };
         
         struct Conf{
@@ -64,17 +64,17 @@ namespace reza {
             typedef std::shared_ptr<ParameterBase> ParameterBaseRef;
             
         public:
-            uint8_t type = PARAMETER_TYPE::NONE | PLUG_TYPE::IN;
+            uint8_t type = PARAMETER_TYPE::NONE | PLUG_TYPE::_IN;
             ParameterBase( std::string name):
             EvtHandler()
             {
                 setName(name);
             }
             bool isInput(){
-                return getPlugType() == PLUG_TYPE::IN;
+                return getPlugType() == PLUG_TYPE::_IN;
             }
             bool isOutput(){
-                return getPlugType() == PLUG_TYPE::OUT;
+                return getPlugType() == PLUG_TYPE::_OUT;
             }
             bool isFloat(){
                 return getParameterType() == PARAMETER_TYPE::FLOAT;

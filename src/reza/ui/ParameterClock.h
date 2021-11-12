@@ -43,9 +43,9 @@ namespace reza {
                 ParameterBase::clockAttrIn = &(ParameterBase::clockAttr);
                 
                 if(!mFormat.mInput){
-                    type = PARAMETER_TYPE::CLOCK | PLUG_TYPE::OUT;
+                    type = PARAMETER_TYPE::CLOCK | PLUG_TYPE::_OUT;
                 }else{
-                    type = PARAMETER_TYPE::CLOCK | PLUG_TYPE::IN;
+                    type = PARAMETER_TYPE::CLOCK | PLUG_TYPE::_IN;
                 }
                 
                 buttonRef = Button::create( name+"-Clock", false, Button::Format().label(false).circle(true));

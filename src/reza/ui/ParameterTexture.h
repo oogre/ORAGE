@@ -48,10 +48,10 @@ namespace reza {
                     getDefaultInput();
                     ParameterBase::textureInRef = &ParameterTexture::DEFAULT_INPUT;
                     ParameterBase::textureSample = 0;
-                    type = PARAMETER_TYPE::TEXTURE |  PLUG_TYPE::IN;
+                    type = PARAMETER_TYPE::TEXTURE |  PLUG_TYPE::_IN;
                 }else{
                     setSize(ivec2(1, 1));
-                    type = PARAMETER_TYPE::TEXTURE | PLUG_TYPE::OUT;
+                    type = PARAMETER_TYPE::TEXTURE | PLUG_TYPE::_OUT;
                     textureViewRef = TextureView::create( name+"-Preview", ParameterBase::textureRef, TextureView::Format().height(150) );
                 }
                 buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false).circle(true));

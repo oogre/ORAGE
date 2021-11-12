@@ -15,31 +15,37 @@
 #endif
 
 #if defined(VVGL_SDK_WIN)
+#include "SpoutLibrary.h"
 #endif
 
 namespace ORAGE {
     namespace COMMON {
+        using namespace ci;
         using namespace std;
+        using namespace ci::gl;
         
         class SyphonSpoutClient {
             typedef shared_ptr<SyphonSpoutClient> SyphonSpoutClientRef;
-            int dirIdx;
-            
         #if defined(VVGL_SDK_MAC)
             syphonClient * client;
             syphonServerDirectory * serverDir;
+            int dirIdx;
         #endif
         #if defined(VVGL_SDK_WIN)
+            SPOUTLIBRARY * client;
+            Texture2dRef texIn;
         #endif
             SyphonSpoutClient(){
-                dirIdx = 0 ;
             #if defined(VVGL_SDK_MAC)
                 client = new syphonClient();
                 client->setup();
                 serverDir = new syphonServerDirectory();
                 serverDir->setup();
+                dirIdx = 0;
             #endif
             #if defined(VVGL_SDK_WIN)
+                client = GetSpout();
+                texIn = Texture2d::create(800, 600);
             #endif
             }
         public :
@@ -49,13 +55,15 @@ namespace ORAGE {
                 delete serverDir;
             #endif
             #if defined(VVGL_SDK_WIN)
+                client->ReleaseReceiver();
+                client->Release();
             #endif
             }
             static SyphonSpoutClientRef create(){
                 return SyphonSpoutClientRef(new SyphonSpoutClient());
             }
             void nextClient(){
-                #if defined(VVGL_SDK_MAC)
+             #if defined(VVGL_SDK_MAC)
                 dirIdx++;
                 if(dirIdx >= serverDir->size()){
                     dirIdx = 0;
@@ -65,13 +73,25 @@ namespace ORAGE {
                     client->set(desc);
                     client->bind();
                 }
-                #endif
-                #if defined(VVGL_SDK_WIN)
-                #endif
+            #endif
+            #if defined(VVGL_SDK_WIN)
+                client->SelectSender();
+            #endif
             }
-            void draw(ci::vec2 origine, ci::vec2 size){
+            Texture2dRef draw(ci::vec2 origine = ci::vec2(0), ci::vec2 size = ci::vec2(0)){
+            #if defined(VVGL_SDK_MAC)
                 if(serverDir->isValidIndex(dirIdx))
                     client->draw(origine, size);
+            #endif
+            #if defined(VVGL_SDK_WIN)
+                if (client->IsUpdated()) {
+                    texIn = Texture2d::create(client->GetSenderWidth(), client->GetSenderHeight());
+                }
+                if (client->ReceiveTexture(texIn->getId(), texIn->getTarget())) {
+                    return texIn;
+                }
+            #endif
+                return nullptr;
             }
         };
         typedef shared_ptr<SyphonSpoutClient> SyphonSpoutClientRef;
@@ -85,6 +105,7 @@ namespace ORAGE {
             syphonServer * server;
         #endif
         #if defined(VVGL_SDK_WIN)
+            SPOUTLIBRARY * server;
         #endif
             SyphonSpoutServer(string name, reza::ui::ParameterTextureRef tex) :
                 name(name),
@@ -106,6 +127,7 @@ namespace ORAGE {
                     server->publishTexture(tex->textureRef);
                 #endif
                 #if defined(VVGL_SDK_WIN)
+                    server->SendTexture(tex->textureRef->getId(), tex->textureRef->getTarget(), tex->textureRef->getWidth(), tex->textureRef->getHeight(), false);
                 #endif
                 }
             }
@@ -116,17 +138,22 @@ namespace ORAGE {
                     server->setName(name);
                 #endif
                 #if defined(VVGL_SDK_WIN)
+                    server = GetSpout();
+                    server->SetSenderName(&name[0]);
                 #endif
                     isActive = true;
                 }
             }
             void disable(){
                 if(isActive){
-                #if defined(VVGL_SDK_MAC)
+                 #if defined(VVGL_SDK_MAC)
                     delete server;
                 #endif
                 #if defined(VVGL_SDK_WIN)
+                    server->ReleaseSender();
+                    server->Release();
                 #endif
+
                     isActive = false;
                 }
             }

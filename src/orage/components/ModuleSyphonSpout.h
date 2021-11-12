@@ -100,6 +100,7 @@ namespace ORAGE {
             
             virtual void draw() override {
                 {
+                   
                     gl::ScopedProjectionMatrix matrix(mDefaultProjection);
                     ScopedViewport scpVp( ivec2( 0 ), output->mFbo->getSize() );
                     {
@@ -107,12 +108,24 @@ namespace ORAGE {
                         gl::clear( ColorA(0, 0, 0, 1));
                         gl::draw(output->textureRef, Area(vec2(0), defSize));
                     }
+                    #if defined(VVGL_SDK_MAC)
                     {
-                        ScopedFramebuffer fbScp( output->mFbo );
-                        gl::clear( ColorA(0, 0, 0, 1));
+                        ScopedFramebuffer fbScp(output->mFbo);
+                        gl::clear(ColorA(1, 0, 0, 1));
                         gl::color(Color::white());
-                        sscRef->draw(vec2(0), defSize);
+                        sscRef->draw(Area(vec2(0), defSize));
                     }
+                    #endif
+                    #if defined(VVGL_SDK_WIN)
+                    auto tex = sscRef->draw();
+                    if (!!tex) {
+                        ScopedFramebuffer fbScp(output->mFbo);
+                        gl::clear(ColorA(0, 0, 0, 1));
+                        gl::color(Color::white());
+                        gl::draw(tex, Area(vec2(0), defSize));
+                    }
+                    #endif
+                   
                 }
                 output->textureViewRef->setNeedsDisplay();
                 Module::draw();

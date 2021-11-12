@@ -71,7 +71,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\Ducktape;..\src\ISF;$(USERPROFILE)\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\usr\local\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\Ducktape;..\src\ISF;$(USERPROFILE)\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\usr\local\include;..\src\Blocks\Spout</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_HAS_AUTO_PTR_ETC=1;VVGL_SDK_WIN;WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -86,11 +86,11 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\Ducktape;..\src\ISF;$(USERPROFILE)\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\usr\local\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\Ducktape;..\src\ISF;$(USERPROFILE)\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\usr\local\include;..\src\Blocks\Spout</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget);$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;SpoutLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget);$(USERPROFILE)\source\repos\cinder_master\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset);..\src\Blocks\Spout</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -105,6 +105,7 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\src\Blocks\Spout\SpoutLibrary.dll" />
     <None Include="..\src\Blocks\UI\src\CocoaWindowCanvas.mm" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\Blocks\Ducktape\duktape.h" />
     <ClInclude Include="..\src\Blocks\Ducktape\duk_config.h" />
+    <ClInclude Include="..\src\Blocks\Spout\SpoutLibrary.h" />
     <ClInclude Include="..\src\Blocks\UI\src\Alignments.h" />
     <ClInclude Include="..\src\Blocks\UI\src\BSplineEditor.h" />
     <ClInclude Include="..\src\Blocks\UI\src\Button.h" />
@@ -196,11 +198,14 @@
     <ClInclude Include="..\src\ISF\ISFStringUtils.h" />
     <ClInclude Include="..\src\ISF\ISFStringUtils_2.h" />
     <ClInclude Include="..\src\ISF\ISFVal.h" />
-    <ClInclude Include="..\src\orage\common\CustomISFAttr.h" />
     <ClInclude Include="..\src\orage\common\EventTemplate.h" />
+    <ClInclude Include="..\src\orage\common\ModuleManager.h" />
     <ClInclude Include="..\src\orage\common\OrageMath.h" />
+    <ClInclude Include="..\src\orage\common\Syphon_Spout.h" />
     <ClInclude Include="..\src\orage\components\Module.h" />
+    <ClInclude Include="..\src\orage\components\ModuleController.h" />
     <ClInclude Include="..\src\orage\components\ModuleISF.h" />
+    <ClInclude Include="..\src\orage\components\ModuleSyphonSpout.h" />
     <ClInclude Include="..\src\orage\components\ModuleTypes.h" />
     <ClInclude Include="..\src\orage\connections\cable.h" />
     <ClInclude Include="..\src\orage\connections\cables.h" />
@@ -211,8 +216,12 @@
     <ClInclude Include="..\src\reza\ui\OrageMenuList.h" />
     <ClInclude Include="..\src\reza\ui\OrageSliderT.h" />
     <ClInclude Include="..\src\reza\ui\ParameterBase.h" />
+    <ClInclude Include="..\src\reza\ui\ParameterClock.h" />
     <ClInclude Include="..\src\reza\ui\ParameterFloat.h" />
     <ClInclude Include="..\src\reza\ui\ParameterTexture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\src\Blocks\Spout\SpoutLibrary.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

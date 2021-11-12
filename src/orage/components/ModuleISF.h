@@ -81,7 +81,7 @@ namespace ORAGE {
                         output->setSize(ivec2(width, height), antiAliazing);
                         outputs.push_back(output);
                     }
-                    shareRef = SyphonSpoutServer::create(name, outputs.back());
+                    shareRef = SyphonSpoutServer::create(UI->getName(), outputs.back());
                     
                     for(auto input : doc->inputs()){
                         if(input->type() == ISFValType::ISFValType_Float){

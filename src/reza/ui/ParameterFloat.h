@@ -37,9 +37,9 @@ namespace reza {
             ParameterFloat( std::string name, double * value, double min, double max, Format format = Format()) : ParameterBase(name), mFormat(format)
             {
                 if(!mFormat.mInput){
-                    type = PARAMETER_TYPE::FLOAT | PLUG_TYPE::OUT;
+                    type = PARAMETER_TYPE::FLOAT | PLUG_TYPE::_OUT;
                 }else{
-                    type = PARAMETER_TYPE::FLOAT | PLUG_TYPE::IN;
+                    type = PARAMETER_TYPE::FLOAT | PLUG_TYPE::_IN;
                 }
                 sliderRef = OrageSliderT<double>::create( name, value, min, max, OrageSliderT<double>::Format().value(true).precision(2).label(true).crossFader(true) );
                 buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false).circle(true));

@@ -19,7 +19,7 @@
 			"NAME" :	"octave",
 			"TYPE" :	"float",
 			"DEFAULT" :	1.0,
-			"MIN" :	0.0,
+			"MIN" :	1.0,
 			"MAX" :	10.0
 	},
 	{
