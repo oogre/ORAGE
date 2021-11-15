@@ -60,6 +60,7 @@ namespace ISF {
     class ISFVal{
         typedef shared_ptr<ISFVal> ISFValRef;
     private :
+        
         // this union stores the value of an ISFVal (the member of the union used depends on the ISFVal's 'type' member)
         union ISFValUnion {
             bool    boolVal;
@@ -70,9 +71,8 @@ namespace ISF {
         };
         ISFValType  _type = ISFValType_None;
         ISFValUnion _val = { false };
-        ci::gl::TextureRef * _imageVal = nullptr;
-        ci::gl::TextureRef _imageOutVal = nullptr;
-        
+        ci::gl::Texture2dRef _imageVal = nullptr;
+        ci::gl::FboRef _mFbo;
     public :
         //    Returns a null-type ISFVal
         ISFVal() :
@@ -130,14 +130,26 @@ namespace ISF {
             _val.colorVal[3] = inA;
         }
         
-        ISFVal(const ISFValType & inType, ci::gl::TextureRef * inImage) :
-            _type(inType)
+        ISFVal(const ISFValType & inType, ci::ivec2 size, bool antiAliazing = false) :
+        _type(inType)
         {
-            _imageVal = inImage;
+            resize(size, antiAliazing);
         }
         
-        ISFVal(const ISFValType & inType, ci::gl::TextureRef & outImage){
-            _imageOutVal = outImage;
+        void resize(ci::ivec2 size = ci::ivec2(1, 1), bool antiAliazing = false){
+            if (_type==ISFValType_Image){
+                ci::gl::Texture2d::Format tFormat = ci::gl::Texture2d::Format().loadTopDown();
+                tFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
+                tFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
+                _imageVal = ci::gl::Texture2d::create(size.x, size.y, tFormat);
+                ci::gl::Fbo::Format fFormat = ci::gl::Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, _imageVal);
+                fFormat.setColorTextureFormat( tFormat );
+                _mFbo = ci::gl::Fbo::create( size.x, size.y, fFormat);
+                {
+                    ci::gl::ScopedFramebuffer fbScp( _mFbo );
+                    ci::gl::clear(ci::ColorA(0, 0, 0, 1));
+                }
+            }
         }
         
         //!    Returns the value type.
@@ -234,18 +246,20 @@ namespace ISF {
         //!    Returns null if the receiver's value type cannot be represented as an image, otherwise it returns the image buffer (almost certainly a GL texture) that is the receiver's value.
         ci::gl::TextureRef imageBuffer(){
             if (_type==ISFValType_Image)
-                return _imageVal != nullptr ? *_imageVal : _imageOutVal;
+                return _imageVal;
             return nullptr;
         }
-        //!    Does nothing if the receiver's value type cannot be represented as an image, otherwise it sets the receiver's image value with the passed buffer.  This buffer will be "retained" for the duration of the receiver's lifetime.
-        void setImageBuffer(ci::gl::TextureRef * n){
+        
+        //!    Returns null if the receiver's value type cannot be represented as an image, otherwise it returns the image buffer (almost certainly a GL texture) that is the receiver's value.
+        ci::gl::FboRef frameBuffer(){
             if (_type==ISFValType_Image)
-                _imageVal = n;
+                return _mFbo;
+            return nullptr;
         }
         
         void setImageBuffer(ci::gl::TextureRef & n){
             if (_type==ISFValType_Image)
-                _imageOutVal = n;
+                _imageVal = n;
         }
         
         //!    Returns a string describing the type of the receiver.
@@ -309,8 +323,7 @@ namespace ISF {
         //!    Returns true if the receiver is an audio fft value (image).
         inline bool isAudioFFTVal() const { return (_type == ISFValType_AudioFFT); }
         
-        
-    };//ISFAttr
+    };//ISFVal
     
     ISFVal ISFNullVal()    {
         return ISFVal();
@@ -333,6 +346,5 @@ namespace ISF {
     ISFVal ISFColorVal(const double & inR, const double & inG, const double & inB, const double & inA)    {
         return ISFVal(ISFValType_Color, inR, inG, inB, inA);
     }
-    typedef shared_ptr<ISFVal> ISFValRef;
 }//ISF
 #endif /* ISFValue_h */

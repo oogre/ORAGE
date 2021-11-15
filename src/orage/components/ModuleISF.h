@@ -38,7 +38,7 @@ namespace ORAGE {
             bool record = false;
             SyphonSpoutServerRef shareRef;
             GlslProgRef mShader;
-            
+            ISFDocRef doc;
             mat4 mDefaultProjection;
             bool isInitialized = false;
             vec2 defSize;
@@ -55,49 +55,41 @@ namespace ORAGE {
                 
                 try{
                     moduleType = type;
+                    UI->setColorBack(Config::getConfig(moduleType).bgColor);
+                    
                     string outFrag;
                     string outVert;
                     
-                    ISFDocRef doc = ISFDoc::create(path);
+                    doc = ISFDoc::create(path);
                     ISF::GLVersion v = GLVersion_4;
                     
                     doc->generateShaderSource(&outFrag, &outVert, v);
                     
                     mShader = gl::GlslProg::create( gl::GlslProg::Format().vertex(outVert).fragment(outFrag) );
                     
-                    ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
-                    
-                    ISFVal PASSINDEXmin (ISFValType::ISFValType_Long, 0);
-                    ISFVal PASSINDEXmax (ISFValType::ISFValType_Long, numeric_limits<int>::max());
-                    ISFVal PASSINDEXval (ISFValType::ISFValType_Long, 0);
-                    addValue("PASSINDEX", "", "", io, ISFValType::ISFValType_Long, PASSINDEXmin, PASSINDEXmax, PASSINDEXval);
-                    
-                    ISFVal RENDERSIZEmin (ISFValType::ISFValType_Point2D, 1, 1);
-                    ISFVal RENDERSIZEmax (ISFValType::ISFValType_Point2D, 1920, 1080);
-                    ISFVal RENDERSIZEval (ISFValType::ISFValType_Point2D, (double)width, (double)height);
-                    addValue("RENDERSIZE", "", "", io, ISFValType::ISFValType_Point2D, RENDERSIZEmin, RENDERSIZEmax, RENDERSIZEval);
-                    
-                    UI->setColorBack(Config::getConfig(moduleType).bgColor);
-                    
                     for(auto & outAttr : doc->imageOutputs()){
-                        ParameterTextureRef output = UI->addOutput(outAttr->name(), outputs.size());
-                        output->setSize(ivec2(width, height), antiAliazing);
+                        ParameterTextureRef output = UI->addOutput(outAttr, outputs.size());
+                        outAttr->resize(ivec2(width, height), true);
+                        output->textureViewRef->setTexture(outAttr->defaultVal().imageBuffer());
                         outputs.push_back(output);
                     }
-                    shareRef = SyphonSpoutServer::create(UI->getName(), outputs.back());
+                    shareRef = SyphonSpoutServer::create(UI->getName(), doc->imageOutputs().back());
+                    
+                    ISFVal WIDTHmin (ISFValType::ISFValType_Float, 1.0f);
+                    ISFVal WIDTHmax (ISFValType::ISFValType_Float, 1920.0);
+                    ISFVal WIDTHval (ISFValType::ISFValType_Float, (double)width);
+                    doc->addInput(ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, WIDTHmin, WIDTHmax, WIDTHval));
+                    
+                    ISFVal HEIGHTmin (ISFValType::ISFValType_Float, 1.0);
+                    ISFVal HEIGHTmax (ISFValType::ISFValType_Float, 1080.0);
+                    ISFVal HEIGHTval (ISFValType::ISFValType_Float, (double)height);
+                    doc->addInput(ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, HEIGHTmin, HEIGHTmax, HEIGHTval));
                     
                     for(auto input : doc->inputs()){
                         if(input->type() == ISFValType::ISFValType_Float){
-                            string name = input->name();
-                            ISFAttrRef attr = addValue(input);
-                            UI->addParameter(name,
-                                             attr->currentVal().getDoubleValPtr(),
-                                             attr->minVal().getDoubleVal(),
-                                             attr->maxVal().getDoubleVal(),
-                                             ParameterFloat::Format().input(true));
+                            UI->addParameter(input);
                         }else if(input->type() == ISFValType::ISFValType_Image){
-                            string name = input->name();
-                            inputs.push_back(UI->addInputs(name, inputs.size(), (*outputs.begin())->textureViewRef));
+                            inputs.push_back(UI->addInputs(input, inputs.size(), (*outputs.begin())->textureViewRef));
                         }
                     }
                     
@@ -105,8 +97,8 @@ namespace ORAGE {
                     UI->addToggle("MORE", false, format)
                     ->setCallback([&](bool value){
                         UI->getSubView("New Window")->setVisible(value);
-                        UI->parameters["size_x"]->setVisible(value);
-                        UI->parameters["size_y"]->setVisible(value);
+                        UI->getSubView("WIDTH")->setVisible(value);
+                        UI->getSubView("HEIGHT")->setVisible(value);
                         UI->getSubView("Share")->setVisible(value);
                         UI->getSubView("AntiAliazing")->setVisible(value);
                         UI->autoSizeToFitSubviews();
@@ -125,7 +117,7 @@ namespace ORAGE {
                             auto handler = window->getSignalDraw().connect( [&, window] {
                                 gl::setMatricesWindow( window->getSize() );
                                 gl::clear( ColorA::white() );
-                                gl::draw(outputs.back()->textureRef, Rectf(vec2(0, 0), window->getSize()));
+                                gl::draw(doc->imageOutputs().back()->defaultVal().imageBuffer(), Rectf(vec2(0, 0), window->getSize()));
                             });
                             signalDrawHandlers.push_back(handler);
                             windows.push_back(window);
@@ -146,27 +138,27 @@ namespace ORAGE {
                         antiAliazing = value;
                     });
                     
-                    UI->addParameter("size_x", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+0, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[0], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[0], ParameterFloat::Format().input(true))->sliderRef
-                    ->setCallback([&](double val)
-                    {
-                        sizeChanged = true;
-                    });
-                    UI->addParameter("size_y", Module::parameters["RENDERSIZE"]->currentVal().getPointValPtr()+1, Module::parameters["RENDERSIZE"]->minVal().getPointValPtr()[1], Module::parameters["RENDERSIZE"]->maxVal().getPointValPtr()[1], ParameterFloat::Format().input(true))->sliderRef
-                    ->setCallback([&](double val)
-                    {
-                        sizeChanged = true;
-                    });
+                    auto renderSize = doc->getInput("RENDERSIZE");
+//                    UI->addParameter(renderSize)->sliderRef
+//                    ->setCallback([&](double val)
+//                    {
+//                        sizeChanged = true;
+//                    });
+//                    UI->addParameter("size_y", renderSize->currentVal().getPointValPtr()+1, renderSize->minVal().getPointValPtr()[1], renderSize->maxVal().getPointValPtr()[1], ParameterFloat::Format().input(true))->sliderRef
+//                    ->setCallback([&](double val)
+//                    {
+//                        sizeChanged = true;
+//                    });
                     
-                    UI->parameters["size_x"]->setVisible(false);
-                    UI->parameters["size_y"]->setVisible(false);
+//                    UI->getSubView("size_x")->setVisible(false);
+//                    UI->getSubView("size_y")->setVisible(false);
                     UI->getSubView("New Window")->setVisible(false);
                     UI->getSubView("Share")->setVisible(false);
                     UI->getSubView("AntiAliazing")->setVisible(false);
                     
                     UI->autoSizeToFitSubviews();
-                    
                     mDefaultProjection = gl::context()->getProjectionMatrixStack()[0];
-                    defSize = vec2(*(getValue("RENDERSIZE")->defaultVal().getPointValPtr()+0), *(getValue("RENDERSIZE")->defaultVal().getPointValPtr()+1));
+                    defSize = vec2(width, height);
                 }catch (const ISFErr & e){
                     cerr << "ERROR FROM : " << UI->getName() << endl;
                     for(auto & [key, value] : e.details){
@@ -199,52 +191,58 @@ namespace ORAGE {
                 if(!isInitialized){
                     for(auto input : inputs){
                         if(input->getName() == "OLD"){
-                            input->eventTrigger({
-                                "plug", input
-                            });
-                            outputs.back()->eventTrigger({
-                                "plug", outputs.back()
-                            });
+                            input->eventTrigger({"plug", input});
+                            outputs.back()->eventTrigger({"plug", outputs.back()});
                         }
                     }
                     isInitialized = true;
                 }
                 if(sizeChanged){
-                    vec2 size = vec2(*(getValue("RENDERSIZE")->currentVal().getPointValPtr()+0), *(getValue("RENDERSIZE")->currentVal().getPointValPtr()+1));
-                    for(auto it = outputs.begin() ; it != outputs.end() ; it ++){
-                        (*it)->setSize(size, antiAliazing);
-                    }
+//                    auto sizePtr = doc->getInput("RENDERSIZE")->currentVal().getPointValPtr();
+//                    vec2 size = vec2(*(sizePtr+0), *(sizePtr+1));
+//                    for(auto it = outputs.begin() ; it != outputs.end() ; it ++){
+//                        (*it)->setSize(size, antiAliazing);
+//                    }
                     sizeChanged = false;
                 }
                 Module::update();
             }
             virtual void draw() override {
-                ParameterTextureRef output = (*outputs.begin());
+                
+                ISFAttrRef outAttr = doc->imageOutputs().back();
+                FboRef currentFbo = outAttr->currentVal().frameBuffer();
+                FboRef oldFbo = outAttr->defaultVal().frameBuffer();
+                Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
+                
+                //ParameterTextureRef output = (*outputs.begin());
                 {
                     gl::ScopedProjectionMatrix matrix(mDefaultProjection);
-                    ScopedViewport scpVp( ivec2( 0 ), output->mFbo->getSize() );
+                    ScopedViewport scpVp( ivec2( 0 ), currentFbo->getSize() );
                     {
-                        ScopedFramebuffer fbScp2( output->mFboOut );
+                        ScopedFramebuffer fbScp2( oldFbo );
                         gl::clear( ColorA(0, 0, 0, 1));
-                        gl::draw(output->textureRef, Area(vec2(0), defSize));
+                        gl::draw(currentTex, Area(vec2(0), defSize));
                     }
                     {
-                        ScopedFramebuffer fbScp( output->mFbo );
+                        ScopedFramebuffer fbScp( currentFbo );
                         gl::ScopedGlslProg glslProg( mShader );
                         gl::clear( ColorA(0, 0, 0, 1));
-                        for(auto [key, param] : parameters){
-                            switch(param->type()){
-                                case ISFValType::ISFValType_Bool:
-                                    mShader->uniform(param->name(), (int) param->currentVal().getBoolVal());
+                        for(auto & input : doc->inputs()){
+                            switch(input->type()){
+                                case ISFValType::ISFValType_Bool :
+                                    mShader->uniform(input->name(), (int) input->currentVal().getBoolVal());
                                     break;
-                                case ISFValType::ISFValType_Long:
-                                    mShader->uniform(param->name(), (int) param->currentVal().getLongVal());
+                                case ISFValType::ISFValType_Long :
+                                    mShader->uniform(input->name(), (int) input->currentVal().getLongVal());
                                     break;
-                                case ISFValType::ISFValType_Float:
-                                    mShader->uniform(param->name(), (float) param->currentVal().getDoubleVal());
+                                case ISFValType::ISFValType_Float :
+                                    mShader->uniform(input->name(), (float) input->currentVal().getDoubleVal());
                                     break;
-                                case ISFValType::ISFValType_Point2D:
-                                    mShader->uniform(param->name(), vec2(param->currentVal().getPointValByIndex(0), param->currentVal().getPointValByIndex(1)));
+                                case ISFValType::ISFValType_Point2D :
+                                    mShader->uniform(input->name(), vec2(input->currentVal().getPointValByIndex(0), input->currentVal().getPointValByIndex(1)));
+                                    break;
+                                case ISFValType::ISFValType_Image :
+                                    
                                     break;
                                 default :
                                     break;
@@ -267,7 +265,7 @@ namespace ORAGE {
                         gl::drawSolidRect(Area(vec2(0), defSize));
                     }
                 }
-                output->textureViewRef->setNeedsDisplay();
+                outputs.back()->textureViewRef->setNeedsDisplay();
                 shareRef->draw();
                 Module::draw();
             }

@@ -36,13 +36,15 @@ namespace ORAGE {
                 Module(name)
             {
                 moduleType = type;
-                
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
-                
                 sscRef = SyphonSpoutClient::create();
                 
-                output = UI->addOutput("SyphonSpoutClient", 0);
-                output->setSize(ivec2(width, height), antiAliazing);
+                ISFAttrRef outAttr = addValue(ISFAttr::create("output", "", "", ISF::ISFAttr_IO::_OUT, ISF::ISFValType::ISFValType_Image));
+                output = UI->addOutput(outAttr, 0);
+                outAttr->resize(ivec2(width, height), true);
+                
+                output->textureViewRef->setTexture(outAttr->defaultVal().imageBuffer());
+                
                 Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
                 UI->addToggle("MORE", false, format)
                 ->setCallback([&](bool value){
@@ -64,7 +66,7 @@ namespace ORAGE {
                         auto handler = window->getSignalDraw().connect( [&, window] {
                             gl::setMatricesWindow( window->getSize() );
                             gl::clear( ColorA::white() );
-                            gl::draw(output->textureRef, Rectf(vec2(0, 0), window->getSize()));
+                            gl::draw(outAttr->currentVal().imageBuffer(), Rectf(vec2(0, 0), window->getSize()));
                         });
                         signalDrawHandlers.push_back(handler);
                         windows.push_back(window);
@@ -102,17 +104,23 @@ namespace ORAGE {
             
             virtual void draw() override {
                 {
-                   
+                    ISFAttrRef outAttr = getValue("output");
+                    FboRef currentFbo = outAttr->currentVal().frameBuffer();
+                    FboRef oldFbo = outAttr->defaultVal().frameBuffer();
+                    Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
+                    
                     gl::ScopedProjectionMatrix matrix(mDefaultProjection);
-                    ScopedViewport scpVp( ivec2( 0 ), output->mFbo->getSize() );
+                    
+                    ScopedViewport scpVp( ivec2( 0 ), currentFbo->getSize() );
                     {
-                        ScopedFramebuffer fbScp2( output->mFboOut );
+                        ScopedFramebuffer fbScp2( oldFbo );
                         gl::clear( ColorA(0, 0, 0, 1));
-                        gl::draw(output->textureRef, Area(vec2(0), defSize));
+                        gl::draw( currentTex, Area(vec2(0), defSize) );
                     }
+                    
                     #if defined(CINDER_MAC)
                     {
-                        ScopedFramebuffer fbScp(output->mFbo);
+                        ScopedFramebuffer fbScp( currentFbo );
                         gl::clear(ColorA(0, 0, 0, 1));
                         gl::color(Color::white());
                         sscRef->draw(vec2(0), defSize);
@@ -121,7 +129,7 @@ namespace ORAGE {
                     #if defined(CINDER_MSW)
                     auto tex = sscRef->draw();
                     if (!!tex) {
-                        ScopedFramebuffer fbScp(output->mFbo);
+                        ScopedFramebuffer fbScp( currentFbo );
                         gl::clear(ColorA(0, 0, 0, 1));
                         gl::color(Color::white());
                         gl::draw(tex, Area(vec2(0), defSize));

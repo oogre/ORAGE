@@ -62,17 +62,17 @@ namespace ORAGE {
                 ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
                 ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEval (ISFValType::ISFValType_Float, 0.0);
-                parameters["TIME"] = ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval);
+                addValue(ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval));
                 
                 ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                 ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                parameters["TIMEDELTA"] = ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                addValue(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
                 
                 ISFVal FRAMEINDEXmin(ISFValType::ISFValType_Float, 0.0);
                 ISFVal FRAMEINDEXmax(ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal FRAMEINDEXval(ISFValType::ISFValType_Float, 0.0);
-                parameters["FRAMEINDEX"] = ISFAttr::create("FRAMEINDEX", "", "", io, ISFValType::ISFValType_Float, FRAMEINDEXmin, FRAMEINDEXmax, FRAMEINDEXval);
+                addValue(ISFAttr::create("FRAMEINDEX", "", "", io, ISFValType::ISFValType_Float, FRAMEINDEXmin, FRAMEINDEXmax, FRAMEINDEXval));
                 
                 UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
                 UI->init();
@@ -92,7 +92,6 @@ namespace ORAGE {
                 return this;
             }
             
-            
             ISFAttrRef addValue(  const std::string & inName,
                                   const std::string & inDesc,
                                   const std::string & inLabel,
@@ -110,7 +109,7 @@ namespace ORAGE {
             
             
             ISFAttrRef addValue(const ISFAttrRef attr){
-                parameters[attr->name()] = ISFAttr::create(attr);
+                parameters[attr->name()] = attr;
                 return parameters[attr->name()];
             }
             

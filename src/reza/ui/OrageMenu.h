@@ -27,7 +27,6 @@ namespace reza {
         class OrageMenu : public SuperCanvas, public EvtMenuHandler{
             typedef shared_ptr<OrageMenu> OrageMenuRef;
             ci::signals::Connection resizeHandler;
-            bool initialized = false;
             vector<ViewRef> btns;
             virtual void enableUpdateCallback() override {/*DISABLE AUTO DRAWING AND UPDATE*/}
             
@@ -54,10 +53,12 @@ namespace reza {
             static OrageMenuRef create(){
                 return OrageMenuRef(new OrageMenu(ci::app::getWindow()));
             }
-            void init(){
+            virtual void setup() override {
+                SuperCanvas::setup();
                 
                 setColorBack(ColorA(1, 1, 1, 0.25));
                 setColorBounds(ColorA(1, 1, 1, 1));
+                setSize(vec2(getWindowWidth(), 25));
                 
                 map<string, fs::directory_entry> sorted_by_name;
                 for (const auto & entry : fs::directory_iterator(getAssetPath("modules").string())){
@@ -110,8 +111,8 @@ namespace reza {
                         }
                     }
                 }
-                ORAGE::COMPONENTS::TYPES currentType = ORAGE::COMPONENTS::TYPES::INPUT;
                 
+                ORAGE::COMPONENTS::TYPES currentType = ORAGE::COMPONENTS::TYPES::INPUT;
                 Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
                 OrageMenuItemRef btn = OrageMenuItem::create("INPUT", format);
                 btn->setSize(vec2(100, 25));
@@ -132,11 +133,9 @@ namespace reza {
                 btn->setColorBack(conf.bgColor);
                 btn->subMenu->setColorBack(conf.bgColor);
                 
-                initialized = true;
+                
             }
             virtual void draw() override {
-                if(!initialized)init();
-                setSize(vec2(getWindowWidth(), 25));
                 SuperCanvas::draw();
                 if(isMinified()){
                     setMinified(false);

@@ -14,6 +14,7 @@
 #include "ParameterClock.h"
 #include "OrageButton.h"
 #include "EventTemplate.h"
+#include "ISFAttr.h"
 
 namespace reza {
     namespace ui {
@@ -71,11 +72,10 @@ namespace reza {
             
             
             
-            ParameterClockRef addClock(const std::string name, ISFAttrRef clockAttr, ParameterClock::Format format = ParameterClock::Format())
+            ParameterClockRef addClock(const ISF::ISFAttrRef & attr)
             {
-                ParameterClockRef param = ParameterClock::create(name, clockAttr, format);;
+                ParameterClockRef param = ParameterClock::create(attr);
                 
-//                int width = (int) (getWidth() - 18 - mPadding.mRight - 2 * mPadding.mLeft);
                 /*===========*/
                 /*===========*/
                 param->buttonRef->setSize( vec2(15) );
@@ -84,14 +84,14 @@ namespace reza {
                 }else{
                     addSubViewRight(param->buttonRef);
                 }
-                parameters[name] = param;
+                parameters[attr->name()] = param;
                 return param;
             }
             
             
-            ParameterFloatRef addParameter(const std::string name, double *value, double min = 0.0f, double max = 1.0f, ParameterFloat::Format format = ParameterFloat::Format())
+            ParameterFloatRef addParameter(const ISF::ISFAttrRef & attr)
             {
-                ParameterFloatRef param = ParameterFloat::create(name, value, min, max, format);;
+                ParameterFloatRef param = ParameterFloat::create(attr);
                 int width = (int) (getWidth() - 18 - mPadding.mRight - 2 * mPadding.mLeft);
                 /*===========*/
                 /*===========*/
@@ -107,16 +107,16 @@ namespace reza {
                 }
                 /*===========*/
                 /*===========*/
-            
+                
                 param->limiterRef->setSize( vec2( width-5, 15 * 0.75) );
                 addSubViewSouthOf(param->limiterRef, param->sliderRef->getName());
                 
-                parameters[name] = param;
+                parameters[attr->name()] = param;
                 return param;
             }
             
-            ParameterTextureRef addOutput(string name, int count){
-                ParameterTextureRef param = ParameterTexture::create(name, ParameterTexture::Format().input(false));
+            ParameterTextureRef addOutput(const ISF::ISFAttrRef & attr, int count){
+                ParameterTextureRef param = ParameterTexture::create(attr);
                 int w = (int) (getWidth() - 18 - mPadding.mRight - 5 * mPadding.mLeft);
                 float h = w/(16.0/9);
                 param->textureViewRef->setSize( vec2( w, h ) );
@@ -133,17 +133,17 @@ namespace reza {
                     )
                 );
                 addSubView(param->buttonRef);
-                parameters[name] = param;
+                parameters[attr->name()] = param;
                 return param;
             }
             
-            ParameterTextureRef addInputs(string name, int count, ViewRef refView){
+            ParameterTextureRef addInputs(const ISF::ISFAttrRef & attr, int count, ViewRef refView){
                 vec2 refOrigin = refView->getOrigin( false );
-                ParameterTextureRef param = ParameterTexture::create(name, ParameterTexture::Format().input(true));
+                ParameterTextureRef param = ParameterTexture::create(attr);
                 param->buttonRef->setSize( vec2(15) );
                 param->buttonRef->setOrigin(refOrigin + vec2(-15 - mPadding.mLeft, count * (15 + mPadding.mTop + mPadding.mBottom)));
                 addSubView(param->buttonRef);
-                parameters[name] = param;
+                parameters[attr->name()] = param;
                 return param;
             }
             

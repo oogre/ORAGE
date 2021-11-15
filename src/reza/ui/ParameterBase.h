@@ -66,7 +66,7 @@ namespace reza {
         public:
             uint8_t type = PARAMETER_TYPE::NONE | PLUG_TYPE::_IN;
             ParameterBase( std::string name):
-            EvtHandler()
+                EvtHandler()
             {
                 setName(name);
             }

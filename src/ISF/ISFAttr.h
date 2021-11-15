@@ -62,6 +62,10 @@ namespace ISF {
             _identityVal = inIdenVal;
             _labelArray = (inLabels==nullptr) ? vector<string>() : vector<string>(*inLabels);
             _valArray = (inVals==nullptr) ? vector<int32_t>() : vector<int32_t>(*inVals);
+            if(_currentVal.isNullVal() &&  inType == ISFValType_Image){
+                _currentVal = ISF::ISFVal(ISFValType_Image, ci::vec2(1, 1));
+                _defaultVal = ISF::ISFVal(ISFValType_Image, ci::vec2(1, 1));
+            }
         }
         virtual ~ISFAttr(){
             
@@ -92,6 +96,24 @@ namespace ISF {
                                             attr->identityVal(),
                                             &attr->labelArray(),
                                             &attr->valArray()));
+        }
+        
+        
+        void resize(ci::ivec2 size = ci::ivec2(1, 1), bool antiAliazing = false){
+            if (_type==ISFValType_Image){
+                _currentVal.resize(size, antiAliazing);
+                {
+                    ci::gl::ScopedFramebuffer fbScp( _currentVal.frameBuffer() );
+                    ci::gl::clear(ci::ColorA(0, 0, 0, 1));
+                    ci::gl::draw(_defaultVal.imageBuffer(), ci::Rectf(ci::vec2(0), size));
+                }
+                _defaultVal.resize(size, antiAliazing);
+                {
+                    ci::gl::ScopedFramebuffer fbScp( _defaultVal.frameBuffer() );
+                    ci::gl::clear(ci::ColorA(0, 0, 0, 1));
+                    ci::gl::draw(_currentVal.imageBuffer(), ci::Rectf(ci::vec2(0), size));
+                }
+            }
         }
         
         //!    Returns the attribute's name, or null

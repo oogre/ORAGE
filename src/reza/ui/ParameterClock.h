@@ -9,7 +9,7 @@
 #define ParameterClock_h
 
 #include "ParameterBase.h"
-
+#include "ISFAttr.h"
 
 namespace reza {
     namespace ui {
@@ -17,38 +17,15 @@ namespace reza {
         
         class ParameterClock : public ParameterBase {
             typedef std::shared_ptr<ParameterClock> ParameterClockRef;
-        public:
-            struct Format {
-            public:
-                Format(){ input( true ); }
-                Format( const Format &copy )
-                {
-                    mInput = copy.mInput;
-                }
-                Format &input( bool input = true )
-                {
-                    mInput = input;
-                    return *this;
-                }
-                bool mInput;
-            protected:
-                friend ParameterClock;
-            };
-            private :
-            ParameterClock( std::string name, ISFAttrRef clockAttr, Format format = Format()) :
-                ParameterBase(name),
-                mFormat(format)
+            ParameterClock( const ISF::ISFAttrRef & attr ) :
+                ParameterBase(attr->name())
             {
-                ParameterBase::clockAttr = clockAttr;
+                ParameterBase::clockAttr = attr;
                 ParameterBase::clockAttrIn = &(ParameterBase::clockAttr);
                 
-                if(!mFormat.mInput){
-                    type = PARAMETER_TYPE::CLOCK | PLUG_TYPE::_OUT;
-                }else{
-                    type = PARAMETER_TYPE::CLOCK | PLUG_TYPE::_IN;
-                }
+                type = PARAMETER_TYPE::CLOCK | (attr->IO() == ISF::ISFAttr_IO::_IN ? PLUG_TYPE::_IN : PLUG_TYPE::_OUT);
                 
-                buttonRef = Button::create( name+"-Clock", false, Button::Format().label(false).circle(true));
+                buttonRef = Button::create( attr->name(), false, Button::Format().label(false).circle(true));
                 auto bgColor = getCableColor(true);
                 bgColor.a = 1.0f;
                 buttonRef->setColorOutline(getCableColor(true));
@@ -63,9 +40,9 @@ namespace reza {
             }
         public :
             
-            static ParameterClockRef create( const std::string name, ISFAttrRef clockAttr, Format format = Format() )
+            static ParameterClockRef create( const ISF::ISFAttrRef & attr )
             {
-                return ParameterClockRef( new ParameterClock( name, clockAttr, format ) );
+                return ParameterClockRef( new ParameterClock( attr ) );
             }
             virtual ~ParameterClock(){
                 
@@ -78,15 +55,12 @@ namespace reza {
                 ParameterClockRef _other = std::dynamic_pointer_cast<ParameterClock>(other);
                 ParameterBase::clockAttrIn = &(ParameterBase::clockAttr);
             }
-            virtual void setVisible( bool visible ) override{
+            virtual void setVisible( bool visible ) override {
                 ParameterBase::setVisible(visible);
                 buttonRef->setVisible(visible);
             }
-            Format mFormat;
         };//ParameterClock
         typedef std::shared_ptr<ParameterClock> ParameterClockRef;
     }//ui {
 }//reza {
-
-
 #endif /* ParameterClock_h */

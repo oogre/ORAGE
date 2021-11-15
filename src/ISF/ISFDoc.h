@@ -148,6 +148,26 @@ namespace ISF {
         std::vector<ISFAttrRef> & imageImports() { return _imageImports; }
         //!    Returns a std::vector of ISFAttrRef instances describing only the receiver's inputs that match the passed type.
         
+        void addInput(ISFAttrRef attr){
+            _inputs.push_back(attr);
+            if(attr->type() == ISFValType_Image){
+                if(attr->IO() == ISFAttr_IO::_IN){
+                    _imageInputs.push_back(attr);
+                } else if(attr->IO() == ISFAttr_IO::_OUT){
+                    _imageOutputs.push_back(attr);
+                }
+            }
+        }
+        ISFAttrRef getInput(const std::string & n){
+            lock_guard<recursive_mutex>        lock(_propLock);
+            for (const auto & attribRefIt : _inputs)    {
+                if (attribRefIt->name() == n)
+                    return attribRefIt;
+            }
+            return nullptr;
+        }
+        
+        
         //!    Returns the GLBufferRef for the passed key.  Checks all attributes/inputs as well as persistent and temp buffers.
         const ci::gl::TextureRef getBufferForKey(const std::string & n){
             lock_guard<recursive_mutex>        lock(_propLock);

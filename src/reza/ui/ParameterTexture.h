@@ -10,7 +10,7 @@
 
 #include "UI.h"
 #include "ParameterBase.h"
-
+#include "ISFAttr.h"
 
 
 namespace reza {
@@ -22,39 +22,21 @@ namespace reza {
         class ParameterTexture : public ParameterBase {
             typedef shared_ptr<ParameterTexture> ParameterTextureRef;
             static TextureRef DEFAULT_INPUT;
-        public:
-            struct Format {
-            public:
-                Format() { input( true ); }
-                Format( const Format &copy )
-                {
-                    mInput = copy.mInput;
-                }
-                Format &input( bool input = true )
-                {
-                    mInput = input;
-                    return *this;
-                }
-                bool mInput;
-            protected:
-                friend ParameterTexture;
-            };
-        private : 
-            ParameterTexture( string name, Format format = Format()) :
-            ParameterBase(name), mFormat(format)
+            ParameterTexture( const ISF::ISFAttrRef & attr) :
+            ParameterBase( attr->name() )
             {
-                if(format.mInput){
+                type = PARAMETER_TYPE::TEXTURE | (attr->IO() == ISF::ISFAttr_IO::_IN ? PLUG_TYPE::_IN : PLUG_TYPE::_OUT);
+                
+                if(attr->IO() == ISF::ISFAttr_IO::_IN){
                     ParameterBase::textureRef = Texture2d::create(1, 1);
-                    getDefaultInput();
-                    ParameterBase::textureInRef = &ParameterTexture::DEFAULT_INPUT;
+                    ParameterBase::textureInRef = getDefaultInput();
                     ParameterBase::textureSample = 0;
-                    type = PARAMETER_TYPE::TEXTURE |  PLUG_TYPE::_IN;
+                    
                 }else{
                     setSize(ivec2(1, 1));
-                    type = PARAMETER_TYPE::TEXTURE | PLUG_TYPE::_OUT;
-                    textureViewRef = TextureView::create( name+"-Preview", ParameterBase::textureRef, TextureView::Format().height(150) );
+                    textureViewRef = TextureView::create( attr->name(), ParameterBase::textureRef, TextureView::Format().height(150) );
                 }
-                buttonRef = Button::create( name+"-Connector", false, Button::Format().label(false).circle(true));
+                buttonRef = Button::create( attr->name()+"-Connector", false, Button::Format().label(false).circle(true));
                 auto bgColor = getCableColor(true);
                 bgColor.a = 1.0f;
                 buttonRef->setColorOutline(getCableColor(true));
@@ -98,14 +80,15 @@ namespace reza {
                     textureViewRef->setTexture(ParameterBase::textureOldRef);
                 }
             }
-            TextureRef getDefaultInput(){
-                if(!!DEFAULT_INPUT) return DEFAULT_INPUT;
-                Texture2d::Format tFormat = Texture2d::Format().loadTopDown();
-                DEFAULT_INPUT = Texture2d::create(1, 1, tFormat);
-                return DEFAULT_INPUT;
+            TextureRef * getDefaultInput(){
+                if(!DEFAULT_INPUT){
+                    Texture2d::Format tFormat = Texture2d::Format().loadTopDown();
+                    DEFAULT_INPUT = Texture2d::create(1, 1, tFormat);
+                }
+                return &DEFAULT_INPUT;
             }
-            static ParameterTextureRef create( const string name, Format format = Format()){
-                return ParameterTextureRef( new ParameterTexture( name, format ) );
+            static ParameterTextureRef create( const ISF::ISFAttrRef & attr){
+                return ParameterTextureRef( new ParameterTexture( attr ) );
             }
             virtual ~ParameterTexture(){
             }
@@ -124,7 +107,6 @@ namespace reza {
             FboRef mFbo;
             FboRef mFboOut;
             CameraPersp mCam;
-            Format mFormat;
         };//ParameterTexture
         typedef shared_ptr<ParameterTexture> ParameterTextureRef;
         ci::gl::TextureRef ParameterTexture::DEFAULT_INPUT;

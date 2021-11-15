@@ -9,7 +9,7 @@
 #define Syphon_Spout_h
 
 #include "cinder/app/App.h"
-#include "ParameterTexture.h"
+#include "ISFAttr.h"
 #if defined(CINDER_MAC)
 #include "cinderSyphon.h"
 #elif defined(CINDER_MSW)
@@ -92,16 +92,16 @@ namespace ORAGE {
         class SyphonSpoutServer {
             typedef shared_ptr<SyphonSpoutServer> SyphonSpoutServerRef;
             string name;
-            reza::ui::ParameterTextureRef tex;
+            ISF::ISFAttrRef attr;
             bool isActive = false;
         #if defined(CINDER_MAC)
             syphonServer * server;
         #elif defined(CINDER_MSW)
             SPOUTLIBRARY * server;
         #endif
-            SyphonSpoutServer(string name, reza::ui::ParameterTextureRef tex) :
+            SyphonSpoutServer(string name, ISF::ISFAttrRef attr) :
                 name(name),
-                tex(tex)
+                attr(attr)
             {
             
             }
@@ -109,16 +109,18 @@ namespace ORAGE {
             virtual ~SyphonSpoutServer(){
                 disable();
             }
-            static SyphonSpoutServerRef create(string name, reza::ui::ParameterTextureRef tex){
-                return SyphonSpoutServerRef(new SyphonSpoutServer(name, tex));
+            static SyphonSpoutServerRef create(string name, ISF::ISFAttrRef attr){
+                return SyphonSpoutServerRef(new SyphonSpoutServer(name, attr));
             }
             
             void draw(){
+                Texture2dRef currentTex = attr->currentVal().imageBuffer();;
+                
                 if(isActive){
                 #if defined(CINDER_MAC)
-                    server->publishTexture(tex->textureRef);
+                    server->publishTexture(currentTex);
                 #elif defined(CINDER_MSW)
-                    server->SendTexture(tex->textureRef->getId(), tex->textureRef->getTarget(), tex->textureRef->getWidth(), tex->textureRef->getHeight(), false);
+                    server->SendTexture(currentTex->getId(), currentTex->getTarget(), currentTex->getWidth(), currentTex->getHeight(), false);
                 #endif
                 }
             }

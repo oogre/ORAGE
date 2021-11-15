@@ -63,13 +63,8 @@ namespace ORAGE {
                             ISFVal min (ISFValType::ISFValType_Float, input.getChild("MIN").getValue<float>());
                             ISFVal max (ISFValType::ISFValType_Float, input.getChild("MAX").getValue<float>());
                             ISFVal val (ISFValType::ISFValType_Float, input.getChild("DEFAULT").getValue<float>());
-                            ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
-                            ISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, min, max, val);
-                            UI->addParameter(name,
-                                             attr->currentVal().getDoubleValPtr(),
-                                             attr->minVal().getDoubleVal(),
-                                             attr->maxVal().getDoubleVal(),
-                                             ParameterFloat::Format().input(true));
+                            ISFAttrRef attr = addValue(name, "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, min, max, val);
+                            UI->addParameter(attr);
                         }
                         if(input.getChild("TYPE").getValue() == "CLOCK"){
                             string name = input.getChild("NAME").getValue();
@@ -78,7 +73,7 @@ namespace ORAGE {
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
                             ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
                             ISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
-                            UI->addClock(name, attr, ParameterClock::Format().input(true));
+                            UI->addClock(attr);
                         }
                     }
                     for(auto output : conf.getChild("OUTPUTS").getChildren()){
@@ -87,13 +82,8 @@ namespace ORAGE {
                             ISFVal min (ISFValType::ISFValType_Float, output.getChild("MIN").getValue<double>());
                             ISFVal max (ISFValType::ISFValType_Float, output.getChild("MAX").getValue<double>());
                             ISFVal val (ISFValType::ISFValType_Float, output.getChild("DEFAULT").getValue<double>());
-                            ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_OUT;
-                            ISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, min, max, val);
-                            UI->addParameter(name,
-                                             attr->currentVal().getDoubleValPtr(),
-                                             attr->minVal().getDoubleVal(),
-                                             attr->maxVal().getDoubleVal(),
-                                             ParameterFloat::Format().input(false));
+                            ISFAttrRef attr = addValue(name, "", "", ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Float, min, max, val);
+                            UI->addParameter(attr);
                         }
                         if(output.getChild("TYPE").getValue() == "CLOCK"){
                             string name = output.getChild("NAME").getValue();
@@ -102,7 +92,7 @@ namespace ORAGE {
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
                             ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_OUT;
                             ISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
-                            UI->addClock(name, attr, ParameterClock::Format().input(false));
+                            UI->addClock(attr);
                         }
                     }
                     UI->autoSizeToFitSubviews();
