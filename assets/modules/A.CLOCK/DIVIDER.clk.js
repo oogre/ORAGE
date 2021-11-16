@@ -2,7 +2,7 @@
   assets - DIVIDER.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-11-08 22:13:00
-  @Last Modified time: 2021-11-09 21:42:30
+  @Last Modified time: 2021-11-16 14:06:21
 \*----------------------------------------*/
 var DIVIDER = {
   conf : {
@@ -20,13 +20,15 @@ var DIVIDER = {
       TYPE :  "float",
       DEFAULT : 1.0,
       MIN : 1.0,
-      MAX : 5.0
+      MAX : 5.0,
+      MAGNETIC : [1, 2, 3, 4, 5]
     },{
       NAME :  "DIV",
       TYPE :  "float",
       DEFAULT : 1.0,
       MIN : 1.0,
-      MAX : 5.0
+      MAX : 5.0,
+      MAGNETIC : [1, 2, 3, 4, 5]
     }],
     OUTPUTS: [{
       NAME :  "CLOCK_OUT",
@@ -47,10 +49,6 @@ var DIVIDER = {
         NAME : "CLOCK_OUT", 
         TYPE :  "CLOCK", 
         VALUE : deltaTime
-      },{
-        NAME : "DIV", TYPE : "float", VALUE : D + 1
-      }, {
-        NAME : "MUL", TYPE : "float", VALUE : M + 1
       }
     ]); 
   },

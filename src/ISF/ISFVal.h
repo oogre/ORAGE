@@ -204,6 +204,10 @@ namespace ISF {
                 return nullptr;
             return &(_val.floatVal);
         }
+        inline void setDoubleVal(double val) {
+            if (_type==ISFValType_Float)
+                _val.floatVal = val;
+        }
         //!    Returns a null if the receiver isn't a Point2D-type object, otherwise it returns a pointer to the two-element array containing the point values.  This pointer is only valid for the lifetime of the receiver.
         inline double * getPointValPtr() {
             if (_type!=ISFValType_Point2D)
@@ -244,9 +248,9 @@ namespace ISF {
                 _val.colorVal[inIndex]=inVal;
         }
         //!    Returns null if the receiver's value type cannot be represented as an image, otherwise it returns the image buffer (almost certainly a GL texture) that is the receiver's value.
-        ci::gl::TextureRef imageBuffer(){
+        ci::gl::Texture2dRef imageBuffer(){
             if (_type==ISFValType_Image)
-                return _imageVal;
+                return  _imageVal;
             return nullptr;
         }
         
@@ -257,7 +261,7 @@ namespace ISF {
             return nullptr;
         }
         
-        void setImageBuffer(ci::gl::TextureRef & n){
+        void setImageBuffer(ci::gl::Texture2dRef & n){
             if (_type==ISFValType_Image)
                 _imageVal = n;
         }

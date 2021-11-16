@@ -122,37 +122,8 @@ namespace reza {
                 }
             }
             
-            virtual void setValue( T value ) override {
-                double nValue = lmap<double>( value, SliderT<T>::getMin(), SliderT<T>::getMax(), 0.0, 1.0 );
-                SliderT<T>::setValue(value);
-                SliderT<T>::trigger(true);
-                auto it = slaves.begin(), end = slaves.end();
-                while(it != end){
-                    T lValue = lmap<T>( nValue, 0.0, 1.0, (*it)->getMin(), (*it)->getMax() );
-                    if(abs((*it)->getValue() - lValue) >= 0.0001 ){
-                        (*it)->setValue(lValue);
-                    }
-                    it++;
-                }
-            }
-            
-            void setSlave(OrageSliderRef slave){
-                slaves.push_back(slave);
-            }
-            
-            void removeSlave(SliderdRef slave){
-                auto it = slaves.begin();
-                while(it != slaves.end()){
-                    if((*it) == slave){
-                        it = slaves.erase(it);
-                    }else{
-                        it++;
-                    }
-                }
-            }
             
             Format mFormat;
-            std::vector<OrageSliderRef> slaves;
             LabelRef mLabelValueRef;
         };//OrageSliderT
         

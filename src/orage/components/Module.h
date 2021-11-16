@@ -14,6 +14,8 @@
 #include <ctime>
 #include <limits>
 #include <regex>
+#include "ISFDoc.h"
+#include "ISFAttrWrapper.h"
 
 namespace ORAGE {
     namespace COMPONENTS {
@@ -41,7 +43,6 @@ namespace ORAGE {
             vec4 date;
         public :
             TYPES moduleType;
-            map<string, ISFAttrRef> parameters;
             OrageCanvasRef UI;
             Module(string name) :
                 EvtModuleHandler()
@@ -58,24 +59,21 @@ namespace ORAGE {
                     Module::IDS[name]++;
                 }
                 time = oldTime  = getElapsedSeconds();
+                _attributes = ISFAttrWrapper::create();
+                
                 ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
                 ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
                 ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEval (ISFValType::ISFValType_Float, 0.0);
-                addValue(ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval));
+                _attributes->addAttr(ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval));
                 
                 ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                 ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                addValue(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
-                
-                ISFVal FRAMEINDEXmin(ISFValType::ISFValType_Float, 0.0);
-                ISFVal FRAMEINDEXmax(ISFValType::ISFValType_Float, numeric_limits<double>::max());
-                ISFVal FRAMEINDEXval(ISFValType::ISFValType_Float, 0.0);
-                addValue(ISFAttr::create("FRAMEINDEX", "", "", io, ISFValType::ISFValType_Float, FRAMEINDEXmin, FRAMEINDEXmax, FRAMEINDEXval));
+                _attributes->addAttr(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
                 
                 UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
-                UI->init();
+                
                 UI->addEventListener([&](EvtCanvas evt){
                     if(evt.is("mouseDown")){
                         EvtModuleHandler::eventTrigger({
@@ -86,48 +84,12 @@ namespace ORAGE {
             }
             
             Module * addEventListenerOnParameters(EvtSlot slot) {
-                for(auto [key, parameter] : UI->parameters){
+                for(auto [key, parameter] : UI->getParameters()){
                     parameter->addEventListener(slot);
                 }
                 return this;
             }
             
-            ISFAttrRef addValue(  const std::string & inName,
-                                  const std::string & inDesc,
-                                  const std::string & inLabel,
-                                  const ISFAttr_IO io,
-                                  const ISFValType & inType,
-                                  const ISFVal & inMinVal=ISFNullVal(),
-                                  const ISFVal & inMaxVal=ISFNullVal(),
-                                  const ISFVal & inDefVal=ISFNullVal(),
-                                  const ISFVal & inIdenVal=ISFNullVal(),
-                                  const std::vector<std::string> * inLabels=nullptr,
-                                  const std::vector<int32_t> * inVals=nullptr){
-                parameters[inName] = ISFAttr::create(inName, inDesc, inLabel, io, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals);
-                return parameters[inName];
-            }
-            
-            
-            ISFAttrRef addValue(const ISFAttrRef attr){
-                parameters[attr->name()] = attr;
-                return parameters[attr->name()];
-            }
-            
-            bool hasValue(string name){
-                return parameters.find(name) != parameters.end();
-            }
-            void setValue(string name, ISFVal value){
-                parameters[name]->setCurrentVal(value);
-            }
-            
-            ISFAttrRef getValue(string name){
-                return parameters[name];
-            }
-            
-            void incValue(string name, double inc){
-                setValue(name, ISFFloatVal(parameters[name]->currentVal().getDoubleVal() + inc));
-            }
-                 
             virtual ~Module(){
                 this->UI->clear();
             }
@@ -145,15 +107,19 @@ namespace ORAGE {
                 tm *ltm = localtime(&now);
                 date = vec4(1900 + ltm->tm_year, 1 + ltm->tm_mon, ltm->tm_mday, 0);
                 time = getElapsedSeconds();
-                setValue("TIME", ISFFloatVal(time));
-                setValue("TIMEDELTA", ISFFloatVal(time - oldTime));
+                
+                _attributes->get("TIME")->setCurrent(time);
+                _attributes->get("TIMEDELTA")->setCurrent(time - oldTime);
+                
                 oldTime = time;
-                incValue("FRAMEINDEX", 1.0);
                 UI->update();
             }
             bool hasToDestroy(){
                 return UI->shouldDestroy;
             }
+            ISFAttrWrapperRef & attributes(){ return _attributes; }
+        protected :
+            ISFAttrWrapperRef _attributes;
         };//Module {
         int Module::ID = 0;
         map<string, int> Module::IDS;

@@ -79,8 +79,8 @@ namespace ORAGE {
                 auto it = modules.begin();
                 while(it != modules.end()){
                     if((*it)->hasToDestroy()){
-                        for(auto [key, param] : (*it)->UI->parameters){
-                            cables->removeCablesPlugTo(param);
+                        for(auto attr : (*it)->attributes()->every()){
+                            cables->removeCablesPlugTo(attr);
                         }
                         modules.erase(it);
                         continue;

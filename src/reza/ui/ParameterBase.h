@@ -19,7 +19,7 @@ namespace reza {
         using namespace ORAGE::COMMON;
         using namespace ISF;
         
-        typedef ORAGE::COMMON::Event<class ParameterBase> Evt;
+        typedef ORAGE::COMMON::Event<class ISFAttr> Evt;
         typedef EventTemplate<Evt> EvtHandler;
         typedef boost::signals2::signal<void(Evt)>::slot_type EvtSlot;
         
@@ -70,26 +70,8 @@ namespace reza {
             {
                 setName(name);
             }
-            bool isInput(){
-                return getPlugType() == PLUG_TYPE::_IN;
-            }
-            bool isOutput(){
-                return getPlugType() == PLUG_TYPE::_OUT;
-            }
-            bool isFloat(){
-                return getParameterType() == PARAMETER_TYPE::FLOAT;
-            }
-            bool isTexture(){
-                return getParameterType() == PARAMETER_TYPE::TEXTURE;
-            }
-            int getParameterType(){
-                return (type & 0x0F);
-            }
-            int getPlugType(){
-                return (type & 0xF0);
-            }
             ColorA getCableColor(bool over){
-                Conf conf = Config::getConfig(getParameterType());
+                Conf conf = Config::getConfig(type & 0x0F);
                 return over ? conf.cableColorOver : conf.cableColorNormal;
             }
             virtual void plugTo(ParameterBaseRef other){}
@@ -101,16 +83,7 @@ namespace reza {
             virtual void setVisible( bool visible ) override{
                 View::setVisible(visible);
             }
-            TextureViewRef textureViewRef;
-            ci::gl::TextureRef textureRef;
-            ci::gl::TextureRef textureOldRef;
-            ci::gl::TextureRef * textureInRef;
             
-            ISFAttrRef clockAttr;
-            ISFAttrRef * clockAttrIn;
-            
-            int textureSample = 0;
-            ButtonRef buttonRef;
         };//ParameterBase
         typedef std::shared_ptr<ParameterBase> ParameterBaseRef;
     }//ui {

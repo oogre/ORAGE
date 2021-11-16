@@ -14,12 +14,12 @@ namespace ORAGE {
         using namespace std;
         using namespace ci;
         using namespace ci::gl;
-        using namespace reza::ui;
+        using namespace ISF;
         
 
         class Cables {
             typedef shared_ptr<Cables> CablesRef;
-            typedef pair<ParameterBase*, ParameterBase*> CablesID;
+            typedef pair<ISFAttr*, ISFAttr*> CablesID;
             typedef map<CablesID, CableRef> CablesWrapper;
             ci::signals::Connection mouseMoveHandler;
             ci::signals::Connection keyUpHandler;
@@ -57,20 +57,21 @@ namespace ORAGE {
             }
             
             
-            bool isValidCable(ParameterBaseRef A, ParameterBaseRef B){
+            bool isValidCable(ISFAttrRef A, ISFAttrRef B){
                 return  !!A && !!B &&
-                        A->getParameterType() == B->getParameterType() &&
+                        A->type() == B->type() &&
                         A.get() != B.get() &&
-                        (A->isFloat() || (!A->isFloat() && A->getPlugType() != B->getPlugType())) &&
+                        (A->currentVal().isFloatVal() || (!A->currentVal().isFloatVal() && A->IO() != B->IO())) &&
                         cables.count(std::minmax(A.get(), B.get())) == 0 ;
+                return false;
             }
             
-            bool addCable(ParameterBaseRef A, ParameterBaseRef B){
+            bool addCable(ISFAttrRef A, ISFAttrRef B){
                 if(isValidCable(A, B)){
                     CablesID id = std::minmax(A.get(), B.get());
                     
                     if(A->isInput() != B->isInput()){
-                        ParameterBaseRef C = A->isInput() ? A : B;
+                        ISFAttrRef C = A->isInput() ? A : B;
                         for(auto it = cables.begin(); it != cables.end() ; ){
                             if(it->second->A->isInput() != it->second->B->isInput() && it->second->contains(C)){
                                 it = cables.erase(it);
@@ -79,13 +80,13 @@ namespace ORAGE {
                             }
                         }
                     }
-                    
+
                     cables[id] = Cable::create(A, B, &mousePos);
                     return true;
                 }
                 return false;
             }
-            void addCable(ParameterBaseRef A){
+            void addCable(ISFAttrRef A){
                 if(!tempCable || !(tempCable->A)){
                     tempCable = Cable::create(A, &mousePos);
                     return;
@@ -110,7 +111,7 @@ namespace ORAGE {
                     }
                 }
             }
-            void removeCablesPlugTo(ParameterBaseRef C){
+            void removeCablesPlugTo(ISFAttrRef C){
                 if(!!tempCable && tempCable->contains(C)){
                     tempCable = nullptr;
                 }

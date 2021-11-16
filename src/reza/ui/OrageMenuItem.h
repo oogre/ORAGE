@@ -18,7 +18,7 @@ namespace reza {
         using namespace std;
         class OrageMenuItem : public Button {
             typedef std::shared_ptr<OrageMenuItem> OrageMenuItemRef;
-            bool initialized = false;
+            
             State oldState = State::NORMAL;
             std::function<void( ci::app::MouseEvent &event )> onMouseOverFn;
             std::function<void( ci::app::MouseEvent &event )> onMouseEnterFn;

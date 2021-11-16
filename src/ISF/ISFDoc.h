@@ -9,6 +9,7 @@
 #define ISFDoc_h
 #include "ISFBase.h"
 #include "ISFAttr.h"
+#include "ISFAttrWrapper.h"
 #include "ISFVal.h"
 #include "ISFStringUtils.h"
 #include "ISFStringUtils_2.h"
@@ -28,13 +29,7 @@ namespace ISF {
         std::string *_vsn = nullptr;
         std::vector<std::string> _categories; // array of strings of the category names this doc should be
         
-        std::vector<ISFAttrRef> _inputs; // array of ISFAttrRef instances for the various inputs
-        std::vector<ISFAttrRef> _imageInputs; // array of ISFAttrRef instances for the image inputs (the image inputs are stored in two arrays).
-        std::vector<ISFAttrRef> _imageOutputs; // array of ISFAttrRef instances for the image outputs (the image outputs are stored in two arrays).
-        std::vector<ISFAttrRef> _outputs; // array of ISFAttrRef instances for the various inputs
-        
-        std::vector<ISFAttrRef> _audioInputs; // array of ISFAttrRef instances for the audio inputs
-        std::vector<ISFAttrRef> _imageImports; // array of ISFAttrRef instances that describe imported images. attrib's 'attribName' is the name of the sampler, attrib's 'description' is the path to the file.
+        ISFAttrWrapperRef _attrWrapper;
         
         std::string *_jsonSourceString = nullptr; // the JSON std::string from the source *including the comments and any linebreaks before/after it*
         std::string *_jsonString = nullptr; // the JSON std::string copied from the source- doesn't include any comments before/after it
@@ -44,12 +39,19 @@ namespace ISF {
         static ISFDocRef create(const std::string & inPath){
             return ISFDocRef(new ISFDoc(inPath));
         }
+        static ISFDocRef create(){
+            return ISFDocRef(new ISFDoc());
+        }
         //! Constructs an ISFDoc instance from a passed file on disk.  Consider using CreateISFDocRef() instead.
         /*!
          \param inPath The path to the ISF file you want to load as an ISFDoc.
          Throws an ISFErr if there is a problem of some sort loading the ISF file from disk or parsing the JSON in the ISF file.
          */
-        ISFDoc(const std::string & inPath){
+        ISFDoc(const std::string & inPath) :
+            ISFDoc()
+        {
+            _attrWrapper = ISFAttrWrapper::create();
+            
             _path = new string(inPath);
             _name = new string(LastPathComponent(inPath));
             ifstream        fin;
@@ -78,6 +80,8 @@ namespace ISF {
             }
             //    call the init method with the contents of the file we read in
             _initWithRawFragShaderString(rawFile);
+        }
+        ISFDoc(){
             
         }
         virtual ~ISFDoc(){
@@ -136,53 +140,21 @@ namespace ISF {
         //!    Returns a std::vector containing strings listing the receiver's categories.
         std::vector<std::string> & categories() { return _categories; }
         
-        //!    Returns a std::vector of ISFAttrRef instances describing all of the receiver's inputs.
-        std::vector<ISFAttrRef> & inputs() { return _inputs; }
-        //!    Returns a std::vector of ISFAttrRef instances describing only the receiver's image inputs.
-        std::vector<ISFAttrRef> & imageInputs() { return _imageInputs; }
-        //!    Returns a std::vector of ISFAttrRef instances describing only the receiver's image outputs.
-        std::vector<ISFAttrRef> & imageOutputs() { return _imageOutputs; }
-        //!    Returns a std::vector of ISFAttrRef instances describing only the receiver's audio inputs.
-        std::vector<ISFAttrRef> & audioInputs() { return _audioInputs; }
-        //!    Returns a std::vector of ISFAttrRef instances describing only the receiver's audioFFT inputs.
-        std::vector<ISFAttrRef> & imageImports() { return _imageImports; }
-        //!    Returns a std::vector of ISFAttrRef instances describing only the receiver's inputs that match the passed type.
+        std::vector<ISFAttrRef> & inputs() { return _attrWrapper->inputs(); }
+        std::vector<ISFAttrRef> & outputs() { return _attrWrapper->outputs();; }
+        std::vector<ISFAttrRef> every() { return _attrWrapper->every(); }
+        std::vector<ISFAttrRef> & imageInputs() { return _attrWrapper->imageInputs(); }
+        std::vector<ISFAttrRef> & imageOutputs() { return _attrWrapper->imageOutputs(); }
+        std::vector<ISFAttrRef> & audioInputs() { return _attrWrapper->audioInputs(); }
+        std::vector<ISFAttrRef> & imageImports() { return _attrWrapper->imageImports(); }
         
-        void addInput(ISFAttrRef attr){
-            _inputs.push_back(attr);
-            if(attr->type() == ISFValType_Image){
-                if(attr->IO() == ISFAttr_IO::_IN){
-                    _imageInputs.push_back(attr);
-                } else if(attr->IO() == ISFAttr_IO::_OUT){
-                    _imageOutputs.push_back(attr);
-                }
-            }
-        }
-        ISFAttrRef getInput(const std::string & n){
-            lock_guard<recursive_mutex>        lock(_propLock);
-            for (const auto & attribRefIt : _inputs)    {
-                if (attribRefIt->name() == n)
-                    return attribRefIt;
-            }
-            return nullptr;
-        }
+        ISFAttrRef addAttr(ISFAttrRef attr){ return _attrWrapper->addAttr(attr); }
+        ISFAttrRef getInput(const std::string & n){ return _attrWrapper->getInput(n); }
+        ISFAttrRef getOutput(const std::string & n){ return _attrWrapper->getOutput(n); }
+        ISFAttrRef get(const std::string & n){ return _attrWrapper->get(n); }
+        const ci::gl::TextureRef getBufferForKey(const std::string & n){ return _attrWrapper->getBufferForKey(n); }
         
-        
-        //!    Returns the GLBufferRef for the passed key.  Checks all attributes/inputs as well as persistent and temp buffers.
-        const ci::gl::TextureRef getBufferForKey(const std::string & n){
-            lock_guard<recursive_mutex>        lock(_propLock);
-            for (const auto & attribRefIt : _imageInputs)    {
-                if (attribRefIt->name() == n)
-                    return attribRefIt->currentVal().imageBuffer();
-            }
-            
-            for (const auto & attribRefIt : _imageOutputs)    {
-                if (attribRefIt->name() == n)
-                    return attribRefIt->currentVal().imageBuffer();
-            }
-            return nullptr;
-        }
-        
+        ISFAttrWrapperRef & attrWrapper(){ return _attrWrapper; }
         
         //! Returns the JSON std::string from the source *including the comments and any linebreaks before/after it*
         std::string * jsonSourceString() const { return _jsonSourceString; }
@@ -593,10 +565,8 @@ namespace ISF {
                     //    else the attribute wasn't recognized- skip it
                     else
                         continue;
-                    ISFAttrRef newAttribRef = ISFAttr::create(inputKeyJ, descString, labelString, io, newAttribType, minVal, maxVal, defVal, idenVal, &labelArray, &valArray);
-                    _inputs.push_back(newAttribRef);
-                    if (isImageInput)
-                        _imageInputs.push_back(newAttribRef);
+                    
+                    _attrWrapper->addAttr(ISFAttr::create(inputKeyJ, descString, labelString, io, newAttribType, minVal, maxVal, defVal, idenVal, &labelArray, &valArray));
                 }
                 
                 for (auto ouput : outputs) {
@@ -608,12 +578,8 @@ namespace ISF {
                         continue;
                     string inputKeyJ = ouput.getChild("NAME").getValue<string>();
                     string typeStringJ = ouput.getChild("TYPE").getValue<string>();
-                    ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_OUT;
-                    
                     if (typeStringJ == "image") {
-                        ISFAttrRef newAttribRef = ISFAttr::create(inputKeyJ, "", "", io, ISFValType_Image);
-                        _outputs.push_back(newAttribRef);
-                        _imageOutputs.push_back(newAttribRef);
+                        _attrWrapper->addAttr(ISFAttr::create(inputKeyJ, "", "", ISF::ISFAttr_IO::_OUT, ISFValType_Image));
                     }
                 }
             }
@@ -656,8 +622,8 @@ namespace ISF {
                 case GLVersion_33:
                 case GLVersion_4:
                 {
-                    for(int i = 0 ; i < _imageOutputs.size() ; i++){
-                        fsDeclarations.push_back("layout (location = "+to_string(i)+") out vec4 "+_imageOutputs.at(i)->name()+";\n");
+                    for(int i = 0 ; i < _attrWrapper->imageOutputs().size() ; i++){
+                        fsDeclarations.push_back("layout (location = "+to_string(i)+") out vec4 "+_attrWrapper->imageOutputs().at(i)->name()+";\n");
                     }
                     break;
                 }
@@ -764,7 +730,7 @@ namespace ISF {
                 }
             };
             //    add the variables for the various inputs
-            for (const auto & attrIt : _inputs)
+            for (const auto & attrIt : _attrWrapper->inputs())
                 attribDecBlock(attrIt);
             
             

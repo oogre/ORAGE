@@ -35,28 +35,40 @@ namespace reza {
             static TextureRef CLOSE_PIC;
             
             virtual void enableUpdateCallback() override {/*DISABLE AUTO DRAWING AND UPDATE*/}
-        public :
-            ViewRef closeBtn;
-            bool shouldDestroy = false;
             ParameterWrapper parameters;
-            static OrageCanvasRef create( std::string name, const ci::app::WindowRef &window = ci::app::getWindow() ){
-                OrageCanvasRef ref = OrageCanvasRef( new OrageCanvas( name, window ) );
-                ref->setup();
-                return ref;
-            }
+            ci::signals::Connection resizeHandler;
             
             OrageCanvas(std::string name, const ci::app::WindowRef &window = ci::app::getWindow()) :
-                SuperCanvas(name, window),
-                EvtCanvasHandler()
+            SuperCanvas(name, window),
+            EvtCanvasHandler()
             {
                 disable();
                 enable();
                 if(!CLOSE_PIC)CLOSE_PIC = Texture::create(loadImage(loadAsset(getAssetPath("./textures/close.png"))));
+                
+                resizeHandler = window->getSignalResize().connect(0 , [&](){
+                    setSize(vec2(100, 25));
+                });
+                
             }
             
-            virtual ~OrageCanvas(){}
+        public :
+            ViewRef closeBtn;
+            bool shouldDestroy = false;
             
-            void init(){
+            static OrageCanvasRef create( std::string name, const ci::app::WindowRef &window = ci::app::getWindow() ){
+                OrageCanvasRef ref = OrageCanvasRef( new OrageCanvas( name, window ) );
+//                ref->setup();
+                return ref;
+            }
+            
+            
+            virtual ~OrageCanvas(){
+                resizeHandler.disconnect();
+            }
+            
+            virtual void setup() override {
+                SuperCanvas::setup();
                 setSize(vec2(150, 200));
                 setColorBack(ColorA(1, 0, 0, 0.75));
                 setColorBounds(ColorA(1, 1, 1, 1));
@@ -71,15 +83,23 @@ namespace reza {
             }
             
             
+            ParameterBaseRef & getParameter(string name){
+                return parameters[name];
+            }
             
-            ParameterClockRef addClock(const ISF::ISFAttrRef & attr)
+            ParameterWrapper & getParameters(){
+                return parameters;
+            }
+            
+            
+            ParameterClockRef addClock(ISF::ISFAttrRef & attr)
             {
                 ParameterClockRef param = ParameterClock::create(attr);
                 
                 /*===========*/
                 /*===========*/
                 param->buttonRef->setSize( vec2(15) );
-                if(param->isInput()){
+                if(attr->isInput()){
                     addSubViewLeft(param->buttonRef);
                 }else{
                     addSubViewRight(param->buttonRef);
@@ -89,10 +109,10 @@ namespace reza {
             }
             
             
-            ParameterFloatRef addParameter(const ISF::ISFAttrRef & attr)
+            ParameterFloatRef addParameter(ISF::ISFAttrRef & attr)
             {
                 ParameterFloatRef param = ParameterFloat::create(attr);
-                int width = (int) (getWidth() - 18 - mPadding.mRight - 2 * mPadding.mLeft);
+                int width = 150;
                 /*===========*/
                 /*===========*/
                 param->sliderRef->setSize( vec2( width-5, 15 ) );
@@ -100,7 +120,7 @@ namespace reza {
                 /*===========*/
                 /*===========*/
                 param->buttonRef->setSize( vec2(15) );
-                if(param->isInput()){
+                if(attr->isInput()){
                     addSubViewLeft(param->buttonRef);
                 }else{
                     addSubViewRight(param->buttonRef);
@@ -115,10 +135,12 @@ namespace reza {
                 return param;
             }
             
-            ParameterTextureRef addOutput(const ISF::ISFAttrRef & attr, int count){
+            ParameterTextureRef addOutput(ISF::ISFAttrRef & attr, int count){
                 ParameterTextureRef param = ParameterTexture::create(attr);
-                int w = (int) (getWidth() - 18 - mPadding.mRight - 5 * mPadding.mLeft);
+                int w = 150;
                 float h = w/(16.0/9);
+                cout<<vec2( w, h )<<endl;
+                
                 param->textureViewRef->setSize( vec2( w, h ) );
                 addSubViewDown(param->textureViewRef);
                 addSubViewToHeader(param->textureViewRef);
@@ -137,8 +159,7 @@ namespace reza {
                 return param;
             }
             
-            ParameterTextureRef addInputs(const ISF::ISFAttrRef & attr, int count, ViewRef refView){
-                vec2 refOrigin = refView->getOrigin( false );
+            ParameterTextureRef addInputs(ISF::ISFAttrRef & attr, int count, vec2 refOrigin){
                 ParameterTextureRef param = ParameterTexture::create(attr);
                 param->buttonRef->setSize( vec2(15) );
                 param->buttonRef->setOrigin(refOrigin + vec2(-15 - mPadding.mLeft, count * (15 + mPadding.mTop + mPadding.mBottom)));

@@ -123,6 +123,7 @@
 		88776C11273C83B600DD62C0 /* ISFStringUtils_2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFStringUtils_2.h; sourceTree = "<group>"; };
 		88776C13273C84EA00DD62C0 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
 		88776C14273C84EA00DD62C0 /* exprtk.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = exprtk.hpp; sourceTree = "<group>"; };
+		88AC2C242743F51F00A2B39A /* ISFAttrWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFAttrWrapper.h; sourceTree = "<group>"; };
 		88F37D60271899AB0095955A /* Fps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fps.h; sourceTree = "<group>"; };
 		88F37D61271899AB0095955A /* ColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPicker.h; sourceTree = "<group>"; };
 		88F37D62271899AB0095955A /* Dialer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dialer.cpp; sourceTree = "<group>"; };
@@ -392,6 +393,7 @@
 				88776C0F273C736B00DD62C0 /* ISFRange.h */,
 				88776C10273C748D00DD62C0 /* ISFConstants.h */,
 				88776C11273C83B600DD62C0 /* ISFStringUtils_2.h */,
+				88AC2C242743F51F00A2B39A /* ISFAttrWrapper.h */,
 			);
 			name = ISF;
 			path = ../src/ISF;

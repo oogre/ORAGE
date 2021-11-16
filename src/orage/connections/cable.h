@@ -8,12 +8,14 @@
 #ifndef cable_h
 #define cable_h
 
+#include "ISFAttr.h"
+
 namespace ORAGE {
     namespace CONNECTIONS {
         using namespace std;
         using namespace ci;
         using namespace ci::gl;
-        using namespace reza::ui;
+        using namespace ISF;
         using namespace COMPONENTS;
         
         class Cable {
@@ -23,15 +25,16 @@ namespace ORAGE {
             Path2d  path;
             vec2* mousePos;
             
-            Cable(ParameterBaseRef A, ParameterBaseRef B, vec2* mousePos) :
+            Cable(ISFAttrRef A, ISFAttrRef B, vec2* mousePos) :
                 mousePos(mousePos),
                 mouseOver(false),
                 A(A->isInput() ? A : B),
                 B(A->isInput() ? B : A)
             {
                 this->A->plugTo(this->B);
+                this->B->plugTo(this->A);
             }
-            Cable(ParameterBaseRef A, vec2* mousePos) :
+            Cable(ISFAttrRef A, vec2* mousePos) :
                 mousePos(mousePos),
                 mouseOver(false), A(A)
             {
@@ -39,21 +42,22 @@ namespace ORAGE {
             }
             
         public :
-            ParameterBaseRef A;
-            ParameterBaseRef B;
+            ISFAttrRef A;
+            ISFAttrRef B;
             bool mouseOver;
-            bool contains(ParameterBaseRef C){
+            bool contains(ISFAttrRef C){
                 return A == C || B == C;
             }
-            static CableRef create(ParameterBaseRef A, ParameterBaseRef B, vec2* mousePos){
+            static CableRef create(ISFAttrRef A, ISFAttrRef B, vec2* mousePos){
                 return CableRef( new Cable( A, B, mousePos ) );
             }
-            static CableRef create(ParameterBaseRef A, vec2* mousePos){
+            static CableRef create(ISFAttrRef A, vec2* mousePos){
                 return CableRef( new Cable( A, mousePos ) );
             }
             virtual ~Cable(){
                 if(!!B){
                     A->unplugTo(B);
+                    B->unplugTo(A);
                 }
             }
             
@@ -74,14 +78,15 @@ namespace ORAGE {
                 gl::color( Color::white() );
             }
             void render(){
-                vec2 pStart = A->buttonRef->getBounds().getCenter();
-                vec2 pStop  = !!B ? B->buttonRef->getBounds().getCenter() : vec2(mousePos->x, mousePos->y);
                 
-                if( !!A && !A->buttonRef->isVisible() && !A->buttonRef->getSuperView().expired() ) {
-                    auto parent = A->buttonRef->getSuperView().lock();
+                vec2 pStart = A->getPlug()->getBounds().getCenter();
+                vec2 pStop  = !!B ? B->getPlug()->getBounds().getCenter() : vec2(mousePos->x, mousePos->y);
+
+                if( !!A && !A->getPlug()->isVisible() && !A->getPlug()->getSuperView().expired() ) {
+                    auto parent = A->getPlug()->getSuperView().lock();
                     auto subViews = parent->getSubViews();
                     for (int i = 0 ; i < subViews.size() ; i ++){
-                        if(subViews.at(i) == A->buttonRef){
+                        if(subViews.at(i) == A->getPlug()){
                             int len = subViews.size();
                             pStart.y = parent->getBounds().getUpperRight().y + parent->getHeight() * (i/(float)len);
                             if(A->isInput()){
@@ -93,11 +98,11 @@ namespace ORAGE {
                         }
                     }
                 }
-                if(!!B && !B->buttonRef->isVisible() && !B->buttonRef->getSuperView().expired() ) {
-                    auto parent = B->buttonRef->getSuperView().lock();
+                if(!!B && !B->getPlug()->isVisible() && !B->getPlug()->getSuperView().expired() ) {
+                    auto parent = B->getPlug()->getSuperView().lock();
                     auto subViews = parent->getSubViews();
                     for (int i = 0 ; i < subViews.size() ; i ++){
-                        if(subViews.at(i) == B->buttonRef){
+                        if(subViews.at(i) == B->getPlug()){
                             int len = subViews.size();
                             pStop.y = parent->getBounds().getUpperRight().y + parent->getHeight() * (i/(float)len);
                             if(B->isInput()){
@@ -109,9 +114,9 @@ namespace ORAGE {
                         }
                     }
                 }
-                
+
                 vec2 pCenter = (pStart + pStop)*0.5f;
-                
+
                 vec2 p1 = vec2(pCenter.x, pStart.y);
                 vec2 p2 = vec2(pCenter.x, pStop.y);
                 path.clear();

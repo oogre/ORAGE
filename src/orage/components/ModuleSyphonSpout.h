@@ -31,19 +31,19 @@ namespace ORAGE {
             mat4 mDefaultProjection;
             vector<ci::signals::Connection> signalDrawHandlers;
             vector<ci::app::WindowRef> windows;
-            ParameterTextureRef output;
+            
             ModuleSyphonSpout(string name, TYPES type, int width, int height) :
                 Module(name)
             {
                 moduleType = type;
+                
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
                 sscRef = SyphonSpoutClient::create();
                 
-                ISFAttrRef outAttr = addValue(ISFAttr::create("output", "", "", ISF::ISFAttr_IO::_OUT, ISF::ISFValType::ISFValType_Image));
-                output = UI->addOutput(outAttr, 0);
+                ISFAttrRef outAttr = _attributes->addAttr(ISFAttr::create("output", "", "", ISF::ISFAttr_IO::_OUT, ISF::ISFValType::ISFValType_Image));
+                UI->addOutput(outAttr, 0);
                 outAttr->resize(ivec2(width, height), true);
-                
-                output->textureViewRef->setTexture(outAttr->defaultVal().imageBuffer());
+                outAttr->getPreview()->setTexture(outAttr->defaultVal().imageBuffer());
                 
                 Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
                 UI->addToggle("MORE", false, format)
@@ -104,7 +104,7 @@ namespace ORAGE {
             
             virtual void draw() override {
                 {
-                    ISFAttrRef outAttr = getValue("output");
+                    ISFAttrRef outAttr = _attributes->getOutput("output");
                     FboRef currentFbo = outAttr->currentVal().frameBuffer();
                     FboRef oldFbo = outAttr->defaultVal().frameBuffer();
                     Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
@@ -135,9 +135,8 @@ namespace ORAGE {
                         gl::draw(tex, Area(vec2(0), defSize));
                     }
                     #endif
-                   
+                    outAttr->getPreview()->setNeedsDisplay();
                 }
-                output->textureViewRef->setNeedsDisplay();
                 Module::draw();
             }
         };//ModuleSyphonSpout

@@ -18,17 +18,16 @@ namespace reza {
             typedef std::shared_ptr<ParameterFloat> ParameterFloatRef;
         
             
-            ParameterFloat( const ISF::ISFAttrRef & attr) :
+            ParameterFloat( ISF::ISFAttrRef & attr) :
                 ParameterBase(attr->name())
             {
                 type = PARAMETER_TYPE::FLOAT | (attr->IO() == ISF::ISFAttr_IO::_IN ? PLUG_TYPE::_IN : PLUG_TYPE::_OUT);
-                sliderRef = OrageSliderT<double>::create(
-                    attr->name(),
-                    attr->currentVal().getDoubleValPtr(),
-                    attr->minVal().getDoubleVal(),
-                    attr->maxVal().getDoubleVal(),
-                    OrageSliderT<double>::Format().value(true).precision(2).label(true).crossFader(true)
-                );
+                OrageSliderT<double>::Format sFormat = OrageSliderT<double>::Format().value(true).precision(2).label(true).crossFader(true);
+                
+                sliderRef = OrageSliderT<double>::create(attr->name(), attr->currentVal().getDoubleValPtr(), attr->minVal().getDoubleVal(), attr->maxVal().getDoubleVal(), sFormat);
+                sliderRef->setCallback([&, attr](double val){
+                    attr->update();
+                });
                 buttonRef = Button::create( attr->name()+"-Connector", false, Button::Format().label(false).circle(true));
                 auto bgColor = getCableColor(true);
                 bgColor.a = 1.0f;
@@ -37,38 +36,34 @@ namespace reza {
                 buttonRef->setCallback([&, attr](bool value) {
                     if(value){
                         EvtHandler::eventTrigger({
-                            "plug", std::dynamic_pointer_cast<ParameterFloat>(shared_from_this())
+                            "plug", attr
                         });
                     }
                 });
+                attr->setPlug(buttonRef);
                 limiterRef = RangeT<double>::create( attr->name()+"-Limiter", attr->minVal().getDoubleVal(), attr->maxVal().getDoubleVal(),  attr->minVal().getDoubleVal(), attr->maxVal().getDoubleVal(), Ranged::Format().label(false));
-                limiterRef->setCallback([&](double a, double b) {
+                limiterRef->setCallback([&, attr](double a, double b) {
                     if(a != b){
-                        sliderRef->setMinAndMax(std::min(a, b), std::max(a, b), true);
-                        if(sliderRef->getValue() > std::max(a, b) || sliderRef->getValue() < std::min(a, b)){
-                            sliderRef->setValue( lmap<double>( (double)sliderRef->getNormalizedValue(), 0.0, 1.0, sliderRef->getMin(), sliderRef->getMax()));
-                        }
+                        attr->setMin(std::min(a, b));
+                        attr->setMax(std::max(a, b));
                     }
                 });
             }
         public :
-            static ParameterFloatRef create( const ISF::ISFAttrRef & attr ){
+            static ParameterFloatRef create( ISF::ISFAttrRef & attr ){
                 return ParameterFloatRef( new ParameterFloat( attr ) );
             }
+            virtual void setVisible( bool visible ) override{
+                ParameterBase::setVisible(visible);
+                buttonRef->setVisible(visible);
+                sliderRef->setVisible(visible);
+                limiterRef->setVisible(visible);
+            }
+            
             virtual ~ParameterFloat(){
                 
             }
-            virtual void plugTo(std::shared_ptr<ParameterBase> other) override {
-                ParameterFloatRef _other = std::dynamic_pointer_cast<ParameterFloat>(other);
-                sliderRef->setSlave(_other->sliderRef);
-                _other->sliderRef->setSlave(sliderRef);
-            }
-            virtual void unplugTo(std::shared_ptr<ParameterBase> other) override {
-                ParameterFloatRef _other = std::dynamic_pointer_cast<ParameterFloat>(other);
-                sliderRef->removeSlave(_other->sliderRef);
-                _other->sliderRef->removeSlave(sliderRef);
-            }
-          
+            ButtonRef buttonRef;
             OrageSliderdRef sliderRef;
             RangedRef limiterRef;
         };//ParameterFloat

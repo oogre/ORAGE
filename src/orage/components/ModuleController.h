@@ -48,6 +48,7 @@ namespace ORAGE {
             {
                 moduleType = type;
                 
+                
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
                 try{
                     ctx = duk_create_heap_default();
@@ -63,7 +64,14 @@ namespace ORAGE {
                             ISFVal min (ISFValType::ISFValType_Float, input.getChild("MIN").getValue<float>());
                             ISFVal max (ISFValType::ISFValType_Float, input.getChild("MAX").getValue<float>());
                             ISFVal val (ISFValType::ISFValType_Float, input.getChild("DEFAULT").getValue<float>());
-                            ISFAttrRef attr = addValue(name, "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, min, max, val);
+                            ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, min, max, val));
+                            if(input.hasChild("MAGNETIC")){
+                                vector<ISFVal> magnetic = vector<ISFVal>();
+                                for(auto magnet : input.getChild("MAGNETIC").getChildren()){
+                                    magnetic.push_back(ISFVal(ISFValType::ISFValType_Float, magnet.getValue<float>()));
+                                }
+                                attr->setMagnetic(magnetic);
+                            }
                             UI->addParameter(attr);
                         }
                         if(input.getChild("TYPE").getValue() == "CLOCK"){
@@ -71,8 +79,7 @@ namespace ORAGE {
                             ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                             ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                            ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
-                            ISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                            ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
                             UI->addClock(attr);
                         }
                     }
@@ -82,7 +89,7 @@ namespace ORAGE {
                             ISFVal min (ISFValType::ISFValType_Float, output.getChild("MIN").getValue<double>());
                             ISFVal max (ISFValType::ISFValType_Float, output.getChild("MAX").getValue<double>());
                             ISFVal val (ISFValType::ISFValType_Float, output.getChild("DEFAULT").getValue<double>());
-                            ISFAttrRef attr = addValue(name, "", "", ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Float, min, max, val);
+                            ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Float, min, max, val));
                             UI->addParameter(attr);
                         }
                         if(output.getChild("TYPE").getValue() == "CLOCK"){
@@ -90,8 +97,7 @@ namespace ORAGE {
                             ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                             ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                            ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_OUT;
-                            ISFAttrRef attr = addValue(name, "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval);
+                            ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
                             UI->addClock(attr);
                         }
                     }
@@ -121,18 +127,18 @@ namespace ORAGE {
                         string name = input.getChild("NAME").getValue();
                         string type = input.getChild("TYPE").getValue();
                         
-                        ISFAttrRef attr = type != "CLOCK" ? getValue(name) : *(UI->parameters[name]->clockAttrIn);
-                        dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, attr->currentVal().getDoubleVal());
+                        dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, _attributes->get(name)->currentVal().getDoubleVal());
                     }
                     
                     string value = dukglue_pcall_method<string>(ctx, jsObject, "main",
-                                                                getValue("TIME")->currentVal().getDoubleVal(),
-                                                                getValue("TIMEDELTA")->currentVal().getDoubleVal(),
-                                                                getValue("FRAMEINDEX")->currentVal().getDoubleVal());
+                                                                _attributes->get("TIME")->currentVal().getDoubleVal(),
+                                                                _attributes->get("TIMEDELTA")->currentVal().getDoubleVal());
                     JsonTree outputs (value);
                     for(auto output : outputs){
                         string name = output.getChild("NAME").getValue();
-                        setValue(name, ISFVal(ISFValType::ISFValType_Float, output.getChild("VALUE").getValue<double>()));
+                        double value = output.getChild("VALUE").getValue<double>();
+                        auto attr = _attributes->get(name);
+                        attr->setCurrent(value);
                     }
                 }catch(DukErrorException & e){
                     onError(e);

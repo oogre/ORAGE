@@ -9,6 +9,7 @@
 #define ISFAttribute_h
 
 #include "ISFVal.h"
+#include "View.h"
 
 namespace ISF {
     
@@ -19,7 +20,45 @@ namespace ISF {
         _OUT = 0x10
     };
     
-    class ISFAttr{
+    
+    struct Conf{
+        ci::ColorA cableColorNormal;
+        ci::ColorA cableColorOver;
+    };
+    
+    class Config {
+        ci::Rand r;
+        static std::map<ISFValType, Conf> configs;
+        public :
+        static Conf getConfig(int type){
+            return getConfig(static_cast<ISFValType>(type));
+        }
+        static Conf getConfig(ISFValType type){
+            if(configs.count(type) == 0){
+                ci::Rand r = ci::Rand((int)type);
+                float tint = r.nextFloat();
+                configs[type] = {
+                    ci::ColorA(ci::CM_HSV, tint, 1.0, 0.5, 0.85),
+                    ci::ColorA(ci::CM_HSV, tint, 1.0, 0.75, 0.95),
+                };
+            }
+            return configs[type];
+        }
+    };
+    std::map<ISFValType, Conf> Config::configs;
+    
+    
+    double InverseLerp(double min, double max, double value) {
+        if (abs(max - min) < 0.0001) return min;
+        return (value - min) / (max - min);
+    }
+    
+    
+    typedef ORAGE::COMMON::Event<class ISFAttr> Evt;
+    typedef ORAGE::COMMON::EventTemplate<Evt> EvtHandler;
+    typedef boost::signals2::signal<void(Evt)>::slot_type EvtSlot;
+    
+    class ISFAttr : public EvtHandler, public enable_shared_from_this<class ISFAttr>{
         typedef shared_ptr<ISFAttr> ISFAttrRef;
     protected:
         string _name;
@@ -34,9 +73,13 @@ namespace ISF {
         ISFVal _identityVal = ISFNullVal();
         vector<string> _labelArray; // only used if it's a LONG. std::vector containing strings that correspond to the values in "_valArray"
         vector<int32_t> _valArray; // only used if it's a LONG. std::vector containing ints with the values that correspond to the accompanying labels
+        vector<ISFVal> _magnetic;
+        vector<ISFAttrRef> pluged;
         
         ISF::ISFAttr_IO _io = ISF::ISFAttr_IO::_IN;
-        
+        bool _imageSample = false;
+        reza::ui::ButtonRef _uiPlug = nullptr;
+        reza::ui::TextureViewRef _uiPreview = nullptr;
     public :
         ISFAttr(const string & inName,
                 const string & inDesc,
@@ -49,6 +92,7 @@ namespace ISF {
                 const ISFVal & inIdenVal=ISFNullVal(),
                 const vector<std::string> * inLabels=nullptr,
                 const vector<int32_t> * inVals=nullptr) :
+            EvtHandler(),
             _name(inName),
             _description(inDesc),
             _label(inLabel),
@@ -62,6 +106,7 @@ namespace ISF {
             _identityVal = inIdenVal;
             _labelArray = (inLabels==nullptr) ? vector<string>() : vector<string>(*inLabels);
             _valArray = (inVals==nullptr) ? vector<int32_t>() : vector<int32_t>(*inVals);
+            _magnetic = vector<ISFVal>();
             if(_currentVal.isNullVal() &&  inType == ISFValType_Image){
                 _currentVal = ISF::ISFVal(ISFValType_Image, ci::vec2(1, 1));
                 _defaultVal = ISF::ISFVal(ISFValType_Image, ci::vec2(1, 1));
@@ -113,6 +158,12 @@ namespace ISF {
                     ci::gl::clear(ci::ColorA(0, 0, 0, 1));
                     ci::gl::draw(_currentVal.imageBuffer(), ci::Rectf(ci::vec2(0), size));
                 }
+                getPreview()->setTexture(defaultVal().imageBuffer());
+                
+                for(auto other : pluged){
+                    ci::gl::Texture2dRef temp = defaultVal().imageBuffer();
+                    other->currentVal().setImageBuffer(temp);
+                }
             }
         }
         
@@ -130,8 +181,13 @@ namespace ISF {
         inline ISFAttr_IO & IO(){ return _io; }
         //!    Sets the attribute's current value.
         inline void setCurrentVal(const ISFVal & n) { _currentVal=n; }
-        //    updates this attribute's eval variable with the double val of "_currentVal", and returns a ptr to the eval variable
         
+        void setMagnetic(vector<ISFVal> values){
+            _magnetic = values;
+        }
+        
+        
+        //    updates this attribute's eval variable with the double val of "_currentVal", and returns a ptr to the eval variable
         //!    Gets the attribute's min val
         inline ISFVal & minVal() { return _minVal; }
         //!    Gets the attribute's max val
@@ -144,6 +200,129 @@ namespace ISF {
         inline std::vector<std::string> & labelArray() { return _labelArray; }
         //!    Gets the attribute's values as a std::vector of int values.  Only used if the attribute is a 'long'.
         inline std::vector<int32_t> & valArray() { return _valArray; }
+        
+        //!    Returns true if the receiver is a null value.
+        inline bool isNull() const { return (_type == ISFValType_None); }
+        //!    Returns true if the receiver is an event value.
+        inline bool isEvent() const { return (_type == ISFValType_Event); }
+        //!    Returns true if the receiver is a bool value.
+        inline bool isBool() const { return (_type == ISFValType_Bool); }
+        //!    Returns true if the receiver is a long value.
+        inline bool isLong() const { return (_type == ISFValType_Long); }
+        //!    Returns true if the receiver is a float value.
+        inline bool isFloat() const { return (_type == ISFValType_Float); }
+        //!    Returns true if the receiver is a point2D value.
+        inline bool isPoint2D() const { return (_type == ISFValType_Point2D); }
+        //!    Returns true if the receiver is a color value.
+        inline bool isColor() const { return (_type == ISFValType_Color); }
+        //!    Returns true if the receiver is a cube texture value.
+        inline bool isCube() const { return (_type == ISFValType_Cube); }
+        //!    Returns true if the receiver is an image value.
+        inline bool isImage() const { return (_type == ISFValType_Image); }
+        //!    Returns true if the receiver is an audio value (image).
+        inline bool isAudio() const { return (_type == ISFValType_Audio); }
+        //!    Returns true if the receiver is an audio fft value (image).
+        inline bool isAudioFFT() const { return (_type == ISFValType_AudioFFT); }
+        
+        ci::ColorA getCableColor(bool over){
+            Conf conf = Config::getConfig(type());
+            return over ? conf.cableColorOver : conf.cableColorNormal;
+        }
+        
+        inline bool & sample() { return _imageSample; }
+        inline reza::ui::ButtonRef & getPlug() { return _uiPlug; }
+        inline void setPlug(reza::ui::ButtonRef view) { _uiPlug = view; }
+        inline reza::ui::TextureViewRef & getPreview() { return _uiPreview; }
+        inline void setPreview(reza::ui::TextureViewRef view) { _uiPreview = view; }
+        
+        
+        inline bool isInput(){ return _io == ISF::ISFAttr_IO::_IN; }
+        inline bool isOutput(){ return _io == ISF::ISFAttr_IO::_OUT; }
+        void plugTo (ISFAttrRef other){
+            if (_type==ISFValType_Float){
+                pluged.push_back(other);
+            }
+            else if (_type==ISFValType_Image){
+                if(isInput()){
+                    ci::gl::Texture2dRef temp = other->defaultVal().imageBuffer();
+                    _currentVal.setImageBuffer(temp);
+                    _imageSample = true;
+                }else{
+                    pluged.push_back(other);
+                }
+            }
+        }
+        void unplugTo (ISFAttrRef other){
+            for(auto it = pluged.begin(); it != pluged.end() ; ){
+                if((*it) == other){
+                    it = pluged.erase(it);
+                }else{
+                    it++;
+                }
+            }
+            if (_type==ISFValType_Image){
+                if(isInput()){
+                    ci::gl::Texture2dRef temp = _defaultVal.imageBuffer();
+                    _currentVal.setImageBuffer(temp);
+                    _imageSample = false;
+                }
+            }
+        }
+        
+        void update(){
+            if (_type!=ISFValType_Float)return;
+            setCurrent(_currentVal.getDoubleVal());
+        }
+        
+        void setCurrent(double val, vector<ISFAttr *> acc = vector<ISFAttr *>() ){
+            if (_type!=ISFValType_Float)return;
+            double cVal = std::min(std::max(val, _minVal.getDoubleVal()), _maxVal.getDoubleVal());
+            ISFVal closest;
+            double dist = 10000.0;
+            bool flag = false;
+            for(ISFVal magnet : _magnetic){
+                double d = std::abs(magnet.getDoubleVal() - cVal);
+                if(d < dist){
+                    flag = true;
+                    dist = d;
+                    closest = magnet;
+                }
+            }
+            if(flag){
+                cVal = closest.getDoubleVal();
+            }
+            _currentVal.setDoubleVal(cVal);
+            
+            EvtHandler::eventTrigger({
+                "change", shared_from_this()
+            });
+            
+            double nVal = InverseLerp(_minVal.getDoubleVal(), _maxVal.getDoubleVal(), cVal);
+            
+            acc.push_back(this);
+            for(auto other : pluged){
+                if(find(acc.begin(), acc.end(), other.get()) == acc.end()){
+                    double lval = ci::lerp(other->minVal().getDoubleVal(), other->maxVal().getDoubleVal(), nVal);
+                    other->setCurrent(lval, acc);
+                }
+            }
+        }
+        
+        void setMin(double val){
+            if (_type!=ISFValType_Float)return;
+            _minVal.setDoubleVal(val);
+            if(_minVal.getDoubleVal() > _currentVal.getDoubleVal()){
+                _currentVal.setDoubleVal(val);
+            }
+        }
+        
+        void setMax(double val){
+            if (_type!=ISFValType_Float)return;
+            _maxVal.setDoubleVal(val);
+            if(_maxVal.getDoubleVal() < _currentVal.getDoubleVal()){
+                _currentVal.setDoubleVal(val);
+            }
+        }
         
         friend std::ostream & operator<<(std::ostream & os, const ISFAttr & n) {
             os << "<ISFAttr " << const_cast<ISFAttr&>(n).name() << ": " << StringFromISFValType(const_cast<ISFAttr&>(n).type()) << ">";
