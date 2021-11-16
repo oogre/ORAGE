@@ -168,19 +168,22 @@ namespace ISF {
         }
         
         //!    Returns the attribute's name, or null
-        inline string & name() const { return const_cast<std::string&>(_name); }
+        
+        string & name() const { return const_cast<std::string&>(_name); }
         //!    Returns the attribute's description, or null
-        inline std::string & description() const { return const_cast<std::string&>(_description); }
+        
+        std::string & description() const { return const_cast<std::string&>(_description); }
         //!    Returns the attribute's label, or null
-        inline std::string & label() const { return const_cast<std::string&>(_label); }
+        
+        std::string & label() const { return const_cast<std::string&>(_label); }
         //!    Returns the attribute's value type.
-        inline ISFValType & type() const { return const_cast<ISFValType&>(_type); }
+        ISFValType & type() const { return const_cast<ISFValType&>(_type); }
         //!    Returns the attribute's current value.
-        inline ISFVal & currentVal() { return _currentVal; }
+        ISFVal & currentVal() { return _currentVal; }
         //!    Returns the attribute's current IO.
-        inline ISFAttr_IO & IO(){ return _io; }
+        ISFAttr_IO & IO(){ return _io; }
         //!    Sets the attribute's current value.
-        inline void setCurrentVal(const ISFVal & n) { _currentVal=n; }
+        void setCurrentVal(const ISFVal & n) { _currentVal=n; }
         
         void setMagnetic(vector<ISFVal> values){
             _magnetic = values;
@@ -189,55 +192,55 @@ namespace ISF {
         
         //    updates this attribute's eval variable with the double val of "_currentVal", and returns a ptr to the eval variable
         //!    Gets the attribute's min val
-        inline ISFVal & minVal() { return _minVal; }
+        ISFVal & minVal() { return _minVal; }
         //!    Gets the attribute's max val
-        inline ISFVal & maxVal() { return _maxVal; }
+        ISFVal & maxVal() { return _maxVal; }
         //!    Gets the attribute's default val (the value which will be assigned to the attribute when it is first created and used for rendering)
-        inline ISFVal & defaultVal() { return _defaultVal; }
+        ISFVal & defaultVal() { return _defaultVal; }
         //!    Gets the attribute's identity val (the value at which this attribute's effects are indistinguishable from its raw input).
-        inline ISFVal & identityVal() { return _identityVal; }
+        ISFVal & identityVal() { return _identityVal; }
         //!    Gets the attribute's labels as a std::vector of std::string values.  Only used if the attribute is a 'long'.
-        inline std::vector<std::string> & labelArray() { return _labelArray; }
+        std::vector<std::string> & labelArray() { return _labelArray; }
         //!    Gets the attribute's values as a std::vector of int values.  Only used if the attribute is a 'long'.
-        inline std::vector<int32_t> & valArray() { return _valArray; }
+        std::vector<int32_t> & valArray() { return _valArray; }
         
         //!    Returns true if the receiver is a null value.
-        inline bool isNull() const { return (_type == ISFValType_None); }
+        bool isNull() const { return (_type == ISFValType_None); }
         //!    Returns true if the receiver is an event value.
-        inline bool isEvent() const { return (_type == ISFValType_Event); }
+        bool isEvent() const { return (_type == ISFValType_Event); }
         //!    Returns true if the receiver is a bool value.
-        inline bool isBool() const { return (_type == ISFValType_Bool); }
+        bool isBool() const { return (_type == ISFValType_Bool); }
         //!    Returns true if the receiver is a long value.
-        inline bool isLong() const { return (_type == ISFValType_Long); }
+        bool isLong() const { return (_type == ISFValType_Long); }
         //!    Returns true if the receiver is a float value.
-        inline bool isFloat() const { return (_type == ISFValType_Float); }
+        bool isFloat() const { return (_type == ISFValType_Float); }
         //!    Returns true if the receiver is a point2D value.
-        inline bool isPoint2D() const { return (_type == ISFValType_Point2D); }
+        bool isPoint2D() const { return (_type == ISFValType_Point2D); }
         //!    Returns true if the receiver is a color value.
-        inline bool isColor() const { return (_type == ISFValType_Color); }
+        bool isColor() const { return (_type == ISFValType_Color); }
         //!    Returns true if the receiver is a cube texture value.
-        inline bool isCube() const { return (_type == ISFValType_Cube); }
+        bool isCube() const { return (_type == ISFValType_Cube); }
         //!    Returns true if the receiver is an image value.
-        inline bool isImage() const { return (_type == ISFValType_Image); }
+        bool isImage() const { return (_type == ISFValType_Image); }
         //!    Returns true if the receiver is an audio value (image).
-        inline bool isAudio() const { return (_type == ISFValType_Audio); }
+        bool isAudio() const { return (_type == ISFValType_Audio); }
         //!    Returns true if the receiver is an audio fft value (image).
-        inline bool isAudioFFT() const { return (_type == ISFValType_AudioFFT); }
+        bool isAudioFFT() const { return (_type == ISFValType_AudioFFT); }
         
         ci::ColorA getCableColor(bool over){
             Conf conf = Config::getConfig(type());
             return over ? conf.cableColorOver : conf.cableColorNormal;
         }
         
-        inline bool & sample() { return _imageSample; }
-        inline reza::ui::ButtonRef & getPlug() { return _uiPlug; }
-        inline void setPlug(reza::ui::ButtonRef view) { _uiPlug = view; }
-        inline reza::ui::TextureViewRef & getPreview() { return _uiPreview; }
-        inline void setPreview(reza::ui::TextureViewRef view) { _uiPreview = view; }
+        bool & sample() { return _imageSample; }
+        reza::ui::ButtonRef & getPlug() { return _uiPlug; }
+        void setPlug(reza::ui::ButtonRef view) { _uiPlug = view; }
+        reza::ui::TextureViewRef & getPreview() { return _uiPreview; }
+        void setPreview(reza::ui::TextureViewRef view) { _uiPreview = view; }
         
         
-        inline bool isInput(){ return _io == ISF::ISFAttr_IO::_IN; }
-        inline bool isOutput(){ return _io == ISF::ISFAttr_IO::_OUT; }
+        bool isInput(){ return _io == ISF::ISFAttr_IO::_IN; }
+        bool isOutput(){ return _io == ISF::ISFAttr_IO::_OUT; }
         void plugTo (ISFAttrRef other){
             if (_type==ISFValType_Float){
                 pluged.push_back(other);

@@ -46,7 +46,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\Ducktape;..\src\ISF;$(USERPROFILE)\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\usr\local\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(USERPROFILE)\source\repos\cinder_master\include;..\src\orage\common;..\src\orage\components;..\src\orage\connections;..\src\reza\ui;..\src\Blocks\UI\src;..\..\source\boost.1.55;..\src\Blocks\Ducktape;..\src\ISF;$(USERPROFILE)\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\usr\local\include;..\src\Blocks\Spout</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_HAS_AUTO_PTR_ETC=1;VVGL_SDK_WIN;WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -190,6 +190,7 @@
     <ClInclude Include="..\src\Blocks\UI\src\XYPad.h" />
     <ClInclude Include="..\src\ISF\exprtk\exprtk.hpp" />
     <ClInclude Include="..\src\ISF\ISFAttr.h" />
+    <ClInclude Include="..\src\ISF\ISFAttrWrapper.h" />
     <ClInclude Include="..\src\ISF\ISFBase.h" />
     <ClInclude Include="..\src\ISF\ISFConstants.h" />
     <ClInclude Include="..\src\ISF\ISFDoc.h" />

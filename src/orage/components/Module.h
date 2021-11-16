@@ -41,6 +41,9 @@ namespace ORAGE {
             double time;
             float dTime;
             vec4 date;
+
+        protected :
+            virtual void UIReady() {}
         public :
             TYPES moduleType;
             OrageCanvasRef UI;
@@ -80,9 +83,13 @@ namespace ORAGE {
                             "putAtTop", shared_from_this()
                         });
                     }
+                    
+                    if (evt.is("ready")) {
+                        UIReady();
+                    }
                 });
             }
-            
+
             Module * addEventListenerOnParameters(EvtSlot slot) {
                 for(auto [key, parameter] : UI->getParameters()){
                     parameter->addEventListener(slot);

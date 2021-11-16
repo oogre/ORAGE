@@ -153,7 +153,7 @@ namespace ISF {
         }
         
         //!    Returns the value type.
-        inline ISFValType type() const { return _type; }
+        ISFValType type() const { return _type; }
         //!    Returns a double describing the value of this object.  Safe to call, even if the value type shouldn't be represented by a double.
         double getDoubleVal() const {
             switch (_type)    {
@@ -199,51 +199,51 @@ namespace ISF {
             }
         }
         //!    Returns a null if the receiver isn't a Point2D-type object, otherwise it returns a pointer to the two-element array containing the point values.  This pointer is only valid for the lifetime of the receiver.
-        inline double * getDoubleValPtr() {
+        double * getDoubleValPtr() {
             if (_type!=ISFValType_Float)
                 return nullptr;
             return &(_val.floatVal);
         }
-        inline void setDoubleVal(double val) {
+        void setDoubleVal(double val) {
             if (_type==ISFValType_Float)
                 _val.floatVal = val;
         }
         //!    Returns a null if the receiver isn't a Point2D-type object, otherwise it returns a pointer to the two-element array containing the point values.  This pointer is only valid for the lifetime of the receiver.
-        inline double * getPointValPtr() {
+        double * getPointValPtr() {
             if (_type!=ISFValType_Point2D)
                 return nullptr;
             return &(_val.pointVal[0]);
         }
         //!    Returns 0. if the receiver value type isn't Point2D or the passed index is out of bounds, otherwise it returns the point value at the passed index.
-        inline double getPointValByIndex(const int & inIndex) {
+        double getPointValByIndex(const int & inIndex) {
             if (_type!=ISFValType_Point2D || inIndex<0 || inIndex>1)
                 return 0.;
             return _val.pointVal[inIndex];
         }
         //!    Does nothing if the receiver's value type isn't Point2D or the passed index is out of bounds, otherwise it sets the value at the passed index.
-        inline void setPointValByIndex(const int & inIndex, const double & inVal) {
+        void setPointValByIndex(const int & inIndex, const double & inVal) {
             if (_type==ISFValType_Point2D && inIndex>=0 && inIndex<=1)
                 _val.pointVal[inIndex]=inVal;
         }
         
-        inline void putValue(const ISFVal inVal) {
+        void putValue(const ISFVal inVal) {
             _type = inVal._type;
             _val = inVal._val;
         }
         //!    Returns a null if the receiver isn't a color-type object, otherwise it returns a pointer to the four-element array containing the color values.  This pointer is only valid for the lifetime of the receiver.
-        inline double * getColorValPtr() {
+        double * getColorValPtr() {
             if (_type!=ISFValType_Color)
                 return nullptr;
             return &(_val.colorVal[0]);
         }
         //!    Does nothing if the receiver's value type isn't color or the passed index is out of bounds, otherwise it returns the value of the color channel at the passed index.
-        inline double getColorValByChannel(const int & inIndex) {
+        double getColorValByChannel(const int & inIndex) {
             if (_type!=ISFValType_Color || inIndex<0 || inIndex>3)
                 return 0.;
             return _val.colorVal[inIndex];
         }
         //!    Does nothing if the receiver's value type isn't color or the passed index is out of bounds, otherwise it sets the value of the color channel at the passed index.
-        inline void setColorValByChannel(const int & inIndex, const double & inVal) {
+        void setColorValByChannel(const int & inIndex, const double & inVal) {
             if (_type==ISFValType_Color && inIndex>=0 && inIndex<=3)
                 _val.colorVal[inIndex]=inVal;
         }
@@ -305,27 +305,27 @@ namespace ISF {
         }
         
         //!    Returns true if the receiver is a null value.
-        inline bool isNullVal() const { return (_type == ISFValType_None); }
+        bool isNullVal() const { return (_type == ISFValType_None); }
         //!    Returns true if the receiver is an event value.
-        inline bool isEventVal() const { return (_type == ISFValType_Event); }
+        bool isEventVal() const { return (_type == ISFValType_Event); }
         //!    Returns true if the receiver is a bool value.
-        inline bool isBoolVal() const { return (_type == ISFValType_Bool); }
+        bool isBoolVal() const { return (_type == ISFValType_Bool); }
         //!    Returns true if the receiver is a long value.
-        inline bool isLongVal() const { return (_type == ISFValType_Long); }
+        bool isLongVal() const { return (_type == ISFValType_Long); }
         //!    Returns true if the receiver is a float value.
-        inline bool isFloatVal() const { return (_type == ISFValType_Float); }
+        bool isFloatVal() const { return (_type == ISFValType_Float); }
         //!    Returns true if the receiver is a point2D value.
-        inline bool isPoint2DVal() const { return (_type == ISFValType_Point2D); }
+        bool isPoint2DVal() const { return (_type == ISFValType_Point2D); }
         //!    Returns true if the receiver is a color value.
-        inline bool isColorVal() const { return (_type == ISFValType_Color); }
+        bool isColorVal() const { return (_type == ISFValType_Color); }
         //!    Returns true if the receiver is a cube texture value.
-        inline bool isCubeVal() const { return (_type == ISFValType_Cube); }
+        bool isCubeVal() const { return (_type == ISFValType_Cube); }
         //!    Returns true if the receiver is an image value.
-        inline bool isImageVal() const { return (_type == ISFValType_Image); }
+        bool isImageVal() const { return (_type == ISFValType_Image); }
         //!    Returns true if the receiver is an audio value (image).
-        inline bool isAudioVal() const { return (_type == ISFValType_Audio); }
+        bool isAudioVal() const { return (_type == ISFValType_Audio); }
         //!    Returns true if the receiver is an audio fft value (image).
-        inline bool isAudioFFTVal() const { return (_type == ISFValType_AudioFFT); }
+        bool isAudioFFTVal() const { return (_type == ISFValType_AudioFFT); }
         
     };//ISFVal
     

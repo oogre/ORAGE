@@ -19,6 +19,11 @@ public:
         settings->setTitle("ORAGE - VISUAL MODULAR SYNTHESIS");
     }
     void setup() override {
+        #if defined(CINDER_MSW)
+        AllocConsole();
+        freopen("CONOUT$", "w", stdout);
+        freopen("CONOUT$", "w", stderr);
+        #endif
         mMainWinCtx = Context::getCurrent();
         modules = ModuleManager::create();
         menu = OrageMenu::create();

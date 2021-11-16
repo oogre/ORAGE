@@ -80,6 +80,9 @@ namespace reza {
                 Rectf refRect = getBounds( true );
                 closeBtn->setOrigin(refOrigin + vec2(refRect.getWidth() - 50, 2.5));
                 addSubView(closeBtn);
+                EvtCanvasHandler::eventTrigger({
+                    "ready", dynamic_pointer_cast<OrageCanvas>(shared_from_this())
+                });
             }
             
             
@@ -139,7 +142,6 @@ namespace reza {
                 ParameterTextureRef param = ParameterTexture::create(attr);
                 int w = 150;
                 float h = w/(16.0/9);
-                cout<<vec2( w, h )<<endl;
                 
                 param->textureViewRef->setSize( vec2( w, h ) );
                 addSubViewDown(param->textureViewRef);
