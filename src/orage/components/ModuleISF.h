@@ -32,10 +32,11 @@ namespace ORAGE {
         
         class ModuleISF : public Module {
             typedef shared_ptr<ModuleISF> ModuleISFRef;
-            bool sizeChanged;
+            bool sizeChanged = false;
             bool antiAliazing = true;
             bool share = false;
             bool record = false;
+            bool more = false;
             
             SyphonSpoutServerRef shareRef;
             GlslProgRef mShader;
@@ -58,25 +59,6 @@ namespace ORAGE {
                     ISF::GLVersion v = GLVersion_4;
                     doc->generateShaderSource(&outFrag, &outVert, v);
                     mShader = gl::GlslProg::create(gl::GlslProg::Format().vertex(outVert).fragment(outFrag));
-
-                    ISFVal WIDTHmin(ISFValType::ISFValType_Float, 1.0f);
-                    ISFVal WIDTHmax(ISFValType::ISFValType_Float, 1920.0);
-                    ISFVal WIDTHval(ISFValType::ISFValType_Float, (double)defSize.x);
-                    doc->attrWrapper()->addAttr(ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, WIDTHmin, WIDTHmax, WIDTHval));
-
-
-                    ISFVal HEIGHTmin(ISFValType::ISFValType_Float, 1.0);
-                    ISFVal HEIGHTmax(ISFValType::ISFValType_Float, 1080.0);
-                    ISFVal HEIGHTval(ISFValType::ISFValType_Float, (double)defSize.y);
-                    doc->attrWrapper()->addAttr(ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, HEIGHTmin, HEIGHTmax, HEIGHTval));
-
-                    auto sizeChangeCB = [&](Evt evt) {
-                        if (evt.is("change")) {
-                            sizeChanged = true;
-                        }
-                    };
-                    doc->attrWrapper()->get("WIDTH")->addEventListener(sizeChangeCB);
-                    doc->attrWrapper()->get("HEIGHT")->addEventListener(sizeChangeCB);
 
                     _attributes->concat(doc->attrWrapper());
 
@@ -101,9 +83,22 @@ namespace ORAGE {
         protected:
             virtual void UIReady() override 
             {
-                cout << "UIREady" << endl;
-                /*
                 Module::UIReady();
+                
+                auto sizeChangeCB = [&](Evt evt) {
+                    if (evt.is("change")) {
+                        sizeChanged = true;
+                    }
+                };
+                auto displayMorePannel = [&](bool display){
+                    UI->getSubView("New Window")->setVisible(display);
+                    UI->getParameter("WIDTH")->setVisible(display);
+                    UI->getParameter("HEIGHT")->setVisible(display);
+                    UI->getSubView("Share")->setVisible(display);
+                    UI->getSubView("AntiAliazing")->setVisible(display);
+                    UI->autoSizeToFitSubviews();
+                };
+                
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
 
                 vec2 inputPosRef = vec2(0);
@@ -125,21 +120,14 @@ namespace ORAGE {
                 }
 
                 for (auto& inAttr : _attributes->inputs()) {
-                    if (inAttr->type() == ISFValType::ISFValType_Float) {
+                    if (inAttr->hasUI() && inAttr->isFloat()) {
                         UI->addParameter(inAttr);
                     }
                 }
 
                 Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
-                UI->addToggle("MORE", false, format)
-                    ->setCallback([&](bool value) {
-                    UI->getSubView("New Window")->setVisible(value);
-                    UI->getParameter("WIDTH")->setVisible(value);
-                    UI->getParameter("HEIGHT")->setVisible(value);
-                    UI->getSubView("Share")->setVisible(value);
-                    UI->getSubView("AntiAliazing")->setVisible(value);
-                    UI->autoSizeToFitSubviews();
-                        });
+                UI->addToggle("MORE", &more, format)
+                    ->setCallback(displayMorePannel);
 
                 UI->addButton("New Window", false, format)
                     ->setCallback([&](bool a) {
@@ -160,7 +148,7 @@ namespace ORAGE {
                         signalDrawHandlers.push_back(handler);
                         windows.push_back(window);
                     }
-                        });
+                });
 
                 UI->addToggle("Share", share, format)
                     ->setCallback([&](bool value) {
@@ -170,22 +158,36 @@ namespace ORAGE {
                     else {
                         shareRef->disable();
                     }
-                        });
+                });
 
                 UI->addToggle("AntiAliazing", antiAliazing, format)
                     ->setCallback([&](bool value) {
-                    sizeChanged = true;
-                    antiAliazing = value;
-                        });
+                        sizeChanged = true;
+                        antiAliazing = value;
+                    });
 
-                UI->getParameter("WIDTH")->setVisible(false);
-                UI->getParameter("HEIGHT")->setVisible(false);
-                UI->getSubView("New Window")->setVisible(false);
-                UI->getSubView("Share")->setVisible(false);
-                UI->getSubView("AntiAliazing")->setVisible(false);
-
-                UI->autoSizeToFitSubviews();
-                */
+                ISFVal WIDTHmin(ISFValType::ISFValType_Float, 1.0f);
+                ISFVal WIDTHmax(ISFValType::ISFValType_Float, 1920.0);
+                ISFVal WIDTHval(ISFValType::ISFValType_Float, (double)defSize.x);
+                ISFAttrRef width = _attributes->addAttr(ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, WIDTHmin, WIDTHmax, WIDTHval));
+                UI->addParameter(width);
+                width->addEventListener(sizeChangeCB);
+                
+                ISFVal HEIGHTmin(ISFValType::ISFValType_Float, 1.0);
+                ISFVal HEIGHTmax(ISFValType::ISFValType_Float, 1080.0);
+                ISFVal HEIGHTval(ISFValType::ISFValType_Float, (double)defSize.y);
+                ISFAttrRef height = _attributes->addAttr(ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, HEIGHTmin, HEIGHTmax, HEIGHTval));
+                UI->addParameter(height);
+                height->addEventListener(sizeChangeCB);
+                
+                displayMorePannel(false);
+                
+                UI->setMinifyCallback([&, displayMorePannel](bool isMinify){
+                    if(!isMinify){
+                        more = false;
+                        displayMorePannel(false);
+                    }
+                });
             }
         public :
             virtual ~ModuleISF(){
@@ -266,7 +268,10 @@ namespace ORAGE {
                             gl::drawSolidRect(Area(vec2(0), defSize));
                         }
                     }
-                    outAttr->getPreview()->setNeedsDisplay();
+                    auto preview = outAttr->getPreview();
+                    if(!!preview){
+                        preview->setNeedsDisplay();
+                    }
                 }
                 shareRef->draw();
                 Module::draw();

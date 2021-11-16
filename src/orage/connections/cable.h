@@ -116,9 +116,10 @@ namespace ORAGE {
                 }
 
                 vec2 pCenter = (pStart + pStop)*0.5f;
-
-                vec2 p1 = vec2(pCenter.x, pStart.y);
-                vec2 p2 = vec2(pCenter.x, pStop.y);
+                
+                float dX = 0.0;
+                vec2 p1 = vec2(pCenter.x - dX, pStart.y);
+                vec2 p2 = vec2(pCenter.x + dX, pStop.y);
                 path.clear();
                 path.moveTo( pStart );
                 path.curveTo( p1, p2, pStop );

@@ -68,12 +68,14 @@ namespace ORAGE {
                 ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
                 ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEval (ISFValType::ISFValType_Float, 0.0);
-                _attributes->addAttr(ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval));
+                ISFAttrRef time = _attributes->addAttr(ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval));
+                time->disableUI();
                 
                 ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                 ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                 ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                _attributes->addAttr(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
+                ISFAttrRef timedelta = _attributes->addAttr(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
+                timedelta->disableUI();
                 
                 UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
                 
@@ -86,6 +88,9 @@ namespace ORAGE {
                     
                     if (evt.is("ready")) {
                         UIReady();
+                        EvtModuleHandler::eventTrigger({
+                            "ready", shared_from_this()
+                        });
                     }
                 });
             }

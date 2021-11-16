@@ -2,4 +2,118 @@
 <Bucket
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../src/orage/common/ModuleManager.h"
+            timestampString = "658797890.739573"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "add(fs::path filePath, ci::vec2 pos, TYPES type)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ORAGE::COMMON::ModuleManager::add(ghc::filesystem::path, glm::vec&lt;2, float, (glm::qualifier)0&gt;, ORAGE::COMPONENTS::TYPES)::&apos;lambda&apos;(ORAGE::COMMON::Event&lt;ORAGE::COMPONENTS::Module&gt;)::operator()(ORAGE::COMMON::Event&lt;ORAGE::COMPONENTS::Module&gt;) const"
+                  moduleName = "ORAGE"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ogre/works/1202/ORAGE/src/orage/common/ModuleManager.h"
+                  timestampString = "658797097.549616"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "2558">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ORAGE::COMMON::ModuleManager::add(ghc::filesystem::path, glm::vec&lt;2, float, (glm::qualifier)0&gt;, ORAGE::COMPONENTS::TYPES)::&apos;lambda&apos;(ORAGE::COMMON::Event&lt;ORAGE::COMPONENTS::Module&gt;)::operator()(ORAGE::COMMON::Event&lt;ORAGE::COMPONENTS::Module&gt;) const::&apos;lambda&apos;(ORAGE::COMMON::Event&lt;ISF::ISFAttr&gt;)::operator()(ORAGE::COMMON::Event&lt;ISF::ISFAttr&gt;) const"
+                  moduleName = "ORAGE"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Applications/codeEditors/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string"
+                  timestampString = "658797097.553205"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1545"
+                  endingLineNumber = "1545"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../src/orage/components/Module.h"
+            timestampString = "658797890.739648"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "EvtModuleHandler()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../src/reza/ui/OrageCanvas.h"
+            timestampString = "658797890.739706"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "addClock(ISF::ISFAttrRef &amp; attr)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../src/reza/ui/OrageCanvas.h"
+            timestampString = "658797890.7397569"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "addParameter(ISF::ISFAttrRef &amp; attr)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../src/reza/ui/OrageCanvas.h"
+            timestampString = "658797890.739802"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "getParameters()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

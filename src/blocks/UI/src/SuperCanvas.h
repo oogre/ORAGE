@@ -31,7 +31,8 @@ class SuperCanvas : public Canvas {
 	void addSubViewToHeader( ViewRef view );
 
 	virtual void setVisible( bool visible ) override;
-
+    virtual void setMinifyCallback( const std::function<void( bool )> &callback ) { mMinifyCallbackFn = callback; };
+    
   protected:
 	void setup() override;
 	void minify();
@@ -55,6 +56,8 @@ class SuperCanvas : public Canvas {
 	float mLastHitTime;
 	bool mIsMinified;
 	bool mLabelHit;
+    
+    std::function<void( bool )> mMinifyCallbackFn;
 };
 }
 } //namespace reza::ui

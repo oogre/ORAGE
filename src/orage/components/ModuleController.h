@@ -25,7 +25,13 @@ namespace ORAGE {
             duk_context *ctx;
             DukValue jsObject;
             JsonTree conf;
-        public :
+        
+            void onError(DukErrorException & e){
+                cerr << "ERROR FROM : " << UI->getName() << endl;
+                cerr << e.what() << endl;
+                UI->shouldDestroy = true;
+            }
+            
             DukValue push_file_as_string(const char *filename) {
                 ifstream t(filename);
                 stringstream buffer;
@@ -49,7 +55,7 @@ namespace ORAGE {
                 moduleType = type;
                 
                 
-                UI->setColorBack(Config::getConfig(moduleType).bgColor);
+                
                 try{
                     ctx = duk_create_heap_default();
                     duk_push_c_function(ctx, native_print, DUK_VARARGS);
@@ -72,15 +78,15 @@ namespace ORAGE {
                                 }
                                 attr->setMagnetic(magnetic);
                             }
-                            UI->addParameter(attr);
+//                            UI->addParameter(attr);
                         }
                         if(input.getChild("TYPE").getValue() == "CLOCK"){
                             string name = input.getChild("NAME").getValue();
                             ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                             ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                            ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
-                            UI->addClock(attr);
+                            ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Clock, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
+//                            UI->addClock(attr);
                         }
                     }
                     for(auto output : conf.getChild("OUTPUTS").getChildren()){
@@ -90,29 +96,42 @@ namespace ORAGE {
                             ISFVal max (ISFValType::ISFValType_Float, output.getChild("MAX").getValue<double>());
                             ISFVal val (ISFValType::ISFValType_Float, output.getChild("DEFAULT").getValue<double>());
                             ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Float, min, max, val));
-                            UI->addParameter(attr);
+//                            UI->addParameter(attr);
                         }
                         if(output.getChild("TYPE").getValue() == "CLOCK"){
                             string name = output.getChild("NAME").getValue();
                             ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                             ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                            ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
-                            UI->addClock(attr);
+                            ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Clock, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
+//                            UI->addClock(attr);
                         }
                     }
-                    UI->autoSizeToFitSubviews();
+                    
                 }catch(DukErrorException & e){
                     onError(e);
                 }
             }
-            
-            void onError(DukErrorException & e){
-                cerr << "ERROR FROM : " << UI->getName() << endl;
-                cerr << e.what() << endl;
-                UI->shouldDestroy = true;
+        protected:
+            virtual void UIReady() override
+            {
+                Module::UIReady();
+                
+                UI->setColorBack(Config::getConfig(moduleType).bgColor);
+                for (auto& attr : _attributes->every()) {
+                    if (attr->hasUI()) {
+                        if(attr->isClock()){
+                            UI->addClock(attr);
+                        }
+                        else if(attr->isFloat()){
+                            UI->addParameter(attr);
+                        }
+                    }
+                }
+                UI->autoSizeToFitSubviews();
+                
             }
-            
+        public :
             virtual ~ModuleController(){
                 //duk_destroy_heap(ctx);
             }
@@ -125,7 +144,6 @@ namespace ORAGE {
                 try{
                     for(auto input : conf.getChild("INPUTS").getChildren()){
                         string name = input.getChild("NAME").getValue();
-                        string type = input.getChild("TYPE").getValue();
                         
                         dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, _attributes->get(name)->currentVal().getDoubleVal());
                     }

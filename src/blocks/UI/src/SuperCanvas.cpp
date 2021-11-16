@@ -137,6 +137,7 @@ void SuperCanvas::minify()
 		autoSizeToFitSubviews();
 	}
 	mIsMinified = true;
+    if(!!mMinifyCallbackFn)mMinifyCallbackFn(true);
 }
 
 void SuperCanvas::maximize()
@@ -148,6 +149,7 @@ void SuperCanvas::maximize()
 		autoSizeToFitSubviews();
 	}
 	mIsMinified = false;
+    if(!!mMinifyCallbackFn)mMinifyCallbackFn(false);
 }
 
 void SuperCanvas::save( const ci::fs::path &path )

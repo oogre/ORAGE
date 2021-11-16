@@ -80,6 +80,7 @@ namespace ISF {
         bool _imageSample = false;
         reza::ui::ButtonRef _uiPlug = nullptr;
         reza::ui::TextureViewRef _uiPreview = nullptr;
+        bool _uiEnabled = true;
     public :
         ISFAttr(const string & inName,
                 const string & inDesc,
@@ -158,8 +159,10 @@ namespace ISF {
                     ci::gl::clear(ci::ColorA(0, 0, 0, 1));
                     ci::gl::draw(_currentVal.imageBuffer(), ci::Rectf(ci::vec2(0), size));
                 }
-                getPreview()->setTexture(defaultVal().imageBuffer());
-                
+                auto preview = getPreview();
+                if(!!preview){
+                    preview->setTexture(defaultVal().imageBuffer());
+                }
                 for(auto other : pluged){
                     ci::gl::Texture2dRef temp = defaultVal().imageBuffer();
                     other->currentVal().setImageBuffer(temp);
@@ -189,6 +192,16 @@ namespace ISF {
             _magnetic = values;
         }
         
+        void disableUI(){
+            _uiEnabled = false;
+        }
+        void ensableUI(){
+            _uiEnabled = false;
+        }
+        bool hasUI(){
+            return _uiEnabled;
+        }
+        
         
         //    updates this attribute's eval variable with the double val of "_currentVal", and returns a ptr to the eval variable
         //!    Gets the attribute's min val
@@ -213,7 +226,8 @@ namespace ISF {
         //!    Returns true if the receiver is a long value.
         bool isLong() const { return (_type == ISFValType_Long); }
         //!    Returns true if the receiver is a float value.
-        bool isFloat() const { return (_type == ISFValType_Float); }
+        bool isFloat() const { return (_type == ISFValType_Float || _type == ISFValType_Clock); }
+        bool isClock() const { return (_type == ISFValType_Clock); }
         //!    Returns true if the receiver is a point2D value.
         bool isPoint2D() const { return (_type == ISFValType_Point2D); }
         //!    Returns true if the receiver is a color value.
@@ -242,7 +256,7 @@ namespace ISF {
         bool isInput(){ return _io == ISF::ISFAttr_IO::_IN; }
         bool isOutput(){ return _io == ISF::ISFAttr_IO::_OUT; }
         void plugTo (ISFAttrRef other){
-            if (_type==ISFValType_Float){
+            if (isFloat()){
                 pluged.push_back(other);
             }
             else if (_type==ISFValType_Image){
@@ -273,12 +287,12 @@ namespace ISF {
         }
         
         void update(){
-            if (_type!=ISFValType_Float)return;
+            if (!isFloat())return;
             setCurrent(_currentVal.getDoubleVal());
         }
         
         void setCurrent(double val, vector<ISFAttr *> acc = vector<ISFAttr *>() ){
-            if (_type!=ISFValType_Float)return;
+            if (!isFloat())return;
             double cVal = std::min(std::max(val, _minVal.getDoubleVal()), _maxVal.getDoubleVal());
             ISFVal closest;
             double dist = 10000.0;
@@ -312,7 +326,7 @@ namespace ISF {
         }
         
         void setMin(double val){
-            if (_type!=ISFValType_Float)return;
+            if (!isFloat())return;
             _minVal.setDoubleVal(val);
             if(_minVal.getDoubleVal() > _currentVal.getDoubleVal()){
                 _currentVal.setDoubleVal(val);
@@ -320,7 +334,7 @@ namespace ISF {
         }
         
         void setMax(double val){
-            if (_type!=ISFValType_Float)return;
+            if (!isFloat())return;
             _maxVal.setDoubleVal(val);
             if(_maxVal.getDoubleVal() < _currentVal.getDoubleVal()){
                 _currentVal.setDoubleVal(val);

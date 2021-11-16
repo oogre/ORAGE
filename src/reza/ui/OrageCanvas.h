@@ -36,7 +36,6 @@ namespace reza {
             
             virtual void enableUpdateCallback() override {/*DISABLE AUTO DRAWING AND UPDATE*/}
             ParameterWrapper parameters;
-            ci::signals::Connection resizeHandler;
             
             OrageCanvas(std::string name, const ci::app::WindowRef &window = ci::app::getWindow()) :
             SuperCanvas(name, window),
@@ -45,11 +44,6 @@ namespace reza {
                 disable();
                 enable();
                 if(!CLOSE_PIC)CLOSE_PIC = Texture::create(loadImage(loadAsset(getAssetPath("./textures/close.png"))));
-                
-                resizeHandler = window->getSignalResize().connect(0 , [&](){
-                    setSize(vec2(100, 25));
-                });
-                
             }
             
         public :
@@ -58,14 +52,10 @@ namespace reza {
             
             static OrageCanvasRef create( std::string name, const ci::app::WindowRef &window = ci::app::getWindow() ){
                 OrageCanvasRef ref = OrageCanvasRef( new OrageCanvas( name, window ) );
-//                ref->setup();
                 return ref;
             }
             
-            
-            virtual ~OrageCanvas(){
-                resizeHandler.disconnect();
-            }
+            virtual ~OrageCanvas(){}
             
             virtual void setup() override {
                 SuperCanvas::setup();

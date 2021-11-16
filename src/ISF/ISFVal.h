@@ -20,6 +20,7 @@ namespace ISF {
         ISFValType_Bool,    //!<    A boolean choice, sends 1 or 0 to the shader
         ISFValType_Long,    //!<    Sends a long
         ISFValType_Float,    //!<    Sends a float
+        ISFValType_Clock,    //!<    clone of a float
         ISFValType_Point2D,    //!<    Sends a 2 element vector
         ISFValType_Color,    //!<    Sends a 4 element vector representing an RGBA color
         ISFValType_Cube,    //!<    Sends a long- the texture number (like GL_TEXTURE0) of a cubemap texture to pass to the shader
@@ -40,6 +41,8 @@ namespace ISF {
                 return string("Long");
             case ISFValType_Float:
                 return string("Float");
+            case ISFValType_Clock:
+                return string("Clock");
             case ISFValType_Point2D:
                 return string("Point2D");
             case ISFValType_Color:
@@ -163,6 +166,7 @@ namespace ISF {
                 case ISFValType_Long:
                     return (double)_val.longVal;
                 case ISFValType_Float:
+                case ISFValType_Clock:
                     return (double)_val.floatVal;;
                 default :
                     return 0.0;
@@ -178,6 +182,7 @@ namespace ISF {
                 case ISFValType_Long:
                     return (_val.longVal>0) ? true : false;
                 case ISFValType_Float:
+                case ISFValType_Clock:
                     return (_val.floatVal>0.) ? true : false;
                 default :
                     return false;
@@ -193,6 +198,7 @@ namespace ISF {
                 case ISFValType_Long:
                     return _val.longVal;
                 case ISFValType_Float:
+                case ISFValType_Clock:
                     return (int32_t)_val.floatVal;
                 default :
                     return 0;
@@ -200,12 +206,12 @@ namespace ISF {
         }
         //!    Returns a null if the receiver isn't a Point2D-type object, otherwise it returns a pointer to the two-element array containing the point values.  This pointer is only valid for the lifetime of the receiver.
         double * getDoubleValPtr() {
-            if (_type!=ISFValType_Float)
+            if (!isFloatVal())
                 return nullptr;
             return &(_val.floatVal);
         }
         void setDoubleVal(double val) {
-            if (_type==ISFValType_Float)
+            if (isFloatVal())
                 _val.floatVal = val;
         }
         //!    Returns a null if the receiver isn't a Point2D-type object, otherwise it returns a pointer to the two-element array containing the point values.  This pointer is only valid for the lifetime of the receiver.
@@ -226,10 +232,6 @@ namespace ISF {
                 _val.pointVal[inIndex]=inVal;
         }
         
-        void putValue(const ISFVal inVal) {
-            _type = inVal._type;
-            _val = inVal._val;
-        }
         //!    Returns a null if the receiver isn't a color-type object, otherwise it returns a pointer to the four-element array containing the color values.  This pointer is only valid for the lifetime of the receiver.
         double * getColorValPtr() {
             if (_type!=ISFValType_Color)
@@ -283,7 +285,8 @@ namespace ISF {
                 case ISFValType_Long:    {
                     return FmtString("%d",_val.longVal);
                 }
-                case ISFValType_Float:    {
+                case ISFValType_Float:
+                case ISFValType_Clock:    {
                     return FmtString("%f",_val.floatVal);
                 }
                 case ISFValType_Point2D:    {
@@ -313,7 +316,8 @@ namespace ISF {
         //!    Returns true if the receiver is a long value.
         bool isLongVal() const { return (_type == ISFValType_Long); }
         //!    Returns true if the receiver is a float value.
-        bool isFloatVal() const { return (_type == ISFValType_Float); }
+        bool isFloatVal() const { return (_type == ISFValType_Float ||_type == ISFValType_Clock); }
+        bool isClockVal() const { return (_type == ISFValType_Clock); }
         //!    Returns true if the receiver is a point2D value.
         bool isPoint2DVal() const { return (_type == ISFValType_Point2D); }
         //!    Returns true if the receiver is a color value.
@@ -343,6 +347,9 @@ namespace ISF {
     }
     ISFVal ISFFloatVal(const double & n)    {
         return ISFVal(ISFValType_Float, n);
+    }
+    ISFVal ISFClockVal(const double & n)    {
+        return ISFVal(ISFValType_Clock, n);
     }
     ISFVal ISFPoint2DVal(const double & inX, const double & inY)    {
         return ISFVal(ISFValType_Point2D, inX, inY);
