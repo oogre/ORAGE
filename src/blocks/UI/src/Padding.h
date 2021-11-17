@@ -17,7 +17,7 @@ class PaddingT {
 	T mLeft;
 	T mRight;
     friend std::ostream & operator<<(std::ostream & os, const PaddingT & n) {
-        os << "Padding \n top : " << n.mTop << "\n right : " << n.mRight << "\n bottom : " << n.mBottom << "\n left : " << n.mLeft << "\n";
+        os << "Padding "<< std::endl<< "top : " << n.mTop << std::endl << "right : " << n.mRight << std::endl << "bottom : " << n.mBottom << std::endl << "left : " << n.mLeft << std::endl;
         return os;
     }
     

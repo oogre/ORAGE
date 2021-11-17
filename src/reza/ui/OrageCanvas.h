@@ -65,13 +65,16 @@ namespace reza {
                 closeBtn = OrageButton::create( "Destroy", &shouldDestroy, Button::Format()
                                                .label(false)
                                                .align(Alignment::RIGHT)
-                                               .size(15), CLOSE_PIC);
+                                               .size(11), CLOSE_PIC);
                 
-                closeBtn->setOrigin(vec2(getWidth() - closeBtn->getWidth() - getPadding().mRight - closeBtn->getPadding().mRight,  getPadding().mTop + closeBtn->getPadding().mTop));
+                closeBtn->setOrigin(vec2(
+                    getWidth() - closeBtn->getWidth() - getPadding().mRight - closeBtn->getPadding().mRight,  
+                    getPadding().mTop + closeBtn->getPadding().mTop
+                ));
                 addSubView(closeBtn);
                 
                 EvtCanvasHandler::eventTrigger({
-                    "ready2", dynamic_pointer_cast<OrageCanvas>(shared_from_this())
+                    "ready", dynamic_pointer_cast<OrageCanvas>(shared_from_this())
                 });
             }
             
@@ -88,15 +91,29 @@ namespace reza {
             ParameterClockRef addClock(ISF::ISFAttrRef & attr)
             {
                 ParameterClockRef param = ParameterClock::create(attr);
+
+                auto btn = param->buttonRef;
+                btn->setSize(vec2(15));
+                vec2 btnClutter = vec2(
+                    btn->getWidth() + btn->getPadding().mLeft + btn->getPadding().mRight,
+                    btn->getHeight() + btn->getPadding().mTop + btn->getPadding().mBottom
+                );
+
+                addSubViewDown(btn);
                 
-                /*===========*/
-                /*===========*/
-                param->buttonRef->setSize( vec2(15) );
-                if(attr->isInput()){
-                    addSubViewLeft(param->buttonRef);
-                }else{
-                    addSubViewRight(param->buttonRef);
+                if(attr->isOutput()){
+                    btn->setOrigin(vec2(
+                        getWidth() - btnClutter.x - getPadding().mRight,
+                        btn->getOrigin(false).y
+                    ));
+                } else {
+                    btn->setOrigin(vec2(
+                        btn->getOrigin(false).x + getPadding().mRight + getPadding().mRight,
+                        btn->getOrigin(false).y
+                    ));
                 }
+                setPlacer(btn);
+
                 parameters[attr->name()] = param;
                 return param;
             }
@@ -105,48 +122,76 @@ namespace reza {
             ParameterFloatRef addParameter(ISF::ISFAttrRef & attr)
             {
                 ParameterFloatRef param = ParameterFloat::create(attr);
-                int width = 150;
-                /*===========*/
-                /*===========*/
-                param->sliderRef->setSize( vec2( width-5, 15 ) );
-                addSubViewDown(param->sliderRef);
-                /*===========*/
-                /*===========*/
-                param->buttonRef->setSize( vec2(15) );
-                if(attr->isInput()){
-                    addSubViewLeft(param->buttonRef);
-                }else{
-                    addSubViewRight(param->buttonRef);
+
+                auto sld = param->sliderRef;
+                auto btn = param->buttonRef;
+                auto lmt = param->limiterRef;
+
+                btn->setSize(vec2(15));
+
+                vec2 btnClutter = vec2(
+                    btn->getWidth() + btn->getPadding().mLeft + btn->getPadding().mRight,
+                    btn->getHeight() + btn->getPadding().mTop + btn->getPadding().mBottom
+                );
+
+                sld->setSize( vec2(
+                    getWidth() - 2 * btnClutter.x - sld->getPadding().mLeft - sld->getPadding().mRight,
+                    btn->getHeight()
+                ));
+
+                lmt->setSize(vec2(
+                    sld->getWidth(),
+                    sld->getHeight() * 0.66
+                ));
+
+                addSubViewDown(sld);
+                sld->setOrigin(vec2(
+                    sld->getOrigin(false).x + btnClutter.x + sld->getPadding().mLeft,
+                    sld->getOrigin(false).y
+                ));
+                if (attr->isInput()) {
+                    addSubViewWestOf(btn, sld->getName());
+                } else {
+                    addSubViewEastOf(btn, sld->getName());
                 }
-                /*===========*/
-                /*===========*/
-                
-                param->limiterRef->setSize( vec2( width-5, 15 * 0.75) );
-                addSubViewSouthOf(param->limiterRef, param->sliderRef->getName());
-                
+                addSubViewSouthOf(lmt, sld->getName());
+                lmt->setOrigin(vec2(
+                    lmt->getOrigin(false).x,
+                    lmt->getOrigin(false).y - sld->getPadding().mBottom - lmt->getPadding().mTop
+                ));
+
+                setPlacer(lmt);
                 parameters[attr->name()] = param;
                 return param;
             }
             
             ParameterTextureRef addOutput(ISF::ISFAttrRef & attr, int count){
                 ParameterTextureRef param = ParameterTexture::create(attr);
-                int w = 150;
-                float h = w/(16.0/9);
-                
-                param->textureViewRef->setSize( vec2( w, h ) );
-                addSubViewDown(param->textureViewRef);
-                addSubViewToHeader(param->textureViewRef);
-            
-                vec2 refOrigin = param->textureViewRef->getOrigin( false );
-                Rectf refRect = param->textureViewRef->getBounds( true );
-                param->buttonRef->setSize( vec2(15) );
-                param->buttonRef->setOrigin(
-                    refOrigin + vec2(
-                        refRect.getWidth() + mPadding.mRight,
-                        count * (15 + mPadding.mTop + mPadding.mBottom)
-                    )
+
+                auto tex = param->textureViewRef;
+                auto btn = param->buttonRef;
+
+                btn->setSize(vec2(15));
+
+                vec2 btnClutter = vec2(
+                    btn->getWidth() + btn->getPadding().mLeft + btn->getPadding().mRight, 
+                    btn->getHeight() + btn->getPadding().mTop + btn->getPadding().mBottom
                 );
-                addSubView(param->buttonRef);
+
+                int w = getWidth() - getPadding().mLeft - getPadding().mRight - 2 * btnClutter.x - tex->getPadding().mLeft - tex->getPadding().mRight;
+                float RATIO = 16.0 / 9.0;
+                float h = w / RATIO;
+
+                tex->setSize(vec2(w, h));
+
+                addSubViewDown(tex);
+                tex->setOrigin(vec2(
+                    tex->getOrigin(false).x + btnClutter.x + tex->getPadding().mLeft,
+                    tex->getOrigin(false).y
+                ));
+                addSubViewToHeader(tex);
+                addSubViewEastOf(btn, tex->getName());
+                setPlacer(tex);
                 parameters[attr->name()] = param;
                 return param;
             }

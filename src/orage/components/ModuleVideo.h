@@ -9,6 +9,7 @@
 #define ModuleVideo_h
 
 #include "Module.h"
+#include "cinder/app/Platform.h"
 
 
 namespace ORAGE {
@@ -74,39 +75,90 @@ namespace ORAGE {
                     }
                 }
                 
-                UI->addButton("New Window", false, format)
-                    ->setCallback([&](bool a) {
-                        if (a) {
-                            RendererGl::Options option = RendererGl::Options().msaa(0);
-                            RendererGlRef rendererRef = RendererGl::create(option);
-                            Window::Format format = Window::Format().renderer(rendererRef).size(vec2(800, 600));
-                            ci::app::WindowRef window = App::get()->createWindow(format);
-                            window->setTitle(UI->getName());
-                            getWindowIndex(0)->getSignalClose().connect(0, [&, window]() {
-                                window->close();
-                            });
-                            auto handler = window->getSignalDraw().connect([&, window] {
-                                gl::setMatricesWindow(window->getSize());
-                                gl::clear(ColorA::white());
-                                gl::draw(_attributes->imageOutputs().back()->defaultVal().imageBuffer(), Rectf(vec2(0, 0), window->getSize()));
-                            });
-                            signalDrawHandlers.push_back(handler);
-                            windows.push_back(window);
-                        }
-                    });
-                
-                
-                UI->setMinifyCallback([&](bool isMinify){
-                    if(!isMinify){
-                        more = false;
-                        displayMorePannel(false);
+                auto nwBtn = UI->addButton("New Window", false, format);
+                nwBtn->setCallback([&](bool a) {
+                    if (a) {
+                        createWindow(0, false);
                     }
                 });
+
+                string refName = nwBtn->getName();
+                for (int i = 0; i < ci::app::Platform::get()->getDisplays().size(); i++) {
+                    ButtonRef btn = Button::create("FS "+to_string(i), false, format);
+                    btn->setCallback([&, i](bool a) {
+                        if (a) {
+                            createWindow(i, true);
+                        }
+                    });
+                    UI->addSubViewEastOf(btn, refName);
+                    refName = btn->getName();
+                }
+                UI->setPlacer(nwBtn);
+
+                UI->setMinifyCallback([&](bool isMinify){
+                    for (auto outAttr : _attributes->imageOutputs()) {
+                        TextureViewRef preview = outAttr->getPreview();
+                        ButtonRef plug = outAttr->getPlug();
+                        vec2 plugClutter = vec2(0);
+                        if (!!plug) {
+                            plugClutter = vec2(
+                                plug->getWidth() + plug->getPadding().mLeft + plug->getPadding().mRight,
+                                plug->getHeight() + plug->getPadding().mTop + plug->getPadding().mBottom
+                            );
+                        }
+                        if (!!preview) {
+                            if (isMinify) {
+                                int w = UI->getWidth() - UI->getPadding().mLeft - UI->getPadding().mRight - preview->getPadding().mRight + plugClutter.x;
+                                float RATIO = 16.0 / 9.0;
+                                float h = w / RATIO;
+                                preview->setSize(vec2(w, h));
+                                preview->setOrigin(vec2(
+                                    UI->getPadding().mLeft,
+                                    preview->getOrigin(false).y
+                                ));
+                            } else {
+                                int w = UI->getWidth() - UI->getPadding().mLeft - UI->getPadding().mRight - 2 * plugClutter.x;
+                                float RATIO = 16.0 / 9.0;
+                                float h = w / RATIO;
+                                preview->setSize(vec2(w, h));
+                                preview->setOrigin(vec2(
+                                    UI->getPadding().mLeft + plugClutter.x + preview->getPadding().mLeft,
+                                    preview->getOrigin(false).y
+                                ));
+                            }
+                        }  
+                    }
+                    more = false;
+                    displayMorePannel(false);
+                });
             }
-            
-            virtual void sizeChangeCB () {
+
+            virtual void createWindow(int diplayId=0, bool fullscreen = false) {
+                RendererGl::Options option = RendererGl::Options().msaa(0);
+                RendererGlRef rendererRef = RendererGl::create(option);
+
+                std::vector<DisplayRef> displays = ci::app::Platform::get()->getDisplays();
+                DisplayRef displayRef = ci::app::Platform::get()->getDisplays().at(diplayId % displays.size());
+                Window::Format format = Window::Format().renderer(rendererRef).display(displayRef).fullScreen(fullscreen).size(vec2(800, 600));
+                ci::app::WindowRef window = App::get()->createWindow(format);
+                window->setTitle(UI->getName());
+
+                getWindowIndex(0)->getSignalClose().connect(0, [&, window]() {
+                    window->close();
+                    });
+                auto handler = window->getSignalDraw().connect([&, window] {
+                    gl::setMatricesWindow(window->getSize());
+                    gl::clear(ColorA::white());
+                    gl::draw(_attributes->imageOutputs().back()->defaultVal().imageBuffer(), Rectf(vec2(0, 0), window->getSize()));
+                    });
+                signalDrawHandlers.push_back(handler);
+                windows.push_back(window);
+            }
+
+            virtual void sizeChangeCB() {
                 sizeChanged = true;
             }
+
             virtual void antiAliazingChange (bool value) {
                 antiAliazing = value;
                 sizeChangeCB();
@@ -114,6 +166,9 @@ namespace ORAGE {
             
             virtual void displayMorePannel (bool display) {
                 UI->getSubView("New Window")->setVisible(display);
+                for (int i = 0; i < ci::app::Platform::get()->getDisplays().size(); i++) {
+                    UI->getSubView("FS "+to_string(i))->setVisible(display);
+                }
                 UI->autoSizeToFitSubviews();
             };
             
@@ -123,8 +178,10 @@ namespace ORAGE {
                     sizeChanged = false;
                     auto widthAttr = _attributes->getInput("WIDTH");
                     auto heightAttr = _attributes->getInput("HEIGHT");
-                    if(!widthAttr || !heightAttr) return;
-                    vec2 size = vec2(widthAttr->currentVal().getDoubleVal(), heightAttr->currentVal().getDoubleVal());
+                    vec2 size = getWindowSize();
+                    if (!!widthAttr && !!heightAttr){
+                        size = vec2(widthAttr->currentVal().getDoubleVal(), heightAttr->currentVal().getDoubleVal());
+                    }
                     for(auto outAttr : _attributes->imageOutputs()){
                         outAttr->resize(size, antiAliazing);
                     }

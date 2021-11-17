@@ -17,6 +17,7 @@ class ORAGEApp : public App {
 public:
     static void prepare( Settings *settings ){
         settings->setTitle("ORAGE - VISUAL MODULAR SYNTHESIS");
+        settings->setWindowSize(1280, 720);
     }
     void setup() override {
         #if defined(CINDER_MSW)

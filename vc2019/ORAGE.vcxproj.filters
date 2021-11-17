@@ -388,6 +388,9 @@
     <ClInclude Include="..\src\ISF\ISFAttrWrapper.h">
       <Filter>Source Files\ISF</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\orage\components\ModuleVideo.h">
+      <Filter>Source Files\orage\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
