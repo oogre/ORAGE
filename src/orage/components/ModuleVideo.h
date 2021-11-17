@@ -182,6 +182,7 @@ namespace ORAGE {
                     if (!!widthAttr && !!heightAttr){
                         size = vec2(widthAttr->currentVal().getDoubleVal(), heightAttr->currentVal().getDoubleVal());
                     }
+                    
                     for(auto outAttr : _attributes->imageOutputs()){
                         outAttr->resize(size, antiAliazing);
                     }

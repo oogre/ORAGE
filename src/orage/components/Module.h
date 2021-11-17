@@ -95,6 +95,16 @@ namespace ORAGE {
                         EvtModuleHandler::eventTrigger({
                             "ready", shared_from_this()
                         });
+                        for (auto & inAttr : _attributes->imageInputs()) {
+                            if(inAttr->name() == "OLD"){
+                                UI->getParameter(inAttr->name())->eventTrigger({
+                                    "plug", inAttr
+                                });
+                                UI->getParameter(_attributes->imageOutputs().back()->name())->eventTrigger({
+                                    "plug", _attributes->imageOutputs().back()
+                                });
+                            }
+                        }
                     }
                 });
             }

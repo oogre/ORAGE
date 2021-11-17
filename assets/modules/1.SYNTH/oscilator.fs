@@ -10,28 +10,13 @@
 			"NAME" :	"tex0",
 			"TYPE" :	"image"
 	},
-	{
-			"NAME" :  "_tex0_sample",
-			"TYPE" :  "long",
-			"DEFAULT": 0
-	},
     {
 			"NAME" :	"tex1",
 			"TYPE" :	"image"
 	},
-	{
-			"NAME" :  "_tex1_sample",
-			"TYPE" :  "long",
-			"DEFAULT": 0
-	},
     {
 			"NAME" :	"tex2",
 			"TYPE" :	"image"
-	},
-	{
-			"NAME" :  "_tex2_sample",
-			"TYPE" :  "long",
-			"DEFAULT": 0
 	},
 	{
 			"NAME" :	"freq",
@@ -176,5 +161,5 @@ void main()
 	vec3 C = mix(vec3(0), IMG_NORM_PIXEL(tex2, isf_FragNormCoord.xy).rgb, vec3(_tex2_sample));
 	vec3 color = mix(C, B, A);
 
- 	out0 = vec4(color, 1);			
+ 	out0 = vec4(color, 1);
 }

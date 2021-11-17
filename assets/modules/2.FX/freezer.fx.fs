@@ -67,7 +67,7 @@ void main()
 {
   vec3 A = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
   vec3 B = IMG_NORM_PIXEL(OLD, isf_FragNormCoord.xy).rgb;
-  vec3 V = mix(vec3(1.0), IMG_NORM_PIXEL(tex2, isf_FragNormCoord.xy).rgb, _tex2_sample);
+  vec3 V = mix(vec3(1.0), IMG_NORM_PIXEL(tex2, isf_FragNormCoord.xy).rgb, vec3(_tex2_sample));
   vec3 m = vec3(_tex0_sample);
   vec3 C = mix(A, B, amount * smoothstep(black, white, vec3(1)));
   vec3 D = mix(A, B, amount * smoothstep(black, white, V));
