@@ -9,7 +9,6 @@
 #define Syphon_Spout_h
 
 #include "cinder/app/App.h"
-#include "ISFAttr.h"
 #if defined(CINDER_MAC)
 #include "cinderSyphon.h"
 #elif defined(CINDER_MSW)
@@ -92,16 +91,14 @@ namespace ORAGE {
         class SyphonSpoutServer {
             typedef shared_ptr<SyphonSpoutServer> SyphonSpoutServerRef;
             string name;
-            ISF::ISFAttrRef attr;
             bool isActive = false;
         #if defined(CINDER_MAC)
             syphonServer * server;
         #elif defined(CINDER_MSW)
             SPOUTLIBRARY * server;
         #endif
-            SyphonSpoutServer(string name, ISF::ISFAttrRef attr) :
-                name(name),
-                attr(attr)
+            SyphonSpoutServer(string name) :
+                name(name)
             {
             
             }
@@ -109,13 +106,11 @@ namespace ORAGE {
             virtual ~SyphonSpoutServer(){
                 disable();
             }
-            static SyphonSpoutServerRef create(string name, ISF::ISFAttrRef attr){
-                return SyphonSpoutServerRef(new SyphonSpoutServer(name, attr));
+            static SyphonSpoutServerRef create(string name){
+                return SyphonSpoutServerRef(new SyphonSpoutServer(name));
             }
             
-            void draw(){
-                Texture2dRef currentTex = attr->currentVal().imageBuffer();;
-                
+            void draw(Texture2dRef currentTex){
                 if(isActive){
                 #if defined(CINDER_MAC)
                     server->publishTexture(currentTex);

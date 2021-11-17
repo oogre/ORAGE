@@ -81,6 +81,7 @@ namespace ISF {
         reza::ui::ButtonRef _uiPlug = nullptr;
         reza::ui::TextureViewRef _uiPreview = nullptr;
         bool _uiEnabled = true;
+        bool _uiMoreArea = false;
     public :
         ISFAttr(const string & inName,
                 const string & inDesc,
@@ -192,15 +193,27 @@ namespace ISF {
             _magnetic = values;
         }
         
-        void disableUI(){
+        ISFAttrRef disableUI(){
             _uiEnabled = false;
+            return shared_from_this();
         }
-        void ensableUI(){
+        ISFAttrRef ensableUI(){
             _uiEnabled = false;
+            return shared_from_this();
         }
         bool hasUI(){
             return _uiEnabled;
         }
+        
+        ISFAttrRef putInMoreArea(){
+            _uiMoreArea = true;
+            return shared_from_this();
+        }
+        
+        bool isUIMoreArea(){
+            return _uiMoreArea;
+        }
+        
         
         
         //    updates this attribute's eval variable with the double val of "_currentVal", and returns a ptr to the eval variable

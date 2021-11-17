@@ -66,12 +66,12 @@ namespace reza {
                                                .label(false)
                                                .align(Alignment::RIGHT)
                                                .size(15), CLOSE_PIC);
-                vec2 refOrigin = getOrigin( false );
-                Rectf refRect = getBounds( true );
-                closeBtn->setOrigin(refOrigin + vec2(refRect.getWidth() - 50, 2.5));
+                
+                closeBtn->setOrigin(vec2(getWidth() - closeBtn->getWidth() - getPadding().mRight - closeBtn->getPadding().mRight,  getPadding().mTop + closeBtn->getPadding().mTop));
                 addSubView(closeBtn);
+                
                 EvtCanvasHandler::eventTrigger({
-                    "ready", dynamic_pointer_cast<OrageCanvas>(shared_from_this())
+                    "ready2", dynamic_pointer_cast<OrageCanvas>(shared_from_this())
                 });
             }
             

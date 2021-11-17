@@ -36,24 +36,21 @@ namespace ORAGE {
             static int ID;
             static map<string, int> IDS;
             int id;
-            
+            string _name;
             double oldTime;
             double time;
             float dTime;
             vec4 date;
 
         protected :
-            virtual void UIReady() {}
-        public :
-            TYPES moduleType;
-            OrageCanvasRef UI;
+            virtual void UIReady() {
+                UI->setColorBack(Config::getConfig(moduleType).bgColor);
+            }
+            
             Module(string name) :
-                EvtModuleHandler()
+            EvtModuleHandler()
             {
-                auto index = name.find_last_of(".");
-                if(index != std::string::npos){
-                    name.erase( name.begin() + index, name.end());
-                }
+                
                 moduleType = TYPES::NONE;
                 id = Module::ID++;
                 if(Module::IDS.count(name)==0){
@@ -61,6 +58,13 @@ namespace ORAGE {
                 }else{
                     Module::IDS[name]++;
                 }
+                
+                auto index = name.find_last_of(".");
+                if(index != std::string::npos){
+                    name.erase( name.begin() + index, name.end());
+                }
+                _name = name + "." + to_string(Module::IDS[name]);
+                
                 time = oldTime  = getElapsedSeconds();
                 _attributes = ISFAttrWrapper::create();
                 
@@ -77,7 +81,7 @@ namespace ORAGE {
                 ISFAttrRef timedelta = _attributes->addAttr(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
                 timedelta->disableUI();
                 
-                UI = OrageCanvas::create( name + "." + to_string(Module::IDS[name]) );
+                UI = OrageCanvas::create( _name );
                 
                 UI->addEventListener([&](EvtCanvas evt){
                     if(evt.is("mouseDown")){
@@ -94,6 +98,10 @@ namespace ORAGE {
                     }
                 });
             }
+        public :
+            TYPES moduleType;
+            OrageCanvasRef UI;
+            
 
             Module * addEventListenerOnParameters(EvtSlot slot) {
                 for(auto [key, parameter] : UI->getParameters()){
@@ -130,6 +138,8 @@ namespace ORAGE {
                 return UI->shouldDestroy;
             }
             ISFAttrWrapperRef & attributes(){ return _attributes; }
+            
+            string name(){ return _name; }
         protected :
             ISFAttrWrapperRef _attributes;
         };//Module {

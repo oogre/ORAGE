@@ -685,6 +685,7 @@ namespace ISF {
                         fsDeclarations.push_back(FmtString("uniform int\t\t%s;\n", nameCStr));
                         break;
                     case ISFValType_Float:
+                    case ISFValType_Clock:
                         vsDeclarations.push_back(FmtString("uniform float\t\t%s;\n", nameCStr));
                         fsDeclarations.push_back(FmtString("uniform float\t\t%s;\n", nameCStr));
                         break;

@@ -16,6 +16,11 @@ class PaddingT {
 	T mBottom;
 	T mLeft;
 	T mRight;
+    friend std::ostream & operator<<(std::ostream & os, const PaddingT & n) {
+        os << "Padding \n top : " << n.mTop << "\n right : " << n.mRight << "\n bottom : " << n.mBottom << "\n left : " << n.mLeft << "\n";
+        return os;
+    }
+    
 };
 typedef PaddingT<float> Paddingf;
 typedef PaddingT<int> Paddingi;

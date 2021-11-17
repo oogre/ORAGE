@@ -14,7 +14,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/wrapper.h"
 #include "Syphon_Spout.h"
-#include "Module.h"
+#include "ModuleVideo.h"
 
 
 
@@ -30,25 +30,22 @@ namespace ORAGE {
         using namespace ORAGE::COMMON;
 
         
-        class ModuleISF : public Module {
+        class ModuleISF : public ModuleVideo {
             typedef shared_ptr<ModuleISF> ModuleISFRef;
-            bool sizeChanged = false;
-            bool antiAliazing = true;
             bool share = false;
             bool record = false;
-            bool more = false;
             
-            SyphonSpoutServerRef shareRef;
+            
+            
             GlslProgRef mShader;
             mat4 mDefaultProjection;
             
             vec2 defSize;
-            vector<ci::signals::Connection> signalDrawHandlers;
-            vector<ci::app::WindowRef> windows;
-
+            
+            vector<SyphonSpoutServerRef> sharesRef;
 
             ModuleISF(string name, string path, TYPES type) :
-                Module(name)
+                ModuleVideo(name)
             {
                 try {
                     moduleType = type;
@@ -62,161 +59,95 @@ namespace ORAGE {
 
                     _attributes->concat(doc->attrWrapper());
 
-                    shareRef = SyphonSpoutServer::create(name, _attributes->imageOutputs().back());
-
-
+                    auto sizeEventHandler = [&](Evt evt){
+                        if (evt.is("change")) {
+                            sizeChangeCB();
+                        }
+                    };
+                    
+                    ISFVal WIDTHmin(ISFValType::ISFValType_Float, 1.0f);
+                    ISFVal WIDTHmax(ISFValType::ISFValType_Float, 1920.0);
+                    ISFVal WIDTHval(ISFValType::ISFValType_Float, (double)defSize.x);
+                    _attributes->addAttr(ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, WIDTHmin, WIDTHmax, WIDTHval))
+                        ->putInMoreArea()
+                        ->addEventListener(sizeEventHandler);
+                    
+                    ISFVal HEIGHTmin(ISFValType::ISFValType_Float, 1.0);
+                    ISFVal HEIGHTmax(ISFValType::ISFValType_Float, 1080.0);
+                    ISFVal HEIGHTval(ISFValType::ISFValType_Float, (double)defSize.y);
+                    _attributes->addAttr(ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, HEIGHTmin, HEIGHTmax, HEIGHTval))
+                        ->putInMoreArea()
+                        ->addEventListener(sizeEventHandler);
+                    
                     mDefaultProjection = gl::context()->getProjectionMatrixStack()[0];
                 }
                 catch (const ISFErr& e) {
-                    cerr << "ERROR FROM : " << name << endl;
+                    cerr << "ERROR FROM : " << Module::name() << endl;
                     for (auto& [key, value] : e.details) {
                         cerr << key << " : " << value << endl;
                     }
                     UI->shouldDestroy = true;
                 }
                 catch (const exception& e) {
-                    cerr << "ERROR FROM : " << name << endl;
+                    cerr << "ERROR FROM : " << Module::name() << endl;
                     cerr << e.what() << endl;
                     UI->shouldDestroy = true;
                 }
             }
         protected:
+            virtual void displayMorePannel (bool display) override {
+                UI->getParameter("WIDTH")->setVisible(display);
+                UI->getParameter("HEIGHT")->setVisible(display);
+                UI->getSubView("Share")->setVisible(display);
+                UI->getSubView("AntiAliazing")->setVisible(display);
+                ModuleVideo::displayMorePannel(display);
+            }
+            
+            virtual void antiAliazingChange (bool value) override {
+                ModuleVideo::antiAliazingChange(value);
+            }
+            
+            virtual void shareAction (bool value) {
+                if (value) {
+                    for(auto share : sharesRef){
+                        share->enable();
+                    }
+                }
+                else {
+                    for(auto share : sharesRef){
+                        share->disable();
+                    }
+                }
+            }
+            
             virtual void UIReady() override 
             {
-                Module::UIReady();
+                ModuleVideo::UIReady();
                 
-                auto sizeChangeCB = [&](Evt evt) {
-                    if (evt.is("change")) {
-                        sizeChanged = true;
-                    }
-                };
-                auto displayMorePannel = [&](bool display){
-                    UI->getSubView("New Window")->setVisible(display);
-                    UI->getParameter("WIDTH")->setVisible(display);
-                    UI->getParameter("HEIGHT")->setVisible(display);
-                    UI->getSubView("Share")->setVisible(display);
-                    UI->getSubView("AntiAliazing")->setVisible(display);
-                    UI->autoSizeToFitSubviews();
-                };
-                
-                UI->setColorBack(Config::getConfig(moduleType).bgColor);
-
-                vec2 inputPosRef = vec2(0);
-                bool flag = false;
-                int c = 0;
-                for (auto& outAttr : _attributes->imageOutputs()) {
-                    UI->addOutput(outAttr, c++);
-                    outAttr->resize(defSize, true);
-                    outAttr->getPreview()->setTexture(outAttr->defaultVal().imageBuffer());
-                    if (!flag) {
-                        inputPosRef = outAttr->getPreview()->getOrigin(false);
-                        flag = true;
-                    }
+                for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
+                    sharesRef.push_back(SyphonSpoutServer::create(Module::name() + "." + to_string(i)));
                 }
 
-                int i = 0;
-                for (auto& inAttr : _attributes->imageInputs()) {
-                    UI->addInputs(inAttr, i++, inputPosRef);
-                }
-
-                for (auto& inAttr : _attributes->inputs()) {
-                    if (inAttr->hasUI() && inAttr->isFloat()) {
-                        UI->addParameter(inAttr);
-                    }
-                }
-
-                Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
-                UI->addToggle("MORE", &more, format)
-                    ->setCallback(displayMorePannel);
-
-                UI->addButton("New Window", false, format)
-                    ->setCallback([&](bool a) {
-                    if (a) {
-                        RendererGl::Options option = RendererGl::Options().msaa(0);
-                        RendererGlRef rendererRef = RendererGl::create(option);
-                        Window::Format format = Window::Format().renderer(rendererRef).size(vec2(800, 600));
-                        ci::app::WindowRef window = App::get()->createWindow(format);
-                        window->setTitle(UI->getName());
-                        getWindowIndex(0)->getSignalClose().connect(0, [&, window]() {
-                            window->close();
-                            });
-                        auto handler = window->getSignalDraw().connect([&, window] {
-                            gl::setMatricesWindow(window->getSize());
-                            gl::clear(ColorA::white());
-                            gl::draw(_attributes->imageOutputs().back()->defaultVal().imageBuffer(), Rectf(vec2(0, 0), window->getSize()));
-                            });
-                        signalDrawHandlers.push_back(handler);
-                        windows.push_back(window);
-                    }
-                });
-
-                UI->addToggle("Share", share, format)
-                    ->setCallback([&](bool value) {
-                    if (value) {
-                        shareRef->enable();
-                    }
-                    else {
-                        shareRef->disable();
-                    }
-                });
-
-                UI->addToggle("AntiAliazing", antiAliazing, format)
-                    ->setCallback([&](bool value) {
-                        sizeChanged = true;
-                        antiAliazing = value;
-                    });
-
-                ISFVal WIDTHmin(ISFValType::ISFValType_Float, 1.0f);
-                ISFVal WIDTHmax(ISFValType::ISFValType_Float, 1920.0);
-                ISFVal WIDTHval(ISFValType::ISFValType_Float, (double)defSize.x);
-                ISFAttrRef width = _attributes->addAttr(ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, WIDTHmin, WIDTHmax, WIDTHval));
-                UI->addParameter(width);
-                width->addEventListener(sizeChangeCB);
+                UI->addToggle("Share", share, Button::Format().label(true).align(Alignment::CENTER))
+                    ->setCallback(boost::bind(&ModuleISF::shareAction, this, _1));
                 
-                ISFVal HEIGHTmin(ISFValType::ISFValType_Float, 1.0);
-                ISFVal HEIGHTmax(ISFValType::ISFValType_Float, 1080.0);
-                ISFVal HEIGHTval(ISFValType::ISFValType_Float, (double)defSize.y);
-                ISFAttrRef height = _attributes->addAttr(ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, HEIGHTmin, HEIGHTmax, HEIGHTval));
-                UI->addParameter(height);
-                height->addEventListener(sizeChangeCB);
+                UI->addToggle("AntiAliazing", true, Button::Format().label(true).align(Alignment::CENTER))
+                    ->setCallback(boost::bind(&ModuleISF::antiAliazingChange, this, _1));
+                
                 
                 displayMorePannel(false);
-                
-                UI->setMinifyCallback([&, displayMorePannel](bool isMinify){
-                    if(!isMinify){
-                        more = false;
-                        displayMorePannel(false);
-                    }
-                });
             }
         public :
             virtual ~ModuleISF(){
-                for(auto handler : signalDrawHandlers){
-                    handler.disconnect();
-                }
-                signalDrawHandlers.clear();
-                for(auto window : windows){
-                    try{
-                        window->close();
-                    }catch(cinder::app::ExcInvalidWindow e){}
-                }
-                windows.clear();
             }
             static ModuleISFRef create(string name, string path, TYPES type = TYPES::ISF){
                 return ModuleISFRef(new ModuleISF(name, path, type));
             }
             
             virtual void update() override {
-                if(sizeChanged){
-                    vec2 size = vec2(_attributes->getInput("WIDTH")->currentVal().getDoubleVal(), _attributes->getInput("HEIGHT")->currentVal().getDoubleVal());
-                    for(auto outAttr : _attributes->imageOutputs()){
-                        outAttr->resize(size, antiAliazing);
-                    }
-                    sizeChanged = false;
-                }
-                Module::update();
-            }
-            virtual void draw() override {
+                ModuleVideo::update();
+
+                int i = 0;
                 for(auto outAttr : _attributes->imageOutputs()){
                     FboRef currentFbo = outAttr->currentVal().frameBuffer();
                     FboRef oldFbo = outAttr->defaultVal().frameBuffer();
@@ -257,7 +188,7 @@ namespace ORAGE {
                                         mShader->uniform( name, i++ );
                                         mShader->uniform( pName+"_imgRect", vec4(0, 0, 1, 1));
                                         mShader->uniform( pName+"_imgSize", (vec2)inTex->getSize());
-                                        mShader->uniform( pName+"_flip",    !(inTex->isTopDown()));
+                                        mShader->uniform( pName+"_flip",    inTex->isTopDown());
                                         mShader->uniform( pName+"_sample",  input->sample());
                                     }break;
                                     default :
@@ -268,14 +199,12 @@ namespace ORAGE {
                             gl::drawSolidRect(Area(vec2(0), defSize));
                         }
                     }
-                    auto preview = outAttr->getPreview();
-                    if(!!preview){
-                        preview->setNeedsDisplay();
+                    if(sharesRef.size() > i){
+                        sharesRef.at(i++)->draw(currentTex);
                     }
                 }
-                shareRef->draw();
-                Module::draw();
             }
+            
         };//ModuleISF {
         typedef shared_ptr<ModuleISF> ModuleISFRef;
     }//namespace COMPONENTS {

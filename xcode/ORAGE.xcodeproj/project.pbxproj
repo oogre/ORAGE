@@ -112,6 +112,7 @@
 		8848043B273A8909003618E7 /* ModuleManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleManager.h; sourceTree = "<group>"; };
 		885EA28D272989A100F2E0EB /* ModuleController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleController.h; sourceTree = "<group>"; };
 		886CFFE527397D2D00062EFF /* ParameterClock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterClock.h; sourceTree = "<group>"; };
+		887373DB274536F00025E2F0 /* ModuleVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleVideo.h; sourceTree = "<group>"; };
 		88776C09273BCAC400DD62C0 /* ISFDoc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFDoc.h; sourceTree = "<group>"; };
 		88776C0A273BCB8300DD62C0 /* ISFAttr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFAttr.h; sourceTree = "<group>"; };
 		88776C0B273BCBE500DD62C0 /* ISFVal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFVal.h; sourceTree = "<group>"; };
@@ -545,10 +546,11 @@
 			isa = PBXGroup;
 			children = (
 				88F37DD527189A230095955A /* Module.h */,
-				88F37DD927189D0B0095955A /* ModuleISF.h */,
 				88F3E2F627285D6800B5731B /* ModuleTypes.h */,
 				885EA28D272989A100F2E0EB /* ModuleController.h */,
+				88F37DD927189D0B0095955A /* ModuleISF.h */,
 				880E03BC273EDDA10005A1AF /* ModuleSyphonSpout.h */,
+				887373DB274536F00025E2F0 /* ModuleVideo.h */,
 			);
 			path = components;
 			sourceTree = "<group>";

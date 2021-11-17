@@ -78,15 +78,13 @@ namespace ORAGE {
                                 }
                                 attr->setMagnetic(magnetic);
                             }
-//                            UI->addParameter(attr);
                         }
                         if(input.getChild("TYPE").getValue() == "CLOCK"){
                             string name = input.getChild("NAME").getValue();
                             ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
                             ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                            ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Clock, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
-//                            UI->addClock(attr);
+                            _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Clock, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
                         }
                     }
                     for(auto output : conf.getChild("OUTPUTS").getChildren()){
@@ -95,8 +93,7 @@ namespace ORAGE {
                             ISFVal min (ISFValType::ISFValType_Float, output.getChild("MIN").getValue<double>());
                             ISFVal max (ISFValType::ISFValType_Float, output.getChild("MAX").getValue<double>());
                             ISFVal val (ISFValType::ISFValType_Float, output.getChild("DEFAULT").getValue<double>());
-                            ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Float, min, max, val));
-//                            UI->addParameter(attr);
+                            _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Float, min, max, val));
                         }
                         if(output.getChild("TYPE").getValue() == "CLOCK"){
                             string name = output.getChild("NAME").getValue();
@@ -104,7 +101,6 @@ namespace ORAGE {
                             ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
                             ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
                             ISFAttrRef attr = _attributes->addAttr(ISFAttr::create(name, "", "", ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Clock, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
-//                            UI->addClock(attr);
                         }
                     }
                     
@@ -113,10 +109,8 @@ namespace ORAGE {
                 }
             }
         protected:
-            virtual void UIReady() override
-            {
+            virtual void UIReady() override {
                 Module::UIReady();
-                
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
                 for (auto& attr : _attributes->every()) {
                     if (attr->hasUI()) {
