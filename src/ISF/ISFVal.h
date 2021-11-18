@@ -75,7 +75,7 @@ namespace ISF {
         ISFValType  _type = ISFValType_None;
         ISFValUnion _val = { false };
         ci::gl::Texture2dRef _imageVal = nullptr;
-        ci::gl::FboRef _mFbo;
+//        ci::gl::FboRef _mFbo;
     public :
         //    Returns a null-type ISFVal
         ISFVal() :
@@ -136,22 +136,23 @@ namespace ISF {
         ISFVal(const ISFValType & inType, ci::ivec2 size, bool antiAliazing = false) :
         _type(inType)
         {
-            resize(size, antiAliazing);
+            ci::gl::Texture2d::Format tFormat = ci::gl::Texture2d::Format().loadTopDown();
+            tFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
+            tFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
+            
+            resize(size, tFormat);
         }
         
-        void resize(ci::ivec2 size = ci::ivec2(1, 1), bool antiAliazing = false){
+        void resize(ci::ivec2 size = ci::ivec2(1, 1), ci::gl::Texture2d::Format tFormat = ci::gl::Texture2d::Format()){
             if (_type==ISFValType_Image){
-                ci::gl::Texture2d::Format tFormat = ci::gl::Texture2d::Format().loadTopDown();
-                tFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
-                tFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
                 _imageVal = ci::gl::Texture2d::create(size.x, size.y, tFormat);
-                ci::gl::Fbo::Format fFormat = ci::gl::Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, _imageVal);
-                fFormat.setColorTextureFormat( tFormat );
-                _mFbo = ci::gl::Fbo::create( size.x, size.y, fFormat);
-                {
-                    ci::gl::ScopedFramebuffer fbScp( _mFbo );
-                    ci::gl::clear(ci::ColorA(0, 0, 0, 1));
-                }
+//                ci::gl::Fbo::Format fFormat = ci::gl::Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, _imageVal);
+//                fFormat.setColorTextureFormat( tFormat );
+//                _mFbo = ci::gl::Fbo::create( size.x, size.y, fFormat);
+//                {
+//                    ci::gl::ScopedFramebuffer fbScp( _mFbo );
+//                    ci::gl::clear(ci::ColorA(0, 0, 0, 1));
+//                }
             }
         }
         
@@ -257,11 +258,11 @@ namespace ISF {
         }
         
         //!    Returns null if the receiver's value type cannot be represented as an image, otherwise it returns the image buffer (almost certainly a GL texture) that is the receiver's value.
-        ci::gl::FboRef frameBuffer(){
-            if (_type==ISFValType_Image)
-                return _mFbo;
-            return nullptr;
-        }
+//        ci::gl::FboRef frameBuffer(){
+//            if (_type==ISFValType_Image)
+//                return _mFbo;
+//            return nullptr;
+//        }
         
         void setImageBuffer(ci::gl::Texture2dRef & n){
             if (_type==ISFValType_Image)

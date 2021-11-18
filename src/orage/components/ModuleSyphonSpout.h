@@ -28,8 +28,7 @@ namespace ORAGE {
             SyphonSpoutClientRef sscRef;
             bool more = false;
             
-            vec2 defSize;
-            mat4 mDefaultProjection;
+            
             vector<ci::signals::Connection> signalDrawHandlers;
             vector<ci::app::WindowRef> windows;
             
@@ -37,14 +36,11 @@ namespace ORAGE {
                 ModuleVideo(name)
             {
                 moduleType = type;
-                defSize = getWindowSize();
                 
                 sscRef = SyphonSpoutClient::create();
                 
-                ISFAttrRef outAttr = _attributes->addAttr(ISFAttr::create("output", "", "", ISF::ISFAttr_IO::_OUT, ISF::ISFValType::ISFValType_Image));
+                _attributes->addAttr(ISFAttr::create("output", "", "", ISF::ISFAttr_IO::_OUT, ISF::ISFValType::ISFValType_Image));
                 
-                
-                mDefaultProjection = ci::gl::context()->getProjectionMatrixStack()[0];
             }
             
         protected:
@@ -88,36 +84,33 @@ namespace ORAGE {
                 ModuleVideo::update();
                 
                 ISFAttrRef outAttr = _attributes->getOutput("output");
-                FboRef currentFbo = outAttr->currentVal().frameBuffer();
-                FboRef oldFbo = outAttr->defaultVal().frameBuffer();
-                Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
+                FboRef currentFbo = frameBuffer();
+//                FboRef oldFbo = outAttr->defaultVal().frameBuffer();
+//                Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
                 
-                gl::ScopedProjectionMatrix matrix(mDefaultProjection);
+                gl::ScopedProjectionMatrix matrix(projection());
                 
-                ScopedViewport scpVp( ivec2( 0 ), currentFbo->getSize() );
+//                ScopedViewport scpVp( ivec2( 0 ), currentFbo->getSize() );
+//                {
+//                    ScopedFramebuffer fbScp2( oldFbo );
+//                    gl::clear( ColorA(0, 0, 0, 1));
+//                    gl::draw( currentTex, Area(vec2(0), defSize()) );
+//                }
+                
+                
                 {
-                    ScopedFramebuffer fbScp2( oldFbo );
-                    gl::clear( ColorA(0, 0, 0, 1));
-                    gl::draw( currentTex, Area(vec2(0), defSize) );
-                }
-                
+                    ScopedFramebuffer fbScp( currentFbo );
+                    gl::clear(ColorA(0, 0, 0, 1));
+                    gl::color(Color::white());
                 #if defined(CINDER_MAC)
-                {
-                    ScopedFramebuffer fbScp( currentFbo );
-                    gl::clear(ColorA(0, 0, 0, 1));
-                    gl::color(Color::white());
-                    sscRef->draw(vec2(0), defSize);
-                }
+                    sscRef->draw(vec2(0), defSize());
+                #elif defined(CINDER_MSW)
+                    auto tex = sscRef->draw();
+                    if (!!tex) {
+                        gl::draw(tex, Area(vec2(0), defSize()));
+                    }
                 #endif
-                #if defined(CINDER_MSW)
-                auto tex = sscRef->draw();
-                if (!!tex) {
-                    ScopedFramebuffer fbScp( currentFbo );
-                    gl::clear(ColorA(0, 0, 0, 1));
-                    gl::color(Color::white());
-                    gl::draw(tex, Area(vec2(0), defSize));
                 }
-                #endif
             }
             
         };//ModuleSyphonSpout

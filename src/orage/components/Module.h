@@ -100,8 +100,9 @@ namespace ORAGE {
                                 UI->getParameter(inAttr->name())->eventTrigger({
                                     "plug", inAttr
                                 });
-                                UI->getParameter(_attributes->imageOutputs().back()->name())->eventTrigger({
-                                    "plug", _attributes->imageOutputs().back()
+                                auto firstOutAttr = _attributes->imageOutputs().begin();
+                                UI->getParameter((*firstOutAttr)->name())->eventTrigger({
+                                    "plug", (*firstOutAttr)
                                 });
                             }
                         }

@@ -38,9 +38,8 @@ namespace ORAGE {
             
             
             GlslProgRef mShader;
-            mat4 mDefaultProjection;
             
-            vec2 defSize;
+            
             
             vector<SyphonSpoutServerRef> sharesRef;
 
@@ -51,7 +50,6 @@ namespace ORAGE {
                     moduleType = type;
                     string outFrag;
                     string outVert;
-                    defSize = getWindowSize();
                     ISFDocRef doc = ISFDoc::create(path);
                     ISF::GLVersion v = GLVersion_4;
                     doc->generateShaderSource(&outFrag, &outVert, v);
@@ -67,19 +65,19 @@ namespace ORAGE {
                     
                     ISFVal WIDTHmin(ISFValType::ISFValType_Float, 1.0f);
                     ISFVal WIDTHmax(ISFValType::ISFValType_Float, 1920.0);
-                    ISFVal WIDTHval(ISFValType::ISFValType_Float, (double)defSize.x);
+                    ISFVal WIDTHval(ISFValType::ISFValType_Float, (double)defSize().x);
                     _attributes->addAttr(ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, WIDTHmin, WIDTHmax, WIDTHval))
                         ->putInMoreArea()
                         ->addEventListener(sizeEventHandler);
                     
                     ISFVal HEIGHTmin(ISFValType::ISFValType_Float, 1.0);
                     ISFVal HEIGHTmax(ISFValType::ISFValType_Float, 1080.0);
-                    ISFVal HEIGHTval(ISFValType::ISFValType_Float, (double)defSize.y);
+                    ISFVal HEIGHTval(ISFValType::ISFValType_Float, (double)defSize().y);
                     _attributes->addAttr(ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, HEIGHTmin, HEIGHTmax, HEIGHTval))
                         ->putInMoreArea()
                         ->addEventListener(sizeEventHandler);
                     
-                    mDefaultProjection = gl::context()->getProjectionMatrixStack()[0];
+                    
                 }
                 catch (const ISFErr& e) {
                     cerr << "ERROR FROM : " << Module::name() << endl;
@@ -147,62 +145,52 @@ namespace ORAGE {
             virtual void update() override {
                 ModuleVideo::update();
 
-                int i = 0;
-                for(auto outAttr : _attributes->imageOutputs()){
-                    FboRef currentFbo = outAttr->currentVal().frameBuffer();
-                    FboRef oldFbo = outAttr->defaultVal().frameBuffer();
-                    Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
+                FboRef currentFbo = frameBuffer();
+                if(!currentFbo)return;
+                {
+                    gl::ScopedProjectionMatrix matrix(projection());
                     {
-                        gl::ScopedProjectionMatrix matrix(mDefaultProjection);
-                        ScopedViewport scpVp( ivec2( 0 ), currentFbo->getSize() );
-                        {
-                            ScopedFramebuffer fbScp2( oldFbo );
-                            gl::clear( ColorA(0, 0, 0, 1));
-                            gl::draw(currentTex, Area(vec2(0), defSize));
-                        }
-                        {
-                            ScopedFramebuffer fbScp( currentFbo );
-                            gl::ScopedGlslProg glslProg( mShader );
-                            gl::clear( ColorA(0, 0, 0, 1));
-                            int i = 0 ;
-                            for(auto & input : _attributes->inputs()){
-                                auto inValue = input->currentVal();
-                                string name = input->name();
-                                switch(input->type()){
-                                    case ISFValType::ISFValType_Bool :
-                                        mShader->uniform(name, (int) inValue.getBoolVal());
-                                        break;
-                                    case ISFValType::ISFValType_Long :
-                                        mShader->uniform(name, (int) inValue.getLongVal());
-                                        break;
-                                    case ISFValType::ISFValType_Float :
-                                        mShader->uniform(name, (float) inValue.getDoubleVal());
-                                        break;
-                                    case ISFValType::ISFValType_Point2D :
-                                        mShader->uniform(name, vec2(inValue.getPointValByIndex(0), inValue.getPointValByIndex(1)));
-                                        break;
-                                    case ISFValType::ISFValType_Image : {
-                                        string pName = "_"+name;
-                                        Texture2dRef inTex = inValue.imageBuffer();
-                                        inTex->bind(i);
-                                        mShader->uniform( name, i++ );
-                                        mShader->uniform( pName+"_imgRect", vec4(0, 0, 1, 1));
-                                        mShader->uniform( pName+"_imgSize", (vec2)inTex->getSize());
-                                        mShader->uniform( pName+"_flip",    inTex->isTopDown());
-                                        mShader->uniform( pName+"_sample",  input->sample());
-                                    }break;
-                                    default :
-                                        break;
-                                }
+                        ScopedFramebuffer fbScp( currentFbo );
+                        gl::ScopedGlslProg glslProg( mShader );
+                        gl::clear( ColorA(0, 0, 0, 1));
+                        int i = 0 ;
+                        for(auto & input : _attributes->inputs()){
+                            auto inValue = input->currentVal();
+                            string name = input->name();
+                            switch(input->type()){
+                                case ISFValType::ISFValType_Bool :
+                                    mShader->uniform(name, (int) inValue.getBoolVal());
+                                    break;
+                                case ISFValType::ISFValType_Long :
+                                    mShader->uniform(name, (int) inValue.getLongVal());
+                                    break;
+                                case ISFValType::ISFValType_Float :
+                                    mShader->uniform(name, (float) inValue.getDoubleVal());
+                                    break;
+                                case ISFValType::ISFValType_Point2D :
+                                    mShader->uniform(name, vec2(inValue.getPointValByIndex(0), inValue.getPointValByIndex(1)));
+                                    break;
+                                case ISFValType::ISFValType_Image : {
+                                    string pName = "_"+name;
+                                    Texture2dRef inTex = inValue.imageBuffer();
+                                    inTex->bind(i);
+                                    mShader->uniform( name, i++ );
+                                    mShader->uniform( pName+"_imgRect", vec4(0, 0, 1, 1));
+                                    mShader->uniform( pName+"_imgSize", (vec2)inTex->getSize());
+                                    mShader->uniform( pName+"_flip",    !inTex->isTopDown());
+                                    mShader->uniform( pName+"_sample",  input->sample());
+                                }break;
+                                default :
+                                    break;
                             }
-                            gl::color(Color::white());
-                            gl::drawSolidRect(Area(vec2(0), defSize));
                         }
-                    }
-                    if(sharesRef.size() > i){
-                        sharesRef.at(i++)->draw(currentTex);
+                        gl::color(Color::white());
+                        gl::drawSolidRect(Area(vec2(0), defSize()));
                     }
                 }
+//                    if(sharesRef.size() > i){
+//                        sharesRef.at(i++)->draw(currentTex);
+//                    }
             }
             
         };//ModuleISF {

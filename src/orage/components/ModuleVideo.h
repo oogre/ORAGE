@@ -23,18 +23,22 @@ namespace ORAGE {
         
         class ModuleVideo : public Module{
             typedef shared_ptr<ModuleVideo> ModuleVideoRef;
-            bool sizeChanged = true;
+            bool sizeChanged = false;
             bool antiAliazing = true;
             bool more = false;
-            
+            vec2 _defSize;
+            mat4 _defaultProjection;
             vector<ci::signals::Connection> signalDrawHandlers;
             vector<ci::app::WindowRef> windows;
+            ci::gl::FboRef _mFbo;
+            ci::gl::FboRef _mOldFbo;
             
         protected :
             ModuleVideo(string name) :
                 Module(name)
             {
-                
+                _defSize = getWindowSize();
+                _defaultProjection = gl::context()->getProjectionMatrixStack()[0];
             }
             virtual void UIReady() override {
                 Module::UIReady();
@@ -131,6 +135,7 @@ namespace ORAGE {
                     more = false;
                     displayMorePannel(false);
                 });
+                sizeChanged = true;
             }
 
             virtual void createWindow(int diplayId=0, bool fullscreen = false) {
@@ -182,11 +187,48 @@ namespace ORAGE {
                     if (!!widthAttr && !!heightAttr){
                         size = vec2(widthAttr->currentVal().getDoubleVal(), heightAttr->currentVal().getDoubleVal());
                     }
-                    
+                    ci::gl::Fbo::Format fFormatCurrent = ci::gl::Fbo::Format();
+                    int i = 0 ;
                     for(auto outAttr : _attributes->imageOutputs()){
                         outAttr->resize(size, antiAliazing);
+                        fFormatCurrent.attachment(GL_COLOR_ATTACHMENT0+i, outAttr->currentVal().imageBuffer());
+                        i++;
+                    }
+                    _mFbo = ci::gl::Fbo::create( size.x, size.y, fFormatCurrent);
+                    {
+                        ci::gl::ScopedFramebuffer fbScp( _mFbo );
+                        ci::gl::clear(ci::ColorA(0, 1, 0, 1));
                     }
                 }
+                
+                if(!_mFbo)return;
+//                int i = 0 ;
+//                gl::ScopedProjectionMatrix matrix(projection());
+//                {
+                    for(auto outAttr : _attributes->imageOutputs()){
+                        
+                        auto id1 = outAttr->currentVal().imageBuffer()->getId();
+                        auto tg1 = outAttr->currentVal().imageBuffer()->getTarget();
+                        auto id2 = outAttr->defaultVal().imageBuffer()->getId();
+                        auto tg2 = outAttr->defaultVal().imageBuffer()->getTarget();
+                        auto wid = outAttr->currentVal().imageBuffer()->getWidth();
+                        auto hei = outAttr->currentVal().imageBuffer()->getHeight();
+                        
+                        glCopyImageSubData(id1, tg1, 0,0,0,0,
+                                           id2, tg2, 0,0,0,0,
+                                           wid, hei, 1);
+                        
+//                        Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
+////                        cout<<currentTex->getSize()<endl;;
+//                        ScopedViewport scpVp( ivec2( 0 ), oldFbo->getSize() );
+//                        {
+//                            ScopedFramebuffer fbScp2(oldFbo);
+//                            gl::clear( ColorA(1, 1, 0, 1));
+////                            gl::draw(currentTex, Area(vec2(0), defSize()));
+//                        }
+//                        i++;
+                    }
+//                }
             }
         public :
             virtual ~ModuleVideo(){
@@ -210,9 +252,26 @@ namespace ORAGE {
                     }
                 }
                 Module::draw();
+                int i = 0;
+                for(auto outAttr : _attributes->imageOutputs()){
+                    Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
+                    Texture2dRef defaultTex = outAttr->defaultVal().imageBuffer();;
+                    ci::gl::draw(currentTex, Area(vec2(i*200, 0), vec2(100)));
+                    ci::gl::draw(defaultTex, Area(vec2(i*200, 200), vec2(100)));
+                    
+                    i++;
+                }
+            }
+            ci::gl::FboRef frameBuffer(){
+                return _mFbo;
             }
             
-            
+            mat4 projection(){
+                return _defaultProjection;
+            }
+            vec2 defSize(){
+                return _defSize;
+            }
         };//ModuleVideo
         typedef shared_ptr<ModuleVideo> ModuleVideoRef;
     }//COMPONENTS

@@ -18,6 +18,10 @@
 			"NAME" :	"tex2",
 			"TYPE" :	"image"
 	},
+    {
+			"NAME" :	"OLD",
+			"TYPE" :	"image"
+	},
 	{
 			"NAME" :	"freq",
 			"TYPE" :	"float",
@@ -51,6 +55,13 @@
 			"TYPE" :	"float",
 			"DEFAULT" :	0.0,
 			"MIN" :	-1.0,
+			"MAX" :	1.0
+	},
+	{
+			"NAME" :	"trail",
+			"TYPE" :	"float",
+			"DEFAULT" :	1.0,
+			"MIN" :	0.0,
 			"MAX" :	1.0
 	},
 	{
@@ -99,6 +110,9 @@
   "OUTPUTS": [
   	{
 			"NAME" :	"out0",
+			"TYPE" :	"image"
+	},{
+			"NAME" :	"out1",
 			"TYPE" :	"image"
 	}
   ]
@@ -162,4 +176,7 @@ void main()
 	vec3 color = mix(C, B, A);
 
  	out0 = vec4(color, 1);
+
+ 	vec3 D = IMG_PIXEL(OLD, isf_FragNormCoord.xy).rgb;
+ 	out1 = vec4(1, 0, 0, 1);
 }
