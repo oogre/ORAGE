@@ -152,7 +152,7 @@ namespace ISF {
                 _defaultVal.resize(size, antiAliazing);
                 auto preview = getPreview();
                 if(!!preview){
-                    preview->setTexture(currentVal().imageBuffer());
+                    preview->setTexture(defaultVal().imageBuffer());
                 }
                 for(auto other : pluged){
                     ci::gl::Texture2dRef temp = defaultVal().imageBuffer();

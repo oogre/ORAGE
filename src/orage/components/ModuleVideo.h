@@ -193,10 +193,6 @@ namespace ORAGE {
                         i++;
                     }
                     _mFbo = ci::gl::Fbo::create( size.x, size.y, fFormatCurrent);
-                    {
-                        ci::gl::ScopedFramebuffer fbScp( _mFbo );
-                        ci::gl::clear(ci::ColorA(0, 1, 0, 1));
-                    }
                 }
                 
                 for(auto outAttr : _attributes->imageOutputs()){

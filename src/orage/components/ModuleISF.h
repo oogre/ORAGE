@@ -77,7 +77,9 @@ namespace ORAGE {
                         ->putInMoreArea()
                         ->addEventListener(sizeEventHandler);
                     
-                    
+                    for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
+                        sharesRef.push_back(SyphonSpoutServer::create(Module::name() + "." + to_string(i)));
+                    }
                 }
                 catch (const ISFErr& e) {
                     cerr << "ERROR FROM : " << Module::name() << endl;
@@ -122,10 +124,6 @@ namespace ORAGE {
             {
                 ModuleVideo::UIReady();
                 
-                for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
-                    sharesRef.push_back(SyphonSpoutServer::create(Module::name() + "." + to_string(i)));
-                }
-
                 UI->addToggle("Share", share, Button::Format().label(true).align(Alignment::CENTER))
                     ->setCallback(boost::bind(&ModuleISF::shareAction, this, _1));
                 
@@ -188,9 +186,9 @@ namespace ORAGE {
                         gl::drawSolidRect(Area(vec2(0), defSize()));
                     }
                 }
-//                    if(sharesRef.size() > i){
-//                        sharesRef.at(i++)->draw(currentTex);
-//                    }
+                for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
+                    sharesRef.at(i)->draw(_attributes->imageOutputs().at(i)->defaultVal().imageBuffer());
+                }
             }
             
         };//ModuleISF {

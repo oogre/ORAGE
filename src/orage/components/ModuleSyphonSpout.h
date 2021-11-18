@@ -83,33 +83,23 @@ namespace ORAGE {
             virtual void update() override {
                 ModuleVideo::update();
                 
-                ISFAttrRef outAttr = _attributes->getOutput("output");
                 FboRef currentFbo = frameBuffer();
-//                FboRef oldFbo = outAttr->defaultVal().frameBuffer();
-//                Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
-                
-                gl::ScopedProjectionMatrix matrix(projection());
-                
-//                ScopedViewport scpVp( ivec2( 0 ), currentFbo->getSize() );
-//                {
-//                    ScopedFramebuffer fbScp2( oldFbo );
-//                    gl::clear( ColorA(0, 0, 0, 1));
-//                    gl::draw( currentTex, Area(vec2(0), defSize()) );
-//                }
-                
-                
+                if(!currentFbo)return;
                 {
-                    ScopedFramebuffer fbScp( currentFbo );
-                    gl::clear(ColorA(0, 0, 0, 1));
-                    gl::color(Color::white());
-                #if defined(CINDER_MAC)
-                    sscRef->draw(vec2(0), defSize());
-                #elif defined(CINDER_MSW)
-                    auto tex = sscRef->draw();
-                    if (!!tex) {
-                        gl::draw(tex, Area(vec2(0), defSize()));
+                    gl::ScopedProjectionMatrix matrix(projection());
+                    {
+                        ScopedFramebuffer fbScp( currentFbo );
+                        gl::clear(ColorA(0, 0, 0, 1));
+                        gl::color(Color::white());
+                    #if defined(CINDER_MAC)
+                        sscRef->draw(vec2(0), defSize());
+                    #elif defined(CINDER_MSW)
+                        auto tex = sscRef->draw();
+                        if (!!tex) {
+                            gl::draw(tex, Area(vec2(0), defSize()));
+                        }
+                    #endif
                     }
-                #endif
                 }
             }
             
