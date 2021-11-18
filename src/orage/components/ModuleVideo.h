@@ -31,8 +31,6 @@ namespace ORAGE {
             vector<ci::signals::Connection> signalDrawHandlers;
             vector<ci::app::WindowRef> windows;
             ci::gl::FboRef _mFbo;
-            ci::gl::FboRef _mOldFbo;
-            
         protected :
             ModuleVideo(string name) :
                 Module(name)
@@ -201,34 +199,27 @@ namespace ORAGE {
                     }
                 }
                 
-                if(!_mFbo)return;
-//                int i = 0 ;
-//                gl::ScopedProjectionMatrix matrix(projection());
-//                {
-                    for(auto outAttr : _attributes->imageOutputs()){
-                        
-                        auto id1 = outAttr->currentVal().imageBuffer()->getId();
-                        auto tg1 = outAttr->currentVal().imageBuffer()->getTarget();
-                        auto id2 = outAttr->defaultVal().imageBuffer()->getId();
-                        auto tg2 = outAttr->defaultVal().imageBuffer()->getTarget();
-                        auto wid = outAttr->currentVal().imageBuffer()->getWidth();
-                        auto hei = outAttr->currentVal().imageBuffer()->getHeight();
-                        
-                        glCopyImageSubData(id1, tg1, 0,0,0,0,
-                                           id2, tg2, 0,0,0,0,
-                                           wid, hei, 1);
-                        
-//                        Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
-////                        cout<<currentTex->getSize()<endl;;
-//                        ScopedViewport scpVp( ivec2( 0 ), oldFbo->getSize() );
-//                        {
-//                            ScopedFramebuffer fbScp2(oldFbo);
-//                            gl::clear( ColorA(1, 1, 0, 1));
-////                            gl::draw(currentTex, Area(vec2(0), defSize()));
-//                        }
-//                        i++;
-                    }
-//                }
+                for(auto outAttr : _attributes->imageOutputs()){
+                    auto width = outAttr->currentVal().imageBuffer()->getWidth();
+                    auto height = outAttr->currentVal().imageBuffer()->getHeight();
+                #if defined(CINDER_MAC)
+                    auto fbo = ci::gl::Fbo::create(width, height);
+                    glBindFramebuffer(GL_FRAMEBUFFER, fbo->getId());
+                    glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                                           GL_TEXTURE_2D, outAttr->currentVal().imageBuffer()->getId(), 0);
+                    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1,
+                                           GL_TEXTURE_2D, outAttr->defaultVal().imageBuffer()->getId(), 0);
+                    glDrawBuffer(GL_COLOR_ATTACHMENT1);
+                    glBlitFramebuffer(
+                                      0, 0, width, height,
+                                      0, 0, width, height,
+                                      GL_COLOR_BUFFER_BIT, GL_NEAREST);
+                #elif defined(CINDER_MSW)
+                    glCopyImageSubData(outAttr->currentVal().imageBuffer()->getId(), outAttr->currentVal().imageBuffer()->getTarget(), 0,0,0,0,
+                                       outAttr->defaultVal().imageBuffer()->getId(), outAttr->defaultVal().imageBuffer()->getTarget(), 0,0,0,0,
+                                       width, height, 1);
+                #endif
+                }
             }
         public :
             virtual ~ModuleVideo(){
@@ -252,15 +243,6 @@ namespace ORAGE {
                     }
                 }
                 Module::draw();
-                int i = 0;
-                for(auto outAttr : _attributes->imageOutputs()){
-                    Texture2dRef currentTex = outAttr->currentVal().imageBuffer();;
-                    Texture2dRef defaultTex = outAttr->defaultVal().imageBuffer();;
-                    ci::gl::draw(currentTex, Area(vec2(i*200, 0), vec2(100)));
-                    ci::gl::draw(defaultTex, Area(vec2(i*200, 200), vec2(100)));
-                    
-                    i++;
-                }
             }
             ci::gl::FboRef frameBuffer(){
                 return _mFbo;

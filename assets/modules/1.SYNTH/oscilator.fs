@@ -178,5 +178,5 @@ void main()
  	out0 = vec4(color, 1);
 
  	vec3 D = IMG_PIXEL(OLD, isf_FragNormCoord.xy).rgb;
- 	out1 = vec4(1, 0, 0, 1);
+ 	out1 = vec4(D, 1);
 }

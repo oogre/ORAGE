@@ -136,23 +136,16 @@ namespace ISF {
         ISFVal(const ISFValType & inType, ci::ivec2 size, bool antiAliazing = false) :
         _type(inType)
         {
-            ci::gl::Texture2d::Format tFormat = ci::gl::Texture2d::Format().loadTopDown();
-            tFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
-            tFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
-            
-            resize(size, tFormat);
+            resize(size, antiAliazing);
         }
         
-        void resize(ci::ivec2 size = ci::ivec2(1, 1), ci::gl::Texture2d::Format tFormat = ci::gl::Texture2d::Format()){
+        void resize(ci::ivec2 size = ci::ivec2(1, 1), bool antiAliazing = false){
             if (_type==ISFValType_Image){
+                ci::gl::Texture2d::Format tFormat = ci::gl::Texture2d::Format().loadTopDown();
+                tFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
+                tFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
                 _imageVal = ci::gl::Texture2d::create(size.x, size.y, tFormat);
-//                ci::gl::Fbo::Format fFormat = ci::gl::Fbo::Format().attachment(GL_COLOR_ATTACHMENT0, _imageVal);
-//                fFormat.setColorTextureFormat( tFormat );
-//                _mFbo = ci::gl::Fbo::create( size.x, size.y, fFormat);
-//                {
-//                    ci::gl::ScopedFramebuffer fbScp( _mFbo );
-//                    ci::gl::clear(ci::ColorA(0, 0, 0, 1));
-//                }
+
             }
         }
         

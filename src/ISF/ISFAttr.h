@@ -148,33 +148,14 @@ namespace ISF {
         
         void resize(ci::ivec2 size = ci::ivec2(1, 1), bool antiAliazing = false){
             if (_type==ISFValType_Image){
-                
-                ci::gl::Texture2d::Format tFormat = ci::gl::Texture2d::Format().loadTopDown();
-                tFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
-                tFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
-                _currentVal.resize(size, tFormat);
-                ci::gl::Texture2d::Format format;
-                format.setInternalFormat(_currentVal.imageBuffer()->getInternalFormat() );
-                ci::gl::Texture2dRef storageTex = ci::gl::Texture2d::create(size.x, size.y, format);
-                _defaultVal.setImageBuffer(storageTex);
-                
-//                {
-//                    ci::gl::ScopedFramebuffer fbScp( _currentVal.frameBuffer() );
-//                    ci::gl::clear(ci::ColorA(0, 0, 0, 1));
-//                    ci::gl::draw(_defaultVal.imageBuffer(), ci::Rectf(ci::vec2(0), size));
-//                }
-                
-//                {
-//                    ci::gl::ScopedFramebuffer fbScp( _defaultVal.frameBuffer() );
-//                    ci::gl::clear(ci::ColorA(0, 0, 0, 1));
-//                    ci::gl::draw(_currentVal.imageBuffer(), ci::Rectf(ci::vec2(0), size));
-//                }
+                _currentVal.resize(size, antiAliazing);
+                _defaultVal.resize(size, antiAliazing);
                 auto preview = getPreview();
                 if(!!preview){
                     preview->setTexture(currentVal().imageBuffer());
                 }
                 for(auto other : pluged){
-                    ci::gl::Texture2dRef temp = currentVal().imageBuffer();
+                    ci::gl::Texture2dRef temp = defaultVal().imageBuffer();
                     other->currentVal().setImageBuffer(temp);
                 }
             }
@@ -283,7 +264,7 @@ namespace ISF {
             }
             else if (_type==ISFValType_Image){
                 if(isInput()){
-                    ci::gl::Texture2dRef temp = other->currentVal().imageBuffer();
+                    ci::gl::Texture2dRef temp = other->defaultVal().imageBuffer();
                     _currentVal.setImageBuffer(temp);
                     _imageSample = true;
                 }else{
