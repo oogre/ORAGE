@@ -658,14 +658,14 @@ namespace ISF {
                     break;
             }
             
-            vsDeclarations.push_back("uniform float\t\tTIME;\n");
-            fsDeclarations.push_back("uniform float\t\tTIME;\n");
-            vsDeclarations.push_back("uniform float\t\tTIMEDELTA;\n");
-            fsDeclarations.push_back("uniform float\t\tTIMEDELTA;\n");
-            vsDeclarations.push_back("uniform vec4\t\tDATE;\n");
-            fsDeclarations.push_back("uniform vec4\t\tDATE;\n");
-            vsDeclarations.push_back("uniform int\t\tFRAMEINDEX;\n");
-            fsDeclarations.push_back("uniform int\t\tFRAMEINDEX;\n");
+//            vsDeclarations.push_back("uniform float\t\tTIME;\n");
+//            fsDeclarations.push_back("uniform float\t\tTIME;\n");
+//            vsDeclarations.push_back("uniform float\t\tTIMEDELTA;\n");
+//            fsDeclarations.push_back("uniform float\t\tTIMEDELTA;\n");
+//            vsDeclarations.push_back("uniform vec4\t\tDATE;\n");
+//            fsDeclarations.push_back("uniform vec4\t\tDATE;\n");
+//            vsDeclarations.push_back("uniform int\t\tFRAMEINDEX;\n");
+//            fsDeclarations.push_back("uniform int\t\tFRAMEINDEX;\n");
             
             
             //    this block will be used to add declarations for a provided ISFAttr

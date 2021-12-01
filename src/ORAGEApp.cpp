@@ -5,6 +5,9 @@
 #include "OrageMenu.h"
 #include "ModuleManager.h"
 
+#include "OrageFileTools.h"
+
+
 using namespace ci;
 using namespace ci::gl;
 using namespace ci::app;
@@ -31,25 +34,37 @@ public:
         freopen("CONOUT$", "w", stdout);
         freopen("CONOUT$", "w", stderr);
     #endif
-        
         settings->setTitle("ORAGE - VISUAL MODULAR SYNTHESIS");
-        
-        auto args = settings->getCommandLineArgs();
-        for(auto arg : args){
-            std::cout << arg << std::endl;
-        }
 //        settings->setWindowSize(1280, 720);
     }
+    
+    virtual void fileOpen(std::vector<std::string>fileNames) override {
+        for(std::string fileName : fileNames){
+            std::cout<<fileName<<std::endl;
+            std::map<std::string, std::string> files = unzip_directory(fileName);
+            fs::path tmpPath = fs::path(fileName+".tmp");
+            rmDir(tmpPath);
+            fs::create_directories(tmpPath);
+            for(auto [name, file] : files){
+                fs::path filePath = tmpPath / name;
+                saveFile(filePath, file);
+                string _name = "";
+                string _ext = "";
+                ORAGE::COMPONENTS::TYPES currentType = pathToComponentType(filePath, &_name, &_ext);
+                if(name == "cables.json"){
+                    
+                }else{
+                    modules->add(filePath, vec2(0), currentType);
+                }
+            }
+            rmDir(tmpPath);
+        }
+    }
+    
     void setup() override {
-       
-        
-        
         if(!fs::exists( orageFilePath )){
             fs::create_directories(orageFilePath);
         }
-        
-        
-        
         mMainWinCtx = Context::getCurrent();
         modules = ModuleManager::create();
         menu = OrageMenu::create();

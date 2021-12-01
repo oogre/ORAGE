@@ -47,12 +47,15 @@ namespace ORAGE {
                     string outFrag;
                     string outVert;
                     doc = ISFDoc::create(path);
+                    _attributes->concat(doc->attrWrapper());
                     
                     ISF::GLVersion v = GLVersion_4;
                     doc->generateShaderSource(&outFrag, &outVert, v);
-                    mShader = gl::GlslProg::create(gl::GlslProg::Format().vertex(outVert).fragment(outFrag));
+                    
+                    gl::GlslProg::Format glsl = gl::GlslProg::Format().vertex(outVert).fragment(outFrag);
+                    mShader = gl::GlslProg::create(glsl);
 
-                    _attributes->concat(doc->attrWrapper());
+                    
 
                     auto sizeEventHandler = [&](Evt evt){
                         if (evt.is("change")) {
@@ -120,7 +123,13 @@ namespace ORAGE {
             virtual void UIReady() override 
             {
                 ModuleVideo::UIReady();
-                
+                ci::JsonTree tree = ci::JsonTree(*(doc->jsonString()));
+                if(tree.hasChild("UI.position.x") && tree.hasChild("UI.position.y")){
+                    UI->setOrigin(vec2(
+                           tree.getChild("UI.position.x").getValue<float>(),
+                           tree.getChild("UI.position.y").getValue<float>()
+                    ));
+                }
                 UI->addToggle("Share", share, Button::Format().label(true).align(Alignment::CENTER))
                     ->setCallback(boost::bind(&ModuleISF::shareAction, this, _1));
                 

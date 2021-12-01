@@ -32,29 +32,29 @@ namespace ISF {
     string StringFromISFValType(const ISFValType & n){
         switch (n)    {
             case ISFValType_None:
-                return string("Null");
+                return string("null");
             case ISFValType_Event:
-                return string("Event");
+                return string("event");
             case ISFValType_Bool:
-                return string("Bool");
+                return string("bool");
             case ISFValType_Long:
-                return string("Long");
+                return string("long");
             case ISFValType_Float:
-                return string("Float");
+                return string("float");
             case ISFValType_Clock:
-                return string("Clock");
+                return string("clock");
             case ISFValType_Point2D:
-                return string("Point2D");
+                return string("point2D");
             case ISFValType_Color:
-                return string("Color");
+                return string("color");
             case ISFValType_Cube:
-                return string("Cube");
+                return string("cube");
             case ISFValType_Image:
-                return string("Image");
+                return string("image");
             case ISFValType_Audio:
-                return string("Audio");
+                return string("audio");
             case ISFValType_AudioFFT:
-                return string("AudioFFT");
+                return string("audioFFT");
         }
         return string("?");
     }

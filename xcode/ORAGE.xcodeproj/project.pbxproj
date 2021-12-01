@@ -193,8 +193,9 @@
 		883D2EC72756DF4E0080C8A7 /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libzip.dylib; path = ../../libzip.dylib; sourceTree = "<group>"; };
 		883D2ECA2756E10E0080C8A7 /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzip.dylib; sourceTree = "<group>"; };
 		883D2F0D275701690080C8A7 /* ORAGE copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ORAGE copy-Info.plist"; path = "/Users/ogre/works/1202/ORAGE/xcode/ORAGE copy-Info.plist"; sourceTree = "<absolute>"; };
-		883D2F4F275705EA0080C8A7 /* ORAGE copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ORAGE copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		883D2F4F275705EA0080C8A7 /* ORAGE copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "ORAGE copy.app"; path = "ORAGE Release.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		883D2F50275705EA0080C8A7 /* ORAGE copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ORAGE copy2-Info.plist"; path = "/Users/ogre/works/1202/ORAGE/xcode/ORAGE copy2-Info.plist"; sourceTree = "<absolute>"; };
+		883D2F512757D8A00080C8A7 /* OrageFileTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageFileTools.h; sourceTree = "<group>"; };
 		883F880A2725944C0074272E /* OrageMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenu.h; sourceTree = "<group>"; };
 		883F880B27259F490074272E /* OrageMenuItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenuItem.h; sourceTree = "<group>"; };
 		8845DF7B272BD3B6002A3253 /* duk_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_config.h; sourceTree = "<group>"; };
@@ -675,6 +676,7 @@
 			isa = PBXGroup;
 			children = (
 				88F37DD727189A230095955A /* OrageMath.h */,
+				883D2F512757D8A00080C8A7 /* OrageFileTools.h */,
 				88F37DD827189A230095955A /* EventTemplate.h */,
 				8848043B273A8909003618E7 /* ModuleManager.h */,
 				880E03BA273ECF2C0005A1AF /* Syphon_Spout.h */,

@@ -65,6 +65,10 @@ namespace ISF {
         
         ISFAttrRef addAttr(ISFAttrRef attr){
             lock_guard<recursive_mutex>        lock(_propLock);
+            
+            ISFAttrRef alreadyRecord = get(attr->name());
+            if(!!alreadyRecord)return alreadyRecord;
+                 
             if(attr->isInput()){
                 _inputs.push_back(attr);
                 if(attr->isImage()){

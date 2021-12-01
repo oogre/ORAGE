@@ -76,24 +76,12 @@ namespace reza {
                         btns.push_back(btn);
                         for (const auto & subEntry : fs::directory_iterator(entry.path())){
                             if(subEntry.is_regular_file()){
-                                string name = subEntry.path().filename().string();
-                                string ext = subEntry.path().extension().string();
-                                name = name.substr(0, name.length() - ext.length());
-                                ORAGE::COMPONENTS::TYPES currentType = ORAGE::COMPONENTS::TYPES::NONE;
-                                if(name.find(".fx") != std::string::npos && ext == ".fs")
-                                    currentType = ORAGE::COMPONENTS::TYPES::FX;
-                                else if(name.find(".out") != std::string::npos && ext == ".fs")
-                                    currentType = ORAGE::COMPONENTS::TYPES::OUTPUT;
-                                else if(ext == ".fs")
-                                    currentType = ORAGE::COMPONENTS::TYPES::ISF;
-                                else if(name.find(".clk") != std::string::npos && ext == ".js")
-                                    currentType = ORAGE::COMPONENTS::TYPES::CLOCK;
-                                else if(name.find(".math") != std::string::npos && ext == ".js")
-                                    currentType = ORAGE::COMPONENTS::TYPES::MATH;
-                                else if(ext == ".js")
-                                    currentType = ORAGE::COMPONENTS::TYPES::CONTROLLER;
-                                else
-                                    continue;
+                                
+                                string name = "";
+                                string ext = "";
+                                ORAGE::COMPONENTS::TYPES currentType = pathToComponentType(subEntry.path(), &name, &ext);
+                                if(ORAGE::COMPONENTS::TYPES::NONE == currentType) continue;
+                                
                                 vec2 origin = btn->getOrigin();
                                 
                                 btn->addEntry(name)->setCallback([&, subEntry, currentType, origin, btn](bool a){

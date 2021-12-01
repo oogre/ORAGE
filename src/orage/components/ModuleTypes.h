@@ -27,6 +27,30 @@ namespace ORAGE {
             INPUT = 0x0A,
         };
         
+        TYPES pathToComponentType(fs::path path, string * name, string * ext){
+            TYPES currentType = NONE;
+            *name = path.filename().string();
+            *ext = path.extension().string();
+            *name = name->substr(0, name->length() - ext->length());
+            
+            if(name->find(".fx") != std::string::npos && *ext == ".fs")
+                currentType = FX;
+            else if(name->find(".out") != std::string::npos && *ext == ".fs")
+                currentType = OUTPUT;
+            else if(*ext == ".fs")
+                currentType = ISF;
+            else if(name->find(".clk") != std::string::npos && *ext == ".js")
+                currentType = CLOCK;
+            else if(name->find(".math") != std::string::npos && *ext == ".js")
+                currentType = MATH;
+            else if(*ext == ".js")
+                currentType = CONTROLLER;
+            
+            return currentType;
+        }
+        
+        
+        
         struct Conf{
             ColorA bgColor;
         };

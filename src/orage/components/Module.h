@@ -45,6 +45,20 @@ namespace ORAGE {
         protected :
             virtual void UIReady() {
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
+                
+                ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
+                ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
+                ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
+                ISFVal TIMEval (ISFValType::ISFValType_Float, 0.0);
+                ISFAttrRef time = _attributes->addAttr(ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval));
+                time->disableUI();
+                
+                ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
+                ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
+                ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
+                ISFAttrRef timedelta = _attributes->addAttr(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
+                timedelta->disableUI();
+                
             }
             
             Module(string name) :
@@ -68,18 +82,7 @@ namespace ORAGE {
                 time = oldTime  = getElapsedSeconds();
                 _attributes = ISFAttrWrapper::create();
                 
-                ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
-                ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
-                ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
-                ISFVal TIMEval (ISFValType::ISFValType_Float, 0.0);
-                ISFAttrRef time = _attributes->addAttr(ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval));
-                time->disableUI();
                 
-                ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
-                ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
-                ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                ISFAttrRef timedelta = _attributes->addAttr(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
-                timedelta->disableUI();
                 
                 UI = OrageCanvas::create( _name );
                 
@@ -139,9 +142,13 @@ namespace ORAGE {
                 date = vec4(1900 + ltm->tm_year, 1 + ltm->tm_mon, ltm->tm_mday, 0);
                 time = getElapsedSeconds();
                 
-                _attributes->get("TIME")->setCurrent(time);
-                _attributes->get("TIMEDELTA")->setCurrent(time - oldTime);
                 
+                auto attrTime = _attributes->get("TIME");
+                auto attrdTime = _attributes->get("TIMEDELTA");
+                if(!!attrTime && attrdTime){
+                    attrTime->setCurrent(time);
+                    attrdTime->setCurrent(time - oldTime);
+                }
                 oldTime = time;
                 UI->update();
             }
@@ -157,11 +164,11 @@ namespace ORAGE {
                 ci::JsonTree inputs = ci::JsonTree::makeArray("INPUTS");
                 for(auto attr : _attributes->inputs()){
                     ci::JsonTree input = ci::JsonTree();
+                    
                     input.addChild(ci::JsonTree("NAME", attr->name()));
                     input.addChild(ci::JsonTree("TYPE", StringFromISFValType(attr->type())));
                     if(attr->type() != ISFValType_Image){
-                        input.addChild(ci::JsonTree("DEFAULT", attr->defaultVal().getDoubleVal()));
-                        input.addChild(ci::JsonTree("CURRENT", attr->currentVal().getDoubleVal()));
+                        input.addChild(ci::JsonTree("DEFAULT", attr->currentVal().getDoubleVal()));
                         input.addChild(ci::JsonTree("MIN", attr->minVal().getDoubleVal()));
                         input.addChild(ci::JsonTree("MAX", attr->maxVal().getDoubleVal()));
                     }
@@ -174,14 +181,20 @@ namespace ORAGE {
                     output.addChild(ci::JsonTree("NAME", attr->name()));
                     output.addChild(ci::JsonTree("TYPE", StringFromISFValType(attr->type())));
                     if(attr->type() != ISFValType_Image){
-                        output.addChild(ci::JsonTree("DEFAULT", attr->defaultVal().getDoubleVal()));
-                        output.addChild(ci::JsonTree("CURRENT", attr->currentVal().getDoubleVal()));
+                        output.addChild(ci::JsonTree("DEFAULT", attr->currentVal().getDoubleVal()));
                         output.addChild(ci::JsonTree("MIN", attr->minVal().getDoubleVal()));
                         output.addChild(ci::JsonTree("MAX", attr->maxVal().getDoubleVal()));
                     }
                     outputs.addChild(output);
                 }
                 tree.addChild(outputs);
+                
+                ci::JsonTree ui = ci::JsonTree::makeObject("UI");
+                ci::JsonTree position = ci::JsonTree::makeObject("position");
+                position.addChild(ci::JsonTree("x",  UI->getOrigin().x ));
+                position.addChild(ci::JsonTree("y",  UI->getOrigin().y ));
+                ui.addChild(position);
+                tree.addChild(ui);
                 return tree.serialize();
             }
                 

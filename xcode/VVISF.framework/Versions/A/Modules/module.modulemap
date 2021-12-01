@@ -1,6 +1,0 @@
-framework module VVISF {
-    umbrella header "VVISF.hpp"
-
-    export *
-    module * { export * }
-}

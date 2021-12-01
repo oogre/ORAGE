@@ -60,7 +60,6 @@ namespace ORAGE {
                 for (auto & inAttr : _attributes->imageInputs()) {
                     UI->addInputs(inAttr, i++, inputPosRef);
                 }
-                
                 for (auto & inAttr : _attributes->inputs()) {
                     if (inAttr->hasUI() && !inAttr->isUIMoreArea() && inAttr->isFloat()) {
                         UI->addParameter(inAttr);
