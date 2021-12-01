@@ -25,6 +25,61 @@
 		880E03B6273ECE410005A1AF /* syphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 880E03AF273ECE400005A1AF /* syphonClient.mm */; };
 		880E03B7273ECE550005A1AF /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880E03A7273ECE400005A1AF /* Syphon.framework */; };
 		880E03B8273ECE550005A1AF /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 880E03A7273ECE400005A1AF /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		883D2ECC2756E1350080C8A7 /* libzip.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 883D2ECA2756E10E0080C8A7 /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		883D2F12275705EA0080C8A7 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 88776C13273C84EA00DD62C0 /* readme.txt */; };
+		883D2F13275705EA0080C8A7 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8BA52D4002A743949D082A1F /* CinderApp.icns */; };
+		883D2F15275705EA0080C8A7 /* TextureView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D97271899AB0095955A /* TextureView.cpp */; };
+		883D2F16275705EA0080C8A7 /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D7F271899AB0095955A /* View.cpp */; };
+		883D2F17275705EA0080C8A7 /* Label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D88271899AB0095955A /* Label.cpp */; };
+		883D2F18275705EA0080C8A7 /* Colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D94271899AB0095955A /* Colors.cpp */; };
+		883D2F19275705EA0080C8A7 /* Fps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D8C271899AB0095955A /* Fps.cpp */; };
+		883D2F1A275705EA0080C8A7 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 880E03A8273ECE400005A1AF /* SyphonNameboundClient.m */; };
+		883D2F1B275705EA0080C8A7 /* QuaternionOrderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D98271899AB0095955A /* QuaternionOrderer.cpp */; };
+		883D2F1C275705EA0080C8A7 /* TextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D93271899AB0095955A /* TextInput.cpp */; };
+		883D2F1D275705EA0080C8A7 /* syphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 880E03AC273ECE400005A1AF /* syphonServer.mm */; };
+		883D2F1E275705EA0080C8A7 /* Graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D77271899AB0095955A /* Graph.cpp */; };
+		883D2F1F275705EA0080C8A7 /* Waveform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D84271899AB0095955A /* Waveform.cpp */; };
+		883D2F20275705EA0080C8A7 /* Radio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D92271899AB0095955A /* Radio.cpp */; };
+		883D2F21275705EA0080C8A7 /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D6C271899AB0095955A /* Button.cpp */; };
+		883D2F22275705EA0080C8A7 /* Dialer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D62271899AB0095955A /* Dialer.cpp */; };
+		883D2F23275705EA0080C8A7 /* SuperCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D74271899AB0095955A /* SuperCanvas.cpp */; };
+		883D2F24275705EA0080C8A7 /* Spacer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D9A271899AB0095955A /* Spacer.cpp */; };
+		883D2F25275705EA0080C8A7 /* CocoaWindowCanvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D99271899AB0095955A /* CocoaWindowCanvas.mm */; };
+		883D2F26275705EA0080C8A7 /* syphonServerDirectory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 880E03AE273ECE400005A1AF /* syphonServerDirectory.mm */; };
+		883D2F27275705EA0080C8A7 /* Plotter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D85271899AB0095955A /* Plotter.cpp */; };
+		883D2F28275705EA0080C8A7 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 8845DF7D272BD3B6002A3253 /* duktape.c */; };
+		883D2F29275705EA0080C8A7 /* WindowCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D8D271899AB0095955A /* WindowCanvas.cpp */; };
+		883D2F2A275705EA0080C8A7 /* XYPad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D78271899AB0095955A /* XYPad.cpp */; };
+		883D2F2B275705EA0080C8A7 /* MultiSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D9C271899AB0095955A /* MultiSlider.cpp */; };
+		883D2F2C275705EA0080C8A7 /* ControlWithLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D72271899AB0095955A /* ControlWithLabel.cpp */; };
+		883D2F2D275705EA0080C8A7 /* ColorPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D64271899AB0095955A /* ColorPicker.cpp */; };
+		883D2F2E275705EA0080C8A7 /* Globals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D7D271899AB0095955A /* Globals.cpp */; };
+		883D2F2F275705EA0080C8A7 /* Canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D71271899AB0095955A /* Canvas.cpp */; };
+		883D2F30275705EA0080C8A7 /* Toggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D6D271899AB0095955A /* Toggle.cpp */; };
+		883D2F31275705EA0080C8A7 /* ORAGEApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D762173E98C4F13A16D9CD4 /* ORAGEApp.cpp */; };
+		883D2F32275705EA0080C8A7 /* Spectrum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D75271899AB0095955A /* Spectrum.cpp */; };
+		883D2F33275705EA0080C8A7 /* Range.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D63271899AB0095955A /* Range.cpp */; };
+		883D2F34275705EA0080C8A7 /* Envelope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37DA6271899AB0095955A /* Envelope.cpp */; };
+		883D2F35275705EA0080C8A7 /* BSplineEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D96271899AB0095955A /* BSplineEditor.cpp */; };
+		883D2F36275705EA0080C8A7 /* Slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D9D271899AB0095955A /* Slider.cpp */; };
+		883D2F37275705EA0080C8A7 /* Control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D89271899AB0095955A /* Control.cpp */; };
+		883D2F38275705EA0080C8A7 /* Responder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37DA3271899AB0095955A /* Responder.cpp */; };
+		883D2F39275705EA0080C8A7 /* syphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 880E03AF273ECE400005A1AF /* syphonClient.mm */; };
+		883D2F3B275705EA0080C8A7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006D720219952D00008149E2 /* AVFoundation.framework */; };
+		883D2F3C275705EA0080C8A7 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880E03A7273ECE400005A1AF /* Syphon.framework */; };
+		883D2F3D275705EA0080C8A7 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006D720319952D00008149E2 /* CoreMedia.framework */; };
+		883D2F3E275705EA0080C8A7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		883D2F3F275705EA0080C8A7 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0091D8F80E81B9330029341E /* OpenGL.framework */; };
+		883D2F40275705EA0080C8A7 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
+		883D2F41275705EA0080C8A7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784AF0FF439BC000DE1D7 /* Accelerate.framework */; };
+		883D2F42275705EA0080C8A7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */; };
+		883D2F43275705EA0080C8A7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
+		883D2F44275705EA0080C8A7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
+		883D2F45275705EA0080C8A7 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880E03A7273ECE400005A1AF /* Syphon.framework */; };
+		883D2F46275705EA0080C8A7 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995581B128DF400A5C623 /* IOKit.framework */; };
+		883D2F47275705EA0080C8A7 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
+		883D2F49275705EA0080C8A7 /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 880E03A7273ECE400005A1AF /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		883D2F4B275705EA0080C8A7 /* libzip.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 883D2ECA2756E10E0080C8A7 /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8845DF7E272BD3B6002A3253 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 8845DF7D272BD3B6002A3253 /* duktape.c */; };
 		88776C15273C84EA00DD62C0 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 88776C13273C84EA00DD62C0 /* readme.txt */; };
 		88F37DA9271899AB0095955A /* Dialer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D62271899AB0095955A /* Dialer.cpp */; };
@@ -74,6 +129,37 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		883D2EC92756E0D70080C8A7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				883D2ECC2756E1350080C8A7 /* libzip.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		883D2F48275705EA0080C8A7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				883D2F49275705EA0080C8A7 /* Syphon.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		883D2F4A275705EA0080C8A7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				883D2F4B275705EA0080C8A7 /* libzip.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +190,11 @@
 		880E03B1273ECE400005A1AF /* syphonServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = syphonServer.h; sourceTree = "<group>"; };
 		880E03BA273ECF2C0005A1AF /* Syphon_Spout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Syphon_Spout.h; sourceTree = "<group>"; };
 		880E03BC273EDDA10005A1AF /* ModuleSyphonSpout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleSyphonSpout.h; sourceTree = "<group>"; };
+		883D2EC72756DF4E0080C8A7 /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libzip.dylib; path = ../../libzip.dylib; sourceTree = "<group>"; };
+		883D2ECA2756E10E0080C8A7 /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzip.dylib; sourceTree = "<group>"; };
+		883D2F0D275701690080C8A7 /* ORAGE copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ORAGE copy-Info.plist"; path = "/Users/ogre/works/1202/ORAGE/xcode/ORAGE copy-Info.plist"; sourceTree = "<absolute>"; };
+		883D2F4F275705EA0080C8A7 /* ORAGE copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ORAGE copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		883D2F50275705EA0080C8A7 /* ORAGE copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ORAGE copy2-Info.plist"; path = "/Users/ogre/works/1202/ORAGE/xcode/ORAGE copy2-Info.plist"; sourceTree = "<absolute>"; };
 		883F880A2725944C0074272E /* OrageMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenu.h; sourceTree = "<group>"; };
 		883F880B27259F490074272E /* OrageMenuItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenuItem.h; sourceTree = "<group>"; };
 		8845DF7B272BD3B6002A3253 /* duk_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_config.h; sourceTree = "<group>"; };
@@ -218,6 +309,26 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		883D2F3A275705EA0080C8A7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				883D2F3B275705EA0080C8A7 /* AVFoundation.framework in Frameworks */,
+				883D2F3C275705EA0080C8A7 /* Syphon.framework in Frameworks */,
+				883D2F3D275705EA0080C8A7 /* CoreMedia.framework in Frameworks */,
+				883D2F3E275705EA0080C8A7 /* Cocoa.framework in Frameworks */,
+				883D2F3F275705EA0080C8A7 /* OpenGL.framework in Frameworks */,
+				883D2F40275705EA0080C8A7 /* CoreVideo.framework in Frameworks */,
+				883D2F41275705EA0080C8A7 /* Accelerate.framework in Frameworks */,
+				883D2F42275705EA0080C8A7 /* AudioToolbox.framework in Frameworks */,
+				883D2F43275705EA0080C8A7 /* AudioUnit.framework in Frameworks */,
+				883D2F44275705EA0080C8A7 /* CoreAudio.framework in Frameworks */,
+				883D2F45275705EA0080C8A7 /* Syphon.framework in Frameworks */,
+				883D2F46275705EA0080C8A7 /* IOKit.framework in Frameworks */,
+				883D2F47275705EA0080C8A7 /* IOSurface.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D11072E0486CEB800E47090 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -294,6 +405,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* ORAGE.app */,
+				883D2F4F275705EA0080C8A7 /* ORAGE copy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -301,12 +413,15 @@
 		29B97314FDCFA39411CA2CEA /* ORAGE */ = {
 			isa = PBXGroup;
 			children = (
+				883D2ECA2756E10E0080C8A7 /* libzip.dylib */,
 				01B97315FEAEA392516A2CEA /* Blocks */,
 				29B97315FDCFA39411CA2CEA /* Headers */,
 				080E96DDFE201D6D7F000001 /* Source */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				883D2F0D275701690080C8A7 /* ORAGE copy-Info.plist */,
+				883D2F50275705EA0080C8A7 /* ORAGE copy2-Info.plist */,
 			);
 			name = ORAGE;
 			sourceTree = "<group>";
@@ -332,6 +447,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				883D2EC72756DF4E0080C8A7 /* libzip.dylib */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -569,6 +685,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		883D2F10275705EA0080C8A7 /* ORAGE Release */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 883D2F4C275705EA0080C8A7 /* Build configuration list for PBXNativeTarget "ORAGE Release" */;
+			buildPhases = (
+				883D2F11275705EA0080C8A7 /* Resources */,
+				883D2F14275705EA0080C8A7 /* Sources */,
+				883D2F3A275705EA0080C8A7 /* Frameworks */,
+				883D2F48275705EA0080C8A7 /* Embed Frameworks */,
+				883D2F4A275705EA0080C8A7 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ORAGE Release";
+			productInstallPath = "$(HOME)/Applications";
+			productName = ORAGE;
+			productReference = 883D2F4F275705EA0080C8A7 /* ORAGE copy.app */;
+			productType = "com.apple.product-type.application";
+		};
 		8D1107260486CEB800E47090 /* ORAGE */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "ORAGE" */;
@@ -577,6 +713,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				880E03B9273ECE550005A1AF /* Embed Frameworks */,
+				883D2EC92756E0D70080C8A7 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -610,11 +747,21 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* ORAGE */,
+				883D2F10275705EA0080C8A7 /* ORAGE Release */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		883D2F11275705EA0080C8A7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				883D2F12275705EA0080C8A7 /* readme.txt in Resources */,
+				883D2F13275705EA0080C8A7 /* CinderApp.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D1107290486CEB800E47090 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -627,6 +774,50 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		883D2F14275705EA0080C8A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				883D2F15275705EA0080C8A7 /* TextureView.cpp in Sources */,
+				883D2F16275705EA0080C8A7 /* View.cpp in Sources */,
+				883D2F17275705EA0080C8A7 /* Label.cpp in Sources */,
+				883D2F18275705EA0080C8A7 /* Colors.cpp in Sources */,
+				883D2F19275705EA0080C8A7 /* Fps.cpp in Sources */,
+				883D2F1A275705EA0080C8A7 /* SyphonNameboundClient.m in Sources */,
+				883D2F1B275705EA0080C8A7 /* QuaternionOrderer.cpp in Sources */,
+				883D2F1C275705EA0080C8A7 /* TextInput.cpp in Sources */,
+				883D2F1D275705EA0080C8A7 /* syphonServer.mm in Sources */,
+				883D2F1E275705EA0080C8A7 /* Graph.cpp in Sources */,
+				883D2F1F275705EA0080C8A7 /* Waveform.cpp in Sources */,
+				883D2F20275705EA0080C8A7 /* Radio.cpp in Sources */,
+				883D2F21275705EA0080C8A7 /* Button.cpp in Sources */,
+				883D2F22275705EA0080C8A7 /* Dialer.cpp in Sources */,
+				883D2F23275705EA0080C8A7 /* SuperCanvas.cpp in Sources */,
+				883D2F24275705EA0080C8A7 /* Spacer.cpp in Sources */,
+				883D2F25275705EA0080C8A7 /* CocoaWindowCanvas.mm in Sources */,
+				883D2F26275705EA0080C8A7 /* syphonServerDirectory.mm in Sources */,
+				883D2F27275705EA0080C8A7 /* Plotter.cpp in Sources */,
+				883D2F28275705EA0080C8A7 /* duktape.c in Sources */,
+				883D2F29275705EA0080C8A7 /* WindowCanvas.cpp in Sources */,
+				883D2F2A275705EA0080C8A7 /* XYPad.cpp in Sources */,
+				883D2F2B275705EA0080C8A7 /* MultiSlider.cpp in Sources */,
+				883D2F2C275705EA0080C8A7 /* ControlWithLabel.cpp in Sources */,
+				883D2F2D275705EA0080C8A7 /* ColorPicker.cpp in Sources */,
+				883D2F2E275705EA0080C8A7 /* Globals.cpp in Sources */,
+				883D2F2F275705EA0080C8A7 /* Canvas.cpp in Sources */,
+				883D2F30275705EA0080C8A7 /* Toggle.cpp in Sources */,
+				883D2F31275705EA0080C8A7 /* ORAGEApp.cpp in Sources */,
+				883D2F32275705EA0080C8A7 /* Spectrum.cpp in Sources */,
+				883D2F33275705EA0080C8A7 /* Range.cpp in Sources */,
+				883D2F34275705EA0080C8A7 /* Envelope.cpp in Sources */,
+				883D2F35275705EA0080C8A7 /* BSplineEditor.cpp in Sources */,
+				883D2F36275705EA0080C8A7 /* Slider.cpp in Sources */,
+				883D2F37275705EA0080C8A7 /* Control.cpp in Sources */,
+				883D2F38275705EA0080C8A7 /* Responder.cpp in Sources */,
+				883D2F39275705EA0080C8A7 /* syphonClient.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D11072C0486CEB800E47090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -674,11 +865,98 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		C01FCF4B08A954540054247B /* Debug */ = {
+		883D2F4D275705EA0080C8A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					../src/Blocks/Syphon/lib,
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = ORAGE_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/include\"",
+					/opt/local/include,
+					/usr/local/include,
+				);
+				INFOPLIST_FILE = "ORAGE copy2-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = (
+					"\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"",
+					./libzip.dylib,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = ./build;
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include /opt/local/include";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		883D2F4E275705EA0080C8A7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					../src/Blocks/Syphon/lib,
+				);
+				GCC_FAST_MATH = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = ORAGE_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/include\"",
+					/opt/local/include,
+					/usr/local/include,
+				);
+				INFOPLIST_FILE = "ORAGE copy2-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = (
+					"\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"",
+					./libzip.dylib,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = ./build;
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include /opt/local/include";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -703,8 +981,12 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = (
+					"\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"",
+					./libzip.dylib,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}2";
 				PRODUCT_NAME = ORAGE;
 				SYMROOT = ./build;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include /opt/local/include";
@@ -716,6 +998,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -723,7 +1006,7 @@
 					"$(PROJECT_DIR)",
 					../src/Blocks/Syphon/lib,
 				);
-				GCC_FAST_MATH = YES;
+				GCC_FAST_MATH = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -742,8 +1025,12 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = (
+					"\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"",
+					./libzip.dylib,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}2";
 				PRODUCT_NAME = ORAGE;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = ./build;
@@ -768,7 +1055,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-DVVGL_SDK_MAC";
+				OTHER_CFLAGS = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include /opt/local/include";
 			};
@@ -788,7 +1075,7 @@
 					/opt/local/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				OTHER_CFLAGS = "-DVVGL_SDK_MAC";
+				OTHER_CFLAGS = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include /opt/local/include";
 			};
@@ -797,6 +1084,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		883D2F4C275705EA0080C8A7 /* Build configuration list for PBXNativeTarget "ORAGE Release" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				883D2F4D275705EA0080C8A7 /* Debug */,
+				883D2F4E275705EA0080C8A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "ORAGE" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

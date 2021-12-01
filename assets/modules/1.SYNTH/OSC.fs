@@ -50,18 +50,6 @@
   	{
 			"NAME" :	"out0",
 			"TYPE" :	"image"
-	},{
-			"NAME" :	"out1",
-			"TYPE" :	"image"
-	},{
-			"NAME" :	"out2",
-			"TYPE" :	"image"
-	},{
-			"NAME" :	"out3",
-			"TYPE" :	"image"
-	},{
-			"NAME" :	"out4",
-			"TYPE" :	"image"
 	}
   ]
 }*/
@@ -112,8 +100,4 @@ void main()
                                 (1.0-dX) + mod * modFactor );
     
     out0 = vec4(vec3(sawWave(phase, dY)), 1);
-    out1 = vec4(vec3(sinWave(phase, dY)), 1);
-    out2 = vec4(vec3(recWave(phase, dY)), 1);
-    out3 = vec4(vec3(triWave(phase, dY)), 1);
-    out4 = vec4(vec3(nozWave(phase, dY)), 1);
 }

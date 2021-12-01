@@ -151,6 +151,40 @@ namespace ORAGE {
             ISFAttrWrapperRef & attributes(){ return _attributes; }
             
             string name(){ return _name; }
+            
+            virtual string serialize() {
+                ci::JsonTree tree = ci::JsonTree();
+                ci::JsonTree inputs = ci::JsonTree::makeArray("INPUTS");
+                for(auto attr : _attributes->inputs()){
+                    ci::JsonTree input = ci::JsonTree();
+                    input.addChild(ci::JsonTree("NAME", attr->name()));
+                    input.addChild(ci::JsonTree("TYPE", StringFromISFValType(attr->type())));
+                    if(attr->type() != ISFValType_Image){
+                        input.addChild(ci::JsonTree("DEFAULT", attr->defaultVal().getDoubleVal()));
+                        input.addChild(ci::JsonTree("CURRENT", attr->currentVal().getDoubleVal()));
+                        input.addChild(ci::JsonTree("MIN", attr->minVal().getDoubleVal()));
+                        input.addChild(ci::JsonTree("MAX", attr->maxVal().getDoubleVal()));
+                    }
+                    inputs.addChild(input);
+                }
+                tree.addChild(inputs);
+                ci::JsonTree outputs = ci::JsonTree::makeArray("OUTPUTS");
+                for(auto attr : _attributes->outputs()){
+                    ci::JsonTree output = ci::JsonTree();
+                    output.addChild(ci::JsonTree("NAME", attr->name()));
+                    output.addChild(ci::JsonTree("TYPE", StringFromISFValType(attr->type())));
+                    if(attr->type() != ISFValType_Image){
+                        output.addChild(ci::JsonTree("DEFAULT", attr->defaultVal().getDoubleVal()));
+                        output.addChild(ci::JsonTree("CURRENT", attr->currentVal().getDoubleVal()));
+                        output.addChild(ci::JsonTree("MIN", attr->minVal().getDoubleVal()));
+                        output.addChild(ci::JsonTree("MAX", attr->maxVal().getDoubleVal()));
+                    }
+                    outputs.addChild(output);
+                }
+                tree.addChild(outputs);
+                return tree.serialize();
+            }
+                
         protected :
             ISFAttrWrapperRef _attributes;
         };//Module {

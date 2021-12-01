@@ -34,12 +34,8 @@ namespace ORAGE {
             typedef shared_ptr<ModuleISF> ModuleISFRef;
             bool share = false;
             bool record = false;
-            
-            
-            
+            ISFDocRef doc;
             GlslProgRef mShader;
-            
-            
             
             vector<SyphonSpoutServerRef> sharesRef;
 
@@ -50,7 +46,8 @@ namespace ORAGE {
                     moduleType = type;
                     string outFrag;
                     string outVert;
-                    ISFDocRef doc = ISFDoc::create(path);
+                    doc = ISFDoc::create(path);
+                    
                     ISF::GLVersion v = GLVersion_4;
                     doc->generateShaderSource(&outFrag, &outVert, v);
                     mShader = gl::GlslProg::create(gl::GlslProg::Format().vertex(outVert).fragment(outFrag));
@@ -189,6 +186,24 @@ namespace ORAGE {
                 for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
                     sharesRef.at(i)->draw(_attributes->imageOutputs().at(i)->defaultVal().imageBuffer());
                 }
+            }
+            
+            virtual string serialize() override {
+                ci::JsonTree tree = ci::JsonTree(Module::serialize());
+                tree.addChild(ci::JsonTree("NAME", name()));
+                tree.addChild(ci::JsonTree("DESCRIPTION", doc->description()));
+                tree.addChild(ci::JsonTree("ISFVSN", doc->vsn()));
+                tree.addChild(ci::JsonTree("CREDIT", doc->credit()));
+                ci::JsonTree categories = ci::JsonTree::makeArray("CATEGORIES");
+                for(auto cat : doc->categories()){
+                    categories.addChild(ci::JsonTree("", cat));
+                }
+                tree.addChild(categories);
+                
+                string output = "/*\n"+tree.serialize() + "*/\n";
+                output += *doc->fragShaderSource();
+                
+                return output;
             }
             
         };//ModuleISF {

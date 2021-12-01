@@ -87,7 +87,7 @@ namespace ORAGE {
                     auto subViews = parent->getSubViews();
                     for (int i = 0 ; i < subViews.size() ; i ++){
                         if(subViews.at(i) == A->getPlug()){
-                            int len = subViews.size();
+                            int len = (int)subViews.size();
                             pStart.y = parent->getBounds().getUpperRight().y + parent->getHeight() * (i/(float)len);
                             if(A->isInput()){
                                 pStart.x = parent->getBounds().getUpperLeft().x;
@@ -103,7 +103,7 @@ namespace ORAGE {
                     auto subViews = parent->getSubViews();
                     for (int i = 0 ; i < subViews.size() ; i ++){
                         if(subViews.at(i) == B->getPlug()){
-                            int len = subViews.size();
+                            int len = (int)subViews.size();
                             pStop.y = parent->getBounds().getUpperRight().y + parent->getHeight() * (i/(float)len);
                             if(B->isInput()){
                                 pStop.x = parent->getBounds().getUpperLeft().x;

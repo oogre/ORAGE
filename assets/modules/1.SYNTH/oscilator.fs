@@ -152,14 +152,17 @@ float triWave(in float phase, in float height){
 
 void main()
 {
+	
   	vec3 modIntensity = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
-  	float modI = max(modIntensity.r, max(modIntensity.g, modIntensity.b));
+  	/*float modI = max(modIntensity.r, max(modIntensity.g, modIntensity.b));
 	float modFactor = mix(0, modI, _tex0_sample);
 
 	float phase = phaseProcess( isf_FragNormCoord.xy,
                                 freq ,
                                 sync,
                                 (1.0-dX) + mod * modFactor );
+                                */
+    float phase = max(max(modIntensity.r, modIntensity.g), modIntensity.b);
     float value = 0.0;
     value += saw * sawWave(phase, dY);
     value += cos * sinWave(phase, dY);

@@ -137,8 +137,20 @@ namespace ORAGE {
                 }
                 keyCode = 0;
             };
+            
+            std::vector<CablesID> getKeys (){
+                std::vector<CablesID> result;
+                ci::JsonTree tree = ci::JsonTree();
+                for (auto const&[key, cable] : cables){
+                    result.push_back(key);
+                }
+                return result;
+            }
         };//Cables
         typedef shared_ptr<Cables> CablesRef;
+        typedef pair<ISFAttr*, ISFAttr*> CablesID;
+        typedef map<CablesID, CableRef> CablesWrapper;
+        
     }//CONNECTIONS
 }//ORAGE
 
