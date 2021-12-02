@@ -55,8 +55,6 @@ namespace ORAGE {
                     gl::GlslProg::Format glsl = gl::GlslProg::Format().vertex(outVert).fragment(outFrag);
                     mShader = gl::GlslProg::create(glsl);
 
-                    
-
                     auto sizeEventHandler = [&](Evt evt){
                         if (evt.is("change")) {
                             sizeChangeCB();

@@ -34,6 +34,13 @@ namespace ORAGE {
                 return ModuleManagerRef(new ModuleManager());
             }
             
+            void add(fs::path filePath){
+                string _name = "";
+                string _ext = "";
+                TYPES currentType = pathToComponentType(filePath, &_name, &_ext);
+                add(filePath, vec2(0), currentType);
+            }
+                
             void add(fs::path filePath, ci::vec2 pos, TYPES type){
                 string name = filePath.filename().string();
                 string ext = filePath.extension().string();
@@ -99,60 +106,48 @@ namespace ORAGE {
                 }
             }
             
-            void save(string location){
-                vector<string> fileExtension = vector<string>(1, "rage");
-                fs::path path = getSaveFilePath(location, fileExtension);
-                fs::path tempPath = fs::path(path.generic_string()+".temp");
-                rmDir(path);
-                rmDir(tempPath);
-                fs::create_directories(tempPath);
-                for(auto module : modules){
-                    string fileName = module->name();
-                    switch(module->moduleType){
-                        case ISF :
-                        case FX :
-                        case OUTPUT :
-                            fileName += ".fs";
-                            break;
-                        case CLOCK :
-                        case CONTROLLER :
-                        case MATH :
-                            fileName += ".js";
-                            break;
-                        case INPUT :
-                            break;
-                        default :
-                            break;
-                    }
-                    saveFile(tempPath / fileName, module->serialize());
-                }
-                
-                ci::JsonTree tree = ci::JsonTree();
-                ci::JsonTree jCables = ci::JsonTree::makeArray("CABLES");
-                std::vector<CablesID> cableIds = cables->getKeys();
-                for(CablesID cableId : cableIds){
-                    ci::JsonTree cable = ci::JsonTree::makeArray();
+            void save(){
+                saveRageFile([&](fs::path tempPath){
                     for(auto module : modules){
-                        for(auto attr : module->attributes()->every()){
-                            if(attr.get() == cableId.first || attr.get() == cableId.second){
-                                ci::JsonTree plug = ci::JsonTree();
-                                plug.addChild(ci::JsonTree("MODULE_NAME", module->name()));
-                                plug.addChild(ci::JsonTree("ATTR_NAME", attr->name()));
-                                cable.addChild(plug);
+                        string fileName = module->name();
+                        switch(module->moduleType){
+                            case ISF :
+                            case FX :
+                            case OUTPUT :
+                                fileName += ".fs";
+                                break;
+                            case CLOCK :
+                            case CONTROLLER :
+                            case MATH :
+                                fileName += ".js";
+                                break;
+                            case INPUT :
+                                break;
+                            default :
+                                break;
+                        }
+                        saveFile(tempPath / fileName, module->serialize());
+                    }
+                    ci::JsonTree tree = ci::JsonTree();
+                    ci::JsonTree jCables = ci::JsonTree::makeArray("CABLES");
+                    std::vector<CablesID> cableIds = cables->getKeys();
+                    for(CablesID cableId : cableIds){
+                        ci::JsonTree cable = ci::JsonTree::makeArray();
+                        for(auto module : modules){
+                            for(auto attr : module->attributes()->every()){
+                                if(attr.get() == cableId.first || attr.get() == cableId.second){
+                                    ci::JsonTree plug = ci::JsonTree();
+                                    plug.addChild(ci::JsonTree("MODULE_NAME", module->name()));
+                                    plug.addChild(ci::JsonTree("ATTR_NAME", attr->name()));
+                                    cable.addChild(plug);
+                                }
                             }
                         }
+                        jCables.addChild(cable);
                     }
-                    jCables.addChild(cable);
-                }
-                tree.addChild(jCables);
-                
-                saveFile(tempPath / "cables.json", tree.serialize());
-                
-                zip_directory(tempPath.generic_string() , path.generic_string());
-                openWith(path);
-                
-                rmDir(tempPath);
-                // AND ICON
+                    tree.addChild(jCables);
+                    saveFile(tempPath / "cables.json", tree.serialize());
+                });
             }
         };//ModuleManager
         typedef shared_ptr<ModuleManager> ModuleManagerRef;

@@ -18,6 +18,11 @@
 #include <errno.h>
 #include <string.h>
 
+#include "cinder/app/Platform.h"
+#define PRINT(arg) #arg
+#define XPRINT(s) PRINT(s)
+
+
 namespace ORAGE {
     namespace COMMON {
         static bool is_dir(const std::string& dir)
@@ -94,31 +99,53 @@ namespace ORAGE {
             fs::remove(path);
         };
         
-        static void openWith(fs::path filePath, fs::path appPath = fs::path()){
-            /*
-             com.apple.LaunchServices.OpenWith:
-             00000000  62 70 6C 69 73 74 30 30 D3 01 02 03 04 05 06 57  |bplist00.......W|
-             00000010  76 65 72 73 69 6F 6E 54 70 61 74 68 5F 10 10 62  |versionTpath_..b|
-             00000020  75 6E 64 6C 65 69 64 65 6E 74 69 66 69 65 72 10  |undleidentifier.|
-             00000030  00 5F 10 38 2F 55 73 65 72 73 2F 6F 67 72 65 2F  |._.8/Users/ogre/|
-             00000040  77 6F 72 6B 73 2F 31 32 30 32 2F 4F 52 41 47 45  |works/1202/ORAGE|
-             00000050  2F 78 63 6F 64 65 2F 62 75 69 6C 64 2F 44 65 62  |/xcode/build/Deb|
-             00000060  75 67 2F 4F 52 41 47 45 2E 61 70 70 5F 10 14 6F  |ug/ORAGE.app_..o|
-             00000070  72 67 2E 6C 69 62 63 69 6E 64 65 72 2E 4F 52 41  |rg.libcinder.ORA|
-             00000080  47 45 32 08 0F 17 1C 2F 31 6C 00 00 00 00 00 00  |GE2..../1l......|
-             00000090  01 01 00 00 00 00 00 00 00 07 00 00 00 00 00 00  |................|
-             000000A0  00 00 00 00 00 00 00 00 00 83                    |..........|
-             000000aa
-             */
-            std::string cmd = "xattr -wx com.apple.LaunchServices.OpenWith 62706C6973743030D30102030405065776657273696F6E54706174685F101062756E646C656964656E74696669657210005F10382F55736572732F6F6772652F776F726B732F313230322F4F524147452F78636F64652F6275696C642F44656275672F4F524147452E6170705F10146F72672E6C696263696E6465722E4F5241474532080F171C2F316C0000000000000101000000000000000700000000000000000000000000000083 "+filePath.generic_string();
-            system(&cmd[0]);
+        static std::string toHex(std::string s){
+            std::stringstream ss;
+            for(int i = 0; i < s.size(); i++) {
+                int character = int(s[i]); // converting each character to its ascii value
+                ss << std::hex << character; // basefield is now set to hex
+            }
+            return ss.str();
         }
+        
+        std::string replaceAll(std::string str, const std::string& from, const std::string& to) {
+            size_t start_pos = 0;
+            while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+                str.replace(start_pos, from.length(), to);
+                start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
+            }
+            return str;
+        }
+        
+        static void openWith(fs::path filePath){
+        #if defined(CINDER_MAC)
+            std::string appPath = ci::app::Platform::get()->getExecutablePath().generic_string()+"/"+XPRINT(PRODUCT_NAME)+".app";
+            std::string cmd = "xattr -wx com.apple.LaunchServices.OpenWith 62706C6973743030D30102030405065776657273696F6E54706174685F101062756E646C656964656E74696669657210005F1038[APP_PATH]5F1014[APP_ID]080F171C2F316C0000000000000101000000000000000700000000000000000000000000000083 " + filePath.generic_string();
+            cmd = replaceAll(cmd, "[APP_PATH]", toHex(appPath));
+            cmd = replaceAll(cmd, "[APP_ID]", toHex(XPRINT(PRODUCT_BUNDLE_IDENTIFIER)));
+            cout << "on dbClick run : " << appPath << endl;
+            system(&cmd[0]);
+        #elif defined(CINDER_MSW)
+            
+        #endif
+        }
+        
+        static void setIconTo(fs::path filePath){
+        #if defined(CINDER_MAC)
+            // /usr/bin/DeRez -only icns yellow.rage > ci::app::getAssetPath("icns/icns.rsrc").generic_string()
+            std::string cmd = "/usr/bin/Rez -append " + ci::app::getAssetPath("icns/icns.rsrc").generic_string() + " -o " + filePath.generic_string() + "; /usr/bin/SetFile -a C "+ filePath.generic_string() + " ; ";
+            system(&cmd[0]);
+        #elif defined(CINDER_MSW)
+            
+        #endif
+        }
+        
         static zip * get_archive(string path, int flags) {
             int error = 0;
             zip *archive = zip_open(path.c_str(), flags , &error);
             
             if(!archive) {
-                cout << "could not open archive" <<  path << endl;
+                cout << "could not open archive" << path << endl;
                 exit(1) ;
             }
             cout << "Done: opening archieve" << path <<  endl;
@@ -164,6 +191,36 @@ namespace ORAGE {
             }
             zip_close(archive);
             return files;
+        }
+        
+        static void saveRageFile(std::function<void(fs::path filePath)> callback){
+            fs::path defaultDir = ci::getDocumentsDirectory() / "ORAGE";
+            if(!fs::exists( defaultDir )){
+                fs::create_directories(defaultDir);
+            }
+            vector<string> fileExtension = vector<string>(1, "rage");
+            fs::path path = ci::app::getSaveFilePath(defaultDir, fileExtension);
+            fs::path tempPath = fs::path(path.generic_string()+".temp");
+            rmDir(path);
+            rmDir(tempPath);
+            fs::create_directories(tempPath);
+            callback(tempPath);
+            zip_directory(tempPath.generic_string() , path.generic_string());
+            openWith(path);
+            setIconTo(path);
+            rmDir(tempPath);
+        }
+        
+        static void openRageFile(std::string fileName, std::function<void(fs::path filePath)> callback){
+            std::map<std::string, std::string> files = unzip_directory(fileName);
+            fs::path tmpPath = fs::path(fileName+".tmp");
+            rmDir(tmpPath);
+            fs::create_directories(tmpPath);
+            for(auto [name, file] : files){
+                saveFile(tmpPath / name, file);
+                callback(tmpPath / name);
+            }
+            rmDir(tmpPath);
         }
     }//COMMON
 }//ORAGE

@@ -80,6 +80,8 @@
 		883D2F47275705EA0080C8A7 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
 		883D2F49275705EA0080C8A7 /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 880E03A7273ECE400005A1AF /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		883D2F4B275705EA0080C8A7 /* libzip.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 883D2ECA2756E10E0080C8A7 /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		883D2F5327594F400080C8A7 /* rage.icns in Resources */ = {isa = PBXBuildFile; fileRef = 883D2F5227594F3F0080C8A7 /* rage.icns */; };
+		883D2F55275954580080C8A7 /* orage.icns in Resources */ = {isa = PBXBuildFile; fileRef = 883D2F54275954580080C8A7 /* orage.icns */; };
 		8845DF7E272BD3B6002A3253 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 8845DF7D272BD3B6002A3253 /* duktape.c */; };
 		88776C15273C84EA00DD62C0 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 88776C13273C84EA00DD62C0 /* readme.txt */; };
 		88F37DA9271899AB0095955A /* Dialer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D62271899AB0095955A /* Dialer.cpp */; };
@@ -196,6 +198,8 @@
 		883D2F4F275705EA0080C8A7 /* ORAGE copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "ORAGE copy.app"; path = "ORAGE Release.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		883D2F50275705EA0080C8A7 /* ORAGE copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ORAGE copy2-Info.plist"; path = "/Users/ogre/works/1202/ORAGE/xcode/ORAGE copy2-Info.plist"; sourceTree = "<absolute>"; };
 		883D2F512757D8A00080C8A7 /* OrageFileTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageFileTools.h; sourceTree = "<group>"; };
+		883D2F5227594F3F0080C8A7 /* rage.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = rage.icns; path = ../resources/rage.icns; sourceTree = "<group>"; };
+		883D2F54275954580080C8A7 /* orage.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = orage.icns; path = ../resources/orage.icns; sourceTree = "<group>"; };
 		883F880A2725944C0074272E /* OrageMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenu.h; sourceTree = "<group>"; };
 		883F880B27259F490074272E /* OrageMenuItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenuItem.h; sourceTree = "<group>"; };
 		8845DF7B272BD3B6002A3253 /* duk_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_config.h; sourceTree = "<group>"; };
@@ -439,6 +443,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				883D2F54275954580080C8A7 /* orage.icns */,
+				883D2F5227594F3F0080C8A7 /* rage.icns */,
 				8BA52D4002A743949D082A1F /* CinderApp.icns */,
 				2855893429FF4AB5ACFE7662 /* Info.plist */,
 			);
@@ -769,7 +775,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				88776C15273C84EA00DD62C0 /* readme.txt in Resources */,
+				883D2F5327594F400080C8A7 /* rage.icns in Resources */,
 				807E8053D4B44512BB045048 /* CinderApp.icns in Resources */,
+				883D2F55275954580080C8A7 /* orage.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -886,6 +894,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"PRODUCT_NAME=\"${PRODUCT_NAME}\"",
+					"PRODUCT_BUNDLE_IDENTIFIER=\"${PRODUCT_BUNDLE_IDENTIFIER}\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
@@ -930,6 +940,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NDEBUG=1",
 					"$(inherited)",
+					"PRODUCT_NAME=\"${PRODUCT_NAME}\"",
+					"PRODUCT_BUNDLE_IDENTIFIER=\"${PRODUCT_BUNDLE_IDENTIFIER}\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
@@ -973,6 +985,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"PRODUCT_NAME=\"${PRODUCT_NAME}\"",
+					"PRODUCT_BUNDLE_IDENTIFIER=\"${PRODUCT_BUNDLE_IDENTIFIER}\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
@@ -1017,6 +1031,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NDEBUG=1",
 					"$(inherited)",
+					"PRODUCT_NAME=\"${PRODUCT_NAME}\"",
+					"PRODUCT_BUNDLE_IDENTIFIER=\"${PRODUCT_BUNDLE_IDENTIFIER}\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (

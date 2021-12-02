@@ -18,15 +18,13 @@ class ORAGEApp : public App {
     ModuleManagerRef modules;
     OrageMenuRef menu;
     std::string orageFilePath = getDocumentsDirectory().generic_string() + "/ORAGE";
-    
-    
+    std::vector<std::string>fileNamesToOpen;
 public:
     static void prepare( Settings *settings ){
-        
     #if defined(CINDER_MAC)
         std::string logFile = "/Users/ogre/Documents/Orage/orage.log";
         std::string errorFile = "/Users/ogre/Documents/Orage/orage.err.log";
-        
+
         std::freopen( &logFile[0], "w", stdout );
         std::freopen( &errorFile[0], "w", stderr );
     #elif defined(CINDER_MSW)
@@ -38,33 +36,25 @@ public:
 //        settings->setWindowSize(1280, 720);
     }
     
-    virtual void fileOpen(std::vector<std::string>fileNames) override {
-        for(std::string fileName : fileNames){
-            std::cout<<fileName<<std::endl;
-            std::map<std::string, std::string> files = unzip_directory(fileName);
-            fs::path tmpPath = fs::path(fileName+".tmp");
-            rmDir(tmpPath);
-            fs::create_directories(tmpPath);
-            for(auto [name, file] : files){
-                fs::path filePath = tmpPath / name;
-                saveFile(filePath, file);
-                string _name = "";
-                string _ext = "";
-                ORAGE::COMPONENTS::TYPES currentType = pathToComponentType(filePath, &_name, &_ext);
-                if(name == "cables.json"){
-                    
+    virtual void fileOpen(std::vector<std::string>fileNames) override { // called by OS
+        fileNamesToOpen.insert( fileNamesToOpen.end(), fileNames.begin(), fileNames.end() );
+    }
+    
+    void openFiles(){ // call by ORAGEApp::update
+        auto it = fileNamesToOpen.begin();
+        while(it != fileNamesToOpen.end()){
+            openRageFile((*it), [&](fs::path filePath){
+                if(filePath.filename().string() == "cables.json"){
+                    //put cables.json at the end on vector
                 }else{
-                    modules->add(filePath, vec2(0), currentType);
+                    modules->add(filePath);
                 }
-            }
-            rmDir(tmpPath);
+            });
+            fileNamesToOpen.erase(it);
         }
     }
     
     void setup() override {
-        if(!fs::exists( orageFilePath )){
-            fs::create_directories(orageFilePath);
-        }
         mMainWinCtx = Context::getCurrent();
         modules = ModuleManager::create();
         menu = OrageMenu::create();
@@ -76,25 +66,31 @@ public:
         enableVerticalSync( false );
         disableAlphaBlending();
     };
+    
     void update() override {
+        if(fileNamesToOpen.size()>0){
+            openFiles();
+        }
         modules->update();
         menu->update();
     };
+    
     void draw() override {
         if(mMainWinCtx != gl::Context::getCurrent()) return;
         clear( Color( 0, 0, 0 ) );
         modules->draw();
         menu->draw();
     };
+    
     void fileDrop(FileDropEvent evt) override {
     };
     
     void keyDown( KeyEvent evt ) override {
-        
         if(evt.getChar() == 's' && evt.isMetaDown()){
-            modules->save(orageFilePath);
+            modules->save();
         }
     }
+    
 };
 
 CINDER_APP( ORAGEApp, RendererGl, &ORAGEApp::prepare )
