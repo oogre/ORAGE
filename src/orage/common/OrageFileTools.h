@@ -83,20 +83,20 @@ namespace ORAGE {
             zip_close(zipper);
         }
         
-        static void saveFile(fs::path path, std::string content){
-            ofstream oStream(path.generic_string());
+        static void saveFile(ci::fs::path path, std::string content){
+            std::ofstream oStream(path.generic_string());
             oStream << content;
             oStream.close();
         }
         
-        static void rmDir(fs::path path){
-            if(!fs::exists( path )) return;
-            if (fs::is_directory(path)){
-                for (auto & child : fs::directory_iterator(path)){
+        static void rmDir(ci::fs::path path){
+            if(!ci::fs::exists( path )) return;
+            if (ci::fs::is_directory(path)){
+                for (auto & child : ci::fs::directory_iterator(path)){
                     rmDir(child.path());
                 }
             }
-            fs::remove(path);
+            ci::fs::remove(path);
         };
         
         static std::string toHex(std::string s){
@@ -117,20 +117,20 @@ namespace ORAGE {
             return str;
         }
         
-        static void openWith(fs::path filePath){
+        static void openWith(ci::fs::path filePath){
         #if defined(CINDER_MAC)
             std::string appPath = ci::app::Platform::get()->getExecutablePath().generic_string()+"/"+XPRINT(PRODUCT_NAME)+".app";
             std::string cmd = "xattr -wx com.apple.LaunchServices.OpenWith 62706C6973743030D30102030405065776657273696F6E54706174685F101062756E646C656964656E74696669657210005F1038[APP_PATH]5F1014[APP_ID]080F171C2F316C0000000000000101000000000000000700000000000000000000000000000083 " + filePath.generic_string();
             cmd = replaceAll(cmd, "[APP_PATH]", toHex(appPath));
             cmd = replaceAll(cmd, "[APP_ID]", toHex(XPRINT(PRODUCT_BUNDLE_IDENTIFIER)));
-            cout << "on dbClick run : " << appPath << endl;
+            std::cout << "on dbClick run : " << appPath << std::endl;
             system(&cmd[0]);
         #elif defined(CINDER_MSW)
             
         #endif
         }
         
-        static void setIconTo(fs::path filePath){
+        static void setIconTo(ci::fs::path filePath){
         #if defined(CINDER_MAC)
             // /usr/bin/DeRez -only icns yellow.rage > ci::app::getAssetPath("icns/icns.rsrc").generic_string()
             std::string cmd = "/usr/bin/Rez -append " + ci::app::getAssetPath("icns/icns.rsrc").generic_string() + " -o " + filePath.generic_string() + "; /usr/bin/SetFile -a C "+ filePath.generic_string() + " ; ";
@@ -140,15 +140,15 @@ namespace ORAGE {
         #endif
         }
         
-        static zip * get_archive(string path, int flags) {
+        static zip * get_archive(std::string path, int flags) {
             int error = 0;
             zip *archive = zip_open(path.c_str(), flags , &error);
             
             if(!archive) {
-                cout << "could not open archive" << path << endl;
+                std::cout << "could not open archive" << path << std::endl;
                 exit(1) ;
             }
-            cout << "Done: opening archieve" << path <<  endl;
+            std::cout << "Done: opening archieve" << path <<  std::endl;
             return archive;
         }
         
@@ -156,20 +156,20 @@ namespace ORAGE {
             std::map<std::string, std::string> files;
             zip *archive = get_archive(path, ZIP_RDONLY);
             int files_total = zip_get_num_entries(archive, 0);
-            cout << "Note: we have " << files_total << " files in ZIP" << endl;
+            std::cout << "Note: we have " << files_total << " files in ZIP" << std::endl;
             for (int i = 0; i < zip_get_num_entries(archive, 0); i++) {
                 struct zip_stat sb;
                 int len;
                 long long sum = 0;
                 if (zip_stat_index(archive, i, 0, &sb) == 0) {
-                    cout << "Name: " << sb.name;
-                    cout << " Size: " << sb.size;
-                    cout << " Index: " << sb.index;
-                    cout << " Valid: " << sb.valid;
-                    cout << " mtime: " << sb.mtime << endl;
+                    std::cout << "Name: " << sb.name;
+                    std::cout << " Size: " << sb.size;
+                    std::cout << " Index: " << sb.index;
+                    std::cout << " Valid: " << sb.valid;
+                    std::cout << " mtime: " << sb.mtime << std::endl;
                     zip_file *zf = zip_fopen_index(archive, i, 0);
                     if (!zf) {
-                        cout << "failed to opne  entry of archive. " << zip_strerror(archive) << endl;
+                        std::cout << "failed to opne  entry of archive. " << zip_strerror(archive) << std::endl;
                         zip_close(archive);
                     }
                     sum = 0;
@@ -193,17 +193,17 @@ namespace ORAGE {
             return files;
         }
         
-        static void saveRageFile(std::function<void(fs::path filePath)> callback){
-            fs::path defaultDir = ci::getDocumentsDirectory() / "ORAGE";
-            if(!fs::exists( defaultDir )){
-                fs::create_directories(defaultDir);
+        static void saveRageFile(std::function<void(ci::fs::path filePath)> callback){
+            ci::fs::path defaultDir = ci::getDocumentsDirectory() / "ORAGE";
+            if(!ci::fs::exists( defaultDir )){
+                ci::fs::create_directories(defaultDir);
             }
-            vector<string> fileExtension = vector<string>(1, "rage");
-            fs::path path = ci::app::getSaveFilePath(defaultDir, fileExtension);
-            fs::path tempPath = fs::path(path.generic_string()+".temp");
+            std::vector<std::string> fileExtension = std::vector<std::string>(1, "rage");
+            ci::fs::path path = ci::app::getSaveFilePath(defaultDir, fileExtension);
+            ci::fs::path tempPath = ci::fs::path(path.generic_string()+".temp");
             rmDir(path);
             rmDir(tempPath);
-            fs::create_directories(tempPath);
+            ci::fs::create_directories(tempPath);
             callback(tempPath);
             zip_directory(tempPath.generic_string() , path.generic_string());
             openWith(path);
@@ -211,11 +211,11 @@ namespace ORAGE {
             rmDir(tempPath);
         }
         
-        static void openRageFile(std::string fileName, std::function<void(fs::path filePath)> callback){
+        static void openRageFile(std::string fileName, std::function<void(ci::fs::path filePath)> callback){
             std::map<std::string, std::string> files = unzip_directory(fileName);
-            fs::path tmpPath = fs::path(fileName+".tmp");
+            ci::fs::path tmpPath = ci::fs::path(fileName+".tmp");
             rmDir(tmpPath);
-            fs::create_directories(tmpPath);
+            ci::fs::create_directories(tmpPath);
             for(auto [name, file] : files){
                 saveFile(tmpPath / name, file);
                 callback(tmpPath / name);

@@ -5,7 +5,6 @@
 #include "OrageMenu.h"
 #include "ModuleManager.h"
 
-#include "OrageFileTools.h"
 
 
 using namespace ci;
@@ -18,7 +17,7 @@ class ORAGEApp : public App {
     ModuleManagerRef modules;
     OrageMenuRef menu;
     std::string orageFilePath = getDocumentsDirectory().generic_string() + "/ORAGE";
-    std::vector<std::string>fileNamesToOpen;
+    
 public:
     static void prepare( Settings *settings ){
     #if defined(CINDER_MAC)
@@ -37,26 +36,17 @@ public:
     }
     
     virtual void fileOpen(std::vector<std::string>fileNames) override { // called by OS
-        fileNamesToOpen.insert( fileNamesToOpen.end(), fileNames.begin(), fileNames.end() );
-    }
-    
-    void openFiles(){ // call by ORAGEApp::update
-        auto it = fileNamesToOpen.begin();
-        while(it != fileNamesToOpen.end()){
-            openRageFile((*it), [&](fs::path filePath){
-                if(filePath.filename().string() == "cables.json"){
-                    //put cables.json at the end on vector
-                }else{
-                    modules->add(filePath);
-                }
-            });
-            fileNamesToOpen.erase(it);
+        if(!modules){
+            modules = ModuleManager::create();
         }
+        modules->addFileToOpen(fileNames);
     }
     
     void setup() override {
         mMainWinCtx = Context::getCurrent();
-        modules = ModuleManager::create();
+        if(!modules){
+            modules = ModuleManager::create();
+        }
         menu = OrageMenu::create();
         menu->addEventListener([&](EvtMenu evt){
             if(evt.is("menu")){
@@ -68,9 +58,6 @@ public:
     };
     
     void update() override {
-        if(fileNamesToOpen.size()>0){
-            openFiles();
-        }
         modules->update();
         menu->update();
     };
@@ -87,7 +74,7 @@ public:
     
     void keyDown( KeyEvent evt ) override {
         if(evt.getChar() == 's' && evt.isMetaDown()){
-            modules->save();
+            modules->savePatch();
         }
     }
     

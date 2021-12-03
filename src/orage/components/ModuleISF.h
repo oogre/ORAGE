@@ -121,25 +121,32 @@ namespace ORAGE {
             virtual void UIReady() override 
             {
                 ModuleVideo::UIReady();
-                ci::JsonTree tree = ci::JsonTree(*(doc->jsonString()));
-                if(tree.hasChild("UI.position.x") && tree.hasChild("UI.position.y")){
-                    UI->setOrigin(vec2(
-                           tree.getChild("UI.position.x").getValue<float>(),
-                           tree.getChild("UI.position.y").getValue<float>()
-                    ));
-                }
+                
+                
                 UI->addToggle("Share", share, Button::Format().label(true).align(Alignment::CENTER))
                     ->setCallback(boost::bind(&ModuleISF::shareAction, this, _1));
                 
                 UI->addToggle("AntiAliazing", true, Button::Format().label(true).align(Alignment::CENTER))
                     ->setCallback(boost::bind(&ModuleISF::antiAliazingChange, this, _1));
                 
-                
                 displayMorePannel(false);
+                
+                ci::JsonTree tree = ci::JsonTree(*(doc->jsonString()));
+                if(tree.hasChild("UI.position.x") && tree.hasChild("UI.position.y")){
+                    UI->setOrigin(vec2(
+                                       tree.getChild("UI.position.x").getValue<float>(),
+                                       tree.getChild("UI.position.y").getValue<float>()
+                                       ));
+                }
+                if(tree.hasChild("UI.minified")){
+                    UI->setMinified(tree.getChild("UI.minified").getValue<bool>());
+                }
             }
+            
         public :
             virtual ~ModuleISF(){
             }
+            
             static ModuleISFRef create(string name, string path, TYPES type = TYPES::ISF){
                 return ModuleISFRef(new ModuleISF(name, path, type));
             }

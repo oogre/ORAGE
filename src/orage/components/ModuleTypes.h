@@ -9,6 +9,7 @@
 #define ModuleTypes_h
 
 #include "cinder/Rand.h"
+#include "OrageFileTools.h"
 
 namespace ORAGE {
     namespace COMPONENTS {
@@ -45,8 +46,49 @@ namespace ORAGE {
                 currentType = MATH;
             else if(*ext == ".js")
                 currentType = CONTROLLER;
-            
             return currentType;
+        }
+        
+        void splitNameExtension(std::string fileName, TYPES type, string * name, string * ext){
+            switch(type){
+                case ISF :
+                *ext = ".fs";
+                break;
+                case FX :
+                    *ext = ".fx.fs";
+                break;
+                case OUTPUT :
+                    *ext = ".out.fs";
+                break;
+                case INPUT :
+                    *ext = ".in.fs";
+                break;
+                case CLOCK :
+                    *ext = ".clk.js";
+                break;
+                case CONTROLLER :
+                    *ext = ".js";
+                break;
+                case MATH :
+                    *ext = ".math.js";
+                break;
+                default :
+                    *ext = "";
+            }
+            *name = ORAGE::COMMON::replaceAll(fileName, *ext, "");
+        }
+        
+        std::string componentTypeToFileExtention(TYPES type){
+            switch(type){
+                case ISF : return ".fs";
+                case FX : return ".fx.fs";
+                case OUTPUT : return ".out.fs";
+                case INPUT : return ".in.fs";
+                case CLOCK : return ".clk.js";
+                case CONTROLLER : return ".js";
+                case MATH : return ".math.js";
+                default : return "";
+            }
         }
         
         

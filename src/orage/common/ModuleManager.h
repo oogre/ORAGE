@@ -14,6 +14,7 @@
 #include "cables.h"
 #include "ModuleTypes.h"
 #include "OrageFileTools.h"
+
 namespace ORAGE {
     namespace COMMON {
         using namespace std;
@@ -23,10 +24,74 @@ namespace ORAGE {
         class ModuleManager {
             vector<ModuleRef> modules;
             CablesRef cables;
-            
+            ci::JsonTree jCablesToCreate;
+            std::vector<std::string>filesToOpen;
             typedef shared_ptr<ModuleManager> ModuleManagerRef;
             ModuleManager(){
                 cables = Cables::create();
+            }
+            
+            void openFiles(){
+                if(filesToOpen.size() == 0 )return;
+                auto it = filesToOpen.begin();
+                while(it != filesToOpen.end()){
+                    openRageFile((*it), [this](fs::path filePath){
+                        if(filePath.filename().string() == "cables.json"){
+                            addCables(filePath);
+                        }else{
+                            add(filePath);
+                            
+                        }
+                    });
+                    filesToOpen.erase(it);
+                }
+            }
+            
+            void removeModules(){
+                auto it = modules.begin();
+                while(it != modules.end()){
+                    if((*it)->hasToDestroy()){
+                        for(auto attr : (*it)->attributes()->every()){
+                            cables->removeCablesPlugTo(attr);
+                        }
+                        modules.erase(it);
+                        continue;
+                    }
+                    it++;
+                }
+            }
+            
+            bool updateModule(){
+                bool allReady = true;
+                for(auto module : modules){
+                    module->update();
+                    allReady &= module->isReady();
+                }
+                return allReady;
+            }
+            
+            void addCables(){
+                if(jCablesToCreate.hasChild("CABLES")){
+                    for(auto jCable : jCablesToCreate.getChild("CABLES")){
+                        if(jCable.hasChildren()){
+                            for(int i = 0 ; i < jCable.getChildren().size() ; i++){
+                                auto jPlug = jCable.getChild(i);
+                                if(jPlug.hasChild("MODULE_ID")){
+                                    auto jModule = jPlug.getChild("MODULE_ID");
+                                    auto jAttr = jPlug.getChild("ATTR_NAME");
+                                    auto module = getById(jModule.getValue<std::string>());
+                                    if(!!module){
+                                        auto attr = module->attributes()->get(jAttr.getValue<std::string>());
+                                        module->UI->getParameter(attr->name())->eventTrigger({
+                                            "plug", attr
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    jCablesToCreate.clear();
+                }
             }
             
         public :
@@ -34,17 +99,38 @@ namespace ORAGE {
                 return ModuleManagerRef(new ModuleManager());
             }
             
-            void add(fs::path filePath){
+            ModuleRef getById(std::string id){
+                for(auto module : modules){
+                    if(module->getId() == id)return module;
+                }
+                return nullptr;
+            }
+            
+            void addFileToOpen(std::vector<std::string> filesToOpen){
+                this->filesToOpen.insert( this->filesToOpen.end(), filesToOpen.begin(), filesToOpen.end() );
+            }
+            
+            void addCables(fs::path filePath){
+                ifstream fin;
+                fin.open(filePath);
+                if (fin.is_open())    {
+                    jCablesToCreate = ci::JsonTree(static_cast<stringstream const &>(stringstream() << fin.rdbuf()).str() );
+                }
+                fin.close();
+            }
+            
+            ModuleRef add(fs::path filePath){
                 string _name = "";
                 string _ext = "";
                 TYPES currentType = pathToComponentType(filePath, &_name, &_ext);
-                add(filePath, vec2(0), currentType);
+                return add(filePath, vec2(0), currentType);
             }
                 
-            void add(fs::path filePath, ci::vec2 pos, TYPES type){
-                string name = filePath.filename().string();
-                string ext = filePath.extension().string();
-                name = name.substr(0, name.length() - ext.length());
+            ModuleRef add(fs::path filePath, ci::vec2 pos, TYPES type){
+                string name = "";
+                string ext = "";
+                splitNameExtension(filePath.filename(), type, &name, &ext);
+                
                 ModuleRef module;
                 switch(type){
                     case TYPES::ISF :
@@ -61,7 +147,7 @@ namespace ORAGE {
                         module = ModuleSyphonSpout::create(name, type);
                     break;
                     default :
-                        return;
+                        return nullptr;
                     break;
                 }
                 module->setOrigin(pos + vec2(0, 25));
@@ -82,50 +168,28 @@ namespace ORAGE {
                     }
                 });
                 modules.push_back(module);
+                return module;
             }
             
             void update(){
-                auto it = modules.begin();
-                while(it != modules.end()){
-                    if((*it)->hasToDestroy()){
-                        for(auto attr : (*it)->attributes()->every()){
-                            cables->removeCablesPlugTo(attr);
-                        }
-                        modules.erase(it);
-                        continue;
-                    }
-                    it++;
-                }
-                for(auto module : modules){
-                    module->update();
+                openFiles();
+                removeModules();
+                bool allReady = updateModule();
+                if(allReady){
+                    addCables();
                 }
             }
+            
             void draw(){
                 for(auto module : modules){
                     module->draw();
                 }
             }
             
-            void save(){
+            void savePatch(){
                 saveRageFile([&](fs::path tempPath){
                     for(auto module : modules){
-                        string fileName = module->name();
-                        switch(module->moduleType){
-                            case ISF :
-                            case FX :
-                            case OUTPUT :
-                                fileName += ".fs";
-                                break;
-                            case CLOCK :
-                            case CONTROLLER :
-                            case MATH :
-                                fileName += ".js";
-                                break;
-                            case INPUT :
-                                break;
-                            default :
-                                break;
-                        }
+                        string fileName = module->name(true) + componentTypeToFileExtention(module->moduleType);
                         saveFile(tempPath / fileName, module->serialize());
                     }
                     ci::JsonTree tree = ci::JsonTree();
@@ -137,7 +201,7 @@ namespace ORAGE {
                             for(auto attr : module->attributes()->every()){
                                 if(attr.get() == cableId.first || attr.get() == cableId.second){
                                     ci::JsonTree plug = ci::JsonTree();
-                                    plug.addChild(ci::JsonTree("MODULE_NAME", module->name()));
+                                    plug.addChild(ci::JsonTree("MODULE_ID", module->getId()));
                                     plug.addChild(ci::JsonTree("ATTR_NAME", attr->name()));
                                     cable.addChild(plug);
                                 }

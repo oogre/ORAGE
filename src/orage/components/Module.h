@@ -16,6 +16,10 @@
 #include <regex>
 #include "ISFDoc.h"
 #include "ISFAttrWrapper.h"
+#include <boost/uuid/uuid.hpp>            // uuid class
+#include <boost/uuid/uuid_generators.hpp> // generators
+#include <boost/uuid/uuid_io.hpp>         // streaming operators etc.
+
 
 namespace ORAGE {
     namespace COMPONENTS {
@@ -26,6 +30,7 @@ namespace ORAGE {
         using namespace reza::ui;
         using namespace ISF;
         using namespace ORAGE::COMMON;
+        using namespace boost::uuids;
         
         typedef Event<class Module> EvtModule;
         typedef EventTemplate<EvtModule> EvtModuleHandler;
@@ -33,15 +38,13 @@ namespace ORAGE {
         
         class Module : public EvtModuleHandler, public enable_shared_from_this<class Module> {
             typedef shared_ptr<Module> ModuleRef;
-            static int ID;
-            static map<string, int> IDS;
-            int id;
+            string id;
             string _name;
             double oldTime;
             double time;
             float dTime;
             vec4 date;
-
+            bool _ready = false;
         protected :
             virtual void UIReady() {
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
@@ -58,31 +61,27 @@ namespace ORAGE {
                 ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
                 ISFAttrRef timedelta = _attributes->addAttr(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
                 timedelta->disableUI();
-                
             }
             
-            Module(string name) :
+            Module(string nameId) :
             EvtModuleHandler()
             {
+                int index = nameId.find_last_of(".");
+                if (index != string::npos){
+                    _name = nameId.substr(0, index);
+                    id = nameId.substr(index+1);
+                }else{
+                    uuid uid = boost::uuids::random_generator()();
+                    std::stringstream ss;
+                    ss << uid;
+                    _name = nameId;
+                    id = ss.str();
+                }
                 
                 moduleType = TYPES::NONE;
-                id = Module::ID++;
-                if(Module::IDS.count(name)==0){
-                    Module::IDS[name] = 0;
-                }else{
-                    Module::IDS[name]++;
-                }
-                
-                auto index = name.find_last_of(".");
-                if(index != std::string::npos){
-                    name.erase( name.begin() + index, name.end());
-                }
-                _name = name + "." + to_string(Module::IDS[name]);
                 
                 time = oldTime  = getElapsedSeconds();
                 _attributes = ISFAttrWrapper::create();
-                
-                
                 
                 UI = OrageCanvas::create( _name );
                 
@@ -94,10 +93,11 @@ namespace ORAGE {
                     }
                     
                     if (evt.is("ready")) {
-                        UIReady();
+                        UIReady();// building UI
                         EvtModuleHandler::eventTrigger({
                             "ready", shared_from_this()
                         });
+                        _ready = true;
                         for (auto & inAttr : _attributes->imageInputs()) {
                             if(inAttr->name() == "OLD"){
                                 UI->getParameter(inAttr->name())->eventTrigger({
@@ -116,14 +116,15 @@ namespace ORAGE {
             TYPES moduleType;
             OrageCanvasRef UI;
             
-
             Module * addEventListenerOnParameters(EvtSlot slot) {
                 for(auto [key, parameter] : UI->getParameters()){
                     parameter->addEventListener(slot);
                 }
                 return this;
             }
-            
+            bool isReady(){
+                return _ready;
+            }
             virtual ~Module(){
                 this->UI->clear();
             }
@@ -142,7 +143,6 @@ namespace ORAGE {
                 date = vec4(1900 + ltm->tm_year, 1 + ltm->tm_mon, ltm->tm_mday, 0);
                 time = getElapsedSeconds();
                 
-                
                 auto attrTime = _attributes->get("TIME");
                 auto attrdTime = _attributes->get("TIMEDELTA");
                 if(!!attrTime && attrdTime){
@@ -157,7 +157,13 @@ namespace ORAGE {
             }
             ISFAttrWrapperRef & attributes(){ return _attributes; }
             
-            string name(){ return _name; }
+            string name(bool withId = false){
+                return _name + (withId ? ("." + id) : "");
+            }
+            
+            string getId(){
+                return id;
+            }
             
             virtual string serialize() {
                 ci::JsonTree tree = ci::JsonTree();
@@ -188,21 +194,21 @@ namespace ORAGE {
                     outputs.addChild(output);
                 }
                 tree.addChild(outputs);
-                
                 ci::JsonTree ui = ci::JsonTree::makeObject("UI");
                 ci::JsonTree position = ci::JsonTree::makeObject("position");
                 position.addChild(ci::JsonTree("x",  UI->getOrigin().x ));
                 position.addChild(ci::JsonTree("y",  UI->getOrigin().y ));
+                ui.addChild(ci::JsonTree("minified",  UI->isMinified() ));
                 ui.addChild(position);
                 tree.addChild(ui);
                 return tree.serialize();
             }
+            
+            
                 
         protected :
             ISFAttrWrapperRef _attributes;
         };//Module {
-        int Module::ID = 0;
-        map<string, int> Module::IDS;
         typedef shared_ptr<Module> ModuleRef;
     }//namespace COMPONENTS {
 }//namespace ORAGE {

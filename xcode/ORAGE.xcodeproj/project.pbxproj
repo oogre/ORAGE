@@ -17,7 +17,6 @@
 		00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995581B128DF400A5C623 /* IOKit.framework */; };
 		00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
-		807E8053D4B44512BB045048 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8BA52D4002A743949D082A1F /* CinderApp.icns */; };
 		880E03B2273ECE410005A1AF /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880E03A7273ECE400005A1AF /* Syphon.framework */; };
 		880E03B3273ECE410005A1AF /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 880E03A8273ECE400005A1AF /* SyphonNameboundClient.m */; };
 		880E03B4273ECE410005A1AF /* syphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 880E03AC273ECE400005A1AF /* syphonServer.mm */; };
@@ -27,7 +26,6 @@
 		880E03B8273ECE550005A1AF /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 880E03A7273ECE400005A1AF /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		883D2ECC2756E1350080C8A7 /* libzip.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 883D2ECA2756E10E0080C8A7 /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		883D2F12275705EA0080C8A7 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 88776C13273C84EA00DD62C0 /* readme.txt */; };
-		883D2F13275705EA0080C8A7 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8BA52D4002A743949D082A1F /* CinderApp.icns */; };
 		883D2F15275705EA0080C8A7 /* TextureView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D97271899AB0095955A /* TextureView.cpp */; };
 		883D2F16275705EA0080C8A7 /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D7F271899AB0095955A /* View.cpp */; };
 		883D2F17275705EA0080C8A7 /* Label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D88271899AB0095955A /* Label.cpp */; };
@@ -80,7 +78,6 @@
 		883D2F47275705EA0080C8A7 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
 		883D2F49275705EA0080C8A7 /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 880E03A7273ECE400005A1AF /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		883D2F4B275705EA0080C8A7 /* libzip.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 883D2ECA2756E10E0080C8A7 /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		883D2F5327594F400080C8A7 /* rage.icns in Resources */ = {isa = PBXBuildFile; fileRef = 883D2F5227594F3F0080C8A7 /* rage.icns */; };
 		883D2F55275954580080C8A7 /* orage.icns in Resources */ = {isa = PBXBuildFile; fileRef = 883D2F54275954580080C8A7 /* orage.icns */; };
 		8845DF7E272BD3B6002A3253 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 8845DF7D272BD3B6002A3253 /* duktape.c */; };
 		88776C15273C84EA00DD62C0 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 88776C13273C84EA00DD62C0 /* readme.txt */; };
@@ -194,11 +191,8 @@
 		880E03BC273EDDA10005A1AF /* ModuleSyphonSpout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleSyphonSpout.h; sourceTree = "<group>"; };
 		883D2EC72756DF4E0080C8A7 /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libzip.dylib; path = ../../libzip.dylib; sourceTree = "<group>"; };
 		883D2ECA2756E10E0080C8A7 /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzip.dylib; sourceTree = "<group>"; };
-		883D2F0D275701690080C8A7 /* ORAGE copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ORAGE copy-Info.plist"; path = "/Users/ogre/works/1202/ORAGE/xcode/ORAGE copy-Info.plist"; sourceTree = "<absolute>"; };
 		883D2F4F275705EA0080C8A7 /* ORAGE copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "ORAGE copy.app"; path = "ORAGE Release.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		883D2F50275705EA0080C8A7 /* ORAGE copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ORAGE copy2-Info.plist"; path = "/Users/ogre/works/1202/ORAGE/xcode/ORAGE copy2-Info.plist"; sourceTree = "<absolute>"; };
 		883D2F512757D8A00080C8A7 /* OrageFileTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageFileTools.h; sourceTree = "<group>"; };
-		883D2F5227594F3F0080C8A7 /* rage.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = rage.icns; path = ../resources/rage.icns; sourceTree = "<group>"; };
 		883D2F54275954580080C8A7 /* orage.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = orage.icns; path = ../resources/orage.icns; sourceTree = "<group>"; };
 		883F880A2725944C0074272E /* OrageMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenu.h; sourceTree = "<group>"; };
 		883F880B27259F490074272E /* OrageMenuItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenuItem.h; sourceTree = "<group>"; };
@@ -307,7 +301,6 @@
 		88F37DD927189D0B0095955A /* ModuleISF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleISF.h; sourceTree = "<group>"; };
 		88F3E2F52727FF5D00B5731B /* OrageMenuList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageMenuList.h; sourceTree = "<group>"; };
 		88F3E2F627285D6800B5731B /* ModuleTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleTypes.h; sourceTree = "<group>"; };
-		8BA52D4002A743949D082A1F /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ORAGE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ORAGE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E3301D4A97A42D9B03D025B /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		9A3A7AA2B1714C09990B7041 /* ORAGE_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ORAGE_Prefix.pch; sourceTree = "<group>"; };
@@ -425,8 +418,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				883D2F0D275701690080C8A7 /* ORAGE copy-Info.plist */,
-				883D2F50275705EA0080C8A7 /* ORAGE copy2-Info.plist */,
 			);
 			name = ORAGE;
 			sourceTree = "<group>";
@@ -444,8 +435,6 @@
 			isa = PBXGroup;
 			children = (
 				883D2F54275954580080C8A7 /* orage.icns */,
-				883D2F5227594F3F0080C8A7 /* rage.icns */,
-				8BA52D4002A743949D082A1F /* CinderApp.icns */,
 				2855893429FF4AB5ACFE7662 /* Info.plist */,
 			);
 			name = Resources;
@@ -766,7 +755,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				883D2F12275705EA0080C8A7 /* readme.txt in Resources */,
-				883D2F13275705EA0080C8A7 /* CinderApp.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -775,8 +763,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				88776C15273C84EA00DD62C0 /* readme.txt in Resources */,
-				883D2F5327594F400080C8A7 /* rage.icns in Resources */,
-				807E8053D4B44512BB045048 /* CinderApp.icns in Resources */,
 				883D2F55275954580080C8A7 /* orage.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
