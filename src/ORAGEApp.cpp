@@ -77,7 +77,6 @@ public:
             modules->savePatch();
         }
     }
-    
 };
 
 CINDER_APP( ORAGEApp, RendererGl, &ORAGEApp::prepare )

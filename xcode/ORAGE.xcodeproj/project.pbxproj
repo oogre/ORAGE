@@ -189,7 +189,6 @@
 		880E03B1273ECE400005A1AF /* syphonServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = syphonServer.h; sourceTree = "<group>"; };
 		880E03BA273ECF2C0005A1AF /* Syphon_Spout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Syphon_Spout.h; sourceTree = "<group>"; };
 		880E03BC273EDDA10005A1AF /* ModuleSyphonSpout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleSyphonSpout.h; sourceTree = "<group>"; };
-		883D2EC72756DF4E0080C8A7 /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libzip.dylib; path = ../../libzip.dylib; sourceTree = "<group>"; };
 		883D2ECA2756E10E0080C8A7 /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzip.dylib; sourceTree = "<group>"; };
 		883D2F4F275705EA0080C8A7 /* ORAGE copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "ORAGE copy.app"; path = "ORAGE Release.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		883D2F512757D8A00080C8A7 /* OrageFileTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageFileTools.h; sourceTree = "<group>"; };
@@ -411,7 +410,6 @@
 		29B97314FDCFA39411CA2CEA /* ORAGE */ = {
 			isa = PBXGroup;
 			children = (
-				883D2ECA2756E10E0080C8A7 /* libzip.dylib */,
 				01B97315FEAEA392516A2CEA /* Blocks */,
 				29B97315FDCFA39411CA2CEA /* Headers */,
 				080E96DDFE201D6D7F000001 /* Source */,
@@ -443,7 +441,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				883D2EC72756DF4E0080C8A7 /* libzip.dylib */,
+				883D2ECA2756E10E0080C8A7 /* libzip.dylib */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
