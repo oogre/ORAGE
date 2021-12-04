@@ -5,7 +5,11 @@
 #include "OrageMenu.h"
 #include "ModuleManager.h"
 
-
+#if defined(CINDER_MAC)
+    #define _override_=override
+#elif defined(CINDER_MSW)
+    #define _override_
+#endif
 
 using namespace ci;
 using namespace ci::gl;
@@ -19,6 +23,8 @@ class ORAGEApp : public App {
     std::string orageFilePath = getDocumentsDirectory().generic_string() + "/ORAGE";
     
 public:
+    static std::vector<std::string> args;
+
     static void prepare( Settings *settings ){
     #if defined(CINDER_MAC)
         std::string logFile = "/Users/ogre/Documents/Orage/orage.log";
@@ -33,15 +39,17 @@ public:
     #endif
         settings->setTitle("ORAGE - VISUAL MODULAR SYNTHESIS");
 //        settings->setWindowSize(1280, 720);
+
+        auto args = settings->getCommandLineArgs();
+        ORAGEApp::args.insert(ORAGEApp::args.end(), args.begin()+1, args.end());
     }
-    
-    virtual void fileOpen(std::vector<std::string>fileNames) override { // called by OS
+
+    virtual void fileOpen(std::vector<std::string>fileNames) _override_ {
         if(!modules){
             modules = ModuleManager::create();
         }
         modules->addFileToOpen(fileNames);
     }
-    
     void setup() override {
         mMainWinCtx = Context::getCurrent();
         if(!modules){
@@ -55,6 +63,12 @@ public:
         });
         enableVerticalSync( false );
         disableAlphaBlending();
+
+    #if defined(CINDER_MSW)
+        if (ORAGEApp::args.size() > 0) {
+            fileOpen(ORAGEApp::args);
+        }
+    #endif
     };
     
     void update() override {
@@ -73,10 +87,19 @@ public:
     };
     
     void keyDown( KeyEvent evt ) override {
-        if(evt.getChar() == 's' && evt.isMetaDown()){
+        bool isSave = false;
+    #if defined(CINDER_MAC)
+        isSave = evt.getChar() == 's' && evt.isMetaDown();
+    #elif defined(CINDER_MSW)
+        isSave = evt.getChar() == 's' && evt.isControlDown();
+    #endif
+
+        if(isSave){
             modules->savePatch();
         }
     }
 };
+
+std::vector<std::string> ORAGEApp::args = std::vector<std::string>();
 
 CINDER_APP( ORAGEApp, RendererGl, &ORAGEApp::prepare )

@@ -391,6 +391,9 @@
     <ClInclude Include="..\src\orage\components\ModuleVideo.h">
       <Filter>Source Files\orage\components</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\orage\common\OrageFileTools.h">
+      <Filter>Source Files\orage\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
@@ -409,5 +412,10 @@
     <Library Include="..\src\Blocks\Spout\SpoutLibrary.lib">
       <Filter>Source Files\Blocks\Spout</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resources\orage.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

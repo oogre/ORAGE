@@ -9,16 +9,22 @@
 #define OrageFileTools_h
 
 #include <zip.h>
-
 #include <iostream>
 #include <string>
-
 #include <dirent.h>
 #include <sys/stat.h>
 #include <errno.h>
 #include <string.h>
-
 #include "cinder/app/Platform.h"
+#if defined(CINDER_MSW)
+    #include <winreg.h>
+    #include <winerror.h>
+    #include "cinder/app/App.h"
+    #include <atlstr.h>
+    #include <shellapi.h>
+#endif
+
+
 #define PRINT(arg) #arg
 #define XPRINT(s) PRINT(s)
 
@@ -126,7 +132,29 @@ namespace ORAGE {
             std::cout << "on dbClick run : " << appPath << std::endl;
             system(&cmd[0]);
         #elif defined(CINDER_MSW)
-            
+            HKEY hkey;
+            CString sExt = ".rage";
+            CString sDescription = "FileExtensionForOrage";
+            CString app((ci::app::Platform::get()->getExecutablePath().generic_string() + XPRINT(PRODUCT_NAME) + ".exe").c_str());
+            if (ERROR_SUCCESS == RegOpenKey(HKEY_CLASSES_ROOT, sExt, &hkey)){
+                RegCloseKey(hkey);
+                std::cout << "This Extension is already registered" << std::endl;
+                return;
+            }
+
+           auto s2ws = [](const std::string& s) {
+                int len;
+                int slength = (int)s.length() + 1;
+                len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+                wchar_t* buf = new wchar_t[len];
+                MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+                std::wstring r(buf);
+                delete[] buf;
+                return r;
+            };
+
+            ShellExecute(NULL, s2ws("runas").c_str(), s2ws(ci::app::getAssetPath("icns/run.bat").generic_string()).c_str(), 0, 0, SW_SHOWNORMAL);
+;
         #endif
         }
         
@@ -136,7 +164,7 @@ namespace ORAGE {
             std::string cmd = "/usr/bin/Rez -append " + ci::app::getAssetPath("icns/icns.rsrc").generic_string() + " -o " + filePath.generic_string() + "; /usr/bin/SetFile -a C "+ filePath.generic_string() + " ; ";
             system(&cmd[0]);
         #elif defined(CINDER_MSW)
-            
+
         #endif
         }
         

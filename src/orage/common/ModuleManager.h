@@ -129,7 +129,7 @@ namespace ORAGE {
             ModuleRef add(fs::path filePath, ci::vec2 pos, TYPES type){
                 string name = "";
                 string ext = "";
-                splitNameExtension(filePath.filename(), type, &name, &ext);
+                splitNameExtension(filePath.filename().generic_string(), type, &name, &ext);
                 
                 ModuleRef module;
                 switch(type){
