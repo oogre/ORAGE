@@ -6,7 +6,7 @@
 #include "ModuleManager.h"
 
 #if defined(CINDER_MAC)
-    #define _override_=override
+    #define _override_ override
 #elif defined(CINDER_MSW)
     #define _override_
 #endif
@@ -43,13 +43,14 @@ public:
         auto args = settings->getCommandLineArgs();
         ORAGEApp::args.insert(ORAGEApp::args.end(), args.begin()+1, args.end());
     }
-
+   
     virtual void fileOpen(std::vector<std::string>fileNames) _override_ {
         if(!modules){
             modules = ModuleManager::create();
         }
         modules->addFileToOpen(fileNames);
     }
+    
     void setup() override {
         mMainWinCtx = Context::getCurrent();
         if(!modules){
