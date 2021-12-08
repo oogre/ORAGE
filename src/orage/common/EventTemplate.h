@@ -99,6 +99,9 @@ namespace ORAGE {
             EventTemplate(){
             }
         public :
+            virtual ~EventTemplate(){
+                signal.disconnect_all_slots();
+            }
             virtual bool addEventListener(EventSignalSlot slot) {
                 signal.connect(slot);
                 return true;

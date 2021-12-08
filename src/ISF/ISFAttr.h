@@ -231,6 +231,7 @@ namespace ISF {
         //!    Returns true if the receiver is a float value.
         bool isFloat() const { return (_type == ISFValType_Float || _type == ISFValType_Clock); }
         bool isClock() const { return (_type == ISFValType_Clock); }
+        bool isOscMessage() const { return (_type == ISFValType_OscMessage); }
         //!    Returns true if the receiver is a point2D value.
         bool isPoint2D() const { return (_type == ISFValType_Point2D); }
         //!    Returns true if the receiver is a color value.
@@ -262,11 +263,18 @@ namespace ISF {
             if (isFloat()){
                 pluged.push_back(other);
             }
-            else if (_type==ISFValType_Image){
+            else if (isImage()){
                 if(isInput()){
                     ci::gl::Texture2dRef temp = other->defaultVal().imageBuffer();
                     _currentVal.setImageBuffer(temp);
                     _imageSample = true;
+                }else{
+                    pluged.push_back(other);
+                }
+            }else if(isOscMessage()){
+                if(isInput()){
+                    ci::osc::Message temp = other->currentVal().getOscMessage();
+                    _currentVal.setOscMessage(temp);
                 }else{
                     pluged.push_back(other);
                 }
@@ -280,18 +288,37 @@ namespace ISF {
                     it++;
                 }
             }
-            if (_type==ISFValType_Image){
+            if (isImage()){
                 if(isInput()){
                     ci::gl::Texture2dRef temp = _defaultVal.imageBuffer();
                     _currentVal.setImageBuffer(temp);
                     _imageSample = false;
                 }
             }
+            else if(isOscMessage()){
+                _currentVal.setOscMessage(ci::osc::Message());
+            }
         }
         
         void update(){
-            if (!isFloat())return;
-            setCurrent(_currentVal.getDoubleVal());
+            if(isFloat()){
+                setCurrent(_currentVal.getDoubleVal());
+            }
+        }
+        
+        void setCurrent(ci::osc::Message val, vector<ISFAttr *> acc = vector<ISFAttr *>() ){
+            if(!isOscMessage())return;
+            _currentVal.setOscMessage(val);
+            acc.push_back(this);
+            EvtHandler::eventTrigger({
+                "change", shared_from_this()
+            });
+            acc.push_back(this);
+            for(auto other : pluged){
+                if(find(acc.begin(), acc.end(), other.get()) == acc.end()){
+                    other->setCurrent(val, acc);
+                }
+            }
         }
         
         void setCurrent(double val, vector<ISFAttr *> acc = vector<ISFAttr *>() ){

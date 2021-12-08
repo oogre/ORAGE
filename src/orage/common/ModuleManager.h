@@ -161,6 +161,14 @@ namespace ORAGE {
                     break;
                 }
                 module->setOrigin(pos + vec2(0, 25));
+                module->onParameterPlug([&](Evt evt){
+                    if(evt.is("plug")){
+                        cables->addCable(evt.target);
+                    }
+                    if(evt.is("unplug")){
+                        cables->removeCablesPlugTo(evt.target);
+                    }
+                });
                 
                 module->addEventListener([&, module](EvtModule evt){
                     if(evt.is("putAtTop")){
@@ -168,13 +176,6 @@ namespace ORAGE {
                         if(it != modules.end() && it != modules.end() - 1){
                             std::rotate(it, it + 1, modules.end());
                         }
-                    }
-                    if(evt.is("ready")){
-                        module->addEventListenerOnParameters([&](Evt evt){
-                            if(evt.is("plug")){
-                                cables->addCable(evt.target);
-                            }
-                        });
                     }
                 });
                 modules.push_back(module);

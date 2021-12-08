@@ -149,6 +149,21 @@ namespace reza {
                 return param;
             }
             
+            void rmParameter(std::string paramName){
+                auto it = parameters.find(paramName);
+                ParameterFloatRef param = dynamic_pointer_cast<ParameterFloat>(it->second);
+                if(!param)return;
+                auto sld = param->sliderRef;
+                auto btn = param->buttonRef;
+                auto lmt = param->limiterRef;
+                removeSubView(sld->getName());
+                removeSubView(btn->getName());
+                removeSubView(lmt->getName());
+                removeSubView(sld->getName());
+                removeSubView(btn->getName());
+                removeSubView(lmt->getName());
+                parameters.erase(it);
+            }
             
             ParameterFloatRef addParameter(ISF::ISFAttrRef & attr)
             {

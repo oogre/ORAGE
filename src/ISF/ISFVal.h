@@ -9,7 +9,7 @@
 #define ISFValue_h
 
 #include "ISFStringUtils.h"
-
+#include "Osc.h"
 namespace ISF {
     
     using namespace std;
@@ -20,6 +20,7 @@ namespace ISF {
         ISFValType_Bool,    //!<    A boolean choice, sends 1 or 0 to the shader
         ISFValType_Long,    //!<    Sends a long
         ISFValType_Float,    //!<    Sends a float
+        ISFValType_OscMessage,    //!<    Sends a Osc::MEssage
         ISFValType_Clock,    //!<    clone of a float
         ISFValType_Point2D,    //!<    Sends a 2 element vector
         ISFValType_Color,    //!<    Sends a 4 element vector representing an RGBA color
@@ -43,6 +44,8 @@ namespace ISF {
                 return string("float");
             case ISFValType_Clock:
                 return string("clock");
+            case ISFValType_OscMessage:
+                return string("oscMessage");
             case ISFValType_Point2D:
                 return string("point2D");
             case ISFValType_Color:
@@ -75,6 +78,7 @@ namespace ISF {
         ISFValType  _type = ISFValType_None;
         ISFValUnion _val = { false };
         ci::gl::Texture2dRef _imageVal = nullptr;
+        ci::osc::Message oscMessage;
 //        ci::gl::FboRef _mFbo;
     public :
         //    Returns a null-type ISFVal
@@ -137,6 +141,12 @@ namespace ISF {
         _type(inType)
         {
             resize(size, antiAliazing);
+        }
+        
+        ISFVal(const ISFValType & inType, ci::osc::Message val) :
+        _type(inType)
+        {
+            oscMessage = val;
         }
         
         void resize(ci::ivec2 size = ci::ivec2(1, 1), bool antiAliazing = false){
@@ -250,6 +260,16 @@ namespace ISF {
             return nullptr;
         }
         
+        
+        ci::osc::Message getOscMessage(){
+            return  oscMessage;
+        }
+        void setOscMessage(ci::osc::Message val){
+            if (isOscMessageVal()){
+                oscMessage = val;
+            }
+        }
+        
         //!    Returns null if the receiver's value type cannot be represented as an image, otherwise it returns the image buffer (almost certainly a GL texture) that is the receiver's value.
 //        ci::gl::FboRef frameBuffer(){
 //            if (_type==ISFValType_Image)
@@ -312,6 +332,7 @@ namespace ISF {
         //!    Returns true if the receiver is a float value.
         bool isFloatVal() const { return (_type == ISFValType_Float ||_type == ISFValType_Clock); }
         bool isClockVal() const { return (_type == ISFValType_Clock); }
+        bool isOscMessageVal() const { return (_type == ISFValType_OscMessage); }
         //!    Returns true if the receiver is a point2D value.
         bool isPoint2DVal() const { return (_type == ISFValType_Point2D); }
         //!    Returns true if the receiver is a color value.
@@ -338,6 +359,9 @@ namespace ISF {
     }
     ISFVal ISFLongVal(const int32_t & n)    {
         return ISFVal(ISFValType_Long, n);
+    }
+    ISFVal ISFOscMessageVal(const  ci::osc::Message & oscMessage)    {
+        return ISFVal(ISFValType_OscMessage, oscMessage);
     }
     ISFVal ISFFloatVal(const double & n)    {
         return ISFVal(ISFValType_Float, n);

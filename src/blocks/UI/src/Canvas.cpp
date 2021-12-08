@@ -222,7 +222,11 @@ ViewRef Canvas::addSubViewPosition( ViewRef subView, Direction direction, Alignm
 {
 	if( !reAdd ) addSubView( subView );
 
+    
 	ViewRef lastAdded = mLastAddedSubViews.empty() ? nullptr : mLastAddedSubViews.back();
+//    if(!!lastAdded){
+//        cout<<lastAdded->getName()<<endl;
+//    }
 	Rectf viewRect = subView->getBounds( true );
 	if( lastAdded != NULL ) {
 		vec2 lastOrigin = lastAdded->getOrigin( false );

@@ -51,6 +51,15 @@ namespace ISF {
             _audioInputs.insert(_audioInputs.end(), other->audioInputs().begin(), other->audioInputs().end());
             _imageImports.insert(_imageImports.end(), other->imageImports().begin(), other->imageImports().end());
         }
+        void clear(){
+            lock_guard<recursive_mutex>        lock(_propLock);
+            _inputs.clear();
+            _imageInputs.clear();
+            _outputs.clear();
+            _imageOutputs.clear();
+            _audioInputs.clear();
+            _imageImports.clear();
+        }
         
         
         //!    Returns a std::vector of ISFAttrRef instances describing only the receiver's image inputs.
@@ -82,6 +91,25 @@ namespace ISF {
             }
             return attr;
         }
+        
+        void rmAttr(std::string attrName){
+            auto rmFrom = [](std::string name, std::vector<ISFAttrRef> & container){
+                for(auto it = container.begin(); it != container.end() ; ){
+                    if((*it)->name() == name){
+                        it = container.erase(it);
+                    }else{
+                        it++;
+                    }
+                }
+            };
+            
+            rmFrom(attrName, _inputs);
+            rmFrom(attrName, _imageInputs);
+            rmFrom(attrName, _outputs);
+            rmFrom(attrName, _imageOutputs);
+            rmFrom(attrName, _audioInputs);
+            rmFrom(attrName, _imageImports);
+        }
         ISFAttrRef getInput(const std::string & n){
             lock_guard<recursive_mutex>        lock(_propLock);
             for (const auto & attribRefIt : _inputs)    {
@@ -104,6 +132,11 @@ namespace ISF {
             auto res = getInput(n);
             if(!res) res = getOutput(n);
             return res;
+        }
+        
+        bool has(const std::string & n){
+            lock_guard<recursive_mutex>        lock(_propLock);
+            return !!getInput(n) || !!getOutput(n);
         }
         
         //!    Returns the GLBufferRef for the passed key.  Checks all attributes/inputs as well as persistent and temp buffers.

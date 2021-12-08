@@ -24,7 +24,17 @@ namespace reza {
                 type = PARAMETER_TYPE::FLOAT | (attr->IO() == ISF::ISFAttr_IO::_IN ? PLUG_TYPE::_IN : PLUG_TYPE::_OUT);
                 OrageSliderT<double>::Format sFormat = OrageSliderT<double>::Format().value(true).precision(2).label(true).crossFader(true);
                 
+               
+                
+                
                 sliderRef = OrageSliderT<double>::create(attr->name(), attr->currentVal().getDoubleValPtr(), attr->minVal().getDoubleVal(), attr->maxVal().getDoubleVal(), sFormat);
+                
+                attr->addEventListener([this, attr](Evt evt){
+                    if (evt.is("change")) {
+                        sliderRef->setValue(attr->currentVal().getDoubleVal());
+                    }
+                });
+                
                 sliderRef->setCallback([&, attr](double val){
                     attr->update();
                 });

@@ -45,7 +45,10 @@ namespace ORAGE {
             float dTime;
             vec4 date;
             bool _ready = false;
+            
         protected :
+            EvtSlot parameterPlugHandler;
+            
             virtual void UIReady() {
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
                 
@@ -64,7 +67,8 @@ namespace ORAGE {
             }
             
             Module(string nameId) :
-            EvtModuleHandler()
+                EvtModuleHandler(),
+                parameterPlugHandler([&](Evt evt){})
             {
                 int index = nameId.find_last_of(".");
                 if (index != string::npos){
@@ -109,6 +113,10 @@ namespace ORAGE {
                                 });
                             }
                         }
+                        
+                        for(auto [key, parameter] : UI->getParameters()){
+                            parameter->addEventListener(parameterPlugHandler);
+                        }
                     }
                 });
             }
@@ -116,12 +124,16 @@ namespace ORAGE {
             TYPES moduleType;
             OrageCanvasRef UI;
             
-            Module * addEventListenerOnParameters(EvtSlot slot) {
-                for(auto [key, parameter] : UI->getParameters()){
-                    parameter->addEventListener(slot);
-                }
-                return this;
+            void onParameterPlug(EvtSlot slot){
+                parameterPlugHandler = slot;
             }
+//
+//            Module * addEventListenerOnParameters(EvtSlot slot) {
+//                for(auto [key, parameter] : UI->getParameters()){
+//                    parameter->addEventListener(slot);
+//                }
+//                return this;
+//            }
             bool isReady(){
                 return _ready;
             }
