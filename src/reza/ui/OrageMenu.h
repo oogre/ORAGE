@@ -20,11 +20,13 @@ namespace reza {
         using namespace ORAGE::COMPONENTS;
         using namespace ORAGE::COMMON;
         
-        typedef MenuEvent<ci::fs::path> EvtMenu;
-        typedef EventTemplate<EvtMenu> EvtMenuHandler;
-        typedef boost::signals2::signal<void(EvtMenu)>::slot_type EvtMenuSlot;
+        typedef EventTemplate<BaseEvent> BaseEventHandler;
+        typedef boost::signals2::signal<void(BaseEvent)>::slot_type BaseEventSlot;
         
-        class OrageMenu : public SuperCanvas, public EvtMenuHandler{
+        typedef std::function<void(ORAGE::COMPONENTS::TYPES, vec2)> CALLBACK;
+        typedef std::vector<std::pair<std::string, CALLBACK>> SUB_ENTRIES;
+        
+        class OrageMenu : public SuperCanvas, public BaseEventHandler{
             typedef shared_ptr<OrageMenu> OrageMenuRef;
             ci::signals::Connection resizeHandler;
             vector<ViewRef> btns;
@@ -32,7 +34,7 @@ namespace reza {
             
             OrageMenu(const WindowRef &window) :
                 SuperCanvas("", window),
-                EvtMenuHandler()
+                BaseEventHandler()
             {
                 disable();
                 enable();
@@ -53,76 +55,41 @@ namespace reza {
             static OrageMenuRef create(){
                 return OrageMenuRef(new OrageMenu(ci::app::getWindow()));
             }
-            virtual void setup() override {
-                SuperCanvas::setup();
-                
-                setColorBack(ColorA(1, 1, 1, 0.25));
-                setColorBounds(ColorA(1, 1, 1, 1));
-                setSize(vec2(getWindowWidth(), 25));
-                
-                map<string, fs::directory_entry> sorted_by_name;
-                for (const auto & entry : fs::directory_iterator(getAssetPath("modules").string())){
-                    sorted_by_name[entry.path().filename().string()] = entry;
-                }
-                
-                for (const auto & [key, entry] : sorted_by_name){
-                    if(entry.is_directory()){
-                        Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
-                        OrageMenuItemRef btn = OrageMenuItem::create(entry.path().filename().string(), format);
-                        btn->setSize(vec2(100, 25));
-                        if(btns.size()==0) addSubView(btn);
-                        else addSubViewEastOf(btn, btns.back()->getName());
-                        addSubViewToHeader(btn);
-                        btns.push_back(btn);
-                        for (const auto & subEntry : fs::directory_iterator(entry.path())){
-                            if(subEntry.is_regular_file()){
-                                
-                                string name = "";
-                                string ext = "";
-                                ORAGE::COMPONENTS::TYPES currentType = pathToComponentType(subEntry.path(), &name, &ext);
-                                if(ORAGE::COMPONENTS::TYPES::NONE == currentType) continue;
-                                
-                                vec2 origin = btn->getOrigin();
-                                
-                                btn->addEntry(name)->setCallback([&, subEntry, currentType, origin, btn](bool a){
-                                    if(!a){
-                                        EvtMenuHandler::eventTrigger({
-                                            "menu", subEntry.path(), currentType, origin
-                                        });
-                                        btn->subMenu->setVisible(false);
-                                    }
-                                });
-                                ORAGE::COMPONENTS::Conf conf = ORAGE::COMPONENTS::Config::getConfig(currentType);
-                                btn->setColorBack(conf.bgColor);
-                                btn->subMenu->setColorBack(conf.bgColor);
-                            }
-                        }
-                    }
-                }
-                
-                ORAGE::COMPONENTS::TYPES currentType = ORAGE::COMPONENTS::TYPES::INPUT;
+            
+            void addElement(std::string name, SUB_ENTRIES subEntries){
                 Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
-                OrageMenuItemRef btn = OrageMenuItem::create("INPUT", format);
+                OrageMenuItemRef btn = OrageMenuItem::create(name, format);
                 btn->setSize(vec2(100, 25));
                 if(btns.size()==0) addSubView(btn);
                 else addSubViewEastOf(btn, btns.back()->getName());
+                addSubViewToHeader(btn);
                 btns.push_back(btn);
-                vec2 origin = btn->getOrigin();
-                
-                btn->addEntry("SyphonSpout")->setCallback([&, currentType, origin, btn](bool a){
-                    if(!a){
-                        EvtMenuHandler::eventTrigger({
-                            "menu", "SyphonSpout", currentType, origin
-                        });
-                        btn->subMenu->setVisible(false);
-                    }
-                });
-                ORAGE::COMPONENTS::Conf conf = ORAGE::COMPONENTS::Config::getConfig(currentType);
-                btn->setColorBack(conf.bgColor);
-                btn->subMenu->setColorBack(conf.bgColor);
-                
-                
+                for (const auto & subEntry : subEntries){
+                    string name = "";
+                    string ext = "";
+                    ORAGE::COMPONENTS::TYPES currentType = pathToComponentType(fs::path(subEntry.first), &name, &ext);
+                    if(ORAGE::COMPONENTS::TYPES::NONE == currentType) continue;
+                    btn->addEntry(name)->setCallback([&, subEntry, currentType, btn](bool a){
+                        if(!a){
+                            subEntry.second(currentType, btn->getOrigin());
+                            btn->subMenu->setVisible(false);
+                        }
+                    });
+                    ORAGE::COMPONENTS::Conf conf = ORAGE::COMPONENTS::Config::getConfig(currentType);
+                    btn->setColorBack(conf.bgColor);
+                    btn->subMenu->setColorBack(conf.bgColor);
+                }
             }
+            
+            virtual void setup() override {
+                SuperCanvas::setup();
+                setColorBack(ColorA(1, 1, 1, 0.25));
+                setColorBounds(ColorA(1, 1, 1, 1));
+                setSize(vec2(getWindowWidth(), 25));
+                ci::fs::path path;
+                BaseEventHandler::eventTrigger({ "ready" });
+            }
+            
             virtual void draw() override {
                 SuperCanvas::draw();
                 if(isMinified()){

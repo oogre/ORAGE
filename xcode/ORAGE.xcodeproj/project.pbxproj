@@ -81,6 +81,9 @@
 		883D2F55275954580080C8A7 /* orage.icns in Resources */ = {isa = PBXBuildFile; fileRef = 883D2F54275954580080C8A7 /* orage.icns */; };
 		8845DF7E272BD3B6002A3253 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 8845DF7D272BD3B6002A3253 /* duktape.c */; };
 		88776C15273C84EA00DD62C0 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 88776C13273C84EA00DD62C0 /* readme.txt */; };
+		888DA3EF27601BD8002166FB /* SpoutLibrary.lib in Frameworks */ = {isa = PBXBuildFile; fileRef = 888DA3EC27601BD8002166FB /* SpoutLibrary.lib */; };
+		888DA3F027601BD8002166FB /* SpoutLibrary.dll in Resources */ = {isa = PBXBuildFile; fileRef = 888DA3ED27601BD8002166FB /* SpoutLibrary.dll */; };
+		888DA3F727601C4F002166FB /* Osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 888DA3F627601C4F002166FB /* Osc.cpp */; };
 		88F37DA9271899AB0095955A /* Dialer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D62271899AB0095955A /* Dialer.cpp */; };
 		88F37DAA271899AB0095955A /* Range.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D63271899AB0095955A /* Range.cpp */; };
 		88F37DAB271899AB0095955A /* ColorPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D64271899AB0095955A /* ColorPicker.cpp */; };
@@ -213,6 +216,14 @@
 		88776C11273C83B600DD62C0 /* ISFStringUtils_2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFStringUtils_2.h; sourceTree = "<group>"; };
 		88776C13273C84EA00DD62C0 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
 		88776C14273C84EA00DD62C0 /* exprtk.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = exprtk.hpp; sourceTree = "<group>"; };
+		888DA3B7276014D3002166FB /* ModuleOscServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscServer.h; sourceTree = "<group>"; };
+		888DA3B827601624002166FB /* ModuleOscData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscData.h; sourceTree = "<group>"; };
+		888DA3EC27601BD8002166FB /* SpoutLibrary.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = SpoutLibrary.lib; sourceTree = "<group>"; };
+		888DA3ED27601BD8002166FB /* SpoutLibrary.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = SpoutLibrary.dll; sourceTree = "<group>"; };
+		888DA3EE27601BD8002166FB /* SpoutLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpoutLibrary.h; sourceTree = "<group>"; };
+		888DA3F527601C4F002166FB /* Osc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Osc.h; sourceTree = "<group>"; };
+		888DA3F627601C4F002166FB /* Osc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Osc.cpp; sourceTree = "<group>"; };
+		888DA3F827602D96002166FB /* ParameterOsc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterOsc.h; sourceTree = "<group>"; };
 		88AC2C242743F51F00A2B39A /* ISFAttrWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFAttrWrapper.h; sourceTree = "<group>"; };
 		88F37D60271899AB0095955A /* Fps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fps.h; sourceTree = "<group>"; };
 		88F37D61271899AB0095955A /* ColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPicker.h; sourceTree = "<group>"; };
@@ -339,6 +350,7 @@
 				00B784B30FF439BC000DE1D7 /* Accelerate.framework in Frameworks */,
 				00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */,
 				00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */,
+				888DA3EF27601BD8002166FB /* SpoutLibrary.lib in Frameworks */,
 				00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */,
 				880E03B7273ECE550005A1AF /* Syphon.framework in Frameworks */,
 				00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */,
@@ -352,6 +364,8 @@
 		01B97315FEAEA392516A2CEA /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				888DA3F127601C4F002166FB /* OSC */,
+				888DA3EB27601BD8002166FB /* Spout */,
 				880E03A5273ECE400005A1AF /* Syphon */,
 				8845DF7A272BD3B6002A3253 /* Ducktape */,
 				88F37D5D271899AB0095955A /* UI */,
@@ -519,6 +533,77 @@
 			path = exprtk;
 			sourceTree = "<group>";
 		};
+		888DA3B427601493002166FB /* video */ = {
+			isa = PBXGroup;
+			children = (
+				88F37DD927189D0B0095955A /* ModuleISF.h */,
+				880E03BC273EDDA10005A1AF /* ModuleSyphonSpout.h */,
+				887373DB274536F00025E2F0 /* ModuleVideo.h */,
+			);
+			path = video;
+			sourceTree = "<group>";
+		};
+		888DA3B5276014A5002166FB /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				888DA3B6276014B0002166FB /* OSC */,
+				885EA28D272989A100F2E0EB /* ModuleController.h */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		888DA3B6276014B0002166FB /* OSC */ = {
+			isa = PBXGroup;
+			children = (
+				888DA3B827601624002166FB /* ModuleOscData.h */,
+				888DA3B7276014D3002166FB /* ModuleOscServer.h */,
+			);
+			path = OSC;
+			sourceTree = "<group>";
+		};
+		888DA3EB27601BD8002166FB /* Spout */ = {
+			isa = PBXGroup;
+			children = (
+				888DA3EC27601BD8002166FB /* SpoutLibrary.lib */,
+				888DA3ED27601BD8002166FB /* SpoutLibrary.dll */,
+				888DA3EE27601BD8002166FB /* SpoutLibrary.h */,
+			);
+			path = Spout;
+			sourceTree = "<group>";
+		};
+		888DA3F127601C4F002166FB /* OSC */ = {
+			isa = PBXGroup;
+			children = (
+				888DA3F227601C4F002166FB /* src */,
+			);
+			path = OSC;
+			sourceTree = "<group>";
+		};
+		888DA3F227601C4F002166FB /* src */ = {
+			isa = PBXGroup;
+			children = (
+				888DA3F327601C4F002166FB /* cinder */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		888DA3F327601C4F002166FB /* cinder */ = {
+			isa = PBXGroup;
+			children = (
+				888DA3F427601C4F002166FB /* osc */,
+			);
+			path = cinder;
+			sourceTree = "<group>";
+		};
+		888DA3F427601C4F002166FB /* osc */ = {
+			isa = PBXGroup;
+			children = (
+				888DA3F527601C4F002166FB /* Osc.h */,
+				888DA3F627601C4F002166FB /* Osc.cpp */,
+			);
+			path = osc;
+			sourceTree = "<group>";
+		};
 		88F37D5D271899AB0095955A /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -627,6 +712,7 @@
 				88F37DCC27189A230095955A /* ParameterFloat.h */,
 				88F37DCE27189A230095955A /* ParameterTexture.h */,
 				88F37DCF27189A230095955A /* ParameterBase.h */,
+				888DA3F827602D96002166FB /* ParameterOsc.h */,
 				886CFFE527397D2D00062EFF /* ParameterClock.h */,
 			);
 			path = ui;
@@ -655,12 +741,10 @@
 		88F37DD427189A230095955A /* components */ = {
 			isa = PBXGroup;
 			children = (
+				888DA3B5276014A5002166FB /* controller */,
+				888DA3B427601493002166FB /* video */,
 				88F37DD527189A230095955A /* Module.h */,
 				88F3E2F627285D6800B5731B /* ModuleTypes.h */,
-				885EA28D272989A100F2E0EB /* ModuleController.h */,
-				88F37DD927189D0B0095955A /* ModuleISF.h */,
-				880E03BC273EDDA10005A1AF /* ModuleSyphonSpout.h */,
-				887373DB274536F00025E2F0 /* ModuleVideo.h */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -761,6 +845,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88776C15273C84EA00DD62C0 /* readme.txt in Resources */,
+				888DA3F027601BD8002166FB /* SpoutLibrary.dll in Resources */,
 				883D2F55275954580080C8A7 /* orage.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -827,6 +912,7 @@
 				880E03B4273ECE410005A1AF /* syphonServer.mm in Sources */,
 				88F37DB2271899AB0095955A /* Graph.cpp in Sources */,
 				88F37DB6271899AB0095955A /* Waveform.cpp in Sources */,
+				888DA3F727601C4F002166FB /* Osc.cpp in Sources */,
 				88F37DBC271899AB0095955A /* Radio.cpp in Sources */,
 				88F37DAC271899AB0095955A /* Button.cpp in Sources */,
 				88F37DA9271899AB0095955A /* Dialer.cpp in Sources */,

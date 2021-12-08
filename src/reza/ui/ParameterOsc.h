@@ -1,12 +1,12 @@
 //
-//  ParameterClock.h
+//  ParameterOsc.h
 //  ORAGE
 //
 //  Created by Vincent Evrard on 8/11/21.
 //
 
-#ifndef ParameterClock_h
-#define ParameterClock_h
+#ifndef ParameterOsc_h
+#define ParameterOsc_h
 
 #include "ParameterBase.h"
 #include "ISFAttr.h"
@@ -15,12 +15,12 @@ namespace reza {
     namespace ui {
         using namespace ISF;
         
-        class ParameterClock : public ParameterBase {
-            typedef std::shared_ptr<ParameterClock> ParameterClockRef;
-            ParameterClock( ISF::ISFAttrRef & attr ) :
+        class ParameterOsc : public ParameterBase {
+            typedef std::shared_ptr<ParameterOsc> ParameterOscRef;
+            ParameterOsc( ISF::ISFAttrRef & attr ) :
                 ParameterBase( attr->name() )
             {
-                type = PARAMETER_TYPE::CLOCK | (attr->IO() == ISF::ISFAttr_IO::_IN ? PLUG_TYPE::_IN : PLUG_TYPE::_OUT);
+                type = PARAMETER_TYPE::OSC | (attr->IO() == ISF::ISFAttr_IO::_IN ? PLUG_TYPE::_IN : PLUG_TYPE::_OUT);
                 buttonRef = Button::create( attr->name(), false, Button::Format().label(false).circle(true));
                 auto bgColor = getCableColor(true);
                 bgColor.a = 1.0f;
@@ -37,12 +37,12 @@ namespace reza {
             }
         public :
             
-            static ParameterClockRef create( ISF::ISFAttrRef & attr )
+            static ParameterOscRef create( ISF::ISFAttrRef & attr )
             {
-                return ParameterClockRef( new ParameterClock( attr ) );
+                return ParameterOscRef( new ParameterOsc( attr ) );
             }
             
-            virtual ~ParameterClock(){
+            virtual ~ParameterOsc(){
                 
             }
             
@@ -51,8 +51,8 @@ namespace reza {
                 buttonRef->setVisible(visible);
             }
             ButtonRef buttonRef;
-        };//ParameterClock
-        typedef std::shared_ptr<ParameterClock> ParameterClockRef;
+        };//ParameterOsc
+        typedef std::shared_ptr<ParameterOsc> ParameterOscRef;
     }//ui {
 }//reza {
 #endif /* ParameterClock_h */

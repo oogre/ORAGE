@@ -27,7 +27,8 @@ namespace reza {
             NONE = 0x00,
             TEXTURE = 0x01,
             FLOAT = 0x03,
-            CLOCK = 0x07
+            CLOCK = 0x07,
+            OSC = 0x08
         };
         enum PLUG_TYPE {
             _IN = 0x00,

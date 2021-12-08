@@ -57,9 +57,53 @@ public:
             modules = ModuleManager::create();
         }
         menu = OrageMenu::create();
-        menu->addEventListener([&](EvtMenu evt){
-            if(evt.is("menu")){
-                modules->add(evt.target, evt.origin, evt.moduleType);
+        
+        menu->addEventListener([&](BaseEvent evt){
+            if(evt.is("ready")){
+                map<string, fs::directory_entry> sorted_by_name;
+                for (const auto & entry : fs::directory_iterator(getAssetPath("modules").string())){
+                    sorted_by_name[entry.path().filename().string()] = entry;
+                }
+                for (const auto & [key, entry] : sorted_by_name){
+                    if(entry.is_directory()){
+                        SUB_ENTRIES subEntries = SUB_ENTRIES();
+                        for (const auto & subEntry : fs::directory_iterator(entry.path())){
+                            if(subEntry.is_regular_file()){
+                                subEntries.push_back(
+                                    make_pair(
+                                        subEntry.path().filename().string(),
+                                        [&, subEntry](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                            modules->add(subEntry.path(), pos, type);
+                                        }
+                                    )
+                                );
+                            }
+                        }
+                        menu->addElement(entry.path().filename().string(), subEntries);
+                    }
+                }
+                menu->addElement("INPUT", {
+                    make_pair(
+                              "SyphonSpout.in.fs",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "SyphonSpout.in.fs", pos, type);
+                              }
+                    )
+                });
+                menu->addElement("OSC", {
+                    make_pair(
+                              "server.osc",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "server.osc", pos, type);
+                              }
+                              ),
+                    make_pair(
+                              "data.osc",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "data.osc", pos, type);
+                              }
+                              )
+                });
             }
         });
         enableVerticalSync( false );

@@ -12,6 +12,7 @@
 #include "ParameterFloat.h"
 #include "ParameterTexture.h"
 #include "ParameterClock.h"
+#include "ParameterOsc.h"
 #include "OrageButton.h"
 #include "EventTemplate.h"
 #include "ISFAttr.h"
@@ -88,32 +89,62 @@ namespace reza {
             }
             
             
-            ParameterClockRef addClock(ISF::ISFAttrRef & attr)
+            ParameterOscRef addOsc(ISF::ISFAttrRef & attr)
             {
-                ParameterClockRef param = ParameterClock::create(attr);
-
+                ParameterOscRef param = ParameterOsc::create(attr);
+                
                 auto btn = param->buttonRef;
                 btn->setSize(vec2(15));
                 vec2 btnClutter = vec2(
-                    btn->getWidth() + btn->getPadding().mLeft + btn->getPadding().mRight,
-                    btn->getHeight() + btn->getPadding().mTop + btn->getPadding().mBottom
-                );
-
+                                       btn->getWidth() + btn->getPadding().mLeft + btn->getPadding().mRight,
+                                       btn->getHeight() + btn->getPadding().mTop + btn->getPadding().mBottom
+                                       );
+                
                 addSubViewDown(btn);
                 
                 if(attr->isOutput()){
                     btn->setOrigin(vec2(
-                        getWidth() - btnClutter.x - getPadding().mRight,
-                        btn->getOrigin(false).y
-                    ));
+                                        getWidth() - btnClutter.x - getPadding().mRight,
+                                        btn->getOrigin(false).y
+                                        ));
                 } else {
                     btn->setOrigin(vec2(
-                        btn->getOrigin(false).x + getPadding().mRight + getPadding().mRight,
-                        btn->getOrigin(false).y
-                    ));
+                                        btn->getOrigin(false).x + getPadding().mRight + getPadding().mRight,
+                                        btn->getOrigin(false).y
+                                        ));
                 }
                 setPlacer(btn);
-
+                parameters[attr->name()] = param;
+                return param;
+            }
+            
+            
+            ParameterClockRef addClock(ISF::ISFAttrRef & attr)
+            {
+                ParameterClockRef param = ParameterClock::create(attr);
+                
+                auto btn = param->buttonRef;
+                btn->setSize(vec2(15));
+                vec2 btnClutter = vec2(
+                                       btn->getWidth() + btn->getPadding().mLeft + btn->getPadding().mRight,
+                                       btn->getHeight() + btn->getPadding().mTop + btn->getPadding().mBottom
+                                       );
+                
+                addSubViewDown(btn);
+                
+                if(attr->isOutput()){
+                    btn->setOrigin(vec2(
+                                        getWidth() - btnClutter.x - getPadding().mRight,
+                                        btn->getOrigin(false).y
+                                        ));
+                } else {
+                    btn->setOrigin(vec2(
+                                        btn->getOrigin(false).x + getPadding().mRight + getPadding().mRight,
+                                        btn->getOrigin(false).y
+                                        ));
+                }
+                setPlacer(btn);
+                
                 parameters[attr->name()] = param;
                 return param;
             }

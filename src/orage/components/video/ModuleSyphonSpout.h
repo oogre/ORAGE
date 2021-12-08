@@ -63,7 +63,7 @@ namespace ORAGE {
                 
                 displayMorePannel(false);
             }
-            public :
+        public :
             virtual ~ModuleSyphonSpout(){
                 for(auto handler : signalDrawHandlers){
                     handler.disconnect();
