@@ -31,8 +31,11 @@ namespace ORAGE {
                 A(A->isInput() ? A : B),
                 B(A->isInput() ? B : A)
             {
-                this->A->plugTo(this->B);
-                this->B->plugTo(this->A);
+//                this->A->plugTo(this->B);
+//                this->B->plugTo(this->A);
+                
+                conA = this->A->addEventListener(makeCallback(this->B));
+                conB = this->B->addEventListener(makeCallback(this->A));
             }
             Cable(ISFAttrRef A, vec2* mousePos) :
                 mousePos(mousePos),
@@ -41,9 +44,23 @@ namespace ORAGE {
                 
             }
             
+            std::function<void(Evt)> makeCallback(ISFAttrRef plug){
+                return [plug](Evt evt){
+                    if(evt.is("change")){
+                        if(evt.isValid(plug)){
+                            evt.blacklist(plug);
+                            plug->eventTrigger(evt);
+                        }
+                    }
+                };
+            }
+            
         public :
             ISFAttrRef A;
             ISFAttrRef B;
+            
+            boost::signals2::connection conA;
+            boost::signals2::connection conB;
             bool mouseOver;
             bool contains(ISFAttrRef C){
                 return A == C || B == C;
@@ -56,8 +73,12 @@ namespace ORAGE {
             }
             virtual ~Cable(){
                 if(!!B){
-                    A->unplugTo(B);
-                    B->unplugTo(A);
+//                    A->unplugTo(B);
+//                    B->unplugTo(A);
+                    
+                    conA.disconnect();
+                    conB.disconnect();
+                    
                 }
             }
             

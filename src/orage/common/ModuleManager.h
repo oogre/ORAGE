@@ -12,7 +12,8 @@
 #include "ModuleController.h"
 #include "ModuleSyphonSpout.h"
 #include "ModuleOscServer.h"
-#include "ModuleOscData.h"
+#include "ModuleOscDataIn.h"
+#include "ModuleOscDataOut.h"
 #include "cables.h"
 #include "ModuleTypes.h"
 #include "OrageFileTools.h"
@@ -152,8 +153,11 @@ namespace ORAGE {
                         if(name == "server"){
                             module = ModuleOscServer::create(name, type);
                         }
-                        if(name == "data"){
-                            module = ModuleOscData::create(name, type);
+                        if(name == "receiver"){
+                            module = ModuleOscDataIn::create(name, type);
+                        }
+                        if(name == "sender"){
+                            module = ModuleOscDataOut::create(name, type);
                         }
                     break;
                     default :

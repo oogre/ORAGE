@@ -113,6 +113,25 @@ namespace ISF {
                 _currentVal = ISF::ISFVal(ISFValType_Image, ci::vec2(1, 1));
                 _defaultVal = ISF::ISFVal(ISFValType_Image, ci::vec2(1, 1));
             }
+            
+            addEventListener([this](Evt evt){
+                if (evt.is("change") && this != evt.target.get()) {
+                    if(isFloat() && evt.target->isFloat()){
+                        double tMin = evt.target->minVal().getDoubleVal();
+                        double tMax = evt.target->maxVal().getDoubleVal();
+                        double tVal = evt.target->currentVal().getDoubleVal();
+                        
+                        double cMin = minVal().getDoubleVal();
+                        double cMax = maxVal().getDoubleVal();
+                        
+                        currentVal().setDoubleVal(ci::lerp(cMin, cMax, InverseLerp(tMin, tMax, tVal)));
+                    }
+                    else if(isOscMessage() && evt.target->isOscMessage()){
+                        currentVal().setOscMessage(evt.target->currentVal().getOscMessage());
+                    }
+                }
+            });
+            
         }
         virtual ~ISFAttr(){
             
@@ -260,6 +279,15 @@ namespace ISF {
         bool isInput(){ return _io == ISF::ISFAttr_IO::_IN; }
         bool isOutput(){ return _io == ISF::ISFAttr_IO::_OUT; }
         void plugTo (ISFAttrRef other){
+//            addEventListener([other](Evt evt){
+//                if(evt.is("change")){
+//                    if(evt.hasToPropagateTo(other)){
+//                        evt.add(other);
+//                        other->eventTrigger(evt);
+//                    }
+//                }
+//            });
+            /*
             if (isFloat()){
                 pluged.push_back(other);
             }
@@ -278,9 +306,11 @@ namespace ISF {
                 }else{
                     pluged.push_back(other);
                 }
-            }
+            }*/
+            
         }
         void unplugTo (ISFAttrRef other){
+            /*
             for(auto it = pluged.begin(); it != pluged.end() ; ){
                 if((*it) == other){
                     it = pluged.erase(it);
@@ -298,6 +328,7 @@ namespace ISF {
             else if(isOscMessage()){
                 _currentVal.setOscMessage(ci::osc::Message());
             }
+             */
         }
         
         void update(){

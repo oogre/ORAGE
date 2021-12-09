@@ -217,13 +217,14 @@
 		88776C13273C84EA00DD62C0 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
 		88776C14273C84EA00DD62C0 /* exprtk.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = exprtk.hpp; sourceTree = "<group>"; };
 		888DA3B7276014D3002166FB /* ModuleOscServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscServer.h; sourceTree = "<group>"; };
-		888DA3B827601624002166FB /* ModuleOscData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscData.h; sourceTree = "<group>"; };
 		888DA3EC27601BD8002166FB /* SpoutLibrary.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = SpoutLibrary.lib; sourceTree = "<group>"; };
 		888DA3ED27601BD8002166FB /* SpoutLibrary.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = SpoutLibrary.dll; sourceTree = "<group>"; };
 		888DA3EE27601BD8002166FB /* SpoutLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpoutLibrary.h; sourceTree = "<group>"; };
 		888DA3F527601C4F002166FB /* Osc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Osc.h; sourceTree = "<group>"; };
 		888DA3F627601C4F002166FB /* Osc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Osc.cpp; sourceTree = "<group>"; };
 		888DA3F827602D96002166FB /* ParameterOsc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterOsc.h; sourceTree = "<group>"; };
+		88A352CA2761415300D64A6D /* ModuleOscDataOut.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscDataOut.h; sourceTree = "<group>"; };
+		88A352CB2761415300D64A6D /* ModuleOscDataIn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscDataIn.h; sourceTree = "<group>"; };
 		88AC2C242743F51F00A2B39A /* ISFAttrWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFAttrWrapper.h; sourceTree = "<group>"; };
 		88F37D60271899AB0095955A /* Fps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fps.h; sourceTree = "<group>"; };
 		88F37D61271899AB0095955A /* ColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPicker.h; sourceTree = "<group>"; };
@@ -555,7 +556,8 @@
 		888DA3B6276014B0002166FB /* OSC */ = {
 			isa = PBXGroup;
 			children = (
-				888DA3B827601624002166FB /* ModuleOscData.h */,
+				88A352CB2761415300D64A6D /* ModuleOscDataIn.h */,
+				88A352CA2761415300D64A6D /* ModuleOscDataOut.h */,
 				888DA3B7276014D3002166FB /* ModuleOscServer.h */,
 			);
 			path = OSC;

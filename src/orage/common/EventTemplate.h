@@ -49,12 +49,22 @@ namespace ORAGE {
         
         template<typename T>
         struct Event : public BaseEvent{
-            public :
-            shared_ptr<T> target;
-            Event(string type, shared_ptr<T> target) :
+            typedef std::shared_ptr<T> Target;
+            typedef std::vector<Target> Blacklist;
+        public :
+            Target target;
+            Blacklist _blackList;
+            Event(string type, Target target, Blacklist _blacklist = std::vector<shared_ptr<T>>()) :
             BaseEvent(type),
-            target(target)
+            target(target),
+            _blackList(_blackList)
             {
+            }
+            void blacklist(Target elem){
+                _blackList.push_back(elem);
+            }
+            bool isValid(Target other){
+                return find(_blackList.begin(), _blackList.end(), other) == _blackList.end();
             }
         };//struct Event<T>
         
@@ -102,15 +112,15 @@ namespace ORAGE {
             virtual ~EventTemplate(){
                 signal.disconnect_all_slots();
             }
-            virtual bool addEventListener(EventSignalSlot slot) {
-                signal.connect(slot);
-                return true;
+            virtual  boost::signals2::connection addEventListener(EventSignalSlot slot) {
+                return signal.connect(slot);
             }
             template<typename Callable>
             bool removeEventListener(Callable slot) {
                 signal.disconnect(slot);
                 return true;
             }
+            
             virtual bool eventTrigger(E event) {
                 signal(event);
                 return true;

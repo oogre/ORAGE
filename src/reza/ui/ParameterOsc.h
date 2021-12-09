@@ -34,6 +34,7 @@ namespace reza {
                     }
                 });
                 attr->setPlug(buttonRef);
+                
             }
         public :
             

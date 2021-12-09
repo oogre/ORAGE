@@ -38,7 +38,7 @@ public:
         freopen("CONOUT$", "w", stderr);
     #endif
         settings->setTitle("ORAGE - VISUAL MODULAR SYNTHESIS");
-//        settings->setWindowSize(1280, 720);
+        settings->setWindowSize(1280, 480);
 
         auto args = settings->getCommandLineArgs();
         ORAGEApp::args.insert(ORAGEApp::args.end(), args.begin()+1, args.end());
@@ -98,9 +98,15 @@ public:
                               }
                               ),
                     make_pair(
-                              "data.osc",
+                              "receiver.osc",
                               [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
-                                  modules->add( "data.osc", pos, type);
+                                  modules->add( "receiver.osc", pos, type);
+                              }
+                              ),
+                    make_pair(
+                              "sender.osc",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "sender.osc", pos, type);
                               }
                               )
                 });

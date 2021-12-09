@@ -154,6 +154,10 @@ namespace ISF {
             return nullptr;
         }
         
+        bool isEmpty(){
+            return  !(_inputs.size()>0 || _imageInputs.size()>0 || _outputs.size()>0 || _imageOutputs.size()>0 || _audioInputs.size()>0 || _imageImports.size()>0) ;
+        }
+        
     };//ISFAttrWrapper
     typedef std::shared_ptr<ISFAttrWrapper> ISFAttrWrapperRef;
 }//ISF
