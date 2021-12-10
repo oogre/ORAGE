@@ -75,7 +75,7 @@ namespace ORAGE {
                     for(int i = 0 ; i < typeTag.length() ; i++){
                         destroyLater.push_back(address+"."+to_string(i));
                         UI->getParameter(address+"."+to_string(i))->eventTrigger({
-                            "unplug", _attributes->get(address+"."+to_string(i))
+                            "rmplug", _attributes->get(address+"."+to_string(i))
                         });
                     }
                     inAttr->removeEventListener(boost::bind(&ModuleOscDataIn::receiveHandler, this, _1));

@@ -31,11 +31,15 @@ namespace ORAGE {
                 A(A->isInput() ? A : B),
                 B(A->isInput() ? B : A)
             {
-//                this->A->plugTo(this->B);
-//                this->B->plugTo(this->A);
-                
                 conA = this->A->addEventListener(makeCallback(this->B));
                 conB = this->B->addEventListener(makeCallback(this->A));
+                
+                this->A->eventTrigger({
+                    "plug", this->B
+                });
+                this->B->eventTrigger({
+                    "plug", this->A
+                });
             }
             Cable(ISFAttrRef A, vec2* mousePos) :
                 mousePos(mousePos),
@@ -73,12 +77,14 @@ namespace ORAGE {
             }
             virtual ~Cable(){
                 if(!!B){
-//                    A->unplugTo(B);
-//                    B->unplugTo(A);
-                    
+                    this->A->eventTrigger({
+                        "unplug", this->B
+                    });
+                    this->B->eventTrigger({
+                        "unplug", this->A
+                    });
                     conA.disconnect();
                     conB.disconnect();
-                    
                 }
             }
             

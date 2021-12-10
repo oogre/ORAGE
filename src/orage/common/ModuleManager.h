@@ -169,7 +169,7 @@ namespace ORAGE {
                     if(evt.is("plug")){
                         cables->addCable(evt.target);
                     }
-                    if(evt.is("unplug")){
+                    if(evt.is("rmplug")){
                         cables->removeCablesPlugTo(evt.target);
                     }
                 });

@@ -150,7 +150,7 @@ namespace ORAGE {
                         string name = output.getChild("NAME").getValue();
                         double value = output.getChild("VALUE").getValue<double>();
                         auto attr = _attributes->get(name);
-                        attr->setCurrent(value);
+//                        attr->setCurrent(value);
                     }
                 }catch(DukErrorException & e){
                     onError(e);

@@ -129,6 +129,23 @@ namespace ISF {
                     else if(isOscMessage() && evt.target->isOscMessage()){
                         currentVal().setOscMessage(evt.target->currentVal().getOscMessage());
                     }
+                    else if(isInput() && isImage()){
+                        ci::gl::Texture2dRef tmp = evt.target->defaultVal().imageBuffer();
+                        currentVal().setImageBuffer(tmp);
+                        _imageSample = true;
+                    }
+                }else if(evt.is("plug")){
+                    if(isInput() && isImage()){
+                        ci::gl::Texture2dRef tmp = evt.target->defaultVal().imageBuffer();
+                        currentVal().setImageBuffer(tmp);
+                        _imageSample = true;
+                    }
+                }else if(evt.is("unplug")){
+                    if(isInput() && isImage()){
+                        ci::gl::Texture2dRef tmp = defaultVal().imageBuffer();
+                        currentVal().setImageBuffer(tmp);
+                        _imageSample = false;
+                    }
                 }
             });
             
@@ -173,9 +190,10 @@ namespace ISF {
                 if(!!preview){
                     preview->setTexture(defaultVal().imageBuffer());
                 }
-                for(auto other : pluged){
-                    ci::gl::Texture2dRef temp = defaultVal().imageBuffer();
-                    other->currentVal().setImageBuffer(temp);
+                if(isOutput()){
+                    eventTrigger({
+                        "change", shared_from_this()
+                    });
                 }
             }
         }
@@ -222,7 +240,6 @@ namespace ISF {
         bool isUIMoreArea(){
             return _uiMoreArea;
         }
-        
         
         
         //    updates this attribute's eval variable with the double val of "_currentVal", and returns a ptr to the eval variable
@@ -275,116 +292,8 @@ namespace ISF {
         reza::ui::TextureViewRef & getPreview() { return _uiPreview; }
         void setPreview(reza::ui::TextureViewRef view) { _uiPreview = view; }
         
-        
         bool isInput(){ return _io == ISF::ISFAttr_IO::_IN; }
         bool isOutput(){ return _io == ISF::ISFAttr_IO::_OUT; }
-        void plugTo (ISFAttrRef other){
-//            addEventListener([other](Evt evt){
-//                if(evt.is("change")){
-//                    if(evt.hasToPropagateTo(other)){
-//                        evt.add(other);
-//                        other->eventTrigger(evt);
-//                    }
-//                }
-//            });
-            /*
-            if (isFloat()){
-                pluged.push_back(other);
-            }
-            else if (isImage()){
-                if(isInput()){
-                    ci::gl::Texture2dRef temp = other->defaultVal().imageBuffer();
-                    _currentVal.setImageBuffer(temp);
-                    _imageSample = true;
-                }else{
-                    pluged.push_back(other);
-                }
-            }else if(isOscMessage()){
-                if(isInput()){
-                    ci::osc::Message temp = other->currentVal().getOscMessage();
-                    _currentVal.setOscMessage(temp);
-                }else{
-                    pluged.push_back(other);
-                }
-            }*/
-            
-        }
-        void unplugTo (ISFAttrRef other){
-            /*
-            for(auto it = pluged.begin(); it != pluged.end() ; ){
-                if((*it) == other){
-                    it = pluged.erase(it);
-                }else{
-                    it++;
-                }
-            }
-            if (isImage()){
-                if(isInput()){
-                    ci::gl::Texture2dRef temp = _defaultVal.imageBuffer();
-                    _currentVal.setImageBuffer(temp);
-                    _imageSample = false;
-                }
-            }
-            else if(isOscMessage()){
-                _currentVal.setOscMessage(ci::osc::Message());
-            }
-             */
-        }
-        
-        void update(){
-            if(isFloat()){
-                setCurrent(_currentVal.getDoubleVal());
-            }
-        }
-        
-        void setCurrent(ci::osc::Message val, vector<ISFAttr *> acc = vector<ISFAttr *>() ){
-            if(!isOscMessage())return;
-            _currentVal.setOscMessage(val);
-            acc.push_back(this);
-            EvtHandler::eventTrigger({
-                "change", shared_from_this()
-            });
-            acc.push_back(this);
-            for(auto other : pluged){
-                if(find(acc.begin(), acc.end(), other.get()) == acc.end()){
-                    other->setCurrent(val, acc);
-                }
-            }
-        }
-        
-        void setCurrent(double val, vector<ISFAttr *> acc = vector<ISFAttr *>() ){
-            if (!isFloat())return;
-            double cVal = std::min(std::max(val, _minVal.getDoubleVal()), _maxVal.getDoubleVal());
-            ISFVal closest;
-            double dist = 10000.0;
-            bool flag = false;
-            for(ISFVal magnet : _magnetic){
-                double d = std::abs(magnet.getDoubleVal() - cVal);
-                if(d < dist){
-                    flag = true;
-                    dist = d;
-                    closest = magnet;
-                }
-            }
-            if(flag){
-                cVal = closest.getDoubleVal();
-            }
-            _currentVal.setDoubleVal(cVal);
-            
-            EvtHandler::eventTrigger({
-                "change", shared_from_this()
-            });
-            
-            double nVal = InverseLerp(_minVal.getDoubleVal(), _maxVal.getDoubleVal(), cVal);
-            
-            acc.push_back(this);
-            for(auto other : pluged){
-                if(find(acc.begin(), acc.end(), other.get()) == acc.end()){
-                    double lval = ci::lerp(other->minVal().getDoubleVal(), other->maxVal().getDoubleVal(), nVal);
-                    other->setCurrent(lval, acc);
-                }
-            }
-        }
         
         void setMin(double val){
             if (!isFloat())return;

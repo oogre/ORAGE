@@ -158,8 +158,8 @@ namespace ORAGE {
                 auto attrTime = _attributes->get("TIME");
                 auto attrdTime = _attributes->get("TIMEDELTA");
                 if(!!attrTime && attrdTime){
-                    attrTime->setCurrent(time);
-                    attrdTime->setCurrent(time - oldTime);
+//                    attrTime->setCurrent(time);
+//                    attrdTime->setCurrent(time - oldTime);
                 }
                 oldTime = time;
                 UI->update();
