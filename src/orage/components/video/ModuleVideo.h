@@ -45,7 +45,7 @@ namespace ORAGE {
                 bool flag = false;
                 int c = 0;
                 for (auto & outAttr : _attributes->imageOutputs()) {
-                    UI->addOutput(outAttr, c++);
+                    UI->addVideoOut(outAttr, c++);
                     TextureViewRef preview = outAttr->getPreview();
                     if(!!preview){
                         preview->setTexture(outAttr->defaultVal().imageBuffer());
@@ -58,11 +58,11 @@ namespace ORAGE {
                 
                 int i = 0;
                 for (auto & inAttr : _attributes->imageInputs()) {
-                    UI->addInputs(inAttr, i++, inputPosRef);
+                    UI->addVideoIn(inAttr, i++, inputPosRef);
                 }
                 for (auto & inAttr : _attributes->inputs()) {
                     if (inAttr->hasUI() && !inAttr->isUIMoreArea() && inAttr->isFloat()) {
-                        UI->addParameter(inAttr);
+                        UI->addLimitedSlider(inAttr);
                     }
                 }
                 
@@ -72,7 +72,7 @@ namespace ORAGE {
 
                 for (auto & inAttr : _attributes->inputs()) {
                     if (inAttr->hasUI() && inAttr->isUIMoreArea() && inAttr->isFloat()) {
-                        UI->addParameter(inAttr);
+                        UI->addLimitedSlider(inAttr);
                     }
                 }
                 

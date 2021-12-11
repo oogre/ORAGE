@@ -218,6 +218,11 @@ namespace ISF {
             if (isFloatVal())
                 _val.floatVal = val;
         }
+        
+        void setLongVal(long val) {
+            if (isLongVal())
+                _val.longVal = val;
+        }
         //!    Returns a null if the receiver isn't a Point2D-type object, otherwise it returns a pointer to the two-element array containing the point values.  This pointer is only valid for the lifetime of the receiver.
         double * getPointValPtr() {
             if (_type!=ISFValType_Point2D)
@@ -319,6 +324,43 @@ namespace ISF {
                 }
             }
             return string("");
+        }
+        
+        void setValString(std::string value){
+            try{
+                switch (_type)    {
+                    case ISFValType_None:
+                        return ;//string("None");
+                    case ISFValType_Event:
+                        return ;//string("Event/None");
+                    case ISFValType_Bool:    {
+                        return ;//(_val.boolVal) ? string("true") : string("false");
+                    }
+                    case ISFValType_Long:
+                        return setLongVal(stol(value));
+                    case ISFValType_Float:
+                    case ISFValType_Clock:
+                        return setDoubleVal(stod(value));
+                    case ISFValType_Point2D:    {
+                        return ;//FmtString("(%0.2f, %0.2f)",_val.pointVal[0],_val.pointVal[1]);
+                    }
+                    case ISFValType_Color:    {
+                        return ;//FmtString("{%0.2f, %0.2f, %0.2f, %0.2f}",_val.colorVal[0],_val.colorVal[1],_val.colorVal[2],_val.colorVal[3]);
+                    }
+                    case ISFValType_Cube:
+                    case ISFValType_Image:
+                    case ISFValType_Audio:
+                    case ISFValType_AudioFFT:    {
+                        //                    if (_imageVal != nullptr)
+                        //                        return _imageVal->getDescriptionString();
+                        return ;//string("");
+                    }
+                }
+            }catch(invalid_argument e){
+                
+            }catch(out_of_range e ){
+                
+            }
         }
         
         //!    Returns true if the receiver is a null value.

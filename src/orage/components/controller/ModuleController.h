@@ -53,9 +53,6 @@ namespace ORAGE {
                 Module(name)
             {
                 moduleType = type;
-                
-                
-                
                 try{
                     ctx = duk_create_heap_default();
                     duk_push_c_function(ctx, native_print, DUK_VARARGS);
@@ -118,7 +115,7 @@ namespace ORAGE {
                             UI->addClock(attr);
                         }
                         else if(attr->isFloat()){
-                            UI->addParameter(attr);
+                            UI->addLimitedSlider(attr);
                         }
                     }
                 }
@@ -135,25 +132,37 @@ namespace ORAGE {
             virtual void update() override {
                 Module::update();
                 //https://github.com/Aloshi/dukglue
-                try{
-                    for(auto input : conf.getChild("INPUTS").getChildren()){
-                        string name = input.getChild("NAME").getValue();
+                auto attrTime = _attributes->get("TIME");
+                auto attrdTime = _attributes->get("TIMEDELTA");
+                if(!!attrTime && attrdTime){
+                    try{
+                        for(auto input : conf.getChild("INPUTS").getChildren()){
+                            string name = input.getChild("NAME").getValue();
+                            
+                            dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, _attributes->get(name)->currentVal().getDoubleVal());
+                        }
                         
-                        dukglue_pcall_method<void>(ctx, jsObject, "setInput", name, _attributes->get(name)->currentVal().getDoubleVal());
+                        string value = dukglue_pcall_method<string>(ctx, jsObject, "main",
+                                                                   attrTime->currentVal().getDoubleVal(),
+                                                                   attrdTime->currentVal().getDoubleVal());
+                        JsonTree outputs (value);
+                        for(auto output : outputs){
+                            string name = output.getChild("NAME").getValue();
+                            double value = output.getChild("VALUE").getValue<double>();
+                            auto attr = _attributes->get(name);
+                            attr->currentVal().setDoubleVal(value);
+                            ParameterFloatRef attrUI = dynamic_pointer_cast<ParameterFloat>(UI->getParameter(attr->name()));
+                            if(!!attrUI){
+                                attrUI->sliderRef->setValue(value);
+                            }
+                            attr->eventTrigger({
+                                "change",
+                                attr
+                            });
+                        }
+                    }catch(DukErrorException & e){
+                        onError(e);
                     }
-                    
-                    string value = dukglue_pcall_method<string>(ctx, jsObject, "main",
-                                                                _attributes->get("TIME")->currentVal().getDoubleVal(),
-                                                                _attributes->get("TIMEDELTA")->currentVal().getDoubleVal());
-                    JsonTree outputs (value);
-                    for(auto output : outputs){
-                        string name = output.getChild("NAME").getValue();
-                        double value = output.getChild("VALUE").getValue<double>();
-                        auto attr = _attributes->get(name);
-//                        attr->setCurrent(value);
-                    }
-                }catch(DukErrorException & e){
-                    onError(e);
                 }
             }
         };

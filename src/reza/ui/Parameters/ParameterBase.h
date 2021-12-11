@@ -28,7 +28,8 @@ namespace reza {
             TEXTURE = 0x01,
             FLOAT = 0x03,
             CLOCK = 0x07,
-            OSC = 0x08
+            OSC = 0x08,
+            NUMBER = 0x09,
         };
         enum PLUG_TYPE {
             _IN = 0x00,
@@ -66,24 +67,42 @@ namespace reza {
             
         public:
             uint8_t type = PARAMETER_TYPE::NONE | PLUG_TYPE::_IN;
-            ParameterBase( std::string name):
-                EvtHandler()
+            ParameterBase( ISF::ISFAttrRef & attr, uint8_t type):
+                EvtHandler(),
+                type(type|(attr->IO() == ISF::ISFAttr_IO::_IN ? PLUG_TYPE::_IN : PLUG_TYPE::_OUT))
             {
-                setName(name);
+                setName(attr->name());
+                
+                buttonRef = Button::create( attr->name()+"-Connector", false, Button::Format().label(false).circle(true));
+                auto bgColor = getCableColor(true);
+                bgColor.a = 1.0f;
+                buttonRef->setColorOutline(getCableColor(true));
+                buttonRef->setColorOutlineHighlight(ColorA::white());
+                buttonRef->setCallback([&, attr](bool value) {
+                    if(value){
+                        EvtHandler::eventTrigger({
+                            "plug", attr
+                        });
+                    }
+                });
+                attr->setPlug(buttonRef);
+                
             }
+            
             ColorA getCableColor(bool over){
                 Conf conf = Config::getConfig(type & 0x0F);
                 return over ? conf.cableColorOver : conf.cableColorNormal;
             }
-            virtual void plugTo(ParameterBaseRef other){}
-            virtual void unplugTo(ParameterBaseRef other){}
+            
             virtual ~ParameterBase(){
             }
-            virtual void beginDraw(){}
-            virtual void endDraw(){}
+            
             virtual void setVisible( bool visible ) override{
                 View::setVisible(visible);
+                buttonRef->setVisible(visible);
             }
+            
+            ButtonRef buttonRef;
             
         };//ParameterBase
         typedef std::shared_ptr<ParameterBase> ParameterBaseRef;

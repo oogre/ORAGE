@@ -8,6 +8,7 @@
 #ifndef cables_h
 #define cables_h
 #include "cable.h"
+#include "cinder/app/App.h"
 
 namespace ORAGE {
     namespace CONNECTIONS {
@@ -31,16 +32,15 @@ namespace ORAGE {
             
             Cables()
             {
-                mouseMoveHandler = getWindow()->getSignalMouseMove().connect(boost::bind(&Cables::onMouseMove, this, _1));
-                keyUpHandler = getWindow()->getSignalKeyDown().connect(boost::bind(&Cables::onKeyUp, this, _1));
-                postDrawHandler = getWindow()->getSignalPostDraw().connect(0, [this]() {
+                mouseMoveHandler = ci::app::getWindow()->getSignalMouseMove().connect(boost::bind(&Cables::onMouseMove, this, _1));
+                keyUpHandler = ci::app::getWindow()->getSignalKeyDown().connect(boost::bind(&Cables::onKeyUp, this, _1));
+                postDrawHandler = ci::app::getWindow()->getSignalPostDraw().connect(0, [this]() {
                     draw();
                 });
             }
             void onMouseMove(ci::app::MouseEvent event){
                 mousePos = event.getPos();
             }
-            
             
             void onKeyUp(ci::app::KeyEvent event){
                 keyCode = event.getCode();

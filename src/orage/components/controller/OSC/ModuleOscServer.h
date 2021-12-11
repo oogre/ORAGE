@@ -24,11 +24,9 @@ namespace ORAGE {
         class ModuleOscServer : public Module{
             typedef shared_ptr<ModuleOscServer> ModuleOscServerRef;
             std::string outHost = "127.0.0.1";
-            std::string outPort = "10001";
-            std::string inPort = "10000";
             
-            TextInputRef inPortUI;
-            TextInputRef outPortUI;
+            ParameterNumberRef inPortUI;
+            ParameterNumberRef outPortUI;
             TextInputRef outHostUI;
             ToggleRef    runUi;
             
@@ -37,11 +35,35 @@ namespace ORAGE {
             
             ISFAttrRef attrOut;
             ISFAttrRef attrIn;
+            ISFAttrRef portIn;
+            ISFAttrRef portOut;
             
             ModuleOscServer(string name, TYPES type) :
                 Module(name)
             {
                 moduleType = type;
+                
+                portIn = _attributes->addAttr(
+                    ISFAttr::create(
+                        "portIn", "", "",
+                        ISF::ISFAttr_IO::_IN,
+                        ISFValType::ISFValType_Long,
+                        ISFLongVal(0),
+                        ISFLongVal(numeric_limits<long>::max()),
+                        ISFLongVal(10000)
+                    )
+                );
+                
+                portOut = _attributes->addAttr(
+                    ISFAttr::create(
+                        "portOut", "", "",
+                        ISF::ISFAttr_IO::_OUT,
+                        ISFValType::ISFValType_Long,
+                        ISFLongVal(0),
+                        ISFLongVal(numeric_limits<long>::max()),
+                        ISFLongVal(10001)
+                    )
+                );
                 
                 attrOut = _attributes->addAttr(
                     ISFAttr::create(
@@ -72,27 +94,24 @@ namespace ORAGE {
                 outPortUI->setEnabled(!value);
                 outHostUI->setEnabled(!value);
                 if(value){
-                    uint16_t inPort = atoi(inPortUI->getValue().c_str());
-                    uint16_t outPort = atoi(outPortUI->getValue().c_str());
                     std::string outHost = outHostUI->getValue();
                     
-                    cout<< "OSC open : " << endl;
-                    cout<< "inPort : " << inPort << endl;
-                    cout<< "outPort : " << outPort << endl;
-                    cout<< "outHost : " << outHost << endl;
                     
-                    mSender = new Sender(0, outHost, outPort );
-                    mReceiver = new Receiver(inPort);
+                    mSender = new Sender(0, outHost, portOut->currentVal().getLongVal() );
+                    mReceiver = new Receiver(portIn->currentVal().getLongVal());
                     try {
                         mSender->bind();
                         mReceiver->bind();
                     } catch ( const osc::Exception &ex ) {
                         CI_LOG_E( "Error binding: " << ex.what() << " val: " << ex.value() );
                         runUi->setValue(false);
+                        inPortUI->setEnabled(value);
+                        outPortUI->setEnabled(value);
+                        outHostUI->setEnabled(value);
                         return;
                     }
                     
-                    mReceiver->listen( [this]( asio::error_code error, protocol::endpoint endpoint ) -> bool {
+                    mReceiver->listen( [this, value]( asio::error_code error, protocol::endpoint endpoint ) -> bool {
                         if( error ) {
                             CI_LOG_E(
                                  "Error Listening: " <<
@@ -103,6 +122,9 @@ namespace ORAGE {
                                  endpoint
                             );
                             runUi->setValue(false);
+                            inPortUI->setEnabled(value);
+                            outPortUI->setEnabled(value);
+                            outHostUI->setEnabled(value);
                             return false;
                         }
                         return true;
@@ -131,18 +153,26 @@ namespace ORAGE {
         protected:
             virtual void UIReady() override {
                 Module::UIReady();
-                UI->addLabel("INPUT");
-                inPortUI = UI->addTextInput(inPort, TextInput::Format().numeric());
+                inPortUI = UI->addNumber(portIn);
                 UI->addSpacer();
-                UI->addLabel("OUTPUT");
                 outHostUI = UI->addTextInput(outHost);
-                outPortUI = UI->addTextInput(outPort, TextInput::Format().numeric());
+                outPortUI = UI->addNumber(portOut);
                 UI->addSpacer();
+                
                 runUi = UI->addToggle("run", false, Toggle::Format().label(true).align(Alignment::CENTER));
                 runUi->setCallback(boost::bind(&ModuleOscServer::runHandler, this, _1));
                 
+                
+                
+                
+                
+                
                 UI->addOsc(attrOut);
                 UI->addOsc(attrIn);
+                
+                
+                
+                
                 UI->autoSizeToFitSubviews();
             }
             

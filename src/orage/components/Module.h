@@ -127,13 +127,6 @@ namespace ORAGE {
             void onParameterPlug(EvtSlot slot){
                 parameterPlugHandler = slot;
             }
-//
-//            Module * addEventListenerOnParameters(EvtSlot slot) {
-//                for(auto [key, parameter] : UI->getParameters()){
-//                    parameter->addEventListener(slot);
-//                }
-//                return this;
-//            }
             bool isReady(){
                 return _ready;
             }
@@ -158,8 +151,16 @@ namespace ORAGE {
                 auto attrTime = _attributes->get("TIME");
                 auto attrdTime = _attributes->get("TIMEDELTA");
                 if(!!attrTime && attrdTime){
-//                    attrTime->setCurrent(time);
-//                    attrdTime->setCurrent(time - oldTime);
+                    attrTime->currentVal().setDoubleVal(time);
+                    attrdTime->currentVal().setDoubleVal(time - oldTime);
+                    attrTime->eventTrigger({
+                        "change",
+                        attrTime
+                    });
+                    attrdTime->eventTrigger({
+                        "change",
+                        attrdTime
+                    });
                 }
                 oldTime = time;
                 UI->update();

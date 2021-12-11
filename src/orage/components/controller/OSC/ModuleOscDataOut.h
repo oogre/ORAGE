@@ -19,11 +19,8 @@ namespace ORAGE {
         class ModuleOscDataOut : public Module{
             typedef shared_ptr<ModuleOscDataOut> ModuleOscDataOutRef;
             
-            std::string address = "*";
-            ci::osc::Message old;
             ISFAttrWrapperRef createLater;
             std::vector<std::string> destroyLater;
-            TextInputRef addressUI;
             TextInputRef typeTagUI;
             ISFAttrRef outAttr;
             
@@ -46,25 +43,36 @@ namespace ORAGE {
             
             void readyHandler(bool value){
                 typeTagUI->setEnabled(!value);
-                addressUI->setEnabled(!value);
                 std::string typeTag = typeTagUI->getValue();
-                std::string address = addressUI->getValue();
                 if(value){
                     for(int i = 0 ; i < typeTag.length() ; i++){
                         switch(typeTag.at(i)){
                             case 'f' :
                             case 'd' :
                                 createLater->addAttr(
-                                     ISFAttr::create(
-                                         address+"."+to_string(i), "", "",
-                                         ISF::ISFAttr_IO::_IN,
-                                         ISFValType::ISFValType_Float,
-                                         ISFVal(ISFValType::ISFValType_Float, 0.0),
-                                         ISFVal(ISFValType::ISFValType_Float, 1.0),
-                                         ISFVal(ISFValType::ISFValType_Float, 0.0)
-                                     )
-                                 );
-                            break;
+                                                     ISFAttr::create(
+                                                                     to_string(i), "", "",
+                                                                     ISF::ISFAttr_IO::_IN,
+                                                                     ISFValType::ISFValType_Float,
+                                                                     ISFVal(ISFValType::ISFValType_Float, 0.0),
+                                                                     ISFVal(ISFValType::ISFValType_Float, 1.0),
+                                                                     ISFVal(ISFValType::ISFValType_Float, 0.0)
+                                                                     )
+                                                     );
+                                break;
+                            case 'i' :
+                            case 'l' :
+                                createLater->addAttr(
+                                                     ISFAttr::create(
+                                                                     to_string(i), "", "",
+                                                                     ISF::ISFAttr_IO::_IN,
+                                                                     ISFValType::ISFValType_Long,
+                                                                     ISFLongVal(numeric_limits<long>::min()),
+                                                                     ISFLongVal(numeric_limits<long>::max()),
+                                                                     ISFLongVal(0)
+                                                                     )
+                                                     );
+                                break;
                             default :
                                 cout<<typeTag.at(i) << " not handled"<<endl;
                             break;
@@ -72,18 +80,16 @@ namespace ORAGE {
                     }
                 }else{
                     for(int i = 0 ; i < typeTag.length() ; i++){
-                        UI->getParameter(address+"."+to_string(i))->eventTrigger({
-                            "rmplug", _attributes->get(address+"."+to_string(i))
+                        UI->getParameter(to_string(i))->eventTrigger({
+                            "rmplug", _attributes->get(to_string(i))
                         });
-                        destroyLater.push_back(address+"."+to_string(i));
+                        destroyLater.push_back(to_string(i));
                     }
                 }
             }
         protected:
             virtual void UIReady() override {
                 Module::UIReady();
-                UI->addLabel("address");
-                addressUI = UI->addTextInput(address);
                 UI->addLabel("typeTag");
                 typeTagUI = UI->addTextInput("f");
                 
@@ -96,18 +102,22 @@ namespace ORAGE {
             
             void SenderHandler(Evt evt){
                 if (evt.is("change")) {
-                    std::string address = addressUI->getValue();
                     std::string typeTag = typeTagUI->getValue();
                     osc::Message msg;
-                    msg.setAddress(address);
                     for(int i = 0 ; i < typeTag.length() ; i++){
-                        std::string name = address+"."+to_string(i);
+                        std::string name = to_string(i);
                         switch(typeTag.at(i)){
                             case 'f' :
                                 msg.append((float)_attributes->get(name)->currentVal().getDoubleVal());
                                 break;
                             case 'd' :
                                 msg.append((double)_attributes->get(name)->currentVal().getDoubleVal());
+                                break;
+                            case 'i' :
+                                msg.append((int32_t)_attributes->get(name)->currentVal().getLongVal());
+                                break;
+                            case 'l' :
+                                msg.append((int64_t)_attributes->get(name)->currentVal().getLongVal());
                                 break;
                             default :
                                 cout<<typeTag.at(i) << " not handled"<<endl;
@@ -124,7 +134,12 @@ namespace ORAGE {
                         _attributes->addAttr(attr);
                         attr->addEventListener(boost::bind(&ModuleOscDataOut::SenderHandler, this, _1));
                         ISFAttrRef a = _attributes->get(attr->name());
-                        UI->addParameter(a)->addEventListener(parameterPlugHandler);
+                        if(a->isFloat()){
+                            UI->addLimitedSlider(a)->addEventListener(parameterPlugHandler);
+                        }else if (a->isLong()){
+                            UI->addNumber(a)->addEventListener(parameterPlugHandler);
+                        }
+                        
                         UI->autoSizeToFitSubviews();
                     }
                     createLater->clear();

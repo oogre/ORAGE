@@ -9,10 +9,7 @@
 #define OrageCanvas_h
 
 #include "UI.h"
-#include "ParameterFloat.h"
-#include "ParameterTexture.h"
-#include "ParameterClock.h"
-#include "ParameterOsc.h"
+#include "Parameters/index.h"
 #include "OrageButton.h"
 #include "EventTemplate.h"
 #include "ISFAttr.h"
@@ -165,7 +162,7 @@ namespace reza {
                 parameters.erase(it);
             }
             
-            ParameterFloatRef addParameter(ISF::ISFAttrRef & attr)
+            ParameterFloatRef addLimitedSlider(ISF::ISFAttrRef & attr)
             {
                 ParameterFloatRef param = ParameterFloat::create(attr);
 
@@ -211,7 +208,55 @@ namespace reza {
                 return param;
             }
             
-            ParameterTextureRef addOutput(ISF::ISFAttrRef & attr, int count){
+            
+            ParameterNumberRef addNumber(ISF::ISFAttrRef & attr){
+                ParameterNumberRef param = ParameterNumber::create(attr);
+                
+                auto lab = param->labelRef;
+                auto btn = param->buttonRef;
+                auto inp = param->inputRef;
+                
+                btn->setSize(vec2(15));
+                
+                vec2 btnClutter = vec2(
+                   btn->getWidth() + btn->getPadding().mLeft + btn->getPadding().mRight,
+                   btn->getHeight() + btn->getPadding().mTop + btn->getPadding().mBottom
+                );
+                
+                lab->setSize(
+                    vec2(
+                         0.5 * getWidth() - btnClutter.x - lab->getPadding().mLeft - lab->getPadding().mRight,
+                         btn->getHeight()
+                    )
+                );
+                inp->setSize(
+                    vec2(
+                         0.5 * getWidth() - btnClutter.x - lab->getPadding().mLeft - lab->getPadding().mRight,
+                         btn->getHeight()
+                    )
+                );
+
+                addSubViewDown(lab);
+                inp->setOrigin(
+                    vec2(
+                         inp->getOrigin(false).x + btnClutter.x + inp->getPadding().mLeft,
+                         inp->getOrigin(false).y
+                    )
+                );
+                
+                addSubViewEastOf(inp, lab->getName());
+                
+                if (attr->isInput()) {
+                    addSubViewWestOf(btn, lab->getName());
+                } else {
+                    addSubViewEastOf(btn, inp->getName());
+                }
+                setPlacer(lab);
+                parameters[attr->name()] = param;
+                return param;
+            }
+            
+            ParameterTextureRef addVideoOut(ISF::ISFAttrRef & attr, int count){
                 ParameterTextureRef param = ParameterTexture::create(attr);
 
                 auto tex = param->textureViewRef;
@@ -242,7 +287,7 @@ namespace reza {
                 return param;
             }
             
-            ParameterTextureRef addInputs(ISF::ISFAttrRef & attr, int count, vec2 refOrigin){
+            ParameterTextureRef addVideoIn(ISF::ISFAttrRef & attr, int count, vec2 refOrigin){
                 ParameterTextureRef param = ParameterTexture::create(attr);
                 param->buttonRef->setSize( vec2(15) );
                 param->buttonRef->setOrigin(refOrigin + vec2(-15 - mPadding.mLeft, count * (15 + mPadding.mTop + mPadding.mBottom)));

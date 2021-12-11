@@ -19,13 +19,8 @@ namespace reza {
         
             
             ParameterFloat( ISF::ISFAttrRef & attr) :
-                ParameterBase(attr->name())
+                ParameterBase(attr, PARAMETER_TYPE::FLOAT)
             {
-                
-                
-                
-                type = PARAMETER_TYPE::FLOAT | (attr->IO() == ISF::ISFAttr_IO::_IN ? PLUG_TYPE::_IN : PLUG_TYPE::_OUT);
-                
                 typedef OrageSliderT<double> Slider;
                 Slider::Format sFormat = Slider::Format().value(true).precision(2).label(true).crossFader(true);
                 sliderRef = Slider::create(attr->name(), attr->currentVal().getDoubleVal(), attr->minVal().getDoubleVal(), attr->maxVal().getDoubleVal(), sFormat);
@@ -49,20 +44,6 @@ namespace reza {
                     }
                 });
 
-                buttonRef = Button::create( attr->name()+"-Connector", false, Button::Format().label(false).circle(true));
-                auto bgColor = getCableColor(true);
-                bgColor.a = 1.0f;
-                buttonRef->setColorOutline(getCableColor(true));
-                buttonRef->setColorOutlineHighlight(ColorA::white());
-                buttonRef->setCallback([&, attr](bool value) {
-                    if(value){
-                        EvtHandler::eventTrigger({
-                            "plug", attr
-                        });
-                    }
-                });
-                attr->setPlug(buttonRef);
-                
                 limiterRef = RangeT<double>::create( attr->name()+"-Limiter", attr->minVal().getDoubleVal(), attr->maxVal().getDoubleVal(),  attr->minVal().getDoubleVal(), attr->maxVal().getDoubleVal(), Ranged::Format().label(false));
                 limiterRef->setCallback([&, attr](double a, double b) {
                     if(a != b){
@@ -77,7 +58,6 @@ namespace reza {
             }
             virtual void setVisible( bool visible ) override{
                 ParameterBase::setVisible(visible);
-                buttonRef->setVisible(visible);
                 sliderRef->setVisible(visible);
                 limiterRef->setVisible(visible);
             }
@@ -85,7 +65,6 @@ namespace reza {
             virtual ~ParameterFloat(){
                 
             }
-            ButtonRef buttonRef;
             OrageSliderdRef sliderRef;
             RangedRef limiterRef;
         };//ParameterFloat

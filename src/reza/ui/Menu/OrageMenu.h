@@ -29,7 +29,7 @@ namespace reza {
         class OrageMenu : public SuperCanvas, public BaseEventHandler{
             typedef shared_ptr<OrageMenu> OrageMenuRef;
             ci::signals::Connection resizeHandler;
-            vector<ViewRef> btns;
+            vector<OrageMenuItemRef> btns;
             virtual void enableUpdateCallback() override {/*DISABLE AUTO DRAWING AND UPDATE*/}
             
             OrageMenu(const WindowRef &window) :
@@ -57,13 +57,24 @@ namespace reza {
             }
             
             void addElement(std::string name, SUB_ENTRIES subEntries){
-                Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
-                OrageMenuItemRef btn = OrageMenuItem::create(name, format);
-                btn->setSize(vec2(100, 25));
-                if(btns.size()==0) addSubView(btn);
-                else addSubViewEastOf(btn, btns.back()->getName());
-                addSubViewToHeader(btn);
-                btns.push_back(btn);
+                
+                OrageMenuItemRef btn;
+                for(OrageMenuItemRef _btn : btns){
+                    if(_btn->getName() == name){
+                        btn = _btn;
+                        break;
+                    }
+                }
+                
+                if(!btn){
+                    Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
+                    btn = OrageMenuItem::create(name, format);
+                    btn->setSize(vec2(100, 25));
+                    if(btns.size()==0) addSubView(btn);
+                    else addSubViewEastOf(btn, btns.back()->getName());
+                    addSubViewToHeader(btn);
+                    btns.push_back(btn);
+                }
                 for (const auto & subEntry : subEntries){
                     string name = "";
                     string ext = "";

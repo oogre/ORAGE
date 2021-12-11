@@ -82,6 +82,15 @@ public:
                         menu->addElement(entry.path().filename().string(), subEntries);
                     }
                 }
+//                menu->addElement("A.CLOCK", {
+//                    make_pair(
+//                              "source.clk.js",
+//                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+//                                  modules->add( "source.clk.js", pos, type);
+//                              }
+//                              )
+//                });
+                
                 menu->addElement("INPUT", {
                     make_pair(
                               "SyphonSpout.in.fs",
@@ -98,9 +107,21 @@ public:
                               }
                               ),
                     make_pair(
+                              "filter.osc",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "filter.osc", pos, type);
+                              }
+                              ),
+                    make_pair(
                               "receiver.osc",
                               [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
                                   modules->add( "receiver.osc", pos, type);
+                              }
+                              ),
+                    make_pair(
+                              "address.osc",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "address.osc", pos, type);
                               }
                               ),
                     make_pair(
@@ -110,6 +131,7 @@ public:
                               }
                               )
                 });
+                
             }
         });
         enableVerticalSync( false );

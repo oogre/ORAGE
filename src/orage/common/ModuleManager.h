@@ -8,14 +8,8 @@
 #ifndef ModuleManager_h
 #define ModuleManager_h
 
-#include "ModuleISF.h"
-#include "ModuleController.h"
-#include "ModuleSyphonSpout.h"
-#include "ModuleOscServer.h"
-#include "ModuleOscDataIn.h"
-#include "ModuleOscDataOut.h"
 #include "cables.h"
-#include "ModuleTypes.h"
+#include "Components.h"
 #include "OrageFileTools.h"
 
 namespace ORAGE {
@@ -142,10 +136,17 @@ namespace ORAGE {
                         module = ModuleISF::create(name, filePath.string(), type);
                     break;
                     case TYPES::CONTROLLER :
-                    case TYPES::CLOCK :
                     case TYPES::MATH :
                         module = ModuleController::create(name, filePath.string(), type);
                     break;
+                        
+                    case TYPES::CLOCK :
+//                        if(name == "source"){
+//                            module = ModuleOscServer::create(name, type);
+//                        }else{
+                            module = ModuleController::create(name, filePath.string(), type);
+//                        }
+                        break;
                     case TYPES::INPUT :
                         module = ModuleSyphonSpout::create(name, type);
                     break;
@@ -155,6 +156,12 @@ namespace ORAGE {
                         }
                         if(name == "receiver"){
                             module = ModuleOscDataIn::create(name, type);
+                        }
+                        if(name == "filter"){
+                            module = ModuleOscFilter::create(name, type);
+                        }
+                        if(name == "address"){
+                            module = ModuleOscAddress::create(name, type);
                         }
                         if(name == "sender"){
                             module = ModuleOscDataOut::create(name, type);

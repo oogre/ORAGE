@@ -9,7 +9,6 @@
 #define cable_h
 
 #include "ISFAttr.h"
-
 namespace ORAGE {
     namespace CONNECTIONS {
         using namespace std;
@@ -20,7 +19,6 @@ namespace ORAGE {
         
         class Cable {
             typedef shared_ptr<Cable> CableRef;
-            typedef map<string, shared_ptr<View>> Parameter;
             
             Path2d  path;
             vec2* mousePos;

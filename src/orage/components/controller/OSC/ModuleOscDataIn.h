@@ -19,11 +19,9 @@ namespace ORAGE {
         class ModuleOscDataIn : public Module {
             typedef shared_ptr<ModuleOscDataIn> ModuleOscDataInRef;
             
-            std::string address = "*";
             ci::osc::Message old;
             ISFAttrWrapperRef createLater;
             std::vector<std::string> destroyLater;
-            TextInputRef addressUI;
             TextInputRef typeTagUI;
             ISFAttrRef inAttr;
             
@@ -46,9 +44,7 @@ namespace ORAGE {
             }
             void readyHandler(bool value){
                 typeTagUI->setEnabled(!value);
-                addressUI->setEnabled(!value);
                 std::string typeTag = typeTagUI->getValue();
-                std::string address = addressUI->getValue();
                 if(value){
                     for(int i = 0 ; i < typeTag.length() ; i++){
                         switch(typeTag.at(i)){
@@ -56,7 +52,7 @@ namespace ORAGE {
                             case 'd' :
                                 createLater->addAttr(
                                      ISFAttr::create(
-                                         address+"."+to_string(i), "", "",
+                                         to_string(i), "", "",
                                          ISF::ISFAttr_IO::_OUT,
                                          ISFValType::ISFValType_Float,
                                          ISFVal(ISFValType::ISFValType_Float, 0.0),
@@ -73,9 +69,9 @@ namespace ORAGE {
                     inAttr->addEventListener(boost::bind(&ModuleOscDataIn::receiveHandler, this, _1));
                 }else{
                     for(int i = 0 ; i < typeTag.length() ; i++){
-                        destroyLater.push_back(address+"."+to_string(i));
-                        UI->getParameter(address+"."+to_string(i))->eventTrigger({
-                            "rmplug", _attributes->get(address+"."+to_string(i))
+                        destroyLater.push_back(to_string(i));
+                        UI->getParameter(to_string(i))->eventTrigger({
+                            "rmplug", _attributes->get(to_string(i))
                         });
                     }
                     inAttr->removeEventListener(boost::bind(&ModuleOscDataIn::receiveHandler, this, _1));
@@ -85,31 +81,28 @@ namespace ORAGE {
             void receiveHandler(Evt evt){
                 if (evt.is("change")) {
                     ci::osc::Message msg = evt.target->currentVal().getOscMessage();
-                    std::string address = addressUI->getValue();
                     std::string typeTag = typeTagUI->getValue();
-                    if("*" == address || address == msg.getAddress()){
-                        for(int i = 0 ; i < typeTag.length() ; i ++){
-                            ISFAttrRef attr = _attributes->get(address+"."+to_string(i));
-                            ParameterFloatRef attrUI = dynamic_pointer_cast<ParameterFloat>(UI->getParameter(address+"."+to_string(i)));
-                            switch(typeTag.at(i)){
-                                case 'f' :
-                                    attr->currentVal().setDoubleVal(msg.getArgFloat(i));
-                                    attrUI->sliderRef->setValue(msg.getArgFloat(i));
-                                    attr->eventTrigger({
-                                        "change", attr
-                                    });
-                                    break;
-                                case 'd' :
-                                    attr->currentVal().setDoubleVal(msg.getArgDouble(i));
-                                    attrUI->sliderRef->setValue(msg.getArgDouble(i));
-                                    attr->eventTrigger({
-                                        "change", attr
-                                    });
-                                    break;
-                                default :
-                                    cout<<typeTag.at(i) << " not handled"<<endl;
-                                    break;
-                            }
+                    for(int i = 0 ; i < typeTag.length() ; i ++){
+                        ISFAttrRef attr = _attributes->get(to_string(i));
+                        ParameterFloatRef attrUI = dynamic_pointer_cast<ParameterFloat>(UI->getParameter(to_string(i)));
+                        switch(typeTag.at(i)){
+                            case 'f' :
+                                attr->currentVal().setDoubleVal(msg.getArgFloat(i));
+                                attrUI->sliderRef->setValue(msg.getArgFloat(i));
+                                attr->eventTrigger({
+                                    "change", attr
+                                });
+                                break;
+                            case 'd' :
+                                attr->currentVal().setDoubleVal(msg.getArgDouble(i));
+                                attrUI->sliderRef->setValue(msg.getArgDouble(i));
+                                attr->eventTrigger({
+                                    "change", attr
+                                });
+                                break;
+                            default :
+                                cout<<typeTag.at(i) << " not handled"<<endl;
+                                break;
                         }
                     }
                 }
@@ -119,7 +112,10 @@ namespace ORAGE {
                     for(auto attr : createLater->every()){
                         _attributes->addAttr(attr);
                         ISFAttrRef a = _attributes->get(attr->name());
-                        UI->addParameter(a)->addEventListener(parameterPlugHandler);
+                        
+                        
+                        
+                        UI->addLimitedSlider(a)->addEventListener(parameterPlugHandler);
                         UI->autoSizeToFitSubviews();
                     }
                     createLater->clear();
@@ -137,8 +133,6 @@ namespace ORAGE {
         protected:
             virtual void UIReady() override {
                 Module::UIReady();
-                UI->addLabel("address");
-                addressUI = UI->addTextInput(address);
                 UI->addLabel("typeTag");
                 typeTagUI = UI->addTextInput("f");
                 

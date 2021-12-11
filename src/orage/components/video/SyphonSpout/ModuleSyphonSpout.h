@@ -23,7 +23,7 @@ namespace ORAGE {
         using namespace ORAGE::COMMON;
         
         
-        class ModuleSyphonSpout : public ModuleVideo{
+        class ModuleSyphonSpout : public ModuleVideo {
             typedef shared_ptr<ModuleSyphonSpout> ModuleSyphonSpoutRef;
             SyphonSpoutClientRef sscRef;
             bool more = false;
