@@ -178,6 +178,7 @@ namespace ORAGE {
             
         public :
             virtual ~ModuleOscServer(){
+                cout<<"~ModuleOscServer"<<endl;
                 mSender->close();
                 mReceiver->close();
                 delete mReceiver;

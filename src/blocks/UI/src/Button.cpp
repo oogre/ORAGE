@@ -31,6 +31,7 @@ Button::~Button()
 	if( !mUseRef ) {
 		delete mValueRef;
 	}
+    std::cout<<"~Button"<<std::endl;
 }
 
 bool Button::isHit( const glm::vec2 &pt )

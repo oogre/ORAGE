@@ -35,6 +35,10 @@ namespace reza {
                 return ParameterTextureRef( new ParameterTexture( attr ) );
             }
             virtual ~ParameterTexture(){
+                cout<<"~ParameterTexture"<<endl;
+//                textureViewRef->clear();
+//                removeSubView(textureViewRef->getName());
+//                attr->setPreview(nullptr);
             }
             
             TextureViewRef textureViewRef;

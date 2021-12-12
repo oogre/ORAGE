@@ -30,7 +30,7 @@ namespace reza {
             }
             
             virtual ~ParameterClock(){
-                
+                cout<<"~ParameterClock"<<endl;
             }
         };//ParameterClock
         typedef std::shared_ptr<ParameterClock> ParameterClockRef;

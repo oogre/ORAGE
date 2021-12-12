@@ -32,7 +32,9 @@ class SuperCanvas : public Canvas {
 
 	virtual void setVisible( bool visible ) override;
     virtual void setMinifyCallback( const std::function<void( bool )> &callback ) { mMinifyCallbackFn = callback; };
-    
+    virtual ~SuperCanvas(){
+        std::cout<<"~SuperCanvas"<<std::endl;
+    }
   protected:
 	void setup() override;
 	void minify();

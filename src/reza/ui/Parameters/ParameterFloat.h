@@ -63,7 +63,13 @@ namespace reza {
             }
             
             virtual ~ParameterFloat(){
-                
+                cout<<"~ParameterFloat"<<endl;
+                removeSubView(sliderRef->getName());
+                removeSubView(limiterRef->getName());
+                removeSubView(sliderRef->getName());
+                removeSubView(limiterRef->getName());
+                sliderRef->clear();
+                limiterRef->clear();
             }
             OrageSliderdRef sliderRef;
             RangedRef limiterRef;

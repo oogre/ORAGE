@@ -75,6 +75,7 @@ namespace ORAGE {
             }
         public :
             virtual ~ModuleOscAddress(){
+                cout<<"~ModuleOscAddress"<<endl;
             }
             
             virtual void update() override {

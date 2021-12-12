@@ -45,6 +45,7 @@ namespace ORAGE {
             }
         public :
             virtual ~SyphonSpoutClient(){
+                cout<<"~SyphonSpoutClient"<<endl;
             #if defined(CINDER_MAC)
                 delete client;
                 delete serverDir;

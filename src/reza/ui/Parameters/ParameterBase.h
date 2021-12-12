@@ -64,11 +64,13 @@ namespace reza {
         
         class ParameterBase : public View, public EvtHandler{
             typedef std::shared_ptr<ParameterBase> ParameterBaseRef;
-            
+            protected :
+            ISF::ISFAttrRef & attr;
         public:
             uint8_t type = PARAMETER_TYPE::NONE | PLUG_TYPE::_IN;
             ParameterBase( ISF::ISFAttrRef & attr, uint8_t type):
                 EvtHandler(),
+                attr(attr),
                 type(type|(attr->IO() == ISF::ISFAttr_IO::_IN ? PLUG_TYPE::_IN : PLUG_TYPE::_OUT))
             {
                 setName(attr->name());
@@ -95,8 +97,17 @@ namespace reza {
             }
             
             virtual ~ParameterBase(){
+                cout<<"~ParameterBase"<<endl;
+                removeSubView(buttonRef->getName());
+//                attr->setPlug(nullptr);
             }
             
+            bool is(PARAMETER_TYPE value){
+                return (type & 0x0f) == value;
+            }
+            bool is(PLUG_TYPE value){
+                return (type & 0xf0) == value;
+            }
             virtual void setVisible( bool visible ) override{
                 View::setVisible(visible);
                 buttonRef->setVisible(visible);

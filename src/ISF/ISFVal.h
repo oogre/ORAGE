@@ -81,6 +81,9 @@ namespace ISF {
         ci::osc::Message oscMessage;
 //        ci::gl::FboRef _mFbo;
     public :
+        virtual ~ISFVal(){
+            cout<<"~ISFVal : "<< _type << endl;
+        }
         //    Returns a null-type ISFVal
         ISFVal() :
             _type(ISFValType_None)

@@ -74,7 +74,7 @@ namespace ISF {
         vector<string> _labelArray; // only used if it's a LONG. std::vector containing strings that correspond to the values in "_valArray"
         vector<int32_t> _valArray; // only used if it's a LONG. std::vector containing ints with the values that correspond to the accompanying labels
         vector<ISFVal> _magnetic;
-        vector<ISFAttrRef> pluged;
+        
         
         ISF::ISFAttr_IO _io = ISF::ISFAttr_IO::_IN;
         bool _imageSample = false;
@@ -82,6 +82,42 @@ namespace ISF {
         reza::ui::TextureViewRef _uiPreview = nullptr;
         bool _uiEnabled = true;
         bool _uiMoreArea = false;
+        
+        void changeHandler(Evt evt){
+            if (evt.is("change") && this != evt.target.get()) {
+                if(isFloat() && evt.target->isFloat()){
+                    double tMin = evt.target->minVal().getDoubleVal();
+                    double tMax = evt.target->maxVal().getDoubleVal();
+                    double tVal = evt.target->currentVal().getDoubleVal();
+                    
+                    double cMin = minVal().getDoubleVal();
+                    double cMax = maxVal().getDoubleVal();
+                    
+                    currentVal().setDoubleVal(ci::lerp(cMin, cMax, InverseLerp(tMin, tMax, tVal)));
+                }
+                else if(isOscMessage() && evt.target->isOscMessage()){
+                    currentVal().setOscMessage(evt.target->currentVal().getOscMessage());
+                }
+                else if(isInput() && isImage()){
+                    ci::gl::Texture2dRef tmp = evt.target->defaultVal().imageBuffer();
+                    currentVal().setImageBuffer(tmp);
+                    _imageSample = true;
+                }
+            }else if(evt.is("plug")){
+                if(isInput() && isImage()){
+                    ci::gl::Texture2dRef tmp = evt.target->defaultVal().imageBuffer();
+                    currentVal().setImageBuffer(tmp);
+                    _imageSample = true;
+                }
+            }else if(evt.is("unplug")){
+                if(isInput() && isImage()){
+                    ci::gl::Texture2dRef tmp = defaultVal().imageBuffer();
+                    currentVal().setImageBuffer(tmp);
+                    _imageSample = false;
+                }
+            }
+        }
+        
     public :
         ISFAttr(const string & inName,
                 const string & inDesc,
@@ -113,45 +149,14 @@ namespace ISF {
                 _currentVal = ISF::ISFVal(ISFValType_Image, ci::vec2(1, 1));
                 _defaultVal = ISF::ISFVal(ISFValType_Image, ci::vec2(1, 1));
             }
-            
-            addEventListener([this](Evt evt){
-                if (evt.is("change") && this != evt.target.get()) {
-                    if(isFloat() && evt.target->isFloat()){
-                        double tMin = evt.target->minVal().getDoubleVal();
-                        double tMax = evt.target->maxVal().getDoubleVal();
-                        double tVal = evt.target->currentVal().getDoubleVal();
-                        
-                        double cMin = minVal().getDoubleVal();
-                        double cMax = maxVal().getDoubleVal();
-                        
-                        currentVal().setDoubleVal(ci::lerp(cMin, cMax, InverseLerp(tMin, tMax, tVal)));
-                    }
-                    else if(isOscMessage() && evt.target->isOscMessage()){
-                        currentVal().setOscMessage(evt.target->currentVal().getOscMessage());
-                    }
-                    else if(isInput() && isImage()){
-                        ci::gl::Texture2dRef tmp = evt.target->defaultVal().imageBuffer();
-                        currentVal().setImageBuffer(tmp);
-                        _imageSample = true;
-                    }
-                }else if(evt.is("plug")){
-                    if(isInput() && isImage()){
-                        ci::gl::Texture2dRef tmp = evt.target->defaultVal().imageBuffer();
-                        currentVal().setImageBuffer(tmp);
-                        _imageSample = true;
-                    }
-                }else if(evt.is("unplug")){
-                    if(isInput() && isImage()){
-                        ci::gl::Texture2dRef tmp = defaultVal().imageBuffer();
-                        currentVal().setImageBuffer(tmp);
-                        _imageSample = false;
-                    }
-                }
-            });
-            
+            addEventListener(boost::bind(&ISFAttr::changeHandler, this, _1));
         }
+        
+        
+        
         virtual ~ISFAttr(){
-            
+            cout<<"~ISFAttr : "<< name() << endl;
+            removeEventListener(boost::bind(&ISFAttr::changeHandler, this, _1));
         }
         static ISFAttrRef create(  const string & inName,
                                  const string & inDesc,
@@ -291,6 +296,11 @@ namespace ISF {
         void setPlug(reza::ui::ButtonRef view) { _uiPlug = view; }
         reza::ui::TextureViewRef & getPreview() { return _uiPreview; }
         void setPreview(reza::ui::TextureViewRef view) { _uiPreview = view; }
+        
+        void rmUIref(){
+            _uiPlug = nullptr;
+            _uiPreview = nullptr;
+        }
         
         bool isInput(){ return _io == ISF::ISFAttr_IO::_IN; }
         bool isOutput(){ return _io == ISF::ISFAttr_IO::_OUT; }

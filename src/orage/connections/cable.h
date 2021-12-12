@@ -74,6 +74,7 @@ namespace ORAGE {
                 return CableRef( new Cable( A, mousePos ) );
             }
             virtual ~Cable(){
+                cout<<"~Cable"<<endl;
                 if(!!B){
                     this->A->eventTrigger({
                         "unplug", this->B
@@ -84,6 +85,7 @@ namespace ORAGE {
                     conA.disconnect();
                     conB.disconnect();
                 }
+                delete mousePos;
             }
             
             bool isMouseOver(){

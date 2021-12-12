@@ -75,6 +75,7 @@ namespace ORAGE {
             }
         public :
             virtual ~ModuleOscFilter(){
+                cout<<"~ModuleOscFilter"<<endl;
             }
             
             virtual void update() override {

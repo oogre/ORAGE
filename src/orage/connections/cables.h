@@ -51,9 +51,11 @@ namespace ORAGE {
                 return CablesRef( new Cables() );
             }
             virtual ~Cables(){
+                cout<<"~Cables"<<endl;
                 mouseMoveHandler.disconnect();
                 keyUpHandler.disconnect();
                 postDrawHandler.disconnect();
+                cables.clear();
             }
             
             

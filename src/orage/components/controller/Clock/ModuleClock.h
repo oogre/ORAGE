@@ -28,6 +28,7 @@ namespace ORAGE {
         public :
             virtual ~ModuleClock(){
                 //duk_destroy_heap(ctx);
+                cout<<"~ModuleClock"<<endl;
             }
             static ModuleClockRef create(string name, string path, TYPES type = TYPES::CONTROLLER){
                 return ModuleClockRef(new ModuleClock(name, path, type));

@@ -34,6 +34,7 @@ namespace reza {
             }
             
             virtual ~OrageInputNumber(){
+                cout<<"~OrageInputNumber"<<endl;
             }
             virtual void setIncCallback( const std::function<void( std::string )> &callback ){
                 mCallbackIncrement =callback;

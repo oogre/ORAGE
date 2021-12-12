@@ -30,7 +30,7 @@ namespace reza {
             }
             
             virtual ~ParameterOsc(){
-                
+                cout<<"~ParameterOsc"<<endl;
             }
             
         };//ParameterOsc

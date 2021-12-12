@@ -56,24 +56,16 @@ namespace ORAGE {
                     mShader = gl::GlslProg::create(glsl);
 
                     auto sizeEventHandler = [&](Evt evt){
-                        if (evt.is("change")) {
-                            sizeChangeCB();
-                        }
+                        
                     };
                     
-                    ISFVal WIDTHmin(ISFValType::ISFValType_Float, 1.0f);
-                    ISFVal WIDTHmax(ISFValType::ISFValType_Float, 1920.0);
-                    ISFVal WIDTHval(ISFValType::ISFValType_Float, (double)defSize().x);
-                    _attributes->addAttr(ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, WIDTHmin, WIDTHmax, WIDTHval))
+                    _attributes->addAttr(ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal (1.0f), ISFFloatVal(1920.0), ISFFloatVal ((double)defSize().x)))
                         ->putInMoreArea()
-                        ->addEventListener(sizeEventHandler);
+                        ->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
                     
-                    ISFVal HEIGHTmin(ISFValType::ISFValType_Float, 1.0);
-                    ISFVal HEIGHTmax(ISFValType::ISFValType_Float, 1080.0);
-                    ISFVal HEIGHTval(ISFValType::ISFValType_Float, (double)defSize().y);
-                    _attributes->addAttr(ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, HEIGHTmin, HEIGHTmax, HEIGHTval))
+                    _attributes->addAttr(ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal(1.0), ISFFloatVal(1080.0), ISFFloatVal((double)defSize().y)))
                         ->putInMoreArea()
-                        ->addEventListener(sizeEventHandler);
+                        ->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
                     
                     for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
                         sharesRef.push_back(SyphonSpoutServer::create(Module::name() + "." + to_string(i)));
@@ -90,6 +82,12 @@ namespace ORAGE {
                     cerr << "ERROR FROM : " << Module::name() << endl;
                     cerr << e.what() << endl;
                     UI->shouldDestroy = true;
+                }
+            }
+            
+            void sizeEventHandler(Evt evt){
+                if (evt.is("change")) {
+                    sizeChangeCB();
                 }
             }
         protected:
@@ -145,6 +143,7 @@ namespace ORAGE {
             
         public :
             virtual ~ModuleISF(){
+                cout<<"~ModuleISF"<<endl;
             }
             
             static ModuleISFRef create(string name, string path, TYPES type = TYPES::ISF){

@@ -110,6 +110,7 @@ namespace ORAGE {
             }
         public :
             virtual ~EventTemplate(){
+                cout<<"~EventTemplate"<<endl;
                 signal.disconnect_all_slots();
             }
             virtual  boost::signals2::connection addEventListener(EventSignalSlot slot) {

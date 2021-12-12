@@ -52,10 +52,12 @@ namespace ORAGE {
                             cables->removeCablesPlugTo(attr);
                         }
                         modules.erase(it);
+                        (*it).reset();
                         continue;
                     }
                     it++;
                 }
+                
             }
             
             bool updateModule(){
@@ -172,7 +174,7 @@ namespace ORAGE {
                     break;
                 }
                 module->setOrigin(pos + vec2(0, 25));
-                module->onParameterPlug([&](Evt evt){
+                module->onParameterPlug([this](Evt evt){
                     if(evt.is("plug")){
                         cables->addCable(evt.target);
                     }
@@ -181,7 +183,7 @@ namespace ORAGE {
                     }
                 });
                 
-                module->addEventListener([&, module](EvtModule evt){
+                module->addEventListener([this](EvtModule evt){
                     if(evt.is("putAtTop")){
                         auto it = std::find(modules.begin(), modules.end(), evt.target);
                         if(it != modules.end() && it != modules.end() - 1){

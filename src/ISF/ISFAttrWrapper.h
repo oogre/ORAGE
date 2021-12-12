@@ -27,6 +27,10 @@ namespace ISF {
             
         }
     public :
+        virtual ~ISFAttrWrapper(){
+            std::cout<<"~ISFAttrWrapper"<<std::endl;
+            clear();
+        }
         static ISFAttrWrapperRef create(){
             return ISFAttrWrapperRef(new ISFAttrWrapper());
         }
@@ -96,6 +100,7 @@ namespace ISF {
             auto rmFrom = [](std::string name, std::vector<ISFAttrRef> & container){
                 for(auto it = container.begin(); it != container.end() ; ){
                     if((*it)->name() == name){
+                        (*it)->rmUIref();
                         it = container.erase(it);
                     }else{
                         it++;

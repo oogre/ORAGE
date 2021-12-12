@@ -65,6 +65,7 @@ namespace ORAGE {
             }
         public :
             virtual ~ModuleSyphonSpout(){
+                cout<<"~ModuleSyphonSpout"<<endl;
                 for(auto handler : signalDrawHandlers){
                     handler.disconnect();
                 }

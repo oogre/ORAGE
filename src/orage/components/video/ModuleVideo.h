@@ -219,6 +219,7 @@ namespace ORAGE {
             }
         public :
             virtual ~ModuleVideo(){
+                cout<<"~ModuleVideo"<<endl;
                 for(auto handler : signalDrawHandlers){
                     handler.disconnect();
                 }

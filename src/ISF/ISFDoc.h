@@ -86,7 +86,7 @@ namespace ISF {
         }
         virtual ~ISFDoc(){
             lock_guard<recursive_mutex>        lock(_propLock);
-            
+            cout << "~ISFDoc" << endl;
             if (_path != nullptr)    {
                 delete _path;
                 _path = nullptr;
@@ -125,6 +125,7 @@ namespace ISF {
                 delete _fragShaderSource;
                 _fragShaderSource = nullptr;
             }
+            _attrWrapper->clear();
         }
         
         //!    Returns the path of the ISF file for the receiver.  This is probably the path to the frag shader.

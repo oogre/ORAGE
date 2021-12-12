@@ -40,6 +40,7 @@ namespace reza {
             }
             
             virtual ~OrageButton(){
+                cout<<"~OrageButton"<<endl;
             }
             
             virtual void draw() override {

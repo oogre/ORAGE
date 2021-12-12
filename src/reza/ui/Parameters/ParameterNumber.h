@@ -61,7 +61,13 @@ namespace reza {
             }
             
             virtual ~ParameterNumber(){
-                
+                cout<<"~ParameterNumber"<<endl;
+                removeSubView(labelRef->getName());
+                removeSubView(inputRef->getName());
+                removeSubView(labelRef->getName());
+                removeSubView(inputRef->getName());
+                labelRef->clear();
+                inputRef->clear();
             }
             
             virtual void setEnabled(bool value) override {

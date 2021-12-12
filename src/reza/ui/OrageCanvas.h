@@ -36,8 +36,8 @@ namespace reza {
             ParameterWrapper parameters;
             
             OrageCanvas(std::string name, const ci::app::WindowRef &window = ci::app::getWindow()) :
-            SuperCanvas(name, window),
-            EvtCanvasHandler()
+                SuperCanvas(name, window),
+                EvtCanvasHandler()
             {
                 disable();
                 enable();
@@ -53,7 +53,10 @@ namespace reza {
                 return ref;
             }
             
-            virtual ~OrageCanvas(){}
+            virtual ~OrageCanvas(){
+                cout<<"~OrageCanvas"<<endl;
+                parameters.clear();
+            }
             
             virtual void setup() override {
                 SuperCanvas::setup();
@@ -147,20 +150,9 @@ namespace reza {
             }
             
             void rmParameter(std::string paramName){
-                auto it = parameters.find(paramName);
-                ParameterFloatRef param = dynamic_pointer_cast<ParameterFloat>(it->second);
-                if(!param)return;
-                auto sld = param->sliderRef;
-                auto btn = param->buttonRef;
-                auto lmt = param->limiterRef;
-                removeSubView(sld->getName());
-                removeSubView(btn->getName());
-                removeSubView(lmt->getName());
-                removeSubView(sld->getName());
-                removeSubView(btn->getName());
-                removeSubView(lmt->getName());
-                parameters.erase(it);
+                parameters.erase(parameters.find(paramName));
             }
+            
             
             ParameterFloatRef addLimitedSlider(ISF::ISFAttrRef & attr)
             {
@@ -208,7 +200,6 @@ namespace reza {
                 return param;
             }
             
-            
             ParameterNumberRef addNumber(ISF::ISFAttrRef & attr){
                 ParameterNumberRef param = ParameterNumber::create(attr);
                 
@@ -237,10 +228,10 @@ namespace reza {
                 );
 
                 addSubViewDown(lab);
-                inp->setOrigin(
+                lab->setOrigin(
                     vec2(
-                         inp->getOrigin(false).x + btnClutter.x + inp->getPadding().mLeft,
-                         inp->getOrigin(false).y
+                         lab->getOrigin(false).x + btnClutter.x + lab->getPadding().mLeft,
+                         lab->getOrigin(false).y
                     )
                 );
                 

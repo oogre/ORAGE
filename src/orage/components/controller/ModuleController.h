@@ -125,6 +125,7 @@ namespace ORAGE {
         public :
             virtual ~ModuleController(){
                 //duk_destroy_heap(ctx);
+                cout<<"~ModuleController"<<endl;
             }
             static ModuleControllerRef create(string name, string path, TYPES type = TYPES::CONTROLLER){
                 return ModuleControllerRef(new ModuleController(name, path, type));
