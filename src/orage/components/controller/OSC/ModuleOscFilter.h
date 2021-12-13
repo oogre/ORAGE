@@ -24,32 +24,7 @@ namespace ORAGE {
             ISFAttrRef inAttr;
             ISFAttrRef outAttr;
             
-            ModuleOscFilter(string name, TYPES type) :
-                Module(name)
-            {
-                moduleType = type;
-                outAttr = _attributes->addAttr(
-                    ISFAttr::create(
-                        "out", "", "",
-                        ISF::ISFAttr_IO::_OUT,
-                        ISFValType::ISFValType_OscMessage,
-                        ISFNullVal(),
-                        ISFNullVal(),
-                        ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
-                    )
-                );
-                inAttr = _attributes->addAttr(
-                    ISFAttr::create(
-                        "in", "", "",
-                        ISF::ISFAttr_IO::_IN,
-                        ISFValType::ISFValType_OscMessage,
-                        ISFNullVal(),
-                        ISFNullVal(),
-                        ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
-                    )
-                );
-                inAttr->addEventListener(boost::bind(&ModuleOscFilter::receiveHandler, this, _1));
-            }
+            
             
             void receiveHandler(Evt evt){
                 if (evt.is("change")) {
@@ -74,6 +49,32 @@ namespace ORAGE {
                 UI->autoSizeToFitSubviews();
             }
         public :
+            ModuleOscFilter(string name, TYPES type) :
+            Module(name)
+            {
+                moduleType = type;
+                outAttr = _attributes->addAttr(
+                                               ISFAttr::create(
+                                                               "out", "", "",
+                                                               ISF::ISFAttr_IO::_OUT,
+                                                               ISFValType::ISFValType_OscMessage,
+                                                               ISFNullVal(),
+                                                               ISFNullVal(),
+                                                               ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
+                                                               )
+                                               );
+                inAttr = _attributes->addAttr(
+                                              ISFAttr::create(
+                                                              "in", "", "",
+                                                              ISF::ISFAttr_IO::_IN,
+                                                              ISFValType::ISFValType_OscMessage,
+                                                              ISFNullVal(),
+                                                              ISFNullVal(),
+                                                              ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
+                                                              )
+                                              );
+                inAttr->addEventListener(boost::bind(&ModuleOscFilter::receiveHandler, this, _1));
+            }
             virtual ~ModuleOscFilter(){
                 cout<<"~ModuleOscFilter"<<endl;
             }
@@ -83,7 +84,7 @@ namespace ORAGE {
             }
             
             static ModuleOscFilterRef create(string name, TYPES type = TYPES::OSC){
-                return ModuleOscFilterRef(new ModuleOscFilter(name, type));
+                return std::make_shared<ModuleOscFilter>(name, type);
             }
         };//ModuleOscFilter
         typedef shared_ptr<ModuleOscFilter> ModuleOscFilterRef;

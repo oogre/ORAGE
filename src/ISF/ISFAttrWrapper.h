@@ -23,16 +23,17 @@ namespace ISF {
         std::vector<ISFAttrRef> _audioInputs; // array of ISFAttrRef instances for the audio inputs
         std::vector<ISFAttrRef> _imageImports; // array of ISFAttrRef instances that describe imported images. attrib's 'attribName' is the name of the sampler, attrib's 'description' is the path to the file.
         
+        
+    public :
         ISFAttrWrapper(){
             
         }
-    public :
         virtual ~ISFAttrWrapper(){
             std::cout<<"~ISFAttrWrapper"<<std::endl;
             clear();
         }
         static ISFAttrWrapperRef create(){
-            return ISFAttrWrapperRef(new ISFAttrWrapper());
+            return std::make_shared<ISFAttrWrapper>();
         }
         
         //!    Returns a std::vector of ISFAttrRef instances describing all of the receiver's inputs.

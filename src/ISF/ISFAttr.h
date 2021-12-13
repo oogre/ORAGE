@@ -169,11 +169,11 @@ namespace ISF {
                                  const ISFVal & inIdenVal=ISFNullVal(),
                                  const vector<std::string> * inLabels=nullptr,
                                  const vector<int32_t> * inVals=nullptr){
-            return ISFAttrRef(new ISFAttr(inName, inDesc, inLabel, io, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals));
+            return std::make_shared<ISFAttr>(inName, inDesc, inLabel, io, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals);
         }
         
         static ISFAttrRef create(  const ISFAttrRef & attr){
-            return ISFAttrRef(new ISFAttr(  attr->name(),
+            return std::make_shared<ISFAttr>(  attr->name(),
                                             attr->description(),
                                             attr->label(),
                                             attr->IO(),
@@ -183,7 +183,7 @@ namespace ISF {
                                           	attr->defaultVal(),
                                             attr->identityVal(),
                                             &attr->labelArray(),
-                                            &attr->valArray()));
+                                            &attr->valArray());
         }
         
         
@@ -225,21 +225,18 @@ namespace ISF {
             _magnetic = values;
         }
         
-        ISFAttrRef disableUI(){
+        void disableUI(){
             _uiEnabled = false;
-            return shared_from_this();
         }
-        ISFAttrRef ensableUI(){
+        void ensableUI(){
             _uiEnabled = false;
-            return shared_from_this();
         }
         bool hasUI(){
             return _uiEnabled;
         }
         
-        ISFAttrRef putInMoreArea(){
+        void putInMoreArea(){
             _uiMoreArea = true;
-            return shared_from_this();
         }
         
         bool isUIMoreArea(){

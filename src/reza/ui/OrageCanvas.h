@@ -35,22 +35,22 @@ namespace reza {
             virtual void enableUpdateCallback() override {/*DISABLE AUTO DRAWING AND UPDATE*/}
             ParameterWrapper parameters;
             
+            
+            
+        public :
             OrageCanvas(std::string name, const ci::app::WindowRef &window = ci::app::getWindow()) :
-                SuperCanvas(name, window),
-                EvtCanvasHandler()
+            SuperCanvas(name, window),
+            EvtCanvasHandler()
             {
                 disable();
                 enable();
                 if(!CLOSE_PIC)CLOSE_PIC = Texture::create(loadImage(loadAsset(getAssetPath("./textures/close.png"))));
             }
-            
-        public :
             ViewRef closeBtn;
             bool shouldDestroy = false;
             
             static OrageCanvasRef create( std::string name, const ci::app::WindowRef &window = ci::app::getWindow() ){
-                OrageCanvasRef ref = OrageCanvasRef( new OrageCanvas( name, window ) );
-                return ref;
+                return std::make_shared<OrageCanvas>( name, window ) ;
             }
             
             virtual ~OrageCanvas(){

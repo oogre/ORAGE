@@ -32,9 +32,11 @@ namespace reza {
             vector<OrageMenuItemRef> btns;
             virtual void enableUpdateCallback() override {/*DISABLE AUTO DRAWING AND UPDATE*/}
             
+            
+        public :
             OrageMenu(const WindowRef &window) :
-                SuperCanvas("", window),
-                BaseEventHandler()
+            SuperCanvas("", window),
+            BaseEventHandler()
             {
                 disable();
                 enable();
@@ -42,7 +44,6 @@ namespace reza {
                     setSize(vec2(getWindowWidth(), 25));
                 });
             }
-        public :
             virtual ~OrageMenu(){
                 resizeHandler.disconnect();
                 for(auto btn : btns){
@@ -53,7 +54,7 @@ namespace reza {
                 
             }
             static OrageMenuRef create(){
-                return OrageMenuRef(new OrageMenu(ci::app::getWindow()));
+                return std::make_shared<OrageMenu>(ci::app::getWindow());
             }
             
             void addElement(std::string name, SUB_ENTRIES subEntries){

@@ -17,16 +17,16 @@ namespace reza {
         
         class ParameterOsc : public ParameterBase {
             typedef std::shared_ptr<ParameterOsc> ParameterOscRef;
+            
+        public :
             ParameterOsc( ISF::ISFAttrRef & attr ) :
-                ParameterBase( attr, PARAMETER_TYPE::OSC )
+            ParameterBase( attr, PARAMETER_TYPE::OSC )
             {
                 
             }
-        public :
-            
             static ParameterOscRef create( ISF::ISFAttrRef & attr )
             {
-                return ParameterOscRef( new ParameterOsc( attr ) );
+                return std::make_shared<ParameterOsc>( attr );
             }
             
             virtual ~ParameterOsc(){

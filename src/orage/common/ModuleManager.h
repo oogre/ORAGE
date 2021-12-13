@@ -24,9 +24,7 @@ namespace ORAGE {
             ci::JsonTree jCablesToCreate;
             std::vector<std::string>filesToOpen;
             typedef shared_ptr<ModuleManager> ModuleManagerRef;
-            ModuleManager(){
-                cables = Cables::create();
-            }
+            
             
             void openFiles(){
                 if(filesToOpen.size() == 0 )return;
@@ -51,8 +49,9 @@ namespace ORAGE {
                         for(auto attr : (*it)->attributes()->every()){
                             cables->removeCablesPlugTo(attr);
                         }
+                        
                         modules.erase(it);
-                        (*it).reset();
+//                        (*it).reset();
                         continue;
                     }
                     it++;
@@ -94,8 +93,11 @@ namespace ORAGE {
             }
             
         public :
+            ModuleManager(){
+                cables = Cables::create();
+            }
             static ModuleManagerRef create(){
-                return ModuleManagerRef(new ModuleManager());
+                return std::make_shared<ModuleManager>();
             }
             
             ModuleRef getById(std::string id){

@@ -51,24 +51,30 @@ namespace ORAGE {
             
             virtual void UIReady() {
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
-                
-                ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
-                ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
-                ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
-                ISFVal TIMEval (ISFValType::ISFValType_Float, 0.0);
-                ISFAttrRef time = _attributes->addAttr(ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval));
+                ISFAttrRef time = ISFAttr::create("TIME", "", "",
+                                                  ISFAttr_IO::_IN,
+                                                  ISFValType::ISFValType_Float,
+                                                  ISFFloatVal(0.0),
+                                                  ISFFloatVal(numeric_limits<double>::max()),
+                                                  ISFFloatVal(0.0));
                 time->disableUI();
+                _attributes->addAttr(time);
                 
-                ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
-                ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
-                ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                ISFAttrRef timedelta = _attributes->addAttr(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
+                ISFAttrRef timedelta = ISFAttr::create("TIMEDELTA", "", "",
+                                                        ISF::ISFAttr_IO::_IN,
+                                                        ISFValType::ISFValType_Float,
+                                                        ISFFloatVal(0.0),
+                                                        ISFFloatVal(numeric_limits<double>::max()),
+                                                        ISFFloatVal(0.0));
                 timedelta->disableUI();
+                _attributes->addAttr(timedelta);
             }
             
+            
+        public :
             Module(string nameId) :
-                EvtModuleHandler(),
-                parameterPlugHandler([&](Evt evt){})
+            EvtModuleHandler(),
+            parameterPlugHandler([&](Evt evt){})
             {
                 int index = nameId.find_last_of(".");
                 if (index != string::npos){
@@ -120,7 +126,6 @@ namespace ORAGE {
                     }
                 });
             }
-        public :
             TYPES moduleType;
             OrageCanvasRef UI;
             
@@ -135,7 +140,7 @@ namespace ORAGE {
                 this->UI->clear();
             }
             static ModuleRef create(string name){
-                return ModuleRef(new Module(name));
+                return std::make_shared<Module>(name);
             }
             void setOrigin(vec2 pos){
                 UI->setOrigin(pos);

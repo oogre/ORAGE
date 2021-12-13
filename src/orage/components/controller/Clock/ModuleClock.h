@@ -19,19 +19,20 @@ namespace ORAGE {
         class ModuleClock : public Module {
             typedef shared_ptr<ModuleClock> ModuleClockRef;
             
+            
+            
+        public :
             ModuleClock(string name, string path, TYPES type) :
-                Module(name)
+            Module(name)
             {
                 moduleType = type;
             }
-            
-        public :
             virtual ~ModuleClock(){
                 //duk_destroy_heap(ctx);
                 cout<<"~ModuleClock"<<endl;
             }
             static ModuleClockRef create(string name, string path, TYPES type = TYPES::CONTROLLER){
-                return ModuleClockRef(new ModuleClock(name, path, type));
+                return std::make_shared<ModuleClock>(name, path, type);
             }
         };
         typedef shared_ptr<ModuleClock> ModuleClockRef;

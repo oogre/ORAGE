@@ -24,7 +24,7 @@ namespace reza {
         public :
             static OrageInputNumberRef create( std::string name, const TextInput::Format &format = TextInput::Format())
             {
-                return OrageInputNumberRef( new OrageInputNumber( name, format ) );
+                return std::make_shared<OrageInputNumber>( name, format );
             }
             
             OrageInputNumber( std::string name, const TextInput::Format &format = TextInput::Format()) :

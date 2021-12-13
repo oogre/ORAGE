@@ -77,7 +77,7 @@ namespace ORAGE {
                 }
                 
                 auto nwBtn = UI->addButton("New Window", false, format);
-                nwBtn->setCallback([&](bool a) {
+                nwBtn->setCallback([this](bool a) {
                     if (a) {
                         createWindow(0, false);
                     }
@@ -86,7 +86,7 @@ namespace ORAGE {
                 string refName = nwBtn->getName();
                 for (int i = 0; i < ci::app::Platform::get()->getDisplays().size(); i++) {
                     ButtonRef btn = Button::create("FS "+to_string(i), false, format);
-                    btn->setCallback([&, i](bool a) {
+                    btn->setCallback([this, i](bool a) {
                         if (a) {
                             createWindow(i, true);
                         }
@@ -148,7 +148,7 @@ namespace ORAGE {
                 getWindowIndex(0)->getSignalClose().connect(0, [&, window]() {
                     window->close();
                     });
-                auto handler = window->getSignalDraw().connect([&, window] {
+                auto handler = window->getSignalDraw().connect([this, window] {
                     gl::setMatricesWindow(window->getSize());
                     gl::clear(ColorA::white());
                     gl::draw(_attributes->imageOutputs().back()->defaultVal().imageBuffer(), Rectf(vec2(0, 0), window->getSize()));

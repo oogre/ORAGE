@@ -23,6 +23,20 @@ namespace ORAGE {
             Path2d  path;
             vec2* mousePos;
             
+            
+            
+            std::function<void(Evt)> makeCallback(ISFAttrRef plug){
+                return [plug](Evt evt){
+                    if(evt.is("change")){
+                        if(evt.isValid(plug)){
+                            evt.blacklist(plug);
+                            plug->eventTrigger(evt);
+                        }
+                    }
+                };
+            }
+            
+        public :
             Cable(ISFAttrRef A, ISFAttrRef B, vec2* mousePos) :
                 mousePos(mousePos),
                 mouseOver(false),
@@ -45,19 +59,6 @@ namespace ORAGE {
             {
                 
             }
-            
-            std::function<void(Evt)> makeCallback(ISFAttrRef plug){
-                return [plug](Evt evt){
-                    if(evt.is("change")){
-                        if(evt.isValid(plug)){
-                            evt.blacklist(plug);
-                            plug->eventTrigger(evt);
-                        }
-                    }
-                };
-            }
-            
-        public :
             ISFAttrRef A;
             ISFAttrRef B;
             
@@ -68,10 +69,10 @@ namespace ORAGE {
                 return A == C || B == C;
             }
             static CableRef create(ISFAttrRef A, ISFAttrRef B, vec2* mousePos){
-                return CableRef( new Cable( A, B, mousePos ) );
+                return std::make_shared<Cable>( A, B, mousePos);
             }
             static CableRef create(ISFAttrRef A, vec2* mousePos){
-                return CableRef( new Cable( A, mousePos ) );
+                return std::make_shared<Cable>( A, mousePos);
             }
             virtual ~Cable(){
                 cout<<"~Cable"<<endl;

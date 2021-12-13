@@ -24,22 +24,7 @@ namespace ORAGE {
             TextInputRef typeTagUI;
             ISFAttrRef outAttr;
             
-            ModuleOscDataOut(string name, TYPES type) :
-                Module(name)
-            {
-                moduleType = type;
-                createLater = ISFAttrWrapper::create();
-                outAttr = _attributes->addAttr(
-                    ISFAttr::create(
-                        "out", "", "",
-                        ISF::ISFAttr_IO::_OUT,
-                        ISFValType::ISFValType_OscMessage,
-                        ISFNullVal(),
-                        ISFNullVal(),
-                        ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
-                    )
-               );
-            }
+            
             
             void readyHandler(bool value){
                 typeTagUI->setEnabled(!value);
@@ -155,6 +140,22 @@ namespace ORAGE {
                 }
             }
         public :
+            ModuleOscDataOut(string name, TYPES type) :
+            Module(name)
+            {
+                moduleType = type;
+                createLater = ISFAttrWrapper::create();
+                outAttr = _attributes->addAttr(
+                                               ISFAttr::create(
+                                                               "out", "", "",
+                                                               ISF::ISFAttr_IO::_OUT,
+                                                               ISFValType::ISFValType_OscMessage,
+                                                               ISFNullVal(),
+                                                               ISFNullVal(),
+                                                               ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
+                                                               )
+                                               );
+            }
             virtual ~ModuleOscDataOut(){
                 cout<<"~ModuleOscDataOut"<<endl;
                 createLater->clear();
@@ -168,7 +169,7 @@ namespace ORAGE {
             }
             
             static ModuleOscDataOutRef create(string name, TYPES type = TYPES::OSC){
-                return ModuleOscDataOutRef(new ModuleOscDataOut(name, type));
+                return std::make_shared<ModuleOscDataOut>(name, type);
             }
         };//ModuleOscData
         typedef shared_ptr<ModuleOscDataOut> ModuleOscDataOutRef;

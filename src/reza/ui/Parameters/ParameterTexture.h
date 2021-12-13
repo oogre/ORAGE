@@ -21,18 +21,17 @@ namespace reza {
         
         class ParameterTexture : public ParameterBase {
             typedef shared_ptr<ParameterTexture> ParameterTextureRef;
-            static TextureRef DEFAULT_INPUT;
+        public :
             ParameterTexture( ISF::ISFAttrRef & attr) :
-                ParameterBase( attr, PARAMETER_TYPE::TEXTURE )
+            ParameterBase( attr, PARAMETER_TYPE::TEXTURE )
             {
-                if(attr->isOutput()){
+                if(getAttr()->isOutput()){
                     textureViewRef = TextureView::create( attr->name(), nullptr, TextureView::Format().height(100) );
-                    attr->setPreview(textureViewRef);
+                    getAttr()->setPreview(textureViewRef);
                 }
             }
-        public :
             static ParameterTextureRef create( ISF::ISFAttrRef & attr){
-                return ParameterTextureRef( new ParameterTexture( attr ) );
+                return std::make_shared<ParameterTexture>( attr );
             }
             virtual ~ParameterTexture(){
                 cout<<"~ParameterTexture"<<endl;

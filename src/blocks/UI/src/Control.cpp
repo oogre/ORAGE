@@ -12,6 +12,7 @@ Control::Control()
 
 Control::~Control()
 {
+    
 }
 
 bool Control::isHit( const glm::vec2 &pt )

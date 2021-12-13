@@ -32,16 +32,7 @@ namespace ORAGE {
             vector<ci::signals::Connection> signalDrawHandlers;
             vector<ci::app::WindowRef> windows;
             
-            ModuleSyphonSpout(string name, TYPES type, int width, int height) :
-                ModuleVideo(name)
-            {
-                moduleType = type;
-                
-                sscRef = SyphonSpoutClient::create();
-                
-                _attributes->addAttr(ISFAttr::create("output", "", "", ISF::ISFAttr_IO::_OUT, ISF::ISFValType::ISFValType_Image));
-                
-            }
+            
             
         protected:
             
@@ -64,6 +55,16 @@ namespace ORAGE {
                 displayMorePannel(false);
             }
         public :
+            ModuleSyphonSpout(string name, TYPES type, int width, int height) :
+            ModuleVideo(name)
+            {
+                moduleType = type;
+                
+                sscRef = SyphonSpoutClient::create();
+                
+                _attributes->addAttr(ISFAttr::create("output", "", "", ISF::ISFAttr_IO::_OUT, ISF::ISFValType::ISFValType_Image));
+                
+            }
             virtual ~ModuleSyphonSpout(){
                 cout<<"~ModuleSyphonSpout"<<endl;
                 for(auto handler : signalDrawHandlers){
@@ -78,7 +79,7 @@ namespace ORAGE {
                 windows.clear();
             }
             static ModuleSyphonSpoutRef create(string name, TYPES type = TYPES::INPUT, int width = getWindowSize().x, int height = getWindowSize().y){
-                return ModuleSyphonSpoutRef(new ModuleSyphonSpout(name, type, width, height));
+                return std::make_shared<ModuleSyphonSpout>(name, type, width, height);
             }
             
             virtual void update() override {

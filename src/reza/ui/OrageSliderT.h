@@ -82,7 +82,7 @@ namespace reza {
             
             static OrageSliderRef create( const std::string name, T val, T min = 0.0, T max = 255, Format format = Format() )
             {
-                return OrageSliderRef( new OrageSliderT<T>( name, val, min, max, format ) );
+                return std::make_shared<OrageSliderT<T>>( name, val, min, max, format );
             }
             
             OrageSliderT( std::string name, T value, T min, T max, Format format = Format() ) :

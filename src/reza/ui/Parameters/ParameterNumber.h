@@ -18,20 +18,22 @@ namespace reza {
         
         class ParameterNumber : public ParameterBase {
             typedef std::shared_ptr<ParameterNumber> ParameterNumberRef;
+            
+        public :
             ParameterNumber( ISF::ISFAttrRef & attr ) :
-                ParameterBase( attr, PARAMETER_TYPE::NUMBER)
-            {   
+            ParameterBase( attr, PARAMETER_TYPE::NUMBER)
+            {
                 labelRef = Label::create(attr->name(), attr->name(), FontSize::SMALL);
                 
                 TextInput::Format tFormat = TextInput::Format().numeric(true).fontSize(FontSize::MEDIUM).trigger(Trigger::CHANGE);
                 inputRef = OrageInputNumber::create(attr->currentVal().getValString(), tFormat);
-                inputRef->setCallback([attr](std::string value){
-                    attr->currentVal().setValString(value);
-                    attr->eventTrigger({ "change", attr });
+                inputRef->setCallback([this](std::string value){
+                    getAttr()->currentVal().setValString(value);
+                    getAttr()->eventTrigger({ "change", getAttr() });
                 });
-                
-                auto action = [this, attr](int inc){
-                    return [this, attr, inc](std::string value){
+                auto action = [this](int inc){
+                    return [this, inc](std::string value){
+                        auto attr = getAttr();
                         if(attr->isFloat()){
                             attr->currentVal().setDoubleVal(attr->currentVal().getDoubleVal() + (float)inc);
                         }
@@ -42,22 +44,17 @@ namespace reza {
                         inputRef->setValue(attr->currentVal().getValString());
                     };
                 };
-                
                 inputRef->setIncCallback(action(1));
-                
                 inputRef->setDecCallback(action(-1));
-                
-                attr->addEventListener([this, attr](Evt evt){
-                    if (evt.is("change") && evt.target != attr && inputRef->isEnabled()) {
+                attr->addEventListener([this](Evt evt){
+                    if (evt.is("change") && evt.target != getAttr() && inputRef->isEnabled()) {
                         inputRef->setValue(evt.target->currentVal().getValString());
                     }
                 });
             }
-        public :
-            
             static ParameterNumberRef create( ISF::ISFAttrRef & attr )
             {
-                return ParameterNumberRef( new ParameterNumber( attr ) );
+                return std::make_shared<ParameterNumber>( attr );
             }
             
             virtual ~ParameterNumber(){

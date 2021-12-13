@@ -17,16 +17,16 @@ namespace reza {
         
         class ParameterClock : public ParameterBase {
             typedef std::shared_ptr<ParameterClock> ParameterClockRef;
+            
+        public :
             ParameterClock( ISF::ISFAttrRef & attr ) :
-                ParameterBase( attr, PARAMETER_TYPE::CLOCK )
+            ParameterBase( attr, PARAMETER_TYPE::CLOCK )
             {
                 
             }
-        public :
-            
             static ParameterClockRef create( ISF::ISFAttrRef & attr )
             {
-                return ParameterClockRef( new ParameterClock( attr ) );
+                return std::make_shared<ParameterClock>( attr );
             }
             
             virtual ~ParameterClock(){

@@ -14,6 +14,7 @@ View::View()
 
 View::~View()
 {
+    
 }
 
 void View::clear()

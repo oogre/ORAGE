@@ -30,64 +30,15 @@ namespace ORAGE {
             TextInputRef outHostUI;
             ToggleRef    runUi;
             
-            Sender    * mSender;
-            Receiver  * mReceiver;
+            Sender    * mSender = nullptr;
+            Receiver  * mReceiver = nullptr;
             
             ISFAttrRef attrOut;
             ISFAttrRef attrIn;
             ISFAttrRef portIn;
             ISFAttrRef portOut;
             
-            ModuleOscServer(string name, TYPES type) :
-                Module(name)
-            {
-                moduleType = type;
-                
-                portIn = _attributes->addAttr(
-                    ISFAttr::create(
-                        "portIn", "", "",
-                        ISF::ISFAttr_IO::_IN,
-                        ISFValType::ISFValType_Long,
-                        ISFLongVal(0),
-                        ISFLongVal(numeric_limits<long>::max()),
-                        ISFLongVal(10000)
-                    )
-                );
-                
-                portOut = _attributes->addAttr(
-                    ISFAttr::create(
-                        "portOut", "", "",
-                        ISF::ISFAttr_IO::_OUT,
-                        ISFValType::ISFValType_Long,
-                        ISFLongVal(0),
-                        ISFLongVal(numeric_limits<long>::max()),
-                        ISFLongVal(10001)
-                    )
-                );
-                
-                attrOut = _attributes->addAttr(
-                    ISFAttr::create(
-                        "out", "", "",
-                        ISF::ISFAttr_IO::_OUT,
-                        ISFValType::ISFValType_OscMessage,
-                        ISFNullVal(),
-                        ISFNullVal(),
-                        ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
-                    )
-                );
-                
-                attrIn = _attributes->addAttr(
-                    ISFAttr::create(
-                        "in", "", "",
-                        ISF::ISFAttr_IO::_IN,
-                        ISFValType::ISFValType_OscMessage,
-                        ISFNullVal(),
-                        ISFNullVal(),
-                        ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
-                    )
-                );
-                
-            }
+            
             
             void runHandler(bool value){
                 inPortUI->setEnabled(!value);
@@ -111,7 +62,7 @@ namespace ORAGE {
                         return;
                     }
                     
-                    mReceiver->listen( [this, value]( asio::error_code error, protocol::endpoint endpoint ) -> bool {
+                    mReceiver->listen( []( asio::error_code error, protocol::endpoint endpoint ) -> bool {
                         if( error ) {
                             CI_LOG_E(
                                  "Error Listening: " <<
@@ -121,10 +72,6 @@ namespace ORAGE {
                                  " endpoint: " <<
                                  endpoint
                             );
-                            runUi->setValue(false);
-                            inPortUI->setEnabled(value);
-                            outPortUI->setEnabled(value);
-                            outHostUI->setEnabled(value);
                             return false;
                         }
                         return true;
@@ -162,30 +109,77 @@ namespace ORAGE {
                 runUi = UI->addToggle("run", false, Toggle::Format().label(true).align(Alignment::CENTER));
                 runUi->setCallback(boost::bind(&ModuleOscServer::runHandler, this, _1));
                 
-                
-                
-                
-                
-                
                 UI->addOsc(attrOut);
                 UI->addOsc(attrIn);
-                
-                
-                
                 
                 UI->autoSizeToFitSubviews();
             }
             
         public :
+            ModuleOscServer(string name, TYPES type) :
+            Module(name)
+            {
+                moduleType = type;
+                
+                portIn = _attributes->addAttr(
+                                              ISFAttr::create(
+                                                              "portIn", "", "",
+                                                              ISF::ISFAttr_IO::_IN,
+                                                              ISFValType::ISFValType_Long,
+                                                              ISFLongVal(0),
+                                                              ISFLongVal(numeric_limits<long>::max()),
+                                                              ISFLongVal(10000)
+                                                              )
+                                              );
+                
+                portOut = _attributes->addAttr(
+                                               ISFAttr::create(
+                                                               "portOut", "", "",
+                                                               ISF::ISFAttr_IO::_OUT,
+                                                               ISFValType::ISFValType_Long,
+                                                               ISFLongVal(0),
+                                                               ISFLongVal(numeric_limits<long>::max()),
+                                                               ISFLongVal(10001)
+                                                               )
+                                               );
+                
+                attrOut = _attributes->addAttr(
+                                               ISFAttr::create(
+                                                               "out", "", "",
+                                                               ISF::ISFAttr_IO::_OUT,
+                                                               ISFValType::ISFValType_OscMessage,
+                                                               ISFNullVal(),
+                                                               ISFNullVal(),
+                                                               ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
+                                                               )
+                                               );
+                
+                attrIn = _attributes->addAttr(
+                                              ISFAttr::create(
+                                                              "in", "", "",
+                                                              ISF::ISFAttr_IO::_IN,
+                                                              ISFValType::ISFValType_OscMessage,
+                                                              ISFNullVal(),
+                                                              ISFNullVal(),
+                                                              ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
+                                                              )
+                                              );
+                
+            }
             virtual ~ModuleOscServer(){
                 cout<<"~ModuleOscServer"<<endl;
-                mSender->close();
-                mReceiver->close();
-                delete mReceiver;
-                delete mSender;
+                if(mSender != nullptr){
+                    mSender->close();
+                    delete mSender;
+                }
+                
+                if(mReceiver != nullptr){
+                    mReceiver->close();
+                    delete mReceiver;
+                }
             }
             static ModuleOscServerRef create(string name, TYPES type = TYPES::OSC){
-                return ModuleOscServerRef(new ModuleOscServer(name, type));
+                return std::make_shared<ModuleOscServer>(name, type);
             }
         };//ModuleOscServer
         typedef shared_ptr<ModuleOscServer> ModuleOscServerRef;

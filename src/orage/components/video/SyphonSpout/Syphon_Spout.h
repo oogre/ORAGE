@@ -31,19 +31,20 @@ namespace ORAGE {
             SPOUTLIBRARY * client;
             Texture2dRef texIn;
         #endif
+            
+        public :
             SyphonSpoutClient(){
-            #if defined(CINDER_MAC)
+#if defined(CINDER_MAC)
                 client = new syphonClient();
                 client->setup();
                 serverDir = new syphonServerDirectory();
                 serverDir->setup();
                 dirIdx = 0;
-            #elif defined(CINDER_MSW)
+#elif defined(CINDER_MSW)
                 client = GetSpout();
                 texIn = Texture2d::create(800, 600);
-            #endif
+#endif
             }
-        public :
             virtual ~SyphonSpoutClient(){
                 cout<<"~SyphonSpoutClient"<<endl;
             #if defined(CINDER_MAC)
@@ -55,7 +56,7 @@ namespace ORAGE {
             #endif
             }
             static SyphonSpoutClientRef create(){
-                return SyphonSpoutClientRef(new SyphonSpoutClient());
+                return std::make_shared<SyphonSpoutClient>();
             }
             void nextClient(){
              #if defined(CINDER_MAC)
@@ -98,17 +99,18 @@ namespace ORAGE {
         #elif defined(CINDER_MSW)
             SPOUTLIBRARY * server;
         #endif
-            SyphonSpoutServer(string name) :
-                name(name)
-            {
             
-            }
         public :
+            SyphonSpoutServer(string name) :
+            name(name)
+            {
+                
+            }
             virtual ~SyphonSpoutServer(){
                 disable();
             }
             static SyphonSpoutServerRef create(string name){
-                return SyphonSpoutServerRef(new SyphonSpoutServer(name));
+                return std::make_shared<SyphonSpoutServer>(name);
             }
             
             void draw(Texture2dRef currentTex){

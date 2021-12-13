@@ -30,14 +30,7 @@ namespace ORAGE {
             vec2 mousePos;
             int keyCode;
             
-            Cables()
-            {
-                mouseMoveHandler = ci::app::getWindow()->getSignalMouseMove().connect(boost::bind(&Cables::onMouseMove, this, _1));
-                keyUpHandler = ci::app::getWindow()->getSignalKeyDown().connect(boost::bind(&Cables::onKeyUp, this, _1));
-                postDrawHandler = ci::app::getWindow()->getSignalPostDraw().connect(0, [this]() {
-                    draw();
-                });
-            }
+            
             void onMouseMove(ci::app::MouseEvent event){
                 mousePos = event.getPos();
             }
@@ -47,8 +40,16 @@ namespace ORAGE {
             }
             
         public :
+            Cables()
+            {
+                mouseMoveHandler = ci::app::getWindow()->getSignalMouseMove().connect(boost::bind(&Cables::onMouseMove, this, _1));
+                keyUpHandler = ci::app::getWindow()->getSignalKeyDown().connect(boost::bind(&Cables::onKeyUp, this, _1));
+                postDrawHandler = ci::app::getWindow()->getSignalPostDraw().connect(0, [this]() {
+                    draw();
+                });
+            }
             static CablesRef create(){
-                return CablesRef( new Cables() );
+                return std::make_shared<Cables>();
             }
             virtual ~Cables(){
                 cout<<"~Cables"<<endl;

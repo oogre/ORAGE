@@ -39,51 +39,7 @@ namespace ORAGE {
             
             vector<SyphonSpoutServerRef> sharesRef;
 
-            ModuleISF(string name, string path, TYPES type) :
-                ModuleVideo(name)
-            {
-                try {
-                    moduleType = type;
-                    string outFrag;
-                    string outVert;
-                    doc = ISFDoc::create(path);
-                    _attributes->concat(doc->attrWrapper());
-                    
-                    ISF::GLVersion v = GLVersion_4;
-                    doc->generateShaderSource(&outFrag, &outVert, v);
-                    
-                    gl::GlslProg::Format glsl = gl::GlslProg::Format().vertex(outVert).fragment(outFrag);
-                    mShader = gl::GlslProg::create(glsl);
-
-                    auto sizeEventHandler = [&](Evt evt){
-                        
-                    };
-                    
-                    _attributes->addAttr(ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal (1.0f), ISFFloatVal(1920.0), ISFFloatVal ((double)defSize().x)))
-                        ->putInMoreArea()
-                        ->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
-                    
-                    _attributes->addAttr(ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal(1.0), ISFFloatVal(1080.0), ISFFloatVal((double)defSize().y)))
-                        ->putInMoreArea()
-                        ->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
-                    
-                    for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
-                        sharesRef.push_back(SyphonSpoutServer::create(Module::name() + "." + to_string(i)));
-                    }
-                }
-                catch (const ISFErr& e) {
-                    cerr << "ERROR FROM : " << Module::name() << endl;
-                    for (auto& [key, value] : e.details) {
-                        cerr << key << " : " << value << endl;
-                    }
-                    UI->shouldDestroy = true;
-                }
-                catch (const exception& e) {
-                    cerr << "ERROR FROM : " << Module::name() << endl;
-                    cerr << e.what() << endl;
-                    UI->shouldDestroy = true;
-                }
-            }
+            
             
             void sizeEventHandler(Evt evt){
                 if (evt.is("change")) {
@@ -142,12 +98,61 @@ namespace ORAGE {
             }
             
         public :
+            ModuleISF(string name, string path, TYPES type) :
+            ModuleVideo(name)
+            {
+                try {
+                    moduleType = type;
+                    string outFrag;
+                    string outVert;
+                    doc = ISFDoc::create(path);
+                    _attributes->concat(doc->attrWrapper());
+                    
+                    ISF::GLVersion v = GLVersion_4;
+                    doc->generateShaderSource(&outFrag, &outVert, v);
+                    
+                    gl::GlslProg::Format glsl = gl::GlslProg::Format().vertex(outVert).fragment(outFrag);
+                    mShader = gl::GlslProg::create(glsl);
+                    
+                    auto sizeEventHandler = [&](Evt evt){
+                        
+                    };
+                    {
+                        auto attrWidth = ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal (1.0f), ISFFloatVal(1920.0), ISFFloatVal ((double)defSize().x));
+                        attrWidth->putInMoreArea();
+                        attrWidth->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
+                        _attributes->addAttr(attrWidth);
+                        auto attrHeight = ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal(1.0), ISFFloatVal(1080.0), ISFFloatVal((double)defSize().y));
+                        attrHeight->putInMoreArea();
+                        attrHeight->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
+                        _attributes->addAttr(attrHeight);
+                    }
+                    
+                    
+                    
+                    for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
+                        sharesRef.push_back(SyphonSpoutServer::create(Module::name() + "." + to_string(i)));
+                    }
+                }
+                catch (const ISFErr& e) {
+                    cerr << "ERROR FROM : " << Module::name() << endl;
+                    for (auto& [key, value] : e.details) {
+                        cerr << key << " : " << value << endl;
+                    }
+                    UI->shouldDestroy = true;
+                }
+                catch (const exception& e) {
+                    cerr << "ERROR FROM : " << Module::name() << endl;
+                    cerr << e.what() << endl;
+                    UI->shouldDestroy = true;
+                }
+            }
             virtual ~ModuleISF(){
                 cout<<"~ModuleISF"<<endl;
             }
             
             static ModuleISFRef create(string name, string path, TYPES type = TYPES::ISF){
-                return ModuleISFRef(new ModuleISF(name, path, type));
+                return std::make_shared<ModuleISF>(name, path, type);
             }
             
             virtual void update() override {

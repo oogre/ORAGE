@@ -64,9 +64,12 @@ namespace reza {
         
         class ParameterBase : public View, public EvtHandler{
             typedef std::shared_ptr<ParameterBase> ParameterBaseRef;
-            protected :
+        protected :
             ISF::ISFAttrRef & attr;
         public:
+            ISF::ISFAttrRef getAttr(){
+                return attr;
+            }
             uint8_t type = PARAMETER_TYPE::NONE | PLUG_TYPE::_IN;
             ParameterBase( ISF::ISFAttrRef & attr, uint8_t type):
                 EvtHandler(),
@@ -100,6 +103,7 @@ namespace reza {
                 cout<<"~ParameterBase"<<endl;
                 removeSubView(buttonRef->getName());
 //                attr->setPlug(nullptr);
+                attr.reset();
             }
             
             bool is(PARAMETER_TYPE value){

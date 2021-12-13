@@ -26,7 +26,7 @@ namespace reza {
         public :
             static OrageMenuItemRef create( std::string name, const Format &format = Format())
             {
-                return OrageMenuItemRef( new OrageMenuItem( name, format));
+                return std::make_shared<OrageMenuItem>( name, format);
             }
             OrageMenuItem( std::string name, const Format &format = Format()) :
             Button(name, false, format)

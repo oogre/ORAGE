@@ -39,7 +39,9 @@ namespace ORAGE {
                 string s = buffer.str();
                 char* pString = new char[s.length() + 1];
                 std::copy(s.c_str(), s.c_str() + s.length() + 1, pString);
-                return dukglue_peval<DukValue>(ctx, pString);
+                DukValue d = dukglue_peval<DukValue>(ctx, pString);
+                delete[] pString;
+                return d;
             }
             static duk_ret_t native_print(duk_context *ctx) {
                 duk_push_string(ctx, " ");
@@ -49,8 +51,27 @@ namespace ORAGE {
                 return 0;
             }
             
+            
+        protected:
+            virtual void UIReady() override {
+                Module::UIReady();
+                UI->setColorBack(Config::getConfig(moduleType).bgColor);
+                for (auto& attr : _attributes->every()) {
+                    if (attr->hasUI()) {
+                        if(attr->isClock()){
+                            UI->addClock(attr);
+                        }
+                        else if(attr->isFloat()){
+                            UI->addLimitedSlider(attr);
+                        }
+                    }
+                }
+                UI->autoSizeToFitSubviews();
+                
+            }
+        public :
             ModuleController(string name, string path, TYPES type) :
-                Module(name)
+            Module(name)
             {
                 moduleType = type;
                 try{
@@ -105,30 +126,12 @@ namespace ORAGE {
                     onError(e);
                 }
             }
-        protected:
-            virtual void UIReady() override {
-                Module::UIReady();
-                UI->setColorBack(Config::getConfig(moduleType).bgColor);
-                for (auto& attr : _attributes->every()) {
-                    if (attr->hasUI()) {
-                        if(attr->isClock()){
-                            UI->addClock(attr);
-                        }
-                        else if(attr->isFloat()){
-                            UI->addLimitedSlider(attr);
-                        }
-                    }
-                }
-                UI->autoSizeToFitSubviews();
-                
-            }
-        public :
             virtual ~ModuleController(){
                 //duk_destroy_heap(ctx);
                 cout<<"~ModuleController"<<endl;
             }
             static ModuleControllerRef create(string name, string path, TYPES type = TYPES::CONTROLLER){
-                return ModuleControllerRef(new ModuleController(name, path, type));
+                return std::make_shared<ModuleController>(name, path, type);
             }
             virtual void update() override {
                 Module::update();

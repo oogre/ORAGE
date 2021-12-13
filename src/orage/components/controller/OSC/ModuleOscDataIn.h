@@ -25,23 +25,7 @@ namespace ORAGE {
             TextInputRef typeTagUI;
             ISFAttrRef inAttr;
             
-            ModuleOscDataIn(string name, TYPES type) :
-                Module(name)
-            {
-                moduleType = type;
-                createLater = ISFAttrWrapper::create();
-                inAttr = _attributes->addAttr(
-                  ISFAttr::create(
-                      "in", "", "",
-                      ISF::ISFAttr_IO::_IN,
-                      ISFValType::ISFValType_OscMessage,
-                      ISFNullVal(),
-                      ISFNullVal(),
-                      ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
-                  )
-              );
-
-            }
+            
             void readyHandler(bool value){
                 typeTagUI->setEnabled(!value);
                 std::string typeTag = typeTagUI->getValue();
@@ -143,6 +127,23 @@ namespace ORAGE {
                 UI->autoSizeToFitSubviews();
             }
         public :
+            ModuleOscDataIn(string name, TYPES type) :
+            Module(name)
+            {
+                moduleType = type;
+                createLater = ISFAttrWrapper::create();
+                inAttr = _attributes->addAttr(
+                                              ISFAttr::create(
+                                                              "in", "", "",
+                                                              ISF::ISFAttr_IO::_IN,
+                                                              ISFValType::ISFValType_OscMessage,
+                                                              ISFNullVal(),
+                                                              ISFNullVal(),
+                                                              ISFVal(ISFValType::ISFValType_OscMessage, osc::Message())
+                                                              )
+                                              );
+                
+            }
             virtual ~ModuleOscDataIn(){
                 cout<<"~ModuleOscDataIn"<<endl;
                 destroyLater.clear();
@@ -156,7 +157,7 @@ namespace ORAGE {
             }
             
             static ModuleOscDataInRef create(string name, TYPES type = TYPES::OSC){
-                return ModuleOscDataInRef(new ModuleOscDataIn(name, type));
+                return std::make_shared<ModuleOscDataIn>(name, type);
             }
         };//ModuleOscDataIn
         typedef shared_ptr<ModuleOscDataIn> ModuleOscDataInRef;
