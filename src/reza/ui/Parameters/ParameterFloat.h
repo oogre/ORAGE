@@ -64,7 +64,7 @@ namespace reza {
             }
             
             virtual ~ParameterFloat(){
-                cout<<"~ParameterFloat"<<endl;
+                cout<<"~ParameterFloat " <<endl;
                 removeSubView(sliderRef->getName());
                 removeSubView(limiterRef->getName());
                 removeSubView(sliderRef->getName());

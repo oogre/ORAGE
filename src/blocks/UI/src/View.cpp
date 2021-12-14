@@ -14,7 +14,8 @@ View::View()
 
 View::~View()
 {
-    
+    std::cout<<"~View " << getName() << std::endl;
+    clear();
 }
 
 void View::clear()
@@ -25,6 +26,10 @@ void View::clear()
 	mSubViews.clear();
 	mViewRenderData.clear();
 	mRenderData.clear();
+    
+    
+    
+    
 }
 
 bool View::isHit( const vec2 &pt )

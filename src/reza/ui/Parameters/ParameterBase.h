@@ -83,10 +83,10 @@ namespace reza {
                 bgColor.a = 1.0f;
                 buttonRef->setColorOutline(getCableColor(true));
                 buttonRef->setColorOutlineHighlight(ColorA::white());
-                buttonRef->setCallback([&, attr](bool value) {
+                buttonRef->setCallback([this](bool value) {
                     if(value){
                         EvtHandler::eventTrigger({
-                            "plug", attr
+                            "plug", getAttr()
                         });
                     }
                 });
@@ -102,8 +102,9 @@ namespace reza {
             virtual ~ParameterBase(){
                 cout<<"~ParameterBase"<<endl;
                 removeSubView(buttonRef->getName());
+                buttonRef->clear();
 //                attr->setPlug(nullptr);
-                attr.reset();
+//                attr.reset();
             }
             
             bool is(PARAMETER_TYPE value){

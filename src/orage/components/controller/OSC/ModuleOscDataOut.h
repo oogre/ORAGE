@@ -159,7 +159,6 @@ namespace ORAGE {
             virtual ~ModuleOscDataOut(){
                 cout<<"~ModuleOscDataOut"<<endl;
                 createLater->clear();
-                createLater.reset();
                 destroyLater.clear();
             }
             

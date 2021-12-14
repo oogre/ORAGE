@@ -22,6 +22,8 @@ Envelope::~Envelope()
 	if( !mFormat.mUseTimeRef ) {
 		delete mFormat.mTimeRef;
 	}
+    mTimes.clear();
+    mKeys.clear();
 }
 
 void Envelope::setup()

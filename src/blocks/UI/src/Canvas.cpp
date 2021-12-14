@@ -27,6 +27,8 @@ Canvas::Canvas( std::string name, const app::WindowRef &window )
 Canvas::~Canvas()
 {
 	setEnabled( false );
+    clear();
+    
 }
 
 void Canvas::clear()
@@ -34,6 +36,7 @@ void Canvas::clear()
 	clearPlacer();
 	View::clear();
 	mSetup = false;
+    mLastAddedSubViews.clear();
 }
 
 void Canvas::save( const ci::fs::path &path )

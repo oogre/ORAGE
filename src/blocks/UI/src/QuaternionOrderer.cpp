@@ -22,6 +22,8 @@ QuaternionOrderer::~QuaternionOrderer()
 	if( !mFormat.mUseTimeRef ) {
 		delete mFormat.mTimeRef;
 	}
+    mTimes.clear();
+    mQuats.clear();
 }
 
 void QuaternionOrderer::setup()

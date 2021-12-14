@@ -148,7 +148,6 @@ namespace ORAGE {
                 cout<<"~ModuleOscDataIn"<<endl;
                 destroyLater.clear();
                 createLater->clear();
-                createLater.reset();
             }
             
             virtual void update() override {

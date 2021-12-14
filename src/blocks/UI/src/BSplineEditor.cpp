@@ -19,6 +19,7 @@ BSplineEditor::~BSplineEditor()
 	if( !mFormat.mUseTimeRef ) {
 		delete mFormat.mTimeRef;
 	}
+    mControlPoints.clear();
 }
 
 void BSplineEditor::setup()

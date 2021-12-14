@@ -74,8 +74,8 @@ namespace ORAGE {
             
             virtual void UIReady() override 
             {
-                ModuleVideo::UIReady();
                 
+                ModuleVideo::UIReady();
                 
                 UI->addToggle("Share", share, Button::Format().label(true).align(Alignment::CENTER))
                     ->setCallback(boost::bind(&ModuleISF::shareAction, this, _1));

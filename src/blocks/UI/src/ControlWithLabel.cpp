@@ -11,6 +11,7 @@ ControlWithLabel::ControlWithLabel()
 
 ControlWithLabel::~ControlWithLabel()
 {
+    std::cout<<"~ControlWithLabel "<< getName() <<endl;
 }
 
 void ControlWithLabel::changeState()

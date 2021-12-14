@@ -77,7 +77,7 @@ namespace reza {
             };
             
             virtual ~OrageSliderT() {
-                cout<<"~OrageSliderT"<<endl;
+                cout<<"~OrageSliderT "<< SliderT<T>::getName() <<endl;
             }
             
             static OrageSliderRef create( const std::string name, T val, T min = 0.0, T max = 255, Format format = Format() )
@@ -125,6 +125,10 @@ namespace reza {
                 }
             }
             
+            virtual void clear() override {
+                SliderT<T>::clear();
+                mLabelValueRef->clear();
+            }
             
             Format mFormat;
             LabelRef mLabelValueRef;

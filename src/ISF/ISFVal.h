@@ -82,7 +82,6 @@ namespace ISF {
 //        ci::gl::FboRef _mFbo;
     public :
         virtual ~ISFVal(){
-            cout<<"~ISFVal : "<< _type << endl;
         }
         //    Returns a null-type ISFVal
         ISFVal() :
@@ -155,10 +154,14 @@ namespace ISF {
         void resize(ci::ivec2 size = ci::ivec2(1, 1), bool antiAliazing = false){
             if (_type==ISFValType_Image){
                 ci::gl::Texture2d::Format tFormat = ci::gl::Texture2d::Format().loadTopDown();
+//                
+//                tFormat.deleter([](ci::gl::Texture2d * tex){
+//                    std::cout<<"YO"<<std::endl;
+//                });
                 tFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
                 tFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
+                if(!!_imageVal )_imageVal.reset();
                 _imageVal = ci::gl::Texture2d::create(size.x, size.y, tFormat);
-
             }
         }
         

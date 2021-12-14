@@ -29,7 +29,7 @@ namespace ISF {
     class Config {
         ci::Rand r;
         static std::map<ISFValType, Conf> configs;
-        public :
+    public :
         static Conf getConfig(int type){
             return getConfig(static_cast<ISFValType>(type));
         }

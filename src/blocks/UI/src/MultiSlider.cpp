@@ -14,6 +14,12 @@ MultiSlider::MultiSlider( std::string name, const std::vector<Data> data, Format
 	}
 }
 
+MultiSlider::~MultiSlider(){
+    mData.clear();
+    mDataMap.clear();
+    mLabelsMap.clear();
+}
+
 void MultiSlider::setup()
 {
 	float numSliders = (float)mData.size();

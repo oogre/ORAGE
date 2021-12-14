@@ -21,7 +21,7 @@ namespace ORAGE {
             typedef shared_ptr<Cable> CableRef;
             
             Path2d  path;
-            vec2* mousePos;
+            vec2* mousePos = nullptr;
             
             
             
@@ -86,7 +86,6 @@ namespace ORAGE {
                     conA.disconnect();
                     conB.disconnect();
                 }
-                delete mousePos;
             }
             
             bool isMouseOver(){

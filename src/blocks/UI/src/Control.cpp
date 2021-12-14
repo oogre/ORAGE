@@ -12,7 +12,8 @@ Control::Control()
 
 Control::~Control()
 {
-    
+    std::cout<<"~Control "<< getName() <<endl;
+    mKeyBindings.clear();
 }
 
 bool Control::isHit( const glm::vec2 &pt )
