@@ -120,8 +120,8 @@ namespace ORAGE {
                 UI->addLabel("typeTag");
                 typeTagUI = UI->addTextInput("f");
                 
-                UI->addToggle("ready", false, Toggle::Format().label(true).align(Alignment::CENTER))
-                    ->setCallback(boost::bind(&ModuleOscDataIn::readyHandler, this, _1));
+//                UI->addToggle("ready", false, Toggle::Format().label(true).align(Alignment::CENTER))
+//                    ->setCallback(boost::bind(&ModuleOscDataIn::readyHandler, this, _1));
 
                 UI->addOsc(inAttr);
                 UI->autoSizeToFitSubviews();

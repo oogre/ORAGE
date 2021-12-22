@@ -84,6 +84,7 @@
 		888DA3EF27601BD8002166FB /* SpoutLibrary.lib in Frameworks */ = {isa = PBXBuildFile; fileRef = 888DA3EC27601BD8002166FB /* SpoutLibrary.lib */; };
 		888DA3F027601BD8002166FB /* SpoutLibrary.dll in Resources */ = {isa = PBXBuildFile; fileRef = 888DA3ED27601BD8002166FB /* SpoutLibrary.dll */; };
 		888DA3F727601C4F002166FB /* Osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 888DA3F627601C4F002166FB /* Osc.cpp */; };
+		88A7BF5C27695441001B47A6 /* duk_module_duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 88A7BF5A27695441001B47A6 /* duk_module_duktape.c */; };
 		88F37DA9271899AB0095955A /* Dialer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D62271899AB0095955A /* Dialer.cpp */; };
 		88F37DAA271899AB0095955A /* Range.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D63271899AB0095955A /* Range.cpp */; };
 		88F37DAB271899AB0095955A /* ColorPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88F37D64271899AB0095955A /* ColorPicker.cpp */; };
@@ -203,6 +204,8 @@
 		8845DF7D272BD3B6002A3253 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
 		8848043B273A8909003618E7 /* ModuleManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleManager.h; sourceTree = "<group>"; };
 		885EA28D272989A100F2E0EB /* ModuleController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleController.h; sourceTree = "<group>"; };
+		886CF88727736FE700325EF3 /* ParameterToggle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterToggle.h; sourceTree = "<group>"; };
+		886CF88827737FE300325EF3 /* ParameterBtn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterBtn.h; sourceTree = "<group>"; };
 		886CFFE527397D2D00062EFF /* ParameterClock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterClock.h; sourceTree = "<group>"; };
 		887373DB274536F00025E2F0 /* ModuleVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleVideo.h; sourceTree = "<group>"; };
 		88776C09273BCAC400DD62C0 /* ISFDoc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFDoc.h; sourceTree = "<group>"; };
@@ -235,7 +238,11 @@
 		889CA687276520C000ADE229 /* OrageInputNumber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageInputNumber.h; sourceTree = "<group>"; };
 		88A352CA2761415300D64A6D /* ModuleOscDataOut.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscDataOut.h; sourceTree = "<group>"; };
 		88A352CB2761415300D64A6D /* ModuleOscDataIn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscDataIn.h; sourceTree = "<group>"; };
+		88A7BF5A27695441001B47A6 /* duk_module_duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duk_module_duktape.c; sourceTree = "<group>"; };
+		88A7BF5B27695441001B47A6 /* duk_module_duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_module_duktape.h; sourceTree = "<group>"; };
 		88AC2C242743F51F00A2B39A /* ISFAttrWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFAttrWrapper.h; sourceTree = "<group>"; };
+		88E76C3B276CFC0D00CA8E07 /* OrageError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageError.h; sourceTree = "<group>"; };
+		88E76C3C276D00D700CA8E07 /* OrageJS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageJS.h; sourceTree = "<group>"; };
 		88F37D60271899AB0095955A /* Fps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fps.h; sourceTree = "<group>"; };
 		88F37D61271899AB0095955A /* ColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPicker.h; sourceTree = "<group>"; };
 		88F37D62271899AB0095955A /* Dialer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dialer.cpp; sourceTree = "<group>"; };
@@ -509,6 +516,8 @@
 		8845DF7A272BD3B6002A3253 /* Ducktape */ = {
 			isa = PBXGroup;
 			children = (
+				88A7BF5A27695441001B47A6 /* duk_module_duktape.c */,
+				88A7BF5B27695441001B47A6 /* duk_module_duktape.h */,
 				8845DF7B272BD3B6002A3253 /* duk_config.h */,
 				8845DF7C272BD3B6002A3253 /* duktape.h */,
 				8845DF7D272BD3B6002A3253 /* duktape.c */,
@@ -648,6 +657,8 @@
 				88F37DCF27189A230095955A /* ParameterBase.h */,
 				888DA3F827602D96002166FB /* ParameterOsc.h */,
 				886CFFE527397D2D00062EFF /* ParameterClock.h */,
+				886CF88727736FE700325EF3 /* ParameterToggle.h */,
+				886CF88827737FE300325EF3 /* ParameterBtn.h */,
 				889CA686276501AA00ADE229 /* index.h */,
 			);
 			path = Parameters;
@@ -811,6 +822,8 @@
 				883D2F512757D8A00080C8A7 /* OrageFileTools.h */,
 				88F37DD827189A230095955A /* EventTemplate.h */,
 				8848043B273A8909003618E7 /* ModuleManager.h */,
+				88E76C3B276CFC0D00CA8E07 /* OrageError.h */,
+				88E76C3C276D00D700CA8E07 /* OrageJS.h */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -993,6 +1006,7 @@
 				88F37DB9271899AB0095955A /* Control.cpp in Sources */,
 				88F37DC6271899AB0095955A /* Responder.cpp in Sources */,
 				880E03B6273ECE410005A1AF /* syphonClient.mm in Sources */,
+				88A7BF5C27695441001B47A6 /* duk_module_duktape.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

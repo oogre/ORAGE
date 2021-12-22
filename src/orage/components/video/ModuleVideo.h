@@ -23,117 +23,46 @@ namespace ORAGE {
         
         class ModuleVideo : public Module{
             typedef shared_ptr<ModuleVideo> ModuleVideoRef;
-            bool sizeChanged = false;
+            bool sizeChanged = true;
             bool antiAliazing = true;
-            bool more = false;
+            
             vec2 _defSize;
             mat4 _defaultProjection;
             vector<ci::signals::Connection> signalDrawHandlers;
             vector<ci::app::WindowRef> windows;
             ci::gl::FboRef _mFbo;
+            virtual void newWindowAction (Evt evt) {
+                if (evt.target->currentVal().getBoolVal()) {
+                    createWindow();
+                }
+            }
+            
         protected :
             ModuleVideo(string name) :
                 Module(name)
             {
                 _defSize = getWindowSize();
                 _defaultProjection = gl::context()->getProjectionMatrixStack()[0];
-            }
-            virtual void UIReady() override {
-                Module::UIReady();
                 
-                vec2 inputPosRef = vec2(0);
-                bool flag = false;
-                int c = 0;
-                for (auto & outAttr : _attributes->imageOutputs()) {
-                    UI->addVideoOut(outAttr, c++);
-                    TextureViewRef preview = outAttr->getPreview();
-                    if(!!preview){
-                        preview->setTexture(outAttr->defaultVal().imageBuffer());
-                    }
-                    if (!flag) {
-                        inputPosRef = outAttr->getPreview()->getOrigin(false);
-                        flag = true;
-                    }
-                }
+                auto attrNewWindow = ISFAttr::create("New Window", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Bool, ISFBoolVal(false), ISFBoolVal(true), ISFBoolVal(false));
+                attrNewWindow->putInMoreArea();
+                attrNewWindow->addEventListener(boost::bind(&ModuleVideo::newWindowAction, this, _1));
+                attrNewWindow->setBang(true);
+                _attributes->addAttr(attrNewWindow);
                 
-                int i = 0;
-                for (auto & inAttr : _attributes->imageInputs()) {
-                    UI->addVideoIn(inAttr, i++, inputPosRef);
-                }
-                for (auto & inAttr : _attributes->inputs()) {
-                    if (inAttr->hasUI() && !inAttr->isUIMoreArea() && inAttr->isFloat()) {
-                        UI->addLimitedSlider(inAttr);
-                    }
-                }
-                
-                Button::Format format = Button::Format().label(true).align(Alignment::CENTER);
-                UI->addToggle("MORE", &more, format)
-                    ->setCallback(boost::bind(&ModuleVideo::displayMorePannel, this, _1));
-
-                for (auto & inAttr : _attributes->inputs()) {
-                    if (inAttr->hasUI() && inAttr->isUIMoreArea() && inAttr->isFloat()) {
-                        UI->addLimitedSlider(inAttr);
-                    }
-                }
-                
-                auto nwBtn = UI->addButton("New Window", false, format);
-                nwBtn->setCallback([this](bool a) {
-                    if (a) {
-                        createWindow(0, false);
-                    }
-                });
-
-                string refName = nwBtn->getName();
                 for (int i = 0; i < ci::app::Platform::get()->getDisplays().size(); i++) {
-                    ButtonRef btn = Button::create("FS "+to_string(i), false, format);
-                    btn->setCallback([this, i](bool a) {
-                        if (a) {
+                    auto attrFullScreen = ISFAttr::create("FS"+to_string(i), "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Bool, ISFBoolVal(false), ISFBoolVal(true), ISFBoolVal(false));
+                    attrFullScreen->putInMoreArea();
+                    attrFullScreen->addEventListener([this, i](Evt evt) {
+                        if (evt.target->currentVal().getBoolVal()) {
                             createWindow(i, true);
                         }
                     });
-                    UI->addSubViewEastOf(btn, refName);
-                    refName = btn->getName();
+                    attrFullScreen->setBang(true);
+                    _attributes->addAttr(attrFullScreen);
                 }
-                UI->setPlacer(nwBtn);
-
-                UI->setMinifyCallback([&](bool isMinify){
-                    for (auto outAttr : _attributes->imageOutputs()) {
-                        TextureViewRef preview = outAttr->getPreview();
-                        ButtonRef plug = outAttr->getPlug();
-                        vec2 plugClutter = vec2(0);
-                        if (!!plug) {
-                            plugClutter = vec2(
-                                plug->getWidth() + plug->getPadding().mLeft + plug->getPadding().mRight,
-                                plug->getHeight() + plug->getPadding().mTop + plug->getPadding().mBottom
-                            );
-                        }
-                        if (!!preview) {
-                            if (isMinify) {
-                                int w = UI->getWidth() - UI->getPadding().mLeft - UI->getPadding().mRight - preview->getPadding().mRight + plugClutter.x;
-                                float RATIO = 16.0 / 9.0;
-                                float h = w / RATIO;
-                                preview->setSize(vec2(w, h));
-                                preview->setOrigin(vec2(
-                                    UI->getPadding().mLeft,
-                                    preview->getOrigin(false).y
-                                ));
-                            } else {
-                                int w = UI->getWidth() - UI->getPadding().mLeft - UI->getPadding().mRight - 2 * plugClutter.x;
-                                float RATIO = 16.0 / 9.0;
-                                float h = w / RATIO;
-                                preview->setSize(vec2(w, h));
-                                preview->setOrigin(vec2(
-                                    UI->getPadding().mLeft + plugClutter.x + preview->getPadding().mLeft,
-                                    preview->getOrigin(false).y
-                                ));
-                            }
-                        }  
-                    }
-                    more = false;
-                    displayMorePannel(false);
-                });
-                sizeChanged = true;
             }
+        
 
             virtual void createWindow(int diplayId=0, bool fullscreen = false) {
                 RendererGl::Options option = RendererGl::Options().msaa(0);
@@ -165,14 +94,6 @@ namespace ORAGE {
                 antiAliazing = value;
                 sizeChangeCB();
             }
-            
-            virtual void displayMorePannel (bool display) {
-                UI->getSubView("New Window")->setVisible(display);
-                for (int i = 0; i < ci::app::Platform::get()->getDisplays().size(); i++) {
-                    UI->getSubView("FS "+to_string(i))->setVisible(display);
-                }
-                UI->autoSizeToFitSubviews();
-            };
             
             virtual void update() override {
                 Module::update();

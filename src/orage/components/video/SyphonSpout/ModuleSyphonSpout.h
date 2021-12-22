@@ -32,28 +32,14 @@ namespace ORAGE {
             vector<ci::signals::Connection> signalDrawHandlers;
             vector<ci::app::WindowRef> windows;
             
-            
-            
         protected:
             
-            virtual void displayMorePannel (bool display) override {
-                UI->getSubView("Next Client")->setVisible(display);
-                ModuleVideo::displayMorePannel(display);
+            virtual void nextClient (Evt evt) {
+                if(evt.target->currentVal().getBoolVal()) {
+                    sscRef->nextClient();
+                }
             }
             
-            virtual void nextClient (bool value) {
-                if(value) sscRef->nextClient();
-            }
-            
-            virtual void UIReady() override
-            {
-                ModuleVideo::UIReady();
-                
-                UI->addButton("Next Client", false, Button::Format().label(true).align(Alignment::CENTER))
-                    ->setCallback(boost::bind(&ModuleSyphonSpout::nextClient, this, _1));
-                
-                displayMorePannel(false);
-            }
         public :
             ModuleSyphonSpout(string name, TYPES type, int width, int height) :
             ModuleVideo(name)
@@ -63,6 +49,12 @@ namespace ORAGE {
                 sscRef = SyphonSpoutClient::create();
                 
                 _attributes->addAttr(ISFAttr::create("output", "", "", ISF::ISFAttr_IO::_OUT, ISF::ISFValType::ISFValType_Image));
+                
+                auto attrNextClient = ISFAttr::create("Next Client", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Bool, ISFBoolVal(false), ISFBoolVal(true), ISFBoolVal(false));
+                attrNextClient->putInMoreArea();
+                attrNextClient->addEventListener(boost::bind(&ModuleSyphonSpout::nextClient, this, _1));
+                attrNextClient->setBang(true);
+                _attributes->addAttr(attrNextClient);
                 
             }
             virtual ~ModuleSyphonSpout(){

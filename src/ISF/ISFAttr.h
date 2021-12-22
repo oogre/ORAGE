@@ -82,6 +82,7 @@ namespace ISF {
         reza::ui::TextureViewRef _uiPreview = nullptr;
         bool _uiEnabled = true;
         bool _uiMoreArea = false;
+        bool _uiBang = false;
         
         void changeHandler(Evt evt){
             if (evt.is("change") && this != evt.target.get()) {
@@ -98,10 +99,13 @@ namespace ISF {
                 else if(isOscMessage() && evt.target->isOscMessage()){
                     currentVal().setOscMessage(evt.target->currentVal().getOscMessage());
                 }
-                else if(isInput() && isImage()){
+                else if(isInput() && evt.target->isImage()){
                     ci::gl::Texture2dRef tmp = evt.target->defaultVal().imageBuffer();
                     currentVal().setImageBuffer(tmp);
                     _imageSample = true;
+                }
+                else if(isBool() && evt.target->isBool()){
+                    currentVal().setBoolVal(evt.target->currentVal().getBoolVal());
                 }
             }else if(evt.is("plug")){
                 if(isInput() && isImage()){
@@ -114,6 +118,9 @@ namespace ISF {
                     ci::gl::Texture2dRef tmp = defaultVal().imageBuffer();
                     currentVal().setImageBuffer(tmp);
                     _imageSample = false;
+                }
+                if(isInput() && isClock()){
+                    currentVal().setDoubleVal(0.0f);
                 }
             }
         }
@@ -237,6 +244,14 @@ namespace ISF {
         
         void putInMoreArea(){
             _uiMoreArea = true;
+        }
+        
+        void setBang(bool val){
+            _uiBang = val;
+        }
+        
+        bool isBang(){
+            return _uiBang;
         }
         
         bool isUIMoreArea(){

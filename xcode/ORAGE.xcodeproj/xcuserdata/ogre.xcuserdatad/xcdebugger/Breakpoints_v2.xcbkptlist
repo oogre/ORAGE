@@ -4,13 +4,19 @@
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            scope = "0"
-            stopOnStyle = "0">
+            filePath = "../src/ISF/ISFAttr.h"
+            timestampString = "661886135.245199"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "changeHandler(Evt evt)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -19,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../src/ISF/ISFVal.h"
-            timestampString = "661186145.5801359"
+            filePath = "../src/reza/ui/Parameters/ParameterNumber.h"
+            timestampString = "661886135.24527"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
-            landmarkName = "resize(ci::ivec2 size = ci::ivec2(1, 1), bool antiAliazing = false)"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "ParameterNumber( ISF::ISFAttrRef &amp; attr )"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

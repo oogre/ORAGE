@@ -12,7 +12,7 @@
 #include "Parameters/index.h"
 #include "OrageButton.h"
 #include "EventTemplate.h"
-#include "ISFAttr.h"
+#include "ISFAttrWrapper.h"
 
 namespace reza {
     namespace ui {
@@ -34,7 +34,7 @@ namespace reza {
             
             virtual void enableUpdateCallback() override {/*DISABLE AUTO DRAWING AND UPDATE*/}
             ParameterWrapper parameters;
-            
+            bool more = false;
             
             
         public :
@@ -80,6 +80,116 @@ namespace reza {
             }
             
             
+            void buildUI(ISFAttrWrapperRef attributes){
+                
+                vec2 inputPosRef = vec2(0);
+                bool flag = false;
+                int c = 0;
+                for (auto & outAttr : attributes->imageOutputs()) {
+                    addVideoOut(outAttr, c++);
+                    TextureViewRef preview = outAttr->getPreview();
+                    if(!!preview){
+                        preview->setTexture(outAttr->defaultVal().imageBuffer());
+                    }
+                    if (!flag) {
+                        inputPosRef = outAttr->getPreview()->getOrigin(false);
+                        flag = true;
+                    }
+                }
+                
+                int i = 0;
+                for (auto & inAttr : attributes->imageInputs()) {
+                    addVideoIn(inAttr, i++, inputPosRef);
+                }
+                bool hasMoreArea = false;
+                for (auto & attr : attributes->every()) {
+                    if (attr->hasUI() && !attr->isUIMoreArea()) {
+                        if(attr->isClock()){
+                            addClock(attr);
+                        }else if(attr->isFloat()){
+                            addLimitedSlider(attr);
+                        }else if(attr->isLong()){
+                            addNumber(attr);
+                        }else if(attr->isBool() && !attr->isBang()){
+                            addToggle(attr);
+                        }else if(attr->isBool() && attr->isBang()){
+                            addBtn(attr);
+                        }
+                    }
+                    if(attr->isUIMoreArea()){
+                        hasMoreArea = true;
+                    }
+                }
+                
+                auto displayMorePannel = [this, attributes](bool display){
+                    for (auto & attr : attributes->every()) {
+                        if (attr->hasUI() && attr->isUIMoreArea()) {
+                            getParameter(attr->name())->setVisible(display);
+                        }
+                    }
+                    autoSizeToFitSubviews();
+                };
+                
+                if(hasMoreArea){
+                    Canvas::addToggle("MORE", &more, Button::Format().label(true).align(Alignment::CENTER))
+                        ->setCallback(displayMorePannel);
+                    
+                    for (auto & attr : attributes->every()) {
+                        if (attr->hasUI() && attr->isUIMoreArea()) {
+                            if(attr->isClock()){
+                                addClock(attr);
+                            }else if(attr->isFloat()){
+                                addLimitedSlider(attr);
+                            }else if(attr->isLong()){
+                                addNumber(attr);
+                            }else if(attr->isBool() && !attr->isBang()){
+                                addToggle(attr);
+                            }else if(attr->isBool() && attr->isBang()){
+                                addBtn(attr);
+                            }
+                        }
+                    }
+                }
+                
+                setMinifyCallback([this, attributes, displayMorePannel](bool isMinify){
+                    for (auto outAttr : attributes->imageOutputs()) {
+                        TextureViewRef preview = outAttr->getPreview();
+                        ButtonRef plug = outAttr->getPlug();
+                        vec2 plugClutter = vec2(0);
+                        if (!!plug) {
+                            plugClutter = vec2(
+                                               plug->getWidth() + plug->getPadding().mLeft + plug->getPadding().mRight,
+                                               plug->getHeight() + plug->getPadding().mTop + plug->getPadding().mBottom
+                                               );
+                        }
+                        if (!!preview) {
+                            if (isMinify) {
+                                int w = getWidth() - getPadding().mLeft - getPadding().mRight - preview->getPadding().mRight + plugClutter.x;
+                                float RATIO = 16.0 / 9.0;
+                                float h = w / RATIO;
+                                preview->setSize(vec2(w, h));
+                                preview->setOrigin(vec2(
+                                                        getPadding().mLeft,
+                                                        preview->getOrigin(false).y
+                                                        ));
+                            } else {
+                                int w = getWidth() - getPadding().mLeft - getPadding().mRight - 2 * plugClutter.x;
+                                float RATIO = 16.0 / 9.0;
+                                float h = w / RATIO;
+                                preview->setSize(vec2(w, h));
+                                preview->setOrigin(vec2(
+                                                        getPadding().mLeft + plugClutter.x + preview->getPadding().mLeft,
+                                                        preview->getOrigin(false).y
+                                                        ));
+                            }
+                        }
+                    }
+                    more = false;
+                    displayMorePannel(false);
+                });
+                displayMorePannel(false);
+            }
+            
             ParameterBaseRef & getParameter(string name){
                 return parameters[name];
             }
@@ -118,6 +228,76 @@ namespace reza {
                 return param;
             }
             
+            
+            
+            
+            ParameterToggleRef addToggle(ISF::ISFAttrRef & attr)
+            {
+                ParameterToggleRef param = ParameterToggle::create(attr);
+                
+                auto btn = param->buttonRef;
+                auto tog = param->toggleRef;
+                btn->setSize(vec2(15));
+                
+                vec2 btnClutter = vec2(
+                                       btn->getWidth() + btn->getPadding().mLeft + btn->getPadding().mRight,
+                                       btn->getHeight() + btn->getPadding().mTop + btn->getPadding().mBottom
+                                       );
+                
+                
+                tog->setSize( vec2(
+                                   getWidth() - 2 * btnClutter.x - tog->getPadding().mLeft - tog->getPadding().mRight,
+                                   btn->getHeight()
+                                   ));
+                
+                addSubViewDown(tog);
+                tog->setOrigin(vec2(
+                                    tog->getOrigin(false).x + btnClutter.x + tog->getPadding().mLeft,
+                                    tog->getOrigin(false).y
+                                    ));
+                if (attr->isInput()) {
+                    addSubViewWestOf(btn, tog->getName());
+                } else {
+                    addSubViewEastOf(btn, tog->getName());
+                }
+                setPlacer(btn);
+                parameters[attr->name()] = param;
+                return param;
+            }
+            
+            ParameterBtnRef addBtn(ISF::ISFAttrRef & attr)
+            {
+                ParameterBtnRef param = ParameterBtn::create(attr);
+                
+                auto btn = param->buttonRef;
+                auto bng = param->bangRef;
+                btn->setSize(vec2(15));
+                
+                vec2 btnClutter = vec2(
+                                       btn->getWidth() + btn->getPadding().mLeft + btn->getPadding().mRight,
+                                       btn->getHeight() + btn->getPadding().mTop + btn->getPadding().mBottom
+                                       );
+                
+                
+                bng->setSize( vec2(
+                                   getWidth() - 2 * btnClutter.x - bng->getPadding().mLeft - bng->getPadding().mRight,
+                                   btn->getHeight()
+                                   ));
+                
+                addSubViewDown(bng);
+                bng->setOrigin(vec2(
+                                    bng->getOrigin(false).x + btnClutter.x + bng->getPadding().mLeft,
+                                    bng->getOrigin(false).y
+                                    ));
+                if (attr->isInput()) {
+                    addSubViewWestOf(btn, bng->getName());
+                } else {
+                    addSubViewEastOf(btn, bng->getName());
+                }
+                setPlacer(btn);
+                parameters[attr->name()] = param;
+                return param;
+            }
             
             ParameterClockRef addClock(ISF::ISFAttrRef & attr)
             {

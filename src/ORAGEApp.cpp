@@ -5,6 +5,9 @@
 #include "OrageMenu.h"
 #include "ModuleManager.h"
 
+
+#include "reza/ui/OrageCanvas.h"
+
 #if defined(CINDER_MAC)
     #define _override_ override
 #elif defined(CINDER_MSW)
@@ -21,7 +24,6 @@ class ORAGEApp : public App {
     ModuleManagerRef modules;
     OrageMenuRef menu;
     std::string orageFilePath = getDocumentsDirectory().generic_string() + "/ORAGE";
-    
 public:
     static std::vector<std::string> args;
 
@@ -82,15 +84,6 @@ public:
                         menu->addElement(entry.path().filename().string(), subEntries);
                     }
                 }
-//                menu->addElement("A.CLOCK", {
-//                    make_pair(
-//                              "source.clk.js",
-//                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
-//                                  modules->add( "source.clk.js", pos, type);
-//                              }
-//                              )
-//                });
-                
                 menu->addElement("INPUT", {
                     make_pair(
                               "SyphonSpout.in.fs",

@@ -2,9 +2,11 @@
   assets - DIVIDER.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-11-08 22:13:00
-  @Last Modified time: 2021-11-16 14:06:21
+  @Last Modified time: 2021-12-17 09:33:54
 \*----------------------------------------*/
-var DIVIDER = {
+var Base = require('base');
+
+Base({
   conf : {
     CREDIT: "by vincent evrard",
     DESCRIPTION: "basic CLOCK DIVIDER",
@@ -36,35 +38,19 @@ var DIVIDER = {
     }]
   },
   main : function() {
-  	var deltaTime = this.conf.INPUTS[this.conf.MAP_IN["CLOCK_IN"]].VALUE;
-  	var D = Math.floor(this.conf.INPUTS[this.conf.MAP_IN["DIV"]].VALUE)-1;
-    var M = Math.floor(this.conf.INPUTS[this.conf.MAP_IN["MUL"]].VALUE)-1;
+  	var deltaTime = this.getInput("CLOCK_IN").VALUE;
+  	var D = Math.floor(this.getInput("DIV").VALUE)-1;
+    var M = Math.floor(this.getInput("MUL").VALUE)-1;
     
     var div = 1.0 / Math.pow(2, D);
     var multi = Math.pow(2, M);
     
     deltaTime *= div * multi;
     
-    return JSON.stringify([{
-        NAME : "CLOCK_OUT", 
-        TYPE :  "CLOCK", 
-        VALUE : deltaTime
-      }
+    this.setOutput("CLOCK_OUT", deltaTime);
+
+    return JSON.stringify([
+      this.getOutput("CLOCK_OUT")
     ]); 
-  },
-  getConf : function() {
-    this.conf.MAP_OUT = new Object();
-    this.conf.MAP_IN = new Object();
-    for(var i = 0 ; i < this.conf.OUTPUTS.length ; i++){
-      this.conf.MAP_OUT[this.conf.OUTPUTS[i].NAME] = i;
-    }
-    for(var i = 0 ; i < this.conf.INPUTS.length ; i++){
-      this.conf.MAP_IN[this.conf.INPUTS[i].NAME] = i;
-    }
-    return JSON.stringify(this.conf); 
-  },
-  setInput : function (name, value){
-    this.conf.INPUTS[this.conf.MAP_IN[name]].VALUE = value;
   }
-};
-DIVIDER;
+});

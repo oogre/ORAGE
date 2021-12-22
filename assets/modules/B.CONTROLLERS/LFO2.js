@@ -1,8 +1,6 @@
 var timeCounter = 0;
 var oldRst = 0;
-var Base = require('base');
-
-Base({
+var LFO = {
   conf : {
     CREDIT: "by vincent evrard",
     DESCRIPTION: "basic lfo",
@@ -47,10 +45,11 @@ Base({
     }]
   },
   main : function() {
-    var deltaTime = this.getInput("CLOCK").VALUE;
-    var Z = Math.round(this.getInput("DIR").VALUE);
-    var R = Math.round(this.getInput("RST").VALUE);
-    var P = this.getInput("PHA").VALUE;
+    var deltaTime = this.conf.INPUTS[this.conf.MAP_IN["CLOCK"]].VALUE;
+    var Z = Math.round(this.conf.INPUTS[this.conf.MAP_IN["DIR"]].VALUE);
+    var R = Math.round(this.conf.INPUTS[this.conf.MAP_IN["RST"]].VALUE);
+    var P = this.conf.INPUTS[this.conf.MAP_IN["PHA"]].VALUE;
+    
     timeCounter += Z * deltaTime;
     timeCounter += 128;
     timeCounter = timeCounter - Math.floor(timeCounter);
@@ -63,14 +62,16 @@ Base({
     oldRst = R;
     value  = value - Math.floor(value);
 
-    this.setOutput("SAW", value);
-    this.setOutput("TRI", 1-Math.abs((value * 2) - 1));
-    this.setInput("DIR", Z);
-
-    return JSON.stringify([
-      this.getOutput("SAW"), 
-      this.getOutput("TRI"),
-      this.getInput("DIR")
+    return JSON.stringify([{
+        NAME : "SAW", TYPE :  "float", VALUE : value
+      }, {
+        NAME : "TRI", TYPE :  "float", VALUE : 1-Math.abs((value * 2) - 1)
+      }, {
+        NAME : "DIR", TYPE :  "float", VALUE : Z
+      }
     ]); 
   }
-});
+};
+Object.assign(BASE, LFO);
+
+LFO;

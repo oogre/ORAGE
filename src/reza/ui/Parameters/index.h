@@ -10,3 +10,6 @@
 #include "ParameterTexture.h"
 #include "ParameterClock.h"
 #include "ParameterOsc.h"
+#include "ParameterToggle.h"
+#include "ParameterBtn.h"
+

@@ -224,6 +224,10 @@ namespace ISF {
             if (isFloatVal())
                 _val.floatVal = val;
         }
+        void setBoolVal(bool val) {
+            if (isBoolVal())
+                _val.boolVal = val;
+        }
         
         void setLongVal(long val) {
             if (isLongVal())

@@ -33,14 +33,15 @@ namespace reza {
                 });
                 
                 attr->addEventListener([this](Evt evt){
-                    if (evt.is("change") && evt.target != getAttr()) {
+                    ISF::ISFAttrRef attr = getAttr();
+                    if (evt.is("change") && evt.target != attr && !!attr) {
                         
                         double tMin = evt.target->minVal().getDoubleVal();
                         double tMax = evt.target->maxVal().getDoubleVal();
                         double tVal = evt.target->currentVal().getDoubleVal();
                         
-                        double cMin = getAttr()->minVal().getDoubleVal();
-                        double cMax = getAttr()->maxVal().getDoubleVal();
+                        double cMin = attr->minVal().getDoubleVal();
+                        double cMax = attr->maxVal().getDoubleVal();
                         
                         sliderRef->setValue(ci::lerp(cMin, cMax, InverseLerp(tMin, tMax, tVal)));
                     }

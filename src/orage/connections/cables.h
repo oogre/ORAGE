@@ -64,7 +64,15 @@ namespace ORAGE {
                 return  !!A && !!B &&
                         A->type() == B->type() &&
                         A.get() != B.get() &&
-                        (A->currentVal().isFloatVal() || (!A->currentVal().isFloatVal() && A->IO() != B->IO())) &&
+                        (
+                            A->currentVal().isBoolVal() ||
+                            A->currentVal().isFloatVal() ||
+                            (
+                                !A->currentVal().isBoolVal() &&
+                                !A->currentVal().isFloatVal() &&
+                                A->IO() != B->IO()
+                            )
+                        ) &&
                         cables.count(std::minmax(A.get(), B.get())) == 0 ;
                 return false;
             }

@@ -2,9 +2,12 @@
   assets - clock.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-11-08 16:59:24
-  @Last Modified time: 2021-11-16 16:06:33
+  @Last Modified time: 2021-12-17 09:30:29
 \*----------------------------------------*/
-var CLOCK = {
+
+var Base = require('base');
+
+Base({
   conf : {
     CREDIT: "by vincent evrard",
     DESCRIPTION: "basic CLOCK",
@@ -25,27 +28,12 @@ var CLOCK = {
     }]
   },
   main : function(time, deltaTime) {
-  	var B = Math.floor(this.conf.INPUTS[this.conf.MAP_IN["BPM"]].VALUE);
-    return JSON.stringify([{
-        NAME : "CLOCK", 
-        TYPE :  "CLOCK", 
-        VALUE : deltaTime * B * 0.0166667
-      }
+  	var B = Math.round(this.getInput("BPM").VALUE);
+    this.setInput("BPM", B);
+    this.setOutput("CLOCK", deltaTime * B * 0.0166667);
+    return JSON.stringify([
+      this.getOutput("CLOCK"),
+      this.getInput("BPM")
     ]); 
-  },
-  getConf : function() {
-    this.conf.MAP_OUT = new Object();
-    this.conf.MAP_IN = new Object();
-    for(var i = 0 ; i < this.conf.OUTPUTS.length ; i++){
-      this.conf.MAP_OUT[this.conf.OUTPUTS[i].NAME] = i;
-    }
-    for(var i = 0 ; i < this.conf.INPUTS.length ; i++){
-      this.conf.MAP_IN[this.conf.INPUTS[i].NAME] = i;
-    }
-    return JSON.stringify(this.conf); 
-  },
-  setInput : function (name, value){
-    this.conf.INPUTS[this.conf.MAP_IN[name]].VALUE = value;
   }
-};
-CLOCK;
+});

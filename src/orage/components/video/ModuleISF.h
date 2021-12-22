@@ -47,20 +47,12 @@ namespace ORAGE {
                 }
             }
         protected:
-            virtual void displayMorePannel (bool display) override {
-                UI->getParameter("WIDTH")->setVisible(display);
-                UI->getParameter("HEIGHT")->setVisible(display);
-                UI->getSubView("Share")->setVisible(display);
-                UI->getSubView("AntiAliazing")->setVisible(display);
-                ModuleVideo::displayMorePannel(display);
+            virtual void antiAliazingChange (Evt evt) {
+                ModuleVideo::antiAliazingChange(evt.target->currentVal().getBoolVal());
             }
             
-            virtual void antiAliazingChange (bool value) override {
-                ModuleVideo::antiAliazingChange(value);
-            }
-            
-            virtual void shareAction (bool value) {
-                if (value) {
+            virtual void shareAction (Evt evt) {
+                if (evt.target->currentVal().getBoolVal()) {
                     for(auto share : sharesRef){
                         share->enable();
                     }
@@ -72,30 +64,6 @@ namespace ORAGE {
                 }
             }
             
-            virtual void UIReady() override 
-            {
-                
-                ModuleVideo::UIReady();
-                
-                UI->addToggle("Share", share, Button::Format().label(true).align(Alignment::CENTER))
-                    ->setCallback(boost::bind(&ModuleISF::shareAction, this, _1));
-                
-                UI->addToggle("AntiAliazing", true, Button::Format().label(true).align(Alignment::CENTER))
-                    ->setCallback(boost::bind(&ModuleISF::antiAliazingChange, this, _1));
-                
-                displayMorePannel(false);
-                
-                ci::JsonTree tree = ci::JsonTree(*(doc->jsonString()));
-                if(tree.hasChild("UI.position.x") && tree.hasChild("UI.position.y")){
-                    UI->setOrigin(vec2(
-                                       tree.getChild("UI.position.x").getValue<float>(),
-                                       tree.getChild("UI.position.y").getValue<float>()
-                                       ));
-                }
-                if(tree.hasChild("UI.minified")){
-                    UI->setMinified(tree.getChild("UI.minified").getValue<bool>());
-                }
-            }
             
         public :
             ModuleISF(string name, string path, TYPES type) :
@@ -114,22 +82,25 @@ namespace ORAGE {
                     gl::GlslProg::Format glsl = gl::GlslProg::Format().vertex(outVert).fragment(outFrag);
                     mShader = gl::GlslProg::create(glsl);
                     
-                    auto sizeEventHandler = [&](Evt evt){
-                        
-                    };
-                    {
-                        auto attrWidth = ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal (1.0f), ISFFloatVal(1920.0), ISFFloatVal ((double)defSize().x));
-                        attrWidth->putInMoreArea();
-                        attrWidth->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
-                        _attributes->addAttr(attrWidth);
-                        auto attrHeight = ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal(1.0), ISFFloatVal(1080.0), ISFFloatVal((double)defSize().y));
-                        attrHeight->putInMoreArea();
-                        attrHeight->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
-                        _attributes->addAttr(attrHeight);
-                    }
+                    auto attrWidth = ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal (1.0f), ISFFloatVal(1920.0), ISFFloatVal ((double)defSize().x));
+                    attrWidth->putInMoreArea();
+                    attrWidth->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
+                    _attributes->addAttr(attrWidth);
+                    auto attrHeight = ISFAttr::create("HEIGHT", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal(1.0), ISFFloatVal(1080.0), ISFFloatVal((double)defSize().y));
+                    attrHeight->putInMoreArea();
+                    attrHeight->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
+                    _attributes->addAttr(attrHeight);
                     
+                    auto attrAA = ISFAttr::create("AntiAliazing", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Bool, ISFBoolVal(false), ISFBoolVal(true), ISFBoolVal(true));
+                    attrAA->putInMoreArea();
+                    attrAA->addEventListener(boost::bind(&ModuleISF::antiAliazingChange, this, _1));
+                    _attributes->addAttr(attrAA);
                     
-                    
+                    auto attrShare = ISFAttr::create("Share", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Bool, ISFBoolVal(false), ISFBoolVal(true), ISFBoolVal(false));
+                    attrShare->putInMoreArea();
+                    attrShare->addEventListener(boost::bind(&ModuleISF::shareAction, this, _1));
+                    _attributes->addAttr(attrShare);
+                
                     for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
                         sharesRef.push_back(SyphonSpoutServer::create(Module::name() + "." + to_string(i)));
                     }

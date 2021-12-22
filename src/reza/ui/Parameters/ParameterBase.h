@@ -30,6 +30,7 @@ namespace reza {
             CLOCK = 0x07,
             OSC = 0x08,
             NUMBER = 0x09,
+            BOOLEAN = 0x0A,
         };
         enum PLUG_TYPE {
             _IN = 0x00,
@@ -65,7 +66,7 @@ namespace reza {
         class ParameterBase : public View, public EvtHandler{
             typedef std::shared_ptr<ParameterBase> ParameterBaseRef;
         protected :
-            ISF::ISFAttrRef & attr;
+            ISF::ISFAttrRef attr = nullptr;
         public:
             ISF::ISFAttrRef getAttr(){
                 return attr;

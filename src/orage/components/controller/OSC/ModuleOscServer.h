@@ -106,8 +106,8 @@ namespace ORAGE {
                 outPortUI = UI->addNumber(portOut);
                 UI->addSpacer();
                 
-                runUi = UI->addToggle("run", false, Toggle::Format().label(true).align(Alignment::CENTER));
-                runUi->setCallback(boost::bind(&ModuleOscServer::runHandler, this, _1));
+//                runUi = UI->addToggle("run", false, Toggle::Format().label(true).align(Alignment::CENTER));
+//                runUi->setCallback(boost::bind(&ModuleOscServer::runHandler, this, _1));
                 
                 UI->addOsc(attrOut);
                 UI->addOsc(attrIn);

@@ -50,6 +50,9 @@ namespace ORAGE {
             EvtSlot parameterPlugHandler;
             
             virtual void UIReady() {
+                
+                UI->buildUI(_attributes);
+                
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
                 ISFAttrRef time = ISFAttr::create("TIME", "", "",
                                                   ISFAttr_IO::_IN,
@@ -68,6 +71,8 @@ namespace ORAGE {
                                                         ISFFloatVal(0.0));
                 timedelta->disableUI();
                 _attributes->addAttr(timedelta);
+                
+
             }
             
             

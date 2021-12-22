@@ -49,9 +49,7 @@ namespace ORAGE {
                         for(auto attr : (*it)->attributes()->every()){
                             cables->removeCablesPlugTo(attr);
                         }
-                        
                         modules.erase(it);
-//                        (*it).reset();
                         continue;
                     }
                     it++;
@@ -105,6 +103,16 @@ namespace ORAGE {
                     if(module->getId() == id)return module;
                 }
                 return nullptr;
+            }
+            
+            void empty(){
+                auto it = modules.begin();
+                while(it != modules.end()){
+                    for(auto attr : (*it)->attributes()->every()){
+                        cables->removeCablesPlugTo(attr);
+                    }
+                    modules.erase(it);
+                }
             }
             
             void addFileToOpen(std::vector<std::string> filesToOpen){
