@@ -5,7 +5,6 @@
 #include "OrageMenu.h"
 #include "ModuleManager.h"
 
-
 #include "reza/ui/OrageCanvas.h"
 
 #if defined(CINDER_MAC)

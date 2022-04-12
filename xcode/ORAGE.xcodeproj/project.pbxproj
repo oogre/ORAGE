@@ -204,6 +204,7 @@
 		8845DF7D272BD3B6002A3253 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
 		8848043B273A8909003618E7 /* ModuleManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleManager.h; sourceTree = "<group>"; };
 		885EA28D272989A100F2E0EB /* ModuleController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleController.h; sourceTree = "<group>"; };
+		886208FF2805BBA10067D36F /* OrageLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageLabel.h; sourceTree = "<group>"; };
 		886CF88727736FE700325EF3 /* ParameterToggle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterToggle.h; sourceTree = "<group>"; };
 		886CF88827737FE300325EF3 /* ParameterBtn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterBtn.h; sourceTree = "<group>"; };
 		886CFFE527397D2D00062EFF /* ParameterClock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterClock.h; sourceTree = "<group>"; };
@@ -779,6 +780,7 @@
 				88F37DCB27189A230095955A /* OrageButton.h */,
 				88F37DCD27189A230095955A /* OrageSliderT.h */,
 				889CA6832764FB1400ADE229 /* Parameters */,
+				886208FF2805BBA10067D36F /* OrageLabel.h */,
 			);
 			path = ui;
 			sourceTree = "<group>";

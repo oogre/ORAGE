@@ -11,51 +11,16 @@
 			"TYPE" :	"image"
 	},
     {
-			"NAME" :	"tex1",
+			"NAME" :	"tex1",// background
 			"TYPE" :	"image"
 	},
     {
-			"NAME" :	"tex2",
+			"NAME" :	"tex2",// foreground
 			"TYPE" :	"image"
 	},
     {
 			"NAME" :	"OLD",
 			"TYPE" :	"image"
-	},
-	{
-			"NAME" :	"freq",
-			"TYPE" :	"float",
-			"DEFAULT" :	1.0,
-			"MIN" :	0.0,
-			"MAX" :	10.0
-	},
-	{
-			"NAME" :	"sync",
-			"TYPE" :	"float",
-			"DEFAULT" :	0.0,
-			"MIN" :	0.0,
-			"MAX" :	1.0
-	},
-	{
-			"NAME" :	"dX",
-			"TYPE" :	"float",
-			"DEFAULT" :	0.0,
-			"MIN" :	0.0,
-			"MAX" :	1.0
-	},
-	{
-			"NAME" :	"dY",
-			"TYPE" :	"float",
-			"DEFAULT" :	0.0,
-			"MIN" :	-1.0,
-			"MAX" :	1.0
-	},
-	{
-			"NAME" :	"mod",
-			"TYPE" :	"float",
-			"DEFAULT" :	0.0,
-			"MIN" :	-1.0,
-			"MAX" :	1.0
 	},
 	{
 			"NAME" :	"trail",
@@ -121,10 +86,6 @@
 float PI = 3.14159265359;
 float TWO_PI = 6.283185306;
 
-float phaseProcess(in vec2 fs, in float fq, in float sync, in float mod){
-    float phase =  mod + mix(fs.x, fs.y, sync) * fq;
-    return fract(phase);
-}
 
 float sawWave(in float phase, in float height){
     return (phase) + height;
@@ -154,21 +115,13 @@ void main()
 {
 	
   	vec3 modIntensity = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
-  	/*float modI = max(modIntensity.r, max(modIntensity.g, modIntensity.b));
-	float modFactor = mix(0, modI, _tex0_sample);
-
-	float phase = phaseProcess( isf_FragNormCoord.xy,
-                                freq ,
-                                sync,
-                                (1.0-dX) + mod * modFactor );
-                                */
     float phase = max(max(modIntensity.r, modIntensity.g), modIntensity.b);
     float value = 0.0;
-    value += saw * sawWave(phase, dY);
-    value += cos * sinWave(phase, dY);
-    value += rec * recWave(phase, dY);
-    value += tri * triWave(phase, dY);
-    value += noz * nozWave(phase, dY);
+    value += saw * sawWave(phase, 0.0);
+    value += cos * sinWave(phase, 0.0);
+    value += rec * recWave(phase, 0.0);
+    value += tri * triWave(phase, 0.0);
+    value += noz * nozWave(phase, 0.0);
     value = clamp(value, 0.0, 1.0);
     value = mix(1.0-value, value,rev);
 

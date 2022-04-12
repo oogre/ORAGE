@@ -71,6 +71,8 @@ class Button : public ControlWithLabel {
 	virtual void setValuePtr( bool *value );
 	void toggleValue();
 	virtual Button *setCallback( const std::function<void( bool )> &callback );
+    virtual Button *onEnter( const std::function<void( bool )> &callback );
+    virtual Button *onLeave( const std::function<void( bool )> &callback );
 
 	virtual ~Button();
 
@@ -91,6 +93,8 @@ class Button : public ControlWithLabel {
 	void setup() override;
 	void update() override;
 	void trigger( bool recursive = false ) override;
+    void triggerEnter( bool recursive = false );
+    void triggerLeave( bool recursive = false );
 
 	virtual void mouseDown( ci::app::MouseEvent &event ) override;
 	virtual void mouseUp( ci::app::MouseEvent &event ) override;
@@ -104,7 +108,9 @@ class Button : public ControlWithLabel {
 	bool *mValueRef;
 	bool mUseRef;
 	Format mFormat;
-	std::function<void( bool )> mCallbackFn;
+    std::function<void( bool )> mCallbackFn;
+    std::function<void( bool )> mEnterHandlers;
+    std::function<void( bool )> mLeaveHandlers;
 };
 }
 } //namespace reza::ui

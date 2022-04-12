@@ -84,6 +84,7 @@ namespace reza {
                 bgColor.a = 1.0f;
                 buttonRef->setColorOutline(getCableColor(true));
                 buttonRef->setColorOutlineHighlight(ColorA::white());
+                
                 buttonRef->setCallback([this](bool value) {
                     if(value){
                         EvtHandler::eventTrigger({

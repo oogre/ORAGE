@@ -19,6 +19,7 @@ namespace reza {
         
         class OrageButton : public Button {
             typedef std::shared_ptr<OrageButton> OrageButtonRef;
+            State oldState = State::NORMAL;
         public :
             static OrageButtonRef create( std::string name, bool *value, const Format &format = Format(), const ci::gl::TextureRef textureRef = nullptr )
             {

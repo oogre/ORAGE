@@ -54,37 +54,13 @@
   ]
 }*/
 
-float PI = 3.14159265359;
-float TWO_PI = 6.283185306;
-
 float phaseProcess(in vec2 fs, in float fq, in float sync, in float mod){
     float phase =  mod + mix(fs.x, fs.y, sync) * fq;
     return fract(phase);
 }
-
+	
 float sawWave(in float phase, in float height){
     return (phase) + height;
-}
-
-float sinWave(in float phase, in float height){
-    return (sin(-0.5*PI + phase * TWO_PI)*0.5+0.5) + height;
-}
-
-float nozWave(in float phase, in float height){
-    return fract( sin( phase ) * 999.9)+height;
-}
-
-float triWave(in float phase, in float height){
-    return 1 - abs(((phase)*2.0)-1.0)+ height;
-}
-
-float recWave(in float phase, in float height){
-	phase = triWave(phase, height);
-    if(phase>0.5){
-        return 1.0;
-    }else{
-        return 0.0;
-    };
 }
 
 
