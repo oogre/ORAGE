@@ -18,15 +18,42 @@ namespace ORAGE {
         
         class ModuleClock : public Module {
             typedef shared_ptr<ModuleClock> ModuleClockRef;
-            
-            
+            string rawContent;
             
         public :
             ModuleClock(string name, string path, TYPES type) :
             Module(name)
             {
                 moduleType = type;
+                rawContent = ORAGE::COMMON::readFile(path);
             }
+//            virtual vec2 getOrigin(bool raw=false) override {
+//                if(raw){
+//                    try{
+//                        string rawPosition = dukglue_pcall_method<string>( ctx, jsObject, "getPosition");
+//                        ci::JsonTree origin = ci::JsonTree(rawPosition);
+//                        if(origin.hasChild("x") && origin.hasChild("x")){
+//                            return vec2(
+//                                        origin.getChild("x").getValue<float>(),
+//                                        origin.getChild("y").getValue<float>()
+//                                        );
+//                        }
+//                    }catch(DukErrorException & e){
+//                        onError(e);
+//                    }
+//                }
+//                return Module::getOrigin(raw);
+//            }
+//            virtual string serialize() {
+//                string r = "";
+//                try{
+//                    return dukglue_pcall_method<string>( ctx, jsObject, "rebuild", rawContent, Module::serialize() );
+//                }catch(DukErrorException & e){
+//                    onError(e);
+//                }
+//                return r;
+//            }
+            
             virtual ~ModuleClock(){
                 //duk_destroy_heap(ctx);
                 cout<<"~ModuleClock"<<endl;

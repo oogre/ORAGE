@@ -12,7 +12,7 @@ Base({
       ],
     INPUTS: [{
       NAME :  "CLOCK",
-      TYPE :  "CLOCK"
+      TYPE :  "clock"
     },{
       NAME :  "RST",
       TYPE :  "float",

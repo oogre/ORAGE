@@ -35,7 +35,6 @@ namespace ORAGE {
                             addCables(filePath);
                         }else{
                             add(filePath);
-                            
                         }
                     });
                     filesToOpen.erase(it);
@@ -146,10 +145,12 @@ namespace ORAGE {
                     case TYPES::FX :
                     case TYPES::OUTPUT :
                         module = ModuleISF::create(name, filePath.string(), type);
+                        
                     break;
                     case TYPES::CONTROLLER :
                     case TYPES::MATH :
                         module = ModuleController::create(name, filePath.string(), type);
+                        
                     break;
                         
                     case TYPES::CLOCK :
@@ -157,6 +158,7 @@ namespace ORAGE {
 //                            module = ModuleOscServer::create(name, type);
 //                        }else{
                             module = ModuleController::create(name, filePath.string(), type);
+                        
 //                        }
                         break;
                     case TYPES::INPUT :
@@ -183,7 +185,8 @@ namespace ORAGE {
                         return nullptr;
                     break;
                 }
-                module->setOrigin(pos + vec2(0, 25));
+                module->setOrigin(pos == vec2(0) ? module->getOrigin(true) : pos);
+                
                 module->onParameterPlug([this](Evt evt){
                     if(evt.is("plug")){
                         cables->addCable(evt.target);

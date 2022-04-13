@@ -16,13 +16,13 @@ Base({
       ],
     INPUTS: [{
       NAME :  "CLOCK_X",
-      TYPE :  "CLOCK"
+      TYPE :  "clock"
     },{
       NAME :  "CLOCK_Y",
-      TYPE :  "CLOCK"
+      TYPE :  "clock"
     },{
       NAME :  "CLOCK_Z",
-      TYPE :  "CLOCK"
+      TYPE :  "clock"
     },{
       NAME :  "SEED",
       TYPE :  "float",

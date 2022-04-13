@@ -76,6 +76,7 @@ namespace ORAGE {
                     doc = ISFDoc::create(path);
                     _attributes->concat(doc->attrWrapper());
                     
+                    
                     ISF::GLVersion v = GLVersion_4;
                     doc->generateShaderSource(&outFrag, &outVert, v);
                     
@@ -176,6 +177,24 @@ namespace ORAGE {
                     sharesRef.at(i)->draw(_attributes->imageOutputs().at(i)->defaultVal().imageBuffer());
                 }
             }
+            
+            virtual vec2 getOrigin(bool raw=false) override {
+                string rawJson = *doc->jsonString();
+                ci::JsonTree conf = ci::JsonTree(rawJson);
+                if(raw &&
+                   conf.hasChild("UI") &&
+                   conf.getChild("UI").getChildren().size()>0 &&
+                   conf.getChild("UI").getChildren().begin()->hasChild("position")
+                ){
+                    ci::JsonTree origin = conf.getChild("UI").getChildren().begin()->getChild("position");
+                    return vec2(
+                                origin.getChild("x").getValue<float>(),
+                                origin.getChild("y").getValue<float>()
+                                );
+                }
+                return Module::getOrigin(raw);
+            }
+            
             
             virtual string serialize() override {
                 ci::JsonTree tree = ci::JsonTree(Module::serialize());

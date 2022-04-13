@@ -2,7 +2,7 @@
   assets - DIVIDER.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-11-08 22:13:00
-  @Last Modified time: 2021-12-17 09:33:54
+  @Last Modified time: 2022-04-13 23:33:39
 \*----------------------------------------*/
 var Base = require('base');
 
@@ -16,25 +16,25 @@ Base({
       ],
     INPUTS: [{
       NAME :  "CLOCK_IN",
-      TYPE :  "CLOCK"
+      TYPE :  "clock"
     },{
       NAME :  "MUL",
       TYPE :  "float",
       DEFAULT : 1.0,
       MIN : 1.0,
       MAX : 5.0,
-      MAGNETIC : [1, 2, 3, 4, 5]
+      MAGNETIC : [1, 2, 3, 4, 5] /* 1 ·  2  ·   4  ·   8   ·   16   */
     },{
       NAME :  "DIV",
       TYPE :  "float",
       DEFAULT : 1.0,
       MIN : 1.0,
       MAX : 5.0,
-      MAGNETIC : [1, 2, 3, 4, 5]
+      MAGNETIC : [1, 2, 3, 4, 5] /* 1 · 0.5 · 0.25 · 0.125 · 0.0625 */
     }],
     OUTPUTS: [{
       NAME :  "CLOCK_OUT",
-      TYPE :  "CLOCK"
+      TYPE :  "clock"
     }]
   },
   main : function() {

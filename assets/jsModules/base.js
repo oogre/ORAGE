@@ -2,7 +2,7 @@
   assets - base.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-12-14 23:10:13
-  @Last Modified time: 2021-12-17 09:26:36
+  @Last Modified time: 2022-04-13 21:55:57
 \*----------------------------------------*/
 
 module.exports = function(self){
@@ -47,7 +47,7 @@ module.exports = function(self){
 					return;
 				}
 			}
-			print("function unable to find "+name);
+			// print("function unable to find "+name);
 		},
 		setOutput : function(name, value){
 			var id = this.conf.MAP_OUT[name];
@@ -59,6 +59,37 @@ module.exports = function(self){
 				}
 			}
 			print("function unable to find "+name);
+		},
+		isMinified : function(){
+			if(!this.conf.UI || !this.conf.UI[0] || !this.conf.UI[0].minified)return false;
+			return this.conf.UI[0].minified;
+		},
+		getPosition : function(){
+			if(!this.conf.UI || !this.conf.UI[0] || !this.conf.UI[0].position)return "";
+				return JSON.stringify(this.conf.UI[0].position);
+		},
+		rebuild : function(rawContent, rawData){
+			var data = JSON.parse(rawData);
+			var inStartToken = /INPUTS\s*\:\s*/;
+			var outStartToken = /OUTPUTS\s*\:\s*/;
+			var UIStartToken = /UI\s*\:\s*/;
+			var stopToken = /\}\s*\]/;
+			var rawInputs = JSON.stringify(data.INPUTS);
+			var rawOutputs = JSON.stringify(data.OUTPUTS);
+			var rawUi = JSON.stringify(data.UI);
+			var inject = function(raw, startToken, content, stopToken){
+				var parcel = raw.split(startToken)[1].split(stopToken)[0];
+				return raw.slice(0, raw.indexOf(parcel)) + content +
+					raw.slice(raw.indexOf(parcel) + parcel.length+2);
+			}
+			var content = inject(rawContent, inStartToken, rawInputs, stopToken);
+			if(!UIStartToken.test(content)){
+				content = inject(content, outStartToken, rawOutputs+", \n    UI : " + rawUi + ", ", stopToken);	
+			}else{
+				content = inject(content, outStartToken, rawOutputs, stopToken);	
+				content = inject(content, UIStartToken, rawUi, stopToken);
+			}
+			return content ;
 		}
 	});
 }

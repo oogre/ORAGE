@@ -74,7 +74,7 @@ public:
                                     make_pair(
                                         subEntry.path().filename().string(),
                                         [&, subEntry](ORAGE::COMPONENTS::TYPES type, vec2 pos){
-                                            modules->add(subEntry.path(), pos, type);
+                                            modules->add(subEntry.path(), pos+vec2(0,25), type);
                                         }
                                     )
                                 );
@@ -87,7 +87,7 @@ public:
                     make_pair(
                               "SyphonSpout.in.fs",
                               [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
-                                  modules->add( "SyphonSpout.in.fs", pos, type);
+                                  modules->add( "SyphonSpout.in.fs", pos+vec2(0,25), type);
                               }
                     )
                 });
@@ -95,31 +95,31 @@ public:
                     make_pair(
                               "server.osc",
                               [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
-                                  modules->add( "server.osc", pos, type);
+                                  modules->add( "server.osc", pos+vec2(0,25), type);
                               }
                               ),
                     make_pair(
                               "filter.osc",
                               [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
-                                  modules->add( "filter.osc", pos, type);
+                                  modules->add( "filter.osc", pos+vec2(0,25), type);
                               }
                               ),
                     make_pair(
                               "receiver.osc",
                               [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
-                                  modules->add( "receiver.osc", pos, type);
+                                  modules->add( "receiver.osc", pos+vec2(0,25), type);
                               }
                               ),
                     make_pair(
                               "address.osc",
                               [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
-                                  modules->add( "address.osc", pos, type);
+                                  modules->add( "address.osc", pos+vec2(0,25), type);
                               }
                               ),
                     make_pair(
                               "sender.osc",
                               [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
-                                  modules->add( "sender.osc", pos, type);
+                                  modules->add( "sender.osc", pos+vec2(0,25), type);
                               }
                               )
                 });

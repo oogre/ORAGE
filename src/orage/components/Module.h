@@ -47,6 +47,7 @@ namespace ORAGE {
             bool _ready = false;
             
         protected :
+            string rawPosition;
             EvtSlot parameterPlugHandler;
             
             virtual void UIReady() {
@@ -147,6 +148,9 @@ namespace ORAGE {
             static ModuleRef create(string name){
                 return std::make_shared<Module>(name);
             }
+            virtual vec2 getOrigin(bool raw=false){
+                return UI->getOrigin();
+            }
             void setOrigin(vec2 pos){
                 UI->setOrigin(pos);
             }
@@ -193,6 +197,13 @@ namespace ORAGE {
                 ci::JsonTree tree = ci::JsonTree();
                 ci::JsonTree inputs = ci::JsonTree::makeArray("INPUTS");
                 for(auto attr : _attributes->inputs()){
+                    if( attr->name() == "TIME" ||
+                       attr->name() == "TIMEDELTA" ||
+                       attr->name() == "WIDTH" ||
+                       attr->name() == "HEIGHT" ||
+                       attr->name() == "AntiAliazing" ||
+                       attr->name() == "Share"
+                    )continue;
                     ci::JsonTree input = ci::JsonTree();
                     
                     input.addChild(ci::JsonTree("NAME", attr->name()));
@@ -218,13 +229,15 @@ namespace ORAGE {
                     outputs.addChild(output);
                 }
                 tree.addChild(outputs);
-                ci::JsonTree ui = ci::JsonTree::makeObject("UI");
+                ci::JsonTree uis = ci::JsonTree::makeArray("UI");
+                ci::JsonTree ui = ci::JsonTree();
                 ci::JsonTree position = ci::JsonTree::makeObject("position");
                 position.addChild(ci::JsonTree("x",  UI->getOrigin().x ));
                 position.addChild(ci::JsonTree("y",  UI->getOrigin().y ));
                 ui.addChild(ci::JsonTree("minified",  UI->isMinified() ));
                 ui.addChild(position);
-                tree.addChild(ui);
+                uis.addChild(ui);
+                tree.addChild(uis);
                 return tree.serialize();
             }
             

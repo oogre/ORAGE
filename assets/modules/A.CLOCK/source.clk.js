@@ -2,7 +2,7 @@
   assets - clock.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-11-08 16:59:24
-  @Last Modified time: 2021-12-17 09:30:29
+  @Last Modified time: 2022-04-13 23:33:45
 \*----------------------------------------*/
 
 var Base = require('base');
@@ -24,7 +24,7 @@ Base({
     }],
     OUTPUTS: [{
       NAME :  "CLOCK",
-      TYPE :  "CLOCK"
+      TYPE :  "clock"
     }]
   },
   main : function(time, deltaTime) {

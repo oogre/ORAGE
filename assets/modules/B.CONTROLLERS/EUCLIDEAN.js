@@ -15,7 +15,7 @@ Base({
       ],
     INPUTS: [{
       NAME :  "CLOCK",
-      TYPE :  "float",
+      TYPE :  "clock",
       DEFAULT : 0.0,
       MIN : 0.0,
       MAX : 1.0
@@ -47,7 +47,7 @@ Base({
     }]
   },
   main : function(time, deltaTime) {
-    timeCounter = this.getInput("CLOCK").VALUE;
+    timeCounter += this.getInput("CLOCK").VALUE;
     var steps = Math.round(this.getInput("STEPS").VALUE);
     var beats = Math.round(this.getInput("BEATS").VALUE);
     var phase = Math.round(this.getInput("PHASE").VALUE * steps);

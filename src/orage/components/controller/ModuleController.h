@@ -25,7 +25,8 @@ namespace ORAGE {
             duk_context *ctx;
             DukValue jsObject;
             JsonTree conf;
-        
+            string rawContent;
+            
             void onError(DukErrorException & e){
                 cerr << "ERROR FROM : " << UI->getName() << endl;
                 cerr << e.what() << endl;
@@ -33,15 +34,18 @@ namespace ORAGE {
             }
 
         public :
+            
             ModuleController(string name, string path, TYPES type) :
             Module(name)
             {
                 moduleType = type;
                 try{
                     ctx = duk_create_heap_default();
-                    
+
+                    rawContent = ORAGE::COMMON::readFile(path);
                     jsObject = ORAGE::COMMON::JS::init(ctx, path);
                     conf = JsonTree(dukglue_pcall_method<string>(ctx, jsObject, "getConf"));
+                    
                     
                     for(auto input : conf.getChild("INPUTS").getChildren()){
                         if(input.getChild("TYPE").getValue() == "float"){
@@ -62,7 +66,7 @@ namespace ORAGE {
                             _attributes->addAttr(attr);
                         }
                         
-                        if(input.getChild("TYPE").getValue() == "CLOCK"){
+                        if(input.getChild("TYPE").getValue() == "clock"){
                             _attributes->addAttr(
                                  ISFAttr::create(   input.getChild("NAME").getValue(), "", "",
                                                     ISF::ISFAttr_IO::_IN,
@@ -86,7 +90,7 @@ namespace ORAGE {
                                                 )
                              );
                         }
-                        if(output.getChild("TYPE").getValue() == "CLOCK"){
+                        if(output.getChild("TYPE").getValue() == "clock"){
                             _attributes->addAttr(
                                 ISFAttr::create( output.getChild("NAME").getValue(), "", "",
                                                  ISF::ISFAttr_IO::_OUT, ISFValType::ISFValType_Clock,
@@ -107,6 +111,34 @@ namespace ORAGE {
             }
             static ModuleControllerRef create(string name, string path, TYPES type = TYPES::CONTROLLER){
                 return std::make_shared<ModuleController>(name, path, type);
+            }
+            
+            virtual vec2 getOrigin(bool raw=false) override {
+                if(raw){
+                    try{
+                        string rawPosition = dukglue_pcall_method<string>( ctx, jsObject, "getPosition");
+                        ci::JsonTree origin = ci::JsonTree(rawPosition);
+                        if(origin.hasChild("x") && origin.hasChild("x")){
+                            return vec2(
+                                        origin.getChild("x").getValue<float>(),
+                                        origin.getChild("y").getValue<float>()
+                                        );
+                        }
+                    }catch(DukErrorException & e){
+                        onError(e);
+                    }
+                }
+                return Module::getOrigin(raw);
+            }
+            
+            virtual string serialize() {
+                string r = "";
+                try{
+                    r = dukglue_pcall_method<string>( ctx, jsObject, "rebuild", rawContent, Module::serialize() );
+                }catch(DukErrorException & e){
+                    onError(e);
+                }
+                return r;
             }
             virtual void update() override {
                 Module::update();
