@@ -18,6 +18,6 @@ uniform int		FRAMEINDEX;
 void main(void)	{	
 	// isf_FragNormCoord = ((ciModelViewProjection * ciPosition).xy + vec2(1)) * 0.5;
 	// gl_Position = ciModelViewProjection * ciPosition;
-	isf_FragNormCoord = ciTexCoord0;
+	isf_FragNormCoord = ciTexCoord0 ;
     gl_Position = ciModelViewProjection * ciPosition;
 }

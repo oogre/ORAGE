@@ -83,6 +83,7 @@ namespace ORAGE {
                     gl::ScopedProjectionMatrix matrix(projection());
                     {
                         ScopedFramebuffer fbScp( currentFbo );
+                        pushViewport(make_pair<ivec2, ivec2>(ivec2(0), currentFbo->getSize()));
                         gl::clear(ColorA(0, 0, 0, 1));
                         gl::color(Color::white());
                     #if defined(CINDER_MAC)
@@ -93,6 +94,7 @@ namespace ORAGE {
                             gl::draw(tex, Area(vec2(0), defSize()));
                         }
                     #endif
+                        popViewport();
                     }
                 }
             }

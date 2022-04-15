@@ -62,7 +62,6 @@ namespace ORAGE {
                     _attributes->addAttr(attrFullScreen);
                 }
             }
-        
 
             virtual void createWindow(int diplayId=0, bool fullscreen = false) {
                 RendererGl::Options option = RendererGl::Options().msaa(0);
@@ -102,6 +101,9 @@ namespace ORAGE {
                     auto widthAttr = _attributes->getInput("WIDTH");
                     auto heightAttr = _attributes->getInput("HEIGHT");
                     vec2 size = getWindowSize();
+                    
+                    cout<< size<< endl;
+                    
                     if (!!widthAttr && !!heightAttr){
                         size = vec2(widthAttr->currentVal().getDoubleVal(), heightAttr->currentVal().getDoubleVal());
                     }

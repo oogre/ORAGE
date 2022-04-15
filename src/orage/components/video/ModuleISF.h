@@ -82,7 +82,7 @@ namespace ORAGE {
                     
                     gl::GlslProg::Format glsl = gl::GlslProg::Format().vertex(outVert).fragment(outFrag);
                     mShader = gl::GlslProg::create(glsl);
-                    
+                    cout<<outVert << endl << endl << endl << outFrag << endl;
                     auto attrWidth = ISFAttr::create("WIDTH", "", "", ISF::ISFAttr_IO::_IN, ISFValType::ISFValType_Float, ISFFloatVal (1.0f), ISFFloatVal(1920.0), ISFFloatVal ((double)defSize().x));
                     attrWidth->putInMoreArea();
                     attrWidth->addEventListener(boost::bind(&ModuleISF::sizeEventHandler, this, _1));
@@ -136,7 +136,9 @@ namespace ORAGE {
                     gl::ScopedProjectionMatrix matrix(projection());
                     {
                         ScopedFramebuffer fbScp( currentFbo );
+                        pushViewport(make_pair<ivec2, ivec2>(ivec2(0), currentFbo->getSize()));
                         gl::ScopedGlslProg glslProg( mShader );
+                        
                         gl::clear( ColorA(0, 0, 0, 1));
                         int i = 0 ;
                         for(auto & input : _attributes->inputs()){
@@ -171,6 +173,8 @@ namespace ORAGE {
                         }
                         gl::color(Color::white());
                         gl::drawSolidRect(Area(vec2(0), defSize()));
+                        
+                        popViewport();
                     }
                 }
                 for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
