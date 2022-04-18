@@ -46,7 +46,6 @@ namespace ORAGE {
                     jsObject = ORAGE::COMMON::JS::init(ctx, path);
                     conf = JsonTree(dukglue_pcall_method<string>(ctx, jsObject, "getConf"));
                     
-                    
                     for(auto input : conf.getChild("INPUTS").getChildren()){
                         if(input.getChild("TYPE").getValue() == "float"){
                             ISFAttrRef attr = ISFAttr::create(  input.getChild("NAME").getValue(), "", "",
@@ -171,11 +170,21 @@ namespace ORAGE {
                         for(auto output : outputs){
                             string name = output.getChild("NAME").getValue();
                             double value = output.getChild("VALUE").getValue<double>();
+                            string label;
+                            if(output.hasChild("LABEL")){
+                                label = output.getChild("LABEL").getValue<string>();
+                            }else{
+                                ostringstream stream ;
+                                stream << fixed << setprecision(1) << value;
+                                label = stream.str();
+                            }
+                            
                             auto attr = _attributes->get(name);
                             attr->currentVal().setDoubleVal(value);
                             ParameterFloatRef attrUI = dynamic_pointer_cast<ParameterFloat>(UI->getParameter(attr->name()));
                             if(!!attrUI){
                                 attrUI->sliderRef->setValue(value);
+                                attrUI->sliderRef->mLabelValueRef->setLabel(label);
                             }
                             attr->eventTrigger({
                                 "change",

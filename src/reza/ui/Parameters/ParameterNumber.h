@@ -49,6 +49,7 @@ namespace reza {
                 attr->addEventListener([this](Evt evt){
                     if (evt.is("change") && evt.target != getAttr() && inputRef->isEnabled()) {
                         inputRef->setValue(evt.target->currentVal().getValString());
+                        
                     }
                 });
             }

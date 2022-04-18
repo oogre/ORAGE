@@ -66,11 +66,13 @@ Base({
     this.setOutput("SAW", value);
     this.setOutput("TRI", 1-Math.abs((value * 2) - 1));
     this.setInput("DIR", Z);
+    this.setInput("RST", R);
 
     return JSON.stringify([
       this.getOutput("SAW"), 
       this.getOutput("TRI"),
-      this.getInput("DIR")
+      this.getInput("DIR"),
+      this.getInput("RST")
     ]); 
   }
 });

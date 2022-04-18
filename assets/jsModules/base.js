@@ -2,7 +2,7 @@
   assets - base.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-12-14 23:10:13
-  @Last Modified time: 2022-04-13 21:55:57
+  @Last Modified time: 2022-04-18 13:21:40
 \*----------------------------------------*/
 
 module.exports = function(self){
@@ -21,40 +21,36 @@ module.exports = function(self){
 		getInput : function(name){
 			var id = this.conf.MAP_IN[name];
 			if(id !== undefined){
-				var param = this.conf.INPUTS[id];
-				if(param){
-					return param;
-				}
+				return this.conf.INPUTS[id];
 			}
 			print("get function unable to find "+name);
 		},
 		getOutput : function(name){
 			var id = this.conf.MAP_OUT[name];
 			if(id !== undefined){
-				var param = this.conf.OUTPUTS[id]
-				if(param){
-					return param;
-				}
+				return this.conf.OUTPUTS[id];
 			}
 			print("get function unable to find "+name);
 		},
-		setInput : function(name, value){
+		setInput : function(name, value, elem){
+			if(!elem)elem="VALUE";
 			var id = this.conf.MAP_IN[name];
 			if(id !== undefined){
 				var param = this.conf.INPUTS[id];
 				if(param){
-					param.VALUE = value;
+					param[elem] = value;
 					return;
 				}
 			}
 			// print("function unable to find "+name);
 		},
-		setOutput : function(name, value){
+		setOutput : function(name, value, elem){
+			if(!elem)elem="VALUE";
 			var id = this.conf.MAP_OUT[name];
 			if(id !== undefined){
 				var param = this.conf.OUTPUTS[id];
 				if(param){
-					param.VALUE = value;
+					param[elem] = value;
 					return;
 				}
 			}
@@ -67,6 +63,18 @@ module.exports = function(self){
 		getPosition : function(){
 			if(!this.conf.UI || !this.conf.UI[0] || !this.conf.UI[0].position)return "";
 				return JSON.stringify(this.conf.UI[0].position);
+		},
+		valueToMagneticId : function(param){
+			return Math.floor(param.VALUE * (param.MAGNETIC.length-1))
+		},
+		valueToMagnetic : function(param){
+			return param.MAGNETIC[this.valueToMagneticId(param)];
+		},
+		magneticToValue : function(param){
+			return this.valueToMagneticId(param)/(param.MAGNETIC.length-1)
+		},
+		valueToLabel : function(param){
+			return param.LABELS[this.valueToMagneticId(param)];
 		},
 		rebuild : function(rawContent, rawData){
 			var data = JSON.parse(rawData);

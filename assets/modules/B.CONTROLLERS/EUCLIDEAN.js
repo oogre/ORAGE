@@ -1,4 +1,5 @@
 var timeCounter = 0;
+var oldRst = 0;
 var oldSteps = 0;
 var oldBeats = 0;
 var oldPhase = 0;
@@ -16,6 +17,12 @@ Base({
     INPUTS: [{
       NAME :  "CLOCK",
       TYPE :  "clock",
+      DEFAULT : 0.0,
+      MIN : 0.0,
+      MAX : 1.0
+    },{
+      NAME :  "RST",
+      TYPE :  "float",
       DEFAULT : 0.0,
       MIN : 0.0,
       MAX : 1.0
@@ -48,6 +55,7 @@ Base({
   },
   main : function(time, deltaTime) {
     timeCounter += this.getInput("CLOCK").VALUE;
+    var R = Math.round(this.getInput("RST").VALUE);
     var steps = Math.round(this.getInput("STEPS").VALUE);
     var beats = Math.round(this.getInput("BEATS").VALUE);
     var phase = Math.round(this.getInput("PHASE").VALUE * steps);
@@ -60,15 +68,22 @@ Base({
       oldPhase = phase;
     }
 
-
-    var currentStep = Math.floor((timeCounter - Math.floor(timeCounter)) * steps);
+    if(R == 0 && oldRst == 1) {
+      timeCounter = 0;
+    }
+    oldRst = R;
+    var currentStep = Math.floor(timeCounter % steps);
     // var currentStep = Math.floor((time - Math.floor(time)) * steps);
+   
     this.setOutput("OUTPUT", + rythm[currentStep]);
     this.setInput("BEATS", beats);
     this.setInput("STEPS", steps);
     this.setInput("PHASE", phase/steps);
+    this.setInput("RST", R);
 
     return JSON.stringify([
+      this.getInput("RST"),
+      this.getInput("BEATS"),
       this.getInput("BEATS"),
       this.getInput("STEPS"),
       this.getInput("PHASE"),
@@ -79,6 +94,12 @@ Base({
 
 var buildRythm = function(steps, beats, phase){
     var rythm = [];
+    if(steps == beats){
+      for(var i = 0 ; i < steps ; i ++){
+        rythm.push(true);
+      }
+      return rythm;
+    }
     var pauses = steps - beats;
     var switcher = false;
     if (beats > pauses) {

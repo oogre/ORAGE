@@ -2,10 +2,11 @@
   assets - MATH.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-10-30 18:10:59
-  @Last Modified time: 2021-11-08 22:41:18
+  @Last Modified time: 2022-04-17 07:25:28
 \*----------------------------------------*/
-var timeCounter = 0;
-var LOGIC = {
+var Base = require('base');
+
+Base({
   conf : {
     CREDIT: "by vincent evrard",
     DESCRIPTION: "basic noise",
@@ -77,32 +78,25 @@ var LOGIC = {
     }]
   },
   main : function(time, deltaTime, frameIndex) {
-    var a = this.conf.INPUTS[this.conf.MAP_IN["A"]].VALUE;
-    var b = this.conf.INPUTS[this.conf.MAP_IN["B"]].VALUE;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["ADD"]].VALUE = a + b;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["DIF"]].VALUE = a - b;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["MUL"]].VALUE = a * b;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["MOD"]].VALUE = a % b;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["MIN"]].VALUE = Math.min(a, b);
-    this.conf.OUTPUTS[this.conf.MAP_OUT["MAX"]].VALUE = Math.max(a, b);
-    this.conf.OUTPUTS[this.conf.MAP_OUT["LGT"]].VALUE = a > b;
-    this.conf.OUTPUTS[this.conf.MAP_OUT["SMT"]].VALUE = a < b;
-    
-    return JSON.stringify(this.conf.OUTPUTS); 
-  },
-  getConf : function() {
-    this.conf.MAP_OUT = new Object();
-    this.conf.MAP_IN = new Object();
-    for(var i = 0 ; i < this.conf.OUTPUTS.length ; i++){
-      this.conf.MAP_OUT[this.conf.OUTPUTS[i].NAME] = i;
-    }
-    for(var i = 0 ; i < this.conf.INPUTS.length ; i++){
-      this.conf.MAP_IN[this.conf.INPUTS[i].NAME] = i;
-    }
-    return JSON.stringify(this.conf); 
-  },
-  setInput : function (name, value){
-    this.conf.INPUTS[this.conf.MAP_IN[name]].VALUE = value;
+    var a = this.getInput("A").VALUE;
+    var b = this.getInput("B").VALUE;;
+    this.setOutput("ADD", a + b);
+    this.setOutput("DIF", a - b);
+    this.setOutput("MUL", a * b);
+    this.setOutput("MOD", a % b);
+    this.setOutput("MIN", Math.min(a, b));
+    this.setOutput("MAX", Math.max(a, b));
+    this.setOutput("LGT", a > b);
+    this.setOutput("SMT", a < b);
+     return JSON.stringify([
+      this.getOutput("ADD"),
+      this.getOutput("DIF"),
+      this.getOutput("MUL"),
+      this.getOutput("MOD"),
+      this.getOutput("MIN"),
+      this.getOutput("MAX"),
+      this.getOutput("LGT"),
+      this.getOutput("SMT")
+    ]);  
   }
-};
-LOGIC;
+});

@@ -229,7 +229,6 @@
 		888DA3F827602D96002166FB /* ParameterOsc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParameterOsc.h; sourceTree = "<group>"; };
 		889CA67A2763BE1B00ADE229 /* ModuleOscFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscFilter.h; sourceTree = "<group>"; };
 		889CA67B2763C3D600ADE229 /* ModuleOscAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscAddress.h; sourceTree = "<group>"; };
-		889CA67D2764F46A00ADE229 /* ModuleClock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleClock.h; sourceTree = "<group>"; };
 		889CA67E2764F50900ADE229 /* index.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = index.h; sourceTree = "<group>"; };
 		889CA67F2764F5EF00ADE229 /* index.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = index.h; sourceTree = "<group>"; };
 		889CA6802764F62E00ADE229 /* index.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = index.h; sourceTree = "<group>"; };
@@ -568,7 +567,6 @@
 		888DA3B5276014A5002166FB /* controller */ = {
 			isa = PBXGroup;
 			children = (
-				889CA67C2764F45600ADE229 /* Clock */,
 				888DA3B6276014B0002166FB /* OSC */,
 				885EA28D272989A100F2E0EB /* ModuleController.h */,
 				889CA67F2764F5EF00ADE229 /* index.h */,
@@ -630,14 +628,6 @@
 				888DA3F627601C4F002166FB /* Osc.cpp */,
 			);
 			path = osc;
-			sourceTree = "<group>";
-		};
-		889CA67C2764F45600ADE229 /* Clock */ = {
-			isa = PBXGroup;
-			children = (
-				889CA67D2764F46A00ADE229 /* ModuleClock.h */,
-			);
-			path = Clock;
 			sourceTree = "<group>";
 		};
 		889CA6822764F7E900ADE229 /* SyphonSpout */ = {

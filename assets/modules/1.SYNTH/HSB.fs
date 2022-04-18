@@ -45,8 +45,7 @@
   ]
 }*/
 
-void main()
-{
+vec3 HSB2RGB(float H, float S, float B){
   float C = B * S;
   float X = C * (1.0-abs(mod((H / 60.0), 2.0) - 1.0));
   float m = B - C;
@@ -66,11 +65,19 @@ void main()
   }else{
     tmp = vec3(C, 0, X);
   }
-  vec3 A = vec3( tmp.r + m, tmp.g + m, tmp.b + m);
-  vec3 B = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
+  tmp.r += m; 
+  tmp.g += m;
+  tmp.b += m;
+  return tmp;
+}
+
+void main(){
+  vec3 HSB = HSB2RGB(H, S, B);
+  
+  vec3 OTHER = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
   vec3 _m = vec3(_tex0_sample);
-  vec3 COL = mix(vec3(0), A, B);
-  vec3 color = mix(A, COL, _m);
+  vec3 COL = mix(vec3(0), HSB, OTHER);
+  vec3 color = mix(HSB, COL, _m);
   out0 = vec4(color, 1);
     //  gl_FragColor = vec4(0, 1, 1, 1);
 }

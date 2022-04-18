@@ -44,6 +44,8 @@ namespace reza {
                         double cMax = attr->maxVal().getDoubleVal();
                         
                         sliderRef->setValue(ci::lerp(cMin, cMax, InverseLerp(tMin, tMax, tVal)));
+                        
+                        
                     }
                 });
                 

@@ -2,7 +2,7 @@
   assets - clock.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2021-11-08 16:59:24
-  @Last Modified time: 2022-04-13 23:33:45
+  @Last Modified time: 2022-04-18 13:23:28
 \*----------------------------------------*/
 
 var Base = require('base');
