@@ -51,6 +51,27 @@
     <Filter Include="Source Files\Blocks\Spout">
       <UniqueIdentifier>{afb3fdaa-6beb-4b9a-8fed-41d5a7920cff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Blocks\Osc">
+      <UniqueIdentifier>{49c1f5ab-b641-426a-8683-ab835c8985d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\orage\components\controller">
+      <UniqueIdentifier>{edb945dc-7e99-405a-9260-704ccbd95131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\reza\ui\Parameters">
+      <UniqueIdentifier>{ce3ca511-84e8-49de-a117-3da43f335f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\reza\ui\Menu">
+      <UniqueIdentifier>{516095d6-0f44-4a37-9774-4cfdaa1e5278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\orage\components\controller\Osc">
+      <UniqueIdentifier>{ff603f97-bbf1-4df8-992a-e20184e70e2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\orage\components\video">
+      <UniqueIdentifier>{f9260215-12ff-4435-b346-7493bef42c6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\orage\components\video\SyphonSpout">
+      <UniqueIdentifier>{076393ed-0f3b-4a8e-8699-83d96277c22a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ORAGEApp.cpp">
@@ -155,52 +176,22 @@
     <ClCompile Include="..\src\Blocks\Ducktape\duktape.c">
       <Filter>Source Files\Blocks\Ducktape</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Blocks\OSC\src\cinder\osc\Osc.cpp">
+      <Filter>Source Files\Blocks\Osc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Blocks\Ducktape\duk_module_duktape.c">
+      <Filter>Source Files\Blocks\Ducktape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\reza\ui\OrageButton.h">
-      <Filter>Source Files\reza\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\reza\ui\OrageCanvas.h">
-      <Filter>Source Files\reza\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\reza\ui\OrageMenu.h">
-      <Filter>Source Files\reza\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\reza\ui\OrageMenuItem.h">
-      <Filter>Source Files\reza\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\reza\ui\OrageMenuList.h">
-      <Filter>Source Files\reza\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\reza\ui\OrageSliderT.h">
-      <Filter>Source Files\reza\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\reza\ui\ParameterBase.h">
-      <Filter>Source Files\reza\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\reza\ui\ParameterFloat.h">
-      <Filter>Source Files\reza\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\reza\ui\ParameterTexture.h">
-      <Filter>Source Files\reza\ui</Filter>
     </ClInclude>
     <ClInclude Include="..\src\orage\common\EventTemplate.h">
       <Filter>Source Files\orage\common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\orage\common\OrageMath.h">
       <Filter>Source Files\orage\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\orage\components\Module.h">
-      <Filter>Source Files\orage\components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\orage\components\ModuleISF.h">
-      <Filter>Source Files\orage\components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\orage\components\ModuleTypes.h">
-      <Filter>Source Files\orage\components</Filter>
     </ClInclude>
     <ClInclude Include="..\src\orage\connections\cable.h">
       <Filter>Source Files\orage\connections</Filter>
@@ -370,29 +361,125 @@
     <ClInclude Include="..\src\Blocks\Spout\SpoutLibrary.h">
       <Filter>Source Files\Blocks\Spout</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\reza\ui\ParameterClock.h">
-      <Filter>Source Files\reza\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\orage\components\ModuleSyphonSpout.h">
-      <Filter>Source Files\orage\components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\orage\components\ModuleController.h">
-      <Filter>Source Files\orage\components</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\orage\common\ModuleManager.h">
-      <Filter>Source Files\orage\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\orage\common\Syphon_Spout.h">
       <Filter>Source Files\orage\common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ISF\ISFAttrWrapper.h">
       <Filter>Source Files\ISF</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\orage\components\ModuleVideo.h">
-      <Filter>Source Files\orage\components</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\orage\common\OrageFileTools.h">
       <Filter>Source Files\orage\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\OSC\src\cinder\osc\Osc.h">
+      <Filter>Source Files\Blocks\Osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\Components.h">
+      <Filter>Source Files\orage\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\Module.h">
+      <Filter>Source Files\orage\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\ModuleTypes.h">
+      <Filter>Source Files\orage\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\controller\index.h">
+      <Filter>Source Files\orage\components\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\controller\ModuleController.h">
+      <Filter>Source Files\orage\components\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\controller\OSC\index.h">
+      <Filter>Source Files\orage\components\controller\Osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\controller\OSC\ModuleOscAddress.h">
+      <Filter>Source Files\orage\components\controller\Osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\controller\OSC\ModuleOscDataIn.h">
+      <Filter>Source Files\orage\components\controller\Osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\controller\OSC\ModuleOscDataOut.h">
+      <Filter>Source Files\orage\components\controller\Osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\controller\OSC\ModuleOscFilter.h">
+      <Filter>Source Files\orage\components\controller\Osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\controller\OSC\ModuleOscServer.h">
+      <Filter>Source Files\orage\components\controller\Osc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\common\OrageError.h">
+      <Filter>Source Files\orage\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\common\OrageJS.h">
+      <Filter>Source Files\orage\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageButton.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageCanvas.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageInputNumber.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageLabel.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\OrageSliderT.h">
+      <Filter>Source Files\reza\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Parameters\index.h">
+      <Filter>Source Files\reza\ui\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Parameters\ParameterBase.h">
+      <Filter>Source Files\reza\ui\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Parameters\ParameterBtn.h">
+      <Filter>Source Files\reza\ui\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Parameters\ParameterClock.h">
+      <Filter>Source Files\reza\ui\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Parameters\ParameterFloat.h">
+      <Filter>Source Files\reza\ui\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Parameters\ParameterNumber.h">
+      <Filter>Source Files\reza\ui\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Parameters\ParameterOsc.h">
+      <Filter>Source Files\reza\ui\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Parameters\ParameterTexture.h">
+      <Filter>Source Files\reza\ui\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Parameters\ParameterToggle.h">
+      <Filter>Source Files\reza\ui\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Menu\OrageMenu.h">
+      <Filter>Source Files\reza\ui\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Menu\OrageMenuItem.h">
+      <Filter>Source Files\reza\ui\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\reza\ui\Menu\OrageMenuList.h">
+      <Filter>Source Files\reza\ui\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\video\index.h">
+      <Filter>Source Files\orage\components\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\video\ModuleISF.h">
+      <Filter>Source Files\orage\components\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\video\ModuleVideo.h">
+      <Filter>Source Files\orage\components\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\video\SyphonSpout\ModuleSyphonSpout.h">
+      <Filter>Source Files\orage\components\video\SyphonSpout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\orage\components\video\SyphonSpout\Syphon_Spout.h">
+      <Filter>Source Files\orage\components\video\SyphonSpout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Blocks\Ducktape\duk_module_duktape.h">
+      <Filter>Source Files\Blocks\Ducktape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

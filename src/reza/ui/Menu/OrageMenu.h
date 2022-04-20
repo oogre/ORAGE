@@ -23,8 +23,8 @@ namespace reza {
         typedef EventTemplate<BaseEvent> BaseEventHandler;
         typedef boost::signals2::signal<void(BaseEvent)>::slot_type BaseEventSlot;
         
-        typedef std::function<void(ORAGE::COMPONENTS::TYPES, vec2)> CALLBACK;
-        typedef std::vector<std::pair<std::string, CALLBACK>> SUB_ENTRIES;
+        typedef std::function<void(ORAGE::COMPONENTS::TYPES, vec2)> CALLBACKS;
+        typedef std::vector<std::pair<std::string, CALLBACKS>> SUB_ENTRIES;
         
         class OrageMenu : public SuperCanvas, public BaseEventHandler{
             typedef shared_ptr<OrageMenu> OrageMenuRef;
@@ -80,16 +80,17 @@ namespace reza {
                     string name = "";
                     string ext = "";
                     ORAGE::COMPONENTS::TYPES currentType = pathToComponentType(fs::path(subEntry.first), &name, &ext);
-                    if(ORAGE::COMPONENTS::TYPES::NONE == currentType) continue;
-                    btn->addEntry(name)->setCallback([&, subEntry, currentType, btn](bool a){
-                        if(!a){
-                            subEntry.second(currentType, btn->getOrigin());
-                            btn->subMenu->setVisible(false);
-                        }
-                    });
-                    ORAGE::COMPONENTS::Conf conf = ORAGE::COMPONENTS::Config::getConfig(currentType);
-                    btn->setColorBack(conf.bgColor);
-                    btn->subMenu->setColorBack(conf.bgColor);
+                    if (ORAGE::COMPONENTS::TYPES::NONE != currentType) {
+                        btn->addEntry(name)->setCallback([&, subEntry, currentType, btn](bool a){
+                            if(!a){
+                                subEntry.second(currentType, btn->getOrigin());
+                                btn->subMenu->setVisible(false);
+                            }
+                        });
+                        ORAGE::COMPONENTS::Conf conf = ORAGE::COMPONENTS::Config::getConfig(currentType);
+                        btn->setColorBack(conf.bgColor);
+                        btn->subMenu->setColorBack(conf.bgColor);
+                    }
                 }
             }
             

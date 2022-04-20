@@ -30,7 +30,7 @@ namespace ORAGE {
                 if (evt.is("change")) {
                     ci::osc::Message msg = evt.target->currentVal().getOscMessage();
                     std::string address = addressUI->getValue();
-                    if("*" == address || address == msg.getAddress()){
+                    if("*" == address || address == msg.getAddress()){
                         outAttr->currentVal().setOscMessage(msg);
                         outAttr->eventTrigger({
                             "change",
