@@ -68,9 +68,7 @@
   ]
 }*/
 
-
-float PI = 3.14159265359;
-float TWO_PI = 6.283185306;
+#include "shaders/constants.glsl"
 
 vec2 rotate2D(vec2 _st, float _angle, vec2 _rotC){
     _st -= _rotC;

@@ -7,27 +7,16 @@
   ],
   "INPUTS": [
   	{
-			"NAME" :	"tex0",
+			"NAME" :	"gradiant",
 			"TYPE" :	"image"
 	},
     {
-			"NAME" :	"tex1",// background
+			"NAME" :	"color1",// background
 			"TYPE" :	"image"
 	},
     {
-			"NAME" :	"tex2",// foreground
+			"NAME" :	"color2",// foreground
 			"TYPE" :	"image"
-	},
-    {
-			"NAME" :	"OLD",
-			"TYPE" :	"image"
-	},
-	{
-			"NAME" :	"trail",
-			"TYPE" :	"float",
-			"DEFAULT" :	1.0,
-			"MIN" :	0.0,
-			"MAX" :	1.0
 	},
 	{
 			"NAME" :	"cos",
@@ -76,15 +65,11 @@
   	{
 			"NAME" :	"out0",
 			"TYPE" :	"image"
-	},{
-			"NAME" :	"out1",
-			"TYPE" :	"image"
 	}
   ]
 }*/
 
-float PI = 3.14159265359;
-float TWO_PI = 6.283185306;
+#include "shaders/constants.glsl"
 
 
 float sawWave(in float phase, in float height){
@@ -114,7 +99,7 @@ float triWave(in float phase, in float height){
 void main()
 {
 	
-  	vec3 modIntensity = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
+  	vec3 modIntensity = IMG_NORM_PIXEL(gradiant, isf_FragNormCoord.xy).rgb;
     float phase = max(max(modIntensity.r, modIntensity.g), modIntensity.b);
     float value = 0.0;
     value += saw * sawWave(phase, 0.0);
@@ -122,19 +107,15 @@ void main()
     value += rec * recWave(phase, 0.0);
     value += tri * triWave(phase, 0.0);
     value += noz * nozWave(phase, 0.0);
-    value = clamp(value, 0.0, 1.0);
+    value = clamp(value, -1.0, 1.0);
+    value = value * 0.5 + 0.5;
     value = mix(1.0-value, value,rev);
 
-    vec3 R = IMG_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
+    vec3 R = IMG_PIXEL(gradiant, isf_FragNormCoord.xy).rgb;
     vec3 A = vec3(value);
-	vec3 B = mix(vec3(1), IMG_NORM_PIXEL(tex1, isf_FragNormCoord.xy).rgb, vec3(_tex1_sample));
-	vec3 C = mix(vec3(0), IMG_NORM_PIXEL(tex2, isf_FragNormCoord.xy).rgb, vec3(_tex2_sample));
+	vec3 B = mix(vec3(1), IMG_NORM_PIXEL(color1, isf_FragNormCoord.xy).rgb, vec3(_color1_sample));
+	vec3 C = mix(vec3(0), IMG_NORM_PIXEL(color2, isf_FragNormCoord.xy).rgb, vec3(_color2_sample));
 	vec3 color = mix(C, B, A);
 
  	out0 = vec4(color, 1);
-
- 	vec3 D = IMG_NORM_PIXEL(OLD, isf_FragNormCoord.xy).rgb;
-
- 	
- 	out1 = vec4(mix(D, color, trail), 1);
 }

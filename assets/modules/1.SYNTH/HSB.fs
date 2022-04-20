@@ -45,6 +45,8 @@
   ]
 }*/
 
+#include "shaders/constants.glsl"
+
 vec3 HSB2RGB(float H, float S, float B){
   float C = B * S;
   float X = C * (1.0-abs(mod((H / 60.0), 2.0) - 1.0));
@@ -72,7 +74,7 @@ vec3 HSB2RGB(float H, float S, float B){
 }
 
 void main(){
-  vec3 HSB = HSB2RGB(H, S, B);
+  vec3 HSB = HSLToRGB(vec3(H, S, B));
   
   vec3 OTHER = IMG_NORM_PIXEL(tex0, isf_FragNormCoord.xy).rgb;
   vec3 _m = vec3(_tex0_sample);

@@ -79,7 +79,7 @@ namespace ORAGE {
                     
                     ISF::GLVersion v = GLVersion_4;
                     doc->generateShaderSource(&outFrag, &outVert, v);
-                    
+                    cout<<outFrag<<endl;
                     gl::GlslProg::Format glsl = gl::GlslProg::Format().vertex(outVert).fragment(outFrag);
                     mShader = gl::GlslProg::create(glsl);
                     cout<<outVert << endl << endl << endl << outFrag << endl;
@@ -144,6 +144,7 @@ namespace ORAGE {
                         for(auto & input : _attributes->inputs()){
                             auto inValue = input->currentVal();
                             string name = input->name();
+//                            cout<<name << " " << input->type() << endl;
                             switch(input->type()){
                                 case ISFValType::ISFValType_Bool :
                                     mShader->uniform(name, (int) inValue.getBoolVal());

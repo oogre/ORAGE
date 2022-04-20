@@ -38,8 +38,8 @@ namespace ISF {
                 ci::Rand r = ci::Rand((int)type);
                 float tint = r.nextFloat();
                 configs[type] = {
-                    ci::ColorA(ci::CM_HSV, tint, 1.0, 0.5, 0.85),
-                    ci::ColorA(ci::CM_HSV, tint, 1.0, 0.75, 0.95),
+                    ci::ColorA(ci::CM_HSV, tint, 1.0, 1.0, 1.0),
+                    ci::ColorA(ci::CM_HSV, tint, 0.5, 1.0, 1.0),
                 };
             }
             return configs[type];

@@ -101,6 +101,14 @@ namespace ORAGE {
                     render();
                 }
                 gl::color(A->getCableColor(isMouseOver()));
+                gl::pushMatrices();
+                gl::translate(1, 0, 0);
+                gl::draw( path );
+                gl::popMatrices();
+                gl::pushMatrices();
+                gl::translate(0, 1, 0);
+                gl::draw( path );
+                gl::popMatrices();
                 gl::draw( path );
                 gl::color( Color::white() );
             }

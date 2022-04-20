@@ -85,7 +85,7 @@ namespace ORAGE {
                 if(configs.count(type) == 0){
                     Rand r = Rand((int)type);
                     configs[type] = {
-                        ColorA(CM_HSV, r.nextFloat(), 1.0, 0.15, 1.0)
+                        ColorA(CM_HSV, r.nextFloat(), 1.0, 0.35, 1.0)
                     };
                 }
                 return configs[type];
