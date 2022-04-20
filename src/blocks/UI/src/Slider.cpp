@@ -27,6 +27,7 @@ SliderT<T>::~SliderT()
 	if( !mUseRef ) {
 		delete mValueRef;
 	}
+    std::cout<<"~SliderT "<< getName() <<endl;
 }
 
 template <typename T>

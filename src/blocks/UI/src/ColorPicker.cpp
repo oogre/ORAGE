@@ -60,6 +60,9 @@ ColorPicker::~ColorPicker()
 	if( !mUseRef ) {
 		delete mColorRef;
 	}
+    mColorLabels.clear();
+    mLabelNames.clear();
+    
 }
 
 bool ColorPicker::isHit( const glm::vec2 &pt )

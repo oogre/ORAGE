@@ -10,4 +10,5 @@ Responder::Responder()
 
 Responder::~Responder()
 {
+    std::cout<<"~Responder " << getName() << endl;
 }

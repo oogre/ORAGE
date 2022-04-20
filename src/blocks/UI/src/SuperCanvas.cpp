@@ -121,7 +121,7 @@ void SuperCanvas::clear()
 	Canvas::clear();
 	mHeaderSubViews.clear();
 	mLabelRef = nullptr;
-	setup();
+//    setup();
 }
 
 void SuperCanvas::minify()

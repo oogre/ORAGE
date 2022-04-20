@@ -9,7 +9,7 @@
 #define ISFValue_h
 
 #include "ISFStringUtils.h"
-
+#include "Osc.h"
 namespace ISF {
     
     using namespace std;
@@ -20,6 +20,7 @@ namespace ISF {
         ISFValType_Bool,    //!<    A boolean choice, sends 1 or 0 to the shader
         ISFValType_Long,    //!<    Sends a long
         ISFValType_Float,    //!<    Sends a float
+        ISFValType_OscMessage,    //!<    Sends a Osc::MEssage
         ISFValType_Clock,    //!<    clone of a float
         ISFValType_Point2D,    //!<    Sends a 2 element vector
         ISFValType_Color,    //!<    Sends a 4 element vector representing an RGBA color
@@ -43,6 +44,8 @@ namespace ISF {
                 return string("float");
             case ISFValType_Clock:
                 return string("clock");
+            case ISFValType_OscMessage:
+                return string("oscMessage");
             case ISFValType_Point2D:
                 return string("point2D");
             case ISFValType_Color:
@@ -75,8 +78,11 @@ namespace ISF {
         ISFValType  _type = ISFValType_None;
         ISFValUnion _val = { false };
         ci::gl::Texture2dRef _imageVal = nullptr;
+        ci::osc::Message oscMessage;
 //        ci::gl::FboRef _mFbo;
     public :
+        virtual ~ISFVal(){
+        }
         //    Returns a null-type ISFVal
         ISFVal() :
             _type(ISFValType_None)
@@ -139,13 +145,23 @@ namespace ISF {
             resize(size, antiAliazing);
         }
         
+        ISFVal(const ISFValType & inType, ci::osc::Message val) :
+        _type(inType)
+        {
+            oscMessage = val;
+        }
+        
         void resize(ci::ivec2 size = ci::ivec2(1, 1), bool antiAliazing = false){
             if (_type==ISFValType_Image){
                 ci::gl::Texture2d::Format tFormat = ci::gl::Texture2d::Format().loadTopDown();
+//                
+//                tFormat.deleter([](ci::gl::Texture2d * tex){
+//                    std::cout<<"YO"<<std::endl;
+//                });
                 tFormat.setMinFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
                 tFormat.setMagFilter( antiAliazing ? GL_LINEAR : GL_NEAREST );
+                if(!!_imageVal )_imageVal.reset();
                 _imageVal = ci::gl::Texture2d::create(size.x, size.y, tFormat);
-
             }
         }
         
@@ -208,6 +224,15 @@ namespace ISF {
             if (isFloatVal())
                 _val.floatVal = val;
         }
+        void setBoolVal(bool val) {
+            if (isBoolVal())
+                _val.boolVal = val;
+        }
+        
+        void setLongVal(long val) {
+            if (isLongVal())
+                _val.longVal = val;
+        }
         //!    Returns a null if the receiver isn't a Point2D-type object, otherwise it returns a pointer to the two-element array containing the point values.  This pointer is only valid for the lifetime of the receiver.
         double * getPointValPtr() {
             if (_type!=ISFValType_Point2D)
@@ -248,6 +273,16 @@ namespace ISF {
             if (_type==ISFValType_Image)
                 return  _imageVal;
             return nullptr;
+        }
+        
+        
+        ci::osc::Message getOscMessage(){
+            return  oscMessage;
+        }
+        void setOscMessage(ci::osc::Message val){
+            if (isOscMessageVal()){
+                oscMessage = val;
+            }
         }
         
         //!    Returns null if the receiver's value type cannot be represented as an image, otherwise it returns the image buffer (almost certainly a GL texture) that is the receiver's value.
@@ -301,6 +336,43 @@ namespace ISF {
             return string("");
         }
         
+        void setValString(std::string value){
+            try{
+                switch (_type)    {
+                    case ISFValType_None:
+                        return ;//string("None");
+                    case ISFValType_Event:
+                        return ;//string("Event/None");
+                    case ISFValType_Bool:    {
+                        return ;//(_val.boolVal) ? string("true") : string("false");
+                    }
+                    case ISFValType_Long:
+                        return setLongVal(stol(value));
+                    case ISFValType_Float:
+                    case ISFValType_Clock:
+                        return setDoubleVal(stod(value));
+                    case ISFValType_Point2D:    {
+                        return ;//FmtString("(%0.2f, %0.2f)",_val.pointVal[0],_val.pointVal[1]);
+                    }
+                    case ISFValType_Color:    {
+                        return ;//FmtString("{%0.2f, %0.2f, %0.2f, %0.2f}",_val.colorVal[0],_val.colorVal[1],_val.colorVal[2],_val.colorVal[3]);
+                    }
+                    case ISFValType_Cube:
+                    case ISFValType_Image:
+                    case ISFValType_Audio:
+                    case ISFValType_AudioFFT:    {
+                        //                    if (_imageVal != nullptr)
+                        //                        return _imageVal->getDescriptionString();
+                        return ;//string("");
+                    }
+                }
+            }catch(invalid_argument e){
+                
+            }catch(out_of_range e ){
+                
+            }
+        }
+        
         //!    Returns true if the receiver is a null value.
         bool isNullVal() const { return (_type == ISFValType_None); }
         //!    Returns true if the receiver is an event value.
@@ -312,6 +384,7 @@ namespace ISF {
         //!    Returns true if the receiver is a float value.
         bool isFloatVal() const { return (_type == ISFValType_Float ||_type == ISFValType_Clock); }
         bool isClockVal() const { return (_type == ISFValType_Clock); }
+        bool isOscMessageVal() const { return (_type == ISFValType_OscMessage); }
         //!    Returns true if the receiver is a point2D value.
         bool isPoint2DVal() const { return (_type == ISFValType_Point2D); }
         //!    Returns true if the receiver is a color value.
@@ -338,6 +411,9 @@ namespace ISF {
     }
     ISFVal ISFLongVal(const int32_t & n)    {
         return ISFVal(ISFValType_Long, n);
+    }
+    ISFVal ISFOscMessageVal(const  ci::osc::Message & oscMessage)    {
+        return ISFVal(ISFValType_OscMessage, oscMessage);
     }
     ISFVal ISFFloatVal(const double & n)    {
         return ISFVal(ISFValType_Float, n);

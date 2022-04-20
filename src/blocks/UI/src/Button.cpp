@@ -31,6 +31,7 @@ Button::~Button()
 	if( !mUseRef ) {
 		delete mValueRef;
 	}
+    std::cout<<"~Button"<<std::endl;
 }
 
 bool Button::isHit( const glm::vec2 &pt )
@@ -68,6 +69,7 @@ void Button::changeState()
 		setDrawBack( true );
 		setDrawFillHighLight( false );
 		setDrawOutlineHighLight( false );
+        triggerLeave();
 	} break;
 
 	case State::DOWN: {
@@ -84,6 +86,7 @@ void Button::changeState()
 		setDrawBack( true );
 		setDrawFillHighLight( false );
 		setDrawOutlineHighLight( true );
+        triggerEnter();
 	} break;
 
 	case State::DISABLED: {
@@ -158,11 +161,30 @@ void Button::update()
 
 void Button::trigger( bool recursive )
 {
-	if( mCallbackFn ) {
-		mCallbackFn( getValue() );
-	}
+    if( mCallbackFn ) {
+        mCallbackFn( getValue() );
+    }
+    
+    Control::trigger( recursive );
+}
 
-	Control::trigger( recursive );
+void Button::triggerEnter( bool recursive )
+{
+    if( mEnterHandlers ) {
+        mEnterHandlers( getValue() );
+    }
+    
+//    Control::trigger( recursive );
+}
+
+
+void Button::triggerLeave( bool recursive )
+{
+    if( mLeaveHandlers ) {
+        mLeaveHandlers( getValue() );
+    }
+    
+//    Control::trigger( recursive );
 }
 
 bool Button::getValue()
@@ -237,11 +259,24 @@ void Button::drawOutlineHighlight( std::vector<RenderData> &data, const ci::Colo
 }
 
 
-
 Button *Button::setCallback( const std::function<void( bool )> &callback )
 {
-	mCallbackFn = callback;
-	return this;
+    mCallbackFn = callback;
+    return this;
+}
+
+
+Button *Button::onEnter( const std::function<void( bool )> &callback )
+{
+    mEnterHandlers = callback;
+    return this;
+}
+
+
+Button *Button::onLeave( const std::function<void( bool )> &callback )
+{
+    mLeaveHandlers = callback;
+    return this;
 }
 
 #if defined( CINDER_COCOA_TOUCH )

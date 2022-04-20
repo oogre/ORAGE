@@ -29,7 +29,7 @@ namespace ISF {
     class Config {
         ci::Rand r;
         static std::map<ISFValType, Conf> configs;
-        public :
+    public :
         static Conf getConfig(int type){
             return getConfig(static_cast<ISFValType>(type));
         }
@@ -74,7 +74,7 @@ namespace ISF {
         vector<string> _labelArray; // only used if it's a LONG. std::vector containing strings that correspond to the values in "_valArray"
         vector<int32_t> _valArray; // only used if it's a LONG. std::vector containing ints with the values that correspond to the accompanying labels
         vector<ISFVal> _magnetic;
-        vector<ISFAttrRef> pluged;
+        
         
         ISF::ISFAttr_IO _io = ISF::ISFAttr_IO::_IN;
         bool _imageSample = false;
@@ -82,6 +82,49 @@ namespace ISF {
         reza::ui::TextureViewRef _uiPreview = nullptr;
         bool _uiEnabled = true;
         bool _uiMoreArea = false;
+        bool _uiBang = false;
+        
+        void changeHandler(Evt evt){
+            if (evt.is("change") && this != evt.target.get()) {
+                if(isFloat() && evt.target->isFloat()){
+                    double tMin = evt.target->minVal().getDoubleVal();
+                    double tMax = evt.target->maxVal().getDoubleVal();
+                    double tVal = evt.target->currentVal().getDoubleVal();
+                    
+                    double cMin = minVal().getDoubleVal();
+                    double cMax = maxVal().getDoubleVal();
+                    
+                    currentVal().setDoubleVal(ci::lerp(cMin, cMax, InverseLerp(tMin, tMax, tVal)));
+                }
+                else if(isOscMessage() && evt.target->isOscMessage()){
+                    currentVal().setOscMessage(evt.target->currentVal().getOscMessage());
+                }
+                else if(isInput() && evt.target->isImage()){
+                    ci::gl::Texture2dRef tmp = evt.target->defaultVal().imageBuffer();
+                    currentVal().setImageBuffer(tmp);
+                    _imageSample = true;
+                }
+                else if(isBool() && evt.target->isBool()){
+                    currentVal().setBoolVal(evt.target->currentVal().getBoolVal());
+                }
+            }else if(evt.is("plug")){
+                if(isInput() && isImage()){
+                    ci::gl::Texture2dRef tmp = evt.target->defaultVal().imageBuffer();
+                    currentVal().setImageBuffer(tmp);
+                    _imageSample = true;
+                }
+            }else if(evt.is("unplug")){
+                if(isInput() && isImage()){
+                    ci::gl::Texture2dRef tmp = defaultVal().imageBuffer();
+                    currentVal().setImageBuffer(tmp);
+                    _imageSample = false;
+                }
+                if(isInput() && isClock()){
+                    currentVal().setDoubleVal(0.0f);
+                }
+            }
+        }
+        
     public :
         ISFAttr(const string & inName,
                 const string & inDesc,
@@ -113,9 +156,14 @@ namespace ISF {
                 _currentVal = ISF::ISFVal(ISFValType_Image, ci::vec2(1, 1));
                 _defaultVal = ISF::ISFVal(ISFValType_Image, ci::vec2(1, 1));
             }
+            addEventListener(boost::bind(&ISFAttr::changeHandler, this, _1));
         }
+        
+        
+        
         virtual ~ISFAttr(){
-            
+            cout<<"~ISFAttr : "<< name() << endl;
+            removeEventListener(boost::bind(&ISFAttr::changeHandler, this, _1));
         }
         static ISFAttrRef create(  const string & inName,
                                  const string & inDesc,
@@ -128,11 +176,11 @@ namespace ISF {
                                  const ISFVal & inIdenVal=ISFNullVal(),
                                  const vector<std::string> * inLabels=nullptr,
                                  const vector<int32_t> * inVals=nullptr){
-            return ISFAttrRef(new ISFAttr(inName, inDesc, inLabel, io, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals));
+            return std::make_shared<ISFAttr>(inName, inDesc, inLabel, io, inType, inMinVal, inMaxVal, inDefVal, inIdenVal, inLabels, inVals);
         }
         
         static ISFAttrRef create(  const ISFAttrRef & attr){
-            return ISFAttrRef(new ISFAttr(  attr->name(),
+            return std::make_shared<ISFAttr>(  attr->name(),
                                             attr->description(),
                                             attr->label(),
                                             attr->IO(),
@@ -142,7 +190,7 @@ namespace ISF {
                                           	attr->defaultVal(),
                                             attr->identityVal(),
                                             &attr->labelArray(),
-                                            &attr->valArray()));
+                                            &attr->valArray());
         }
         
         
@@ -154,9 +202,10 @@ namespace ISF {
                 if(!!preview){
                     preview->setTexture(defaultVal().imageBuffer());
                 }
-                for(auto other : pluged){
-                    ci::gl::Texture2dRef temp = defaultVal().imageBuffer();
-                    other->currentVal().setImageBuffer(temp);
+                if(isOutput()){
+                    eventTrigger({
+                        "change", shared_from_this()
+                    });
                 }
             }
         }
@@ -183,27 +232,31 @@ namespace ISF {
             _magnetic = values;
         }
         
-        ISFAttrRef disableUI(){
+        void disableUI(){
             _uiEnabled = false;
-            return shared_from_this();
         }
-        ISFAttrRef ensableUI(){
+        void ensableUI(){
             _uiEnabled = false;
-            return shared_from_this();
         }
         bool hasUI(){
             return _uiEnabled;
         }
         
-        ISFAttrRef putInMoreArea(){
+        void putInMoreArea(){
             _uiMoreArea = true;
-            return shared_from_this();
+        }
+        
+        void setBang(bool val){
+            _uiBang = val;
+        }
+        
+        bool isBang(){
+            return _uiBang;
         }
         
         bool isUIMoreArea(){
             return _uiMoreArea;
         }
-        
         
         
         //    updates this attribute's eval variable with the double val of "_currentVal", and returns a ptr to the eval variable
@@ -231,6 +284,7 @@ namespace ISF {
         //!    Returns true if the receiver is a float value.
         bool isFloat() const { return (_type == ISFValType_Float || _type == ISFValType_Clock); }
         bool isClock() const { return (_type == ISFValType_Clock); }
+        bool isOscMessage() const { return (_type == ISFValType_OscMessage); }
         //!    Returns true if the receiver is a point2D value.
         bool isPoint2D() const { return (_type == ISFValType_Point2D); }
         //!    Returns true if the receiver is a color value.
@@ -255,78 +309,13 @@ namespace ISF {
         reza::ui::TextureViewRef & getPreview() { return _uiPreview; }
         void setPreview(reza::ui::TextureViewRef view) { _uiPreview = view; }
         
+        void rmUIref(){
+            _uiPlug = nullptr;
+            _uiPreview = nullptr;
+        }
         
         bool isInput(){ return _io == ISF::ISFAttr_IO::_IN; }
         bool isOutput(){ return _io == ISF::ISFAttr_IO::_OUT; }
-        void plugTo (ISFAttrRef other){
-            if (isFloat()){
-                pluged.push_back(other);
-            }
-            else if (_type==ISFValType_Image){
-                if(isInput()){
-                    ci::gl::Texture2dRef temp = other->defaultVal().imageBuffer();
-                    _currentVal.setImageBuffer(temp);
-                    _imageSample = true;
-                }else{
-                    pluged.push_back(other);
-                }
-            }
-        }
-        void unplugTo (ISFAttrRef other){
-            for(auto it = pluged.begin(); it != pluged.end() ; ){
-                if((*it) == other){
-                    it = pluged.erase(it);
-                }else{
-                    it++;
-                }
-            }
-            if (_type==ISFValType_Image){
-                if(isInput()){
-                    ci::gl::Texture2dRef temp = _defaultVal.imageBuffer();
-                    _currentVal.setImageBuffer(temp);
-                    _imageSample = false;
-                }
-            }
-        }
-        
-        void update(){
-            if (!isFloat())return;
-            setCurrent(_currentVal.getDoubleVal());
-        }
-        
-        void setCurrent(double val, vector<ISFAttr *> acc = vector<ISFAttr *>() ){
-            if (!isFloat())return;
-            double cVal = std::min(std::max(val, _minVal.getDoubleVal()), _maxVal.getDoubleVal());
-            ISFVal closest;
-            double dist = 10000.0;
-            bool flag = false;
-            for(ISFVal magnet : _magnetic){
-                double d = std::abs(magnet.getDoubleVal() - cVal);
-                if(d < dist){
-                    flag = true;
-                    dist = d;
-                    closest = magnet;
-                }
-            }
-            if(flag){
-                cVal = closest.getDoubleVal();
-            }
-            _currentVal.setDoubleVal(cVal);
-            
-            EvtHandler::eventTrigger({
-                "change", shared_from_this()
-            });
-            
-            double nVal = InverseLerp(_minVal.getDoubleVal(), _maxVal.getDoubleVal(), cVal);
-            
-            acc.push_back(this);
-            for(auto other : pluged){
-                if(find(acc.begin(), acc.end(), other.get()) == acc.end()){
-                    double lval = ci::lerp(other->minVal().getDoubleVal(), other->maxVal().getDoubleVal(), nVal);
-                    other->setCurrent(lval, acc);
-                }
-            }
-        }
         
         void setMin(double val){
             if (!isFloat())return;

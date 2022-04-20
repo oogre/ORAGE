@@ -19,10 +19,11 @@ namespace reza {
         
         class OrageButton : public Button {
             typedef std::shared_ptr<OrageButton> OrageButtonRef;
+            State oldState = State::NORMAL;
         public :
             static OrageButtonRef create( std::string name, bool *value, const Format &format = Format(), const ci::gl::TextureRef textureRef = nullptr )
             {
-                return OrageButtonRef( new OrageButton( name, value, format, textureRef ) );
+                return std::make_shared<OrageButton>( name, value, format, textureRef ) ;
             }
             
             OrageButton( std::string name, bool *value, const Format &format = Format(), const ci::gl::TextureRef textureRef  = nullptr) :
@@ -40,6 +41,7 @@ namespace reza {
             }
             
             virtual ~OrageButton(){
+                cout<<"~OrageButton"<<endl;
             }
             
             virtual void draw() override {

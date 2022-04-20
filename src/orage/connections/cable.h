@@ -9,7 +9,6 @@
 #define cable_h
 
 #include "ISFAttr.h"
-
 namespace ORAGE {
     namespace CONNECTIONS {
         using namespace std;
@@ -20,19 +19,39 @@ namespace ORAGE {
         
         class Cable {
             typedef shared_ptr<Cable> CableRef;
-            typedef map<string, shared_ptr<View>> Parameter;
             
             Path2d  path;
-            vec2* mousePos;
+            vec2* mousePos = nullptr;
             
+            
+            
+            std::function<void(Evt)> makeCallback(ISFAttrRef plug){
+                return [plug](Evt evt){
+                    if(evt.is("change")){
+                        if(evt.isValid(plug)){
+                            evt.blacklist(plug);
+                            plug->eventTrigger(evt);
+                        }
+                    }
+                };
+            }
+            
+        public :
             Cable(ISFAttrRef A, ISFAttrRef B, vec2* mousePos) :
                 mousePos(mousePos),
                 mouseOver(false),
                 A(A->isInput() ? A : B),
                 B(A->isInput() ? B : A)
             {
-                this->A->plugTo(this->B);
-                this->B->plugTo(this->A);
+                conA = this->A->addEventListener(makeCallback(this->B));
+                conB = this->B->addEventListener(makeCallback(this->A));
+                
+                this->A->eventTrigger({
+                    "plug", this->B
+                });
+                this->B->eventTrigger({
+                    "plug", this->A
+                });
             }
             Cable(ISFAttrRef A, vec2* mousePos) :
                 mousePos(mousePos),
@@ -40,24 +59,32 @@ namespace ORAGE {
             {
                 
             }
-            
-        public :
             ISFAttrRef A;
             ISFAttrRef B;
+            
+            boost::signals2::connection conA;
+            boost::signals2::connection conB;
             bool mouseOver;
             bool contains(ISFAttrRef C){
                 return A == C || B == C;
             }
             static CableRef create(ISFAttrRef A, ISFAttrRef B, vec2* mousePos){
-                return CableRef( new Cable( A, B, mousePos ) );
+                return std::make_shared<Cable>( A, B, mousePos);
             }
             static CableRef create(ISFAttrRef A, vec2* mousePos){
-                return CableRef( new Cable( A, mousePos ) );
+                return std::make_shared<Cable>( A, mousePos);
             }
             virtual ~Cable(){
+                cout<<"~Cable"<<endl;
                 if(!!B){
-                    A->unplugTo(B);
-                    B->unplugTo(A);
+                    this->A->eventTrigger({
+                        "unplug", this->B
+                    });
+                    this->B->eventTrigger({
+                        "unplug", this->A
+                    });
+                    conA.disconnect();
+                    conB.disconnect();
                 }
             }
             

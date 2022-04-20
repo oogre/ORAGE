@@ -37,10 +37,10 @@ namespace ISF {
         std::string *_fragShaderSource = nullptr; // the raw frag shader source before being find-and-replaced
     public:
         static ISFDocRef create(const std::string & inPath){
-            return ISFDocRef(new ISFDoc(inPath));
+            return std::make_shared<ISFDoc>(inPath);
         }
         static ISFDocRef create(){
-            return ISFDocRef(new ISFDoc());
+            return std::make_shared<ISFDoc>();
         }
         //! Constructs an ISFDoc instance from a passed file on disk.  Consider using CreateISFDocRef() instead.
         /*!
@@ -86,7 +86,7 @@ namespace ISF {
         }
         virtual ~ISFDoc(){
             lock_guard<recursive_mutex>        lock(_propLock);
-            
+            cout << "~ISFDoc" << endl;
             if (_path != nullptr)    {
                 delete _path;
                 _path = nullptr;
@@ -125,6 +125,7 @@ namespace ISF {
                 delete _fragShaderSource;
                 _fragShaderSource = nullptr;
             }
+            _attrWrapper->clear();
         }
         
         //!    Returns the path of the ISF file for the receiver.  This is probably the path to the frag shader.

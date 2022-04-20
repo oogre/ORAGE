@@ -8,6 +8,7 @@
 #ifndef cables_h
 #define cables_h
 #include "cable.h"
+#include "cinder/app/App.h"
 
 namespace ORAGE {
     namespace CONNECTIONS {
@@ -29,31 +30,33 @@ namespace ORAGE {
             vec2 mousePos;
             int keyCode;
             
-            Cables()
-            {
-                mouseMoveHandler = getWindow()->getSignalMouseMove().connect(boost::bind(&Cables::onMouseMove, this, _1));
-                keyUpHandler = getWindow()->getSignalKeyDown().connect(boost::bind(&Cables::onKeyUp, this, _1));
-                postDrawHandler = getWindow()->getSignalPostDraw().connect(0, [this]() {
-                    draw();
-                });
-            }
+            
             void onMouseMove(ci::app::MouseEvent event){
                 mousePos = event.getPos();
             }
-            
             
             void onKeyUp(ci::app::KeyEvent event){
                 keyCode = event.getCode();
             }
             
         public :
+            Cables()
+            {
+                mouseMoveHandler = ci::app::getWindow()->getSignalMouseMove().connect(boost::bind(&Cables::onMouseMove, this, _1));
+                keyUpHandler = ci::app::getWindow()->getSignalKeyDown().connect(boost::bind(&Cables::onKeyUp, this, _1));
+                postDrawHandler = ci::app::getWindow()->getSignalPostDraw().connect(0, [this]() {
+                    draw();
+                });
+            }
             static CablesRef create(){
-                return CablesRef( new Cables() );
+                return std::make_shared<Cables>();
             }
             virtual ~Cables(){
+                cout<<"~Cables"<<endl;
                 mouseMoveHandler.disconnect();
                 keyUpHandler.disconnect();
                 postDrawHandler.disconnect();
+                cables.clear();
             }
             
             
@@ -61,7 +64,15 @@ namespace ORAGE {
                 return  !!A && !!B &&
                         A->type() == B->type() &&
                         A.get() != B.get() &&
-                        (A->currentVal().isFloatVal() || (!A->currentVal().isFloatVal() && A->IO() != B->IO())) &&
+                        (
+                            A->currentVal().isBoolVal() ||
+                            A->currentVal().isFloatVal() ||
+                            (
+                                !A->currentVal().isBoolVal() &&
+                                !A->currentVal().isFloatVal() &&
+                                A->IO() != B->IO()
+                            )
+                        ) &&
                         cables.count(std::minmax(A.get(), B.get())) == 0 ;
                 return false;
             }

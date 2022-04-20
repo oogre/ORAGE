@@ -8,11 +8,8 @@
 #ifndef ModuleManager_h
 #define ModuleManager_h
 
-#include "ModuleISF.h"
-#include "ModuleController.h"
-#include "ModuleSyphonSpout.h"
 #include "cables.h"
-#include "ModuleTypes.h"
+#include "Components.h"
 #include "OrageFileTools.h"
 
 namespace ORAGE {
@@ -27,9 +24,7 @@ namespace ORAGE {
             ci::JsonTree jCablesToCreate;
             std::vector<std::string>filesToOpen;
             typedef shared_ptr<ModuleManager> ModuleManagerRef;
-            ModuleManager(){
-                cables = Cables::create();
-            }
+            
             
             void openFiles(){
                 if(filesToOpen.size() == 0 )return;
@@ -40,7 +35,6 @@ namespace ORAGE {
                             addCables(filePath);
                         }else{
                             add(filePath);
-                            
                         }
                     });
                     filesToOpen.erase(it);
@@ -59,6 +53,7 @@ namespace ORAGE {
                     }
                     it++;
                 }
+                
             }
             
             bool updateModule(){
@@ -95,8 +90,11 @@ namespace ORAGE {
             }
             
         public :
+            ModuleManager(){
+                cables = Cables::create();
+            }
             static ModuleManagerRef create(){
-                return ModuleManagerRef(new ModuleManager());
+                return std::make_shared<ModuleManager>();
             }
             
             ModuleRef getById(std::string id){
@@ -104,6 +102,16 @@ namespace ORAGE {
                     if(module->getId() == id)return module;
                 }
                 return nullptr;
+            }
+            
+            void empty(){
+                auto it = modules.begin();
+                while(it != modules.end()){
+                    for(auto attr : (*it)->attributes()->every()){
+                        cables->removeCablesPlugTo(attr);
+                    }
+                    modules.erase(it);
+                }
             }
             
             void addFileToOpen(std::vector<std::string> filesToOpen){
@@ -137,34 +145,63 @@ namespace ORAGE {
                     case TYPES::FX :
                     case TYPES::OUTPUT :
                         module = ModuleISF::create(name, filePath.string(), type);
+                        
                     break;
                     case TYPES::CONTROLLER :
-                    case TYPES::CLOCK :
                     case TYPES::MATH :
                         module = ModuleController::create(name, filePath.string(), type);
+                        
                     break;
+                        
+                    case TYPES::CLOCK :
+//                        if(name == "source"){
+//                            module = ModuleOscServer::create(name, type);
+//                        }else{
+                            module = ModuleController::create(name, filePath.string(), type);
+                        
+//                        }
+                        break;
                     case TYPES::INPUT :
                         module = ModuleSyphonSpout::create(name, type);
+                    break;
+                    case TYPES::OSC :
+                        if(name == "server"){
+                            module = ModuleOscServer::create(name, type);
+                        }
+                        if(name == "receiver"){
+                            module = ModuleOscDataIn::create(name, type);
+                        }
+                        if(name == "filter"){
+                            module = ModuleOscFilter::create(name, type);
+                        }
+                        if(name == "address"){
+                            module = ModuleOscAddress::create(name, type);
+                        }
+                        if(name == "sender"){
+                            module = ModuleOscDataOut::create(name, type);
+                        }
                     break;
                     default :
                         return nullptr;
                     break;
                 }
-                module->setOrigin(pos + vec2(0, 25));
+                module->setOrigin(pos == vec2(0) ? module->getOrigin(true) : pos);
                 
-                module->addEventListener([&, module](EvtModule evt){
+                module->onParameterPlug([this](Evt evt){
+                    if(evt.is("plug")){
+                        cables->addCable(evt.target);
+                    }
+                    if(evt.is("rmplug")){
+                        cables->removeCablesPlugTo(evt.target);
+                    }
+                });
+                
+                module->addEventListener([this](EvtModule evt){
                     if(evt.is("putAtTop")){
                         auto it = std::find(modules.begin(), modules.end(), evt.target);
                         if(it != modules.end() && it != modules.end() - 1){
                             std::rotate(it, it + 1, modules.end());
                         }
-                    }
-                    if(evt.is("ready")){
-                        module->addEventListenerOnParameters([&](Evt evt){
-                            if(evt.is("plug")){
-                                cables->addCable(evt.target);
-                            }
-                        });
                     }
                 });
                 modules.push_back(module);

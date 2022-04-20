@@ -27,7 +27,10 @@ namespace reza {
             NONE = 0x00,
             TEXTURE = 0x01,
             FLOAT = 0x03,
-            CLOCK = 0x07
+            CLOCK = 0x07,
+            OSC = 0x08,
+            NUMBER = 0x09,
+            BOOLEAN = 0x0A,
         };
         enum PLUG_TYPE {
             _IN = 0x00,
@@ -62,27 +65,62 @@ namespace reza {
         
         class ParameterBase : public View, public EvtHandler{
             typedef std::shared_ptr<ParameterBase> ParameterBaseRef;
-            
+        protected :
+            ISF::ISFAttrRef attr = nullptr;
         public:
-            uint8_t type = PARAMETER_TYPE::NONE | PLUG_TYPE::_IN;
-            ParameterBase( std::string name):
-                EvtHandler()
-            {
-                setName(name);
+            ISF::ISFAttrRef getAttr(){
+                return attr;
             }
+            uint8_t type = PARAMETER_TYPE::NONE | PLUG_TYPE::_IN;
+            ParameterBase( ISF::ISFAttrRef & attr, uint8_t type):
+                EvtHandler(),
+                attr(attr),
+                type(type|(attr->IO() == ISF::ISFAttr_IO::_IN ? PLUG_TYPE::_IN : PLUG_TYPE::_OUT))
+            {
+                setName(attr->name());
+                
+                buttonRef = Button::create( attr->name()+"-Connector", false, Button::Format().label(false).circle(true));
+                auto bgColor = getCableColor(true);
+                bgColor.a = 1.0f;
+                buttonRef->setColorOutline(getCableColor(true));
+                buttonRef->setColorOutlineHighlight(ColorA::white());
+                
+                buttonRef->setCallback([this](bool value) {
+                    if(value){
+                        EvtHandler::eventTrigger({
+                            "plug", getAttr()
+                        });
+                    }
+                });
+                attr->setPlug(buttonRef);
+                
+            }
+            
             ColorA getCableColor(bool over){
                 Conf conf = Config::getConfig(type & 0x0F);
                 return over ? conf.cableColorOver : conf.cableColorNormal;
             }
-            virtual void plugTo(ParameterBaseRef other){}
-            virtual void unplugTo(ParameterBaseRef other){}
+            
             virtual ~ParameterBase(){
+                cout<<"~ParameterBase"<<endl;
+                removeSubView(buttonRef->getName());
+                buttonRef->clear();
+//                attr->setPlug(nullptr);
+//                attr.reset();
             }
-            virtual void beginDraw(){}
-            virtual void endDraw(){}
+            
+            bool is(PARAMETER_TYPE value){
+                return (type & 0x0f) == value;
+            }
+            bool is(PLUG_TYPE value){
+                return (type & 0xf0) == value;
+            }
             virtual void setVisible( bool visible ) override{
                 View::setVisible(visible);
+                buttonRef->setVisible(visible);
             }
+            
+            ButtonRef buttonRef;
             
         };//ParameterBase
         typedef std::shared_ptr<ParameterBase> ParameterBaseRef;

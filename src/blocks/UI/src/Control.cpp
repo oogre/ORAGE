@@ -12,6 +12,8 @@ Control::Control()
 
 Control::~Control()
 {
+    std::cout<<"~Control "<< getName() <<endl;
+    mKeyBindings.clear();
 }
 
 bool Control::isHit( const glm::vec2 &pt )
@@ -30,6 +32,12 @@ vec2 Control::getHitPercent( const vec2 &pt )
 	Rectf r = mHitRect;
 	r.offset( getOrigin() );
 	hp = ( pt - r.getUpperLeft() ) / r.getSize();
+    if(r.getWidth() == 0){
+        hp.x = 0;
+    }
+    if(r.getHeight() == 0){
+        hp.y = 0;
+    }
 	return hp;
 }
 

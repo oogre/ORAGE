@@ -45,26 +45,42 @@ namespace ORAGE {
             float dTime;
             vec4 date;
             bool _ready = false;
+            
         protected :
+            string rawPosition;
+            EvtSlot parameterPlugHandler;
+            
             virtual void UIReady() {
+                
+                UI->buildUI(_attributes);
+                
                 UI->setColorBack(Config::getConfig(moduleType).bgColor);
-                
-                ISF::ISFAttr_IO io = ISF::ISFAttr_IO::_IN;
-                ISFVal TIMEmin (ISFValType::ISFValType_Float, 0.0);
-                ISFVal TIMEmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
-                ISFVal TIMEval (ISFValType::ISFValType_Float, 0.0);
-                ISFAttrRef time = _attributes->addAttr(ISFAttr::create("TIME", "", "", io, ISFValType::ISFValType_Float, TIMEmin, TIMEmax, TIMEval));
+                ISFAttrRef time = ISFAttr::create("TIME", "", "",
+                                                  ISFAttr_IO::_IN,
+                                                  ISFValType::ISFValType_Float,
+                                                  ISFFloatVal(0.0),
+                                                  ISFFloatVal(numeric_limits<double>::max()),
+                                                  ISFFloatVal(0.0));
                 time->disableUI();
+                _attributes->addAttr(time);
                 
-                ISFVal TIMEDELTAmin (ISFValType::ISFValType_Float, 0.0);
-                ISFVal TIMEDELTAmax (ISFValType::ISFValType_Float, numeric_limits<double>::max());
-                ISFVal TIMEDELTAval (ISFValType::ISFValType_Float, 0.0);
-                ISFAttrRef timedelta = _attributes->addAttr(ISFAttr::create("TIMEDELTA", "", "", io, ISFValType::ISFValType_Float, TIMEDELTAmin, TIMEDELTAmax, TIMEDELTAval));
+                ISFAttrRef timedelta = ISFAttr::create("TIMEDELTA", "", "",
+                                                        ISF::ISFAttr_IO::_IN,
+                                                        ISFValType::ISFValType_Float,
+                                                        ISFFloatVal(0.0),
+                                                        ISFFloatVal(numeric_limits<double>::max()),
+                                                        ISFFloatVal(0.0));
                 timedelta->disableUI();
+                _attributes->addAttr(timedelta);
+                
+
             }
             
+            
+        public :
             Module(string nameId) :
-            EvtModuleHandler()
+            EvtModuleHandler(),
+            parameterPlugHandler([&](Evt evt){})
             {
                 int index = nameId.find_last_of(".");
                 if (index != string::npos){
@@ -85,7 +101,7 @@ namespace ORAGE {
                 
                 UI = OrageCanvas::create( _name );
                 
-                UI->addEventListener([&](EvtCanvas evt){
+                UI->addEventListener([this](EvtCanvas evt){
                     if(evt.is("mouseDown")){
                         EvtModuleHandler::eventTrigger({
                             "putAtTop", shared_from_this()
@@ -109,27 +125,31 @@ namespace ORAGE {
                                 });
                             }
                         }
+                        
+                        for(auto [key, parameter] : UI->getParameters()){
+                            parameter->addEventListener(parameterPlugHandler);
+                        }
                     }
                 });
             }
-        public :
             TYPES moduleType;
             OrageCanvasRef UI;
             
-            Module * addEventListenerOnParameters(EvtSlot slot) {
-                for(auto [key, parameter] : UI->getParameters()){
-                    parameter->addEventListener(slot);
-                }
-                return this;
+            void onParameterPlug(EvtSlot slot){
+                parameterPlugHandler = slot;
             }
             bool isReady(){
                 return _ready;
             }
             virtual ~Module(){
+                cout<<"~Module"<<endl;
                 this->UI->clear();
             }
             static ModuleRef create(string name){
-                return ModuleRef(new Module(name));
+                return std::make_shared<Module>(name);
+            }
+            virtual vec2 getOrigin(bool raw=false){
+                return UI->getOrigin();
             }
             void setOrigin(vec2 pos){
                 UI->setOrigin(pos);
@@ -146,8 +166,16 @@ namespace ORAGE {
                 auto attrTime = _attributes->get("TIME");
                 auto attrdTime = _attributes->get("TIMEDELTA");
                 if(!!attrTime && attrdTime){
-                    attrTime->setCurrent(time);
-                    attrdTime->setCurrent(time - oldTime);
+                    attrTime->currentVal().setDoubleVal(time);
+                    attrdTime->currentVal().setDoubleVal(time - oldTime);
+                    attrTime->eventTrigger({
+                        "change",
+                        attrTime
+                    });
+                    attrdTime->eventTrigger({
+                        "change",
+                        attrdTime
+                    });
                 }
                 oldTime = time;
                 UI->update();
@@ -169,6 +197,13 @@ namespace ORAGE {
                 ci::JsonTree tree = ci::JsonTree();
                 ci::JsonTree inputs = ci::JsonTree::makeArray("INPUTS");
                 for(auto attr : _attributes->inputs()){
+                    if( attr->name() == "TIME" ||
+                       attr->name() == "TIMEDELTA" ||
+                       attr->name() == "WIDTH" ||
+                       attr->name() == "HEIGHT" ||
+                       attr->name() == "AntiAliazing" ||
+                       attr->name() == "Share"
+                    )continue;
                     ci::JsonTree input = ci::JsonTree();
                     
                     input.addChild(ci::JsonTree("NAME", attr->name()));
@@ -194,13 +229,15 @@ namespace ORAGE {
                     outputs.addChild(output);
                 }
                 tree.addChild(outputs);
-                ci::JsonTree ui = ci::JsonTree::makeObject("UI");
+                ci::JsonTree uis = ci::JsonTree::makeArray("UI");
+                ci::JsonTree ui = ci::JsonTree();
                 ci::JsonTree position = ci::JsonTree::makeObject("position");
                 position.addChild(ci::JsonTree("x",  UI->getOrigin().x ));
                 position.addChild(ci::JsonTree("y",  UI->getOrigin().y ));
                 ui.addChild(ci::JsonTree("minified",  UI->isMinified() ));
                 ui.addChild(position);
-                tree.addChild(ui);
+                uis.addChild(ui);
+                tree.addChild(uis);
                 return tree.serialize();
             }
             

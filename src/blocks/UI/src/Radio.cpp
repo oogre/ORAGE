@@ -14,6 +14,9 @@ Radio::Radio( std::string name, const std::vector<std::string> options, const Ra
 
 Radio::~Radio()
 {
+    mOptions.clear();
+    mToggleMap.clear();
+    
 }
 
 void Radio::setup()

@@ -1,6 +1,8 @@
 var timeCounter = 0;
 var oldRst = 0;
-var LFO = {
+var Base = require('base');
+
+Base({
   conf : {
     CREDIT: "by vincent evrard",
     DESCRIPTION: "basic lfo",
@@ -10,7 +12,7 @@ var LFO = {
       ],
     INPUTS: [{
       NAME :  "CLOCK",
-      TYPE :  "CLOCK"
+      TYPE :  "clock"
     },{
       NAME :  "RST",
       TYPE :  "float",
@@ -45,11 +47,10 @@ var LFO = {
     }]
   },
   main : function() {
-    var deltaTime = this.conf.INPUTS[this.conf.MAP_IN["CLOCK"]].VALUE;
-    var Z = Math.round(this.conf.INPUTS[this.conf.MAP_IN["DIR"]].VALUE);
-    var R = Math.round(this.conf.INPUTS[this.conf.MAP_IN["RST"]].VALUE);
-    var P = this.conf.INPUTS[this.conf.MAP_IN["PHA"]].VALUE;
-    
+    var deltaTime = this.getInput("CLOCK").VALUE;
+    var Z = Math.round(this.getInput("DIR").VALUE);
+    var R = Math.round(this.getInput("RST").VALUE);
+    var P = this.getInput("PHA").VALUE;
     timeCounter += Z * deltaTime;
     timeCounter += 128;
     timeCounter = timeCounter - Math.floor(timeCounter);
@@ -62,28 +63,16 @@ var LFO = {
     oldRst = R;
     value  = value - Math.floor(value);
 
-    return JSON.stringify([{
-        NAME : "SAW", TYPE :  "float", VALUE : value
-      }, {
-        NAME : "TRI", TYPE :  "float", VALUE : 1-Math.abs((value * 2) - 1)
-      }, {
-        NAME : "DIR", TYPE :  "float", VALUE : Z
-      }
+    this.setOutput("SAW", value);
+    this.setOutput("TRI", 1-Math.abs((value * 2) - 1));
+    this.setInput("DIR", Z);
+    this.setInput("RST", R);
+
+    return JSON.stringify([
+      this.getOutput("SAW"), 
+      this.getOutput("TRI"),
+      this.getInput("DIR"),
+      this.getInput("RST")
     ]); 
-  },
-  getConf : function() {
-    this.conf.MAP_OUT = new Object();
-    this.conf.MAP_IN = new Object();
-    for(var i = 0 ; i < this.conf.OUTPUTS.length ; i++){
-      this.conf.MAP_OUT[this.conf.OUTPUTS[i].NAME] = i;
-    }
-    for(var i = 0 ; i < this.conf.INPUTS.length ; i++){
-      this.conf.MAP_IN[this.conf.INPUTS[i].NAME] = i;
-    }
-    return JSON.stringify(this.conf); 
-  },
-  setInput : function (name, value){
-    this.conf.INPUTS[this.conf.MAP_IN[name]].VALUE = value;
   }
-};
-LFO;
+});

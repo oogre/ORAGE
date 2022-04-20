@@ -21,6 +21,7 @@ namespace reza {
             Rand cRand;
             typedef shared_ptr<OrageMenuList> OrageMenuListRef;
             vector<ViewRef> btns;
+        public :
             OrageMenuList(string name, const WindowRef &window) : SuperCanvas(name, window){
                 cRand = Rand(ID++);
                 onMouseEnter([&](ci::app::MouseEvent &event){
@@ -31,7 +32,6 @@ namespace reza {
                 });
                 setVisible(false);
             }
-        public :
             virtual ~OrageMenuList(){
                 for(auto btn : btns){
                     removeSubView(btn->getName());
@@ -40,7 +40,7 @@ namespace reza {
                 btns.clear();
             }
             static OrageMenuListRef create(string name){
-                return OrageMenuListRef(new OrageMenuList(name, ci::app::getWindow()));
+                return std::make_shared<OrageMenuList>(name, ci::app::getWindow());
             }
             
             virtual void mouseDrag( ci::app::MouseEvent &event ) override{}

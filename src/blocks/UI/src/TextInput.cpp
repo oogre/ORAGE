@@ -46,7 +46,7 @@ void TextInput::trigger( bool recursive )
 		mCallbackFn( getValue() );
 	}
 
-	Control::trigger( recursive );
+    Control::trigger( recursive );
 }
 
 JsonTree TextInput::save()
@@ -243,6 +243,7 @@ void TextInput::keyDown( ci::app::KeyEvent &event )
 			}
 		}
 		else {
+            
 			switch( event.getCode() ) {
 			case KeyEvent::KEY_RIGHT: {
 				if( mCursorPosition == mMaxDisplayLength && (int)mValue.substr( mStartIndex ).length() > mMaxDisplayLength ) {
@@ -273,7 +274,6 @@ void TextInput::keyDown( ci::app::KeyEvent &event )
 				deleteCharacter();
 			} break;
 
-			case KeyEvent::KEY_UNKNOWN:
 			case KeyEvent::KEY_TAB:
 			case KeyEvent::KEY_CLEAR:
 			case KeyEvent::KEY_KP0:
@@ -337,6 +337,7 @@ void TextInput::keyDown( ci::app::KeyEvent &event )
 			case KeyEvent::KEY_UNDO:
 				break;
 
+            
 			case KeyEvent::KEY_KP_ENTER:
 			case KeyEvent::KEY_RETURN: {
 				mClicked = false;
@@ -348,7 +349,11 @@ void TextInput::keyDown( ci::app::KeyEvent &event )
 					setValue( "" );
 				}
 			} break;
-
+                    
+            case KeyEvent::KEY_UNKNOWN:
+                if(event.getChar() != '/'){
+                    break;
+                }
 			default: {
 				if( mFormat.mNumeric ) {
 					if( event.getChar() == '-' && mValue.length() == 0 ) {

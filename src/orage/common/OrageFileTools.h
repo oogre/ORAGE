@@ -23,6 +23,7 @@
     #include <atlstr.h>
     #include <shellapi.h>
 #endif
+#include "OrageError.h"
 
 
 #define PRINT(arg) #arg
@@ -67,6 +68,17 @@ namespace ORAGE {
                 }
             }
             ::closedir(dp);
+        }
+        
+        static std::string readFile(const std::string filePath){
+            std::ifstream fin;
+            fin.open(filePath);
+            if (!fin.is_open())    {
+                throw OrageError(1, "file not Found : " + filePath);
+            }
+            std::string rawFile( static_cast<std::stringstream const &>(std::stringstream() << fin.rdbuf()).str() );
+            fin.close();
+            return rawFile;
         }
         
         static void zip_directory(const std::string& inputdir, const std::string& output_filename)

@@ -23,12 +23,17 @@ namespace ISF {
         std::vector<ISFAttrRef> _audioInputs; // array of ISFAttrRef instances for the audio inputs
         std::vector<ISFAttrRef> _imageImports; // array of ISFAttrRef instances that describe imported images. attrib's 'attribName' is the name of the sampler, attrib's 'description' is the path to the file.
         
+        
+    public :
         ISFAttrWrapper(){
             
         }
-    public :
+        virtual ~ISFAttrWrapper(){
+            std::cout<<"~ISFAttrWrapper"<<std::endl;
+            clear();
+        }
         static ISFAttrWrapperRef create(){
-            return ISFAttrWrapperRef(new ISFAttrWrapper());
+            return std::make_shared<ISFAttrWrapper>();
         }
         
         //!    Returns a std::vector of ISFAttrRef instances describing all of the receiver's inputs.
@@ -50,6 +55,15 @@ namespace ISF {
             _imageOutputs.insert(_imageOutputs.end(), other->imageOutputs().begin(), other->imageOutputs().end());
             _audioInputs.insert(_audioInputs.end(), other->audioInputs().begin(), other->audioInputs().end());
             _imageImports.insert(_imageImports.end(), other->imageImports().begin(), other->imageImports().end());
+        }
+        void clear(){
+            lock_guard<recursive_mutex>        lock(_propLock);
+            _inputs.clear();
+            _imageInputs.clear();
+            _outputs.clear();
+            _imageOutputs.clear();
+            _audioInputs.clear();
+            _imageImports.clear();
         }
         
         
@@ -82,6 +96,26 @@ namespace ISF {
             }
             return attr;
         }
+        
+        void rmAttr(std::string attrName){
+            auto rmFrom = [](std::string name, std::vector<ISFAttrRef> & container){
+                for(auto it = container.begin(); it != container.end() ; ){
+                    if((*it)->name() == name){
+                        (*it)->rmUIref();
+                        it = container.erase(it);
+                    }else{
+                        it++;
+                    }
+                }
+            };
+            
+            rmFrom(attrName, _inputs);
+            rmFrom(attrName, _imageInputs);
+            rmFrom(attrName, _outputs);
+            rmFrom(attrName, _imageOutputs);
+            rmFrom(attrName, _audioInputs);
+            rmFrom(attrName, _imageImports);
+        }
         ISFAttrRef getInput(const std::string & n){
             lock_guard<recursive_mutex>        lock(_propLock);
             for (const auto & attribRefIt : _inputs)    {
@@ -106,6 +140,11 @@ namespace ISF {
             return res;
         }
         
+        bool has(const std::string & n){
+            lock_guard<recursive_mutex>        lock(_propLock);
+            return !!getInput(n) || !!getOutput(n);
+        }
+        
         //!    Returns the GLBufferRef for the passed key.  Checks all attributes/inputs as well as persistent and temp buffers.
         const ci::gl::TextureRef getBufferForKey(const std::string & n){
             lock_guard<recursive_mutex>        lock(_propLock);
@@ -119,6 +158,10 @@ namespace ISF {
                     return attribRefIt->currentVal().imageBuffer();
             }
             return nullptr;
+        }
+        
+        bool isEmpty(){
+            return  !(_inputs.size()>0 || _imageInputs.size()>0 || _outputs.size()>0 || _imageOutputs.size()>0 || _audioInputs.size()>0 || _imageImports.size()>0) ;
         }
         
     };//ISFAttrWrapper

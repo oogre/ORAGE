@@ -26,6 +26,7 @@ namespace ORAGE {
             FX = 0x08,
             MATH = 0x09,
             INPUT = 0x0A,
+            OSC = 0x0B
         };
         
         TYPES pathToComponentType(fs::path path, string * name, string * ext){
@@ -38,6 +39,8 @@ namespace ORAGE {
                 currentType = FX;
             else if(name->find(".out") != std::string::npos && *ext == ".fs")
                 currentType = OUTPUT;
+            else if(name->find(".in") != std::string::npos && *ext == ".fs")
+                currentType = INPUT;
             else if(*ext == ".fs")
                 currentType = ISF;
             else if(name->find(".clk") != std::string::npos && *ext == ".js")
@@ -46,36 +49,9 @@ namespace ORAGE {
                 currentType = MATH;
             else if(*ext == ".js")
                 currentType = CONTROLLER;
+            else if(*ext == ".osc")
+                currentType = OSC;
             return currentType;
-        }
-        
-        void splitNameExtension(std::string fileName, TYPES type, string * name, string * ext){
-            switch(type){
-                case ISF :
-                *ext = ".fs";
-                break;
-                case FX :
-                    *ext = ".fx.fs";
-                break;
-                case OUTPUT :
-                    *ext = ".out.fs";
-                break;
-                case INPUT :
-                    *ext = ".in.fs";
-                break;
-                case CLOCK :
-                    *ext = ".clk.js";
-                break;
-                case CONTROLLER :
-                    *ext = ".js";
-                break;
-                case MATH :
-                    *ext = ".math.js";
-                break;
-                default :
-                    *ext = "";
-            }
-            *name = ORAGE::COMMON::replaceAll(fileName, *ext, "");
         }
         
         std::string componentTypeToFileExtention(TYPES type){
@@ -87,11 +63,15 @@ namespace ORAGE {
                 case CLOCK : return ".clk.js";
                 case CONTROLLER : return ".js";
                 case MATH : return ".math.js";
+                case OSC : return ".osc";
                 default : return "";
             }
         }
         
-        
+        void splitNameExtension(std::string fileName, TYPES type, string * name, string * ext){
+            *ext = componentTypeToFileExtention(type);
+            *name = ORAGE::COMMON::replaceAll(fileName, *ext, "");
+        }
         
         struct Conf{
             ColorA bgColor;

@@ -5,8 +5,10 @@
 #include "OrageMenu.h"
 #include "ModuleManager.h"
 
+#include "reza/ui/OrageCanvas.h"
+
 #if defined(CINDER_MAC)
-    #define _override_=override
+    #define _override_ override
 #elif defined(CINDER_MSW)
     #define _override_
 #endif
@@ -21,7 +23,6 @@ class ORAGEApp : public App {
     ModuleManagerRef modules;
     OrageMenuRef menu;
     std::string orageFilePath = getDocumentsDirectory().generic_string() + "/ORAGE";
-    
 public:
     static std::vector<std::string> args;
 
@@ -38,27 +39,91 @@ public:
         freopen("CONOUT$", "w", stderr);
     #endif
         settings->setTitle("ORAGE - VISUAL MODULAR SYNTHESIS");
-//        settings->setWindowSize(1280, 720);
+        settings->setWindowSize(1280, 480);
 
         auto args = settings->getCommandLineArgs();
         ORAGEApp::args.insert(ORAGEApp::args.end(), args.begin()+1, args.end());
     }
-
+   
     virtual void fileOpen(std::vector<std::string>fileNames) _override_ {
         if(!modules){
             modules = ModuleManager::create();
         }
         modules->addFileToOpen(fileNames);
     }
+    
     void setup() override {
         mMainWinCtx = Context::getCurrent();
         if(!modules){
             modules = ModuleManager::create();
         }
         menu = OrageMenu::create();
-        menu->addEventListener([&](EvtMenu evt){
-            if(evt.is("menu")){
-                modules->add(evt.target, evt.origin, evt.moduleType);
+        
+        menu->addEventListener([&](BaseEvent evt){
+            if(evt.is("ready")){
+                map<string, fs::directory_entry> sorted_by_name;
+                for (const auto & entry : fs::directory_iterator(getAssetPath("modules").string())){
+                    sorted_by_name[entry.path().filename().string()] = entry;
+                }
+                for (const auto & [key, entry] : sorted_by_name){
+                    if(entry.is_directory()){
+                        SUB_ENTRIES subEntries = SUB_ENTRIES();
+                        for (const auto & subEntry : fs::directory_iterator(entry.path())){
+                            if(subEntry.is_regular_file()){
+                                subEntries.push_back(
+                                    make_pair(
+                                        subEntry.path().filename().string(),
+                                        [&, subEntry](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                            modules->add(subEntry.path(), pos+vec2(0,25), type);
+                                        }
+                                    )
+                                );
+                            }
+                        }
+                        menu->addElement(entry.path().filename().string(), subEntries);
+                    }
+                }
+                menu->addElement("INPUT", {
+                    make_pair(
+                              "SyphonSpout.in.fs",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "SyphonSpout.in.fs", pos+vec2(0,25), type);
+                              }
+                    )
+                });
+                menu->addElement("OSC", {
+                    make_pair(
+                              "server.osc",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "server.osc", pos+vec2(0,25), type);
+                              }
+                              ),
+                    make_pair(
+                              "filter.osc",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "filter.osc", pos+vec2(0,25), type);
+                              }
+                              ),
+                    make_pair(
+                              "receiver.osc",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "receiver.osc", pos+vec2(0,25), type);
+                              }
+                              ),
+                    make_pair(
+                              "address.osc",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "address.osc", pos+vec2(0,25), type);
+                              }
+                              ),
+                    make_pair(
+                              "sender.osc",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "sender.osc", pos+vec2(0,25), type);
+                              }
+                              )
+                });
+                
             }
         });
         enableVerticalSync( false );
