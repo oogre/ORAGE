@@ -30,7 +30,7 @@ namespace ORAGE {
                 typeTagUI->setEnabled(!value);
                 std::string typeTag = typeTagUI->getValue();
                 if(value){
-                    for(int i = 0 ; i < typeTag.length() ; i++){
+                    for(int i = 0 ; i < typeTag.length() ; i++){
                         switch(typeTag.at(i)){
                             case 'f' :
                             case 'd' :
@@ -64,7 +64,7 @@ namespace ORAGE {
                         }
                     }
                 }else{
-                    for(int i = 0 ; i < typeTag.length() ; i++){
+                    for(int i = 0 ; i < typeTag.length() ; i++){
                         UI->getParameter(to_string(i))->eventTrigger({
                             "rmplug", _attributes->get(to_string(i))
                         });
@@ -89,7 +89,7 @@ namespace ORAGE {
                 if (evt.is("change")) {
                     std::string typeTag = typeTagUI->getValue();
                     osc::Message msg;
-                    for(int i = 0 ; i < typeTag.length() ; i++){
+                    for(int i = 0 ; i < typeTag.length() ; i++){
                         std::string name = to_string(i);
                         switch(typeTag.at(i)){
                             case 'f' :

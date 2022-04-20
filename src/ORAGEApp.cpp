@@ -152,13 +152,11 @@ public:
     };
     
     void keyDown( KeyEvent evt ) override {
-        bool isSave = false;
     #if defined(CINDER_MAC)
-        isSave = evt.getChar() == 's' && evt.isMetaDown();
+        bool isSave = evt.getChar() == 's' && evt.isMetaDown();
     #elif defined(CINDER_MSW)
-        isSave = evt.getChar() == 's' && evt.isControlDown();
+        bool isSave = evt.getChar() == 's' && evt.isControlDown();
     #endif
-
         if(isSave){
             modules->savePatch();
         }

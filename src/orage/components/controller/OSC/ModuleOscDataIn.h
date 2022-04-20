@@ -30,7 +30,7 @@ namespace ORAGE {
                 typeTagUI->setEnabled(!value);
                 std::string typeTag = typeTagUI->getValue();
                 if(value){
-                    for(int i = 0 ; i < typeTag.length() ; i++){
+                    for(int i = 0 ; i < typeTag.length() ; i++){
                         switch(typeTag.at(i)){
                             case 'f' :
                             case 'd' :
@@ -52,7 +52,7 @@ namespace ORAGE {
                     }
                     inAttr->addEventListener(boost::bind(&ModuleOscDataIn::receiveHandler, this, _1));
                 }else{
-                    for(int i = 0 ; i < typeTag.length() ; i++){
+                    for(int i = 0 ; i < typeTag.length() ; i++){
                         destroyLater.push_back(to_string(i));
                         UI->getParameter(to_string(i))->eventTrigger({
                             "rmplug", _attributes->get(to_string(i))

@@ -86,7 +86,7 @@ namespace ISF {
         }
         virtual ~ISFDoc(){
             lock_guard<recursive_mutex>        lock(_propLock);
-            cout << "~ISFDoc" << endl;
+            cout << "~ISFDoc" << endl;
             if (_path != nullptr)    {
                 delete _path;
                 _path = nullptr;

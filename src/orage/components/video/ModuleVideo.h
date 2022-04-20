@@ -102,7 +102,7 @@ namespace ORAGE {
                     auto heightAttr = _attributes->getInput("HEIGHT");
                     vec2 size = getWindowSize();
                     
-                    cout<< size<< endl;
+                    cout<< size<< endl;
                     
                     if (!!widthAttr && !!heightAttr){
                         size = vec2(widthAttr->currentVal().getDoubleVal(), heightAttr->currentVal().getDoubleVal());

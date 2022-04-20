@@ -1,4 +1,5 @@
 #include "Responder.h"
+#include <iostream>
 
 using namespace reza::ui;
 using namespace std;
