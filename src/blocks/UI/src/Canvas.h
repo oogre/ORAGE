@@ -201,6 +201,7 @@ class Canvas : public Control {
 	Alignment mAlignment;
 	FontSize mFontsize;
 	ci::app::WindowRef mWindowRef;
+public : 
     ci::gl::FboRef mFboRef;
 };
 }

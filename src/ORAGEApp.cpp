@@ -89,8 +89,21 @@ public:
                               [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
                                   modules->add( "SyphonSpout.in.fs", pos+vec2(0,25), type);
                               }
-                    )
+                              ),
+                    make_pair(
+                              "UI.in.fs",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "UI.in.fs", pos+vec2(0,25), type);
+                              }
+                              ),
+                    make_pair(
+                              "SORT.in.fs",
+                              [&](ORAGE::COMPONENTS::TYPES type, vec2 pos){
+                                  modules->add( "SORT.in.fs", pos+vec2(0,25), type);
+                              }
+                              )
                 });
+                
                 menu->addElement("OSC", {
                     make_pair(
                               "server.osc",
@@ -146,6 +159,8 @@ public:
         clear( Color( 0, 0, 0 ) );
         modules->draw();
         menu->draw();
+        
+        
     };
     
     void fileDrop(FileDropEvent evt) override {

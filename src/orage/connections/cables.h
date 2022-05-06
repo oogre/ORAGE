@@ -44,9 +44,9 @@ namespace ORAGE {
             {
                 mouseMoveHandler = ci::app::getWindow()->getSignalMouseMove().connect(boost::bind(&Cables::onMouseMove, this, _1));
                 keyUpHandler = ci::app::getWindow()->getSignalKeyDown().connect(boost::bind(&Cables::onKeyUp, this, _1));
-                postDrawHandler = ci::app::getWindow()->getSignalPostDraw().connect(0, [this]() {
-                    draw();
-                });
+//                postDrawHandler = ci::app::getWindow()->getSignalPostDraw().connect(0, [this]() {
+//                    draw();
+//                });
             }
             static CablesRef create(){
                 return std::make_shared<Cables>();

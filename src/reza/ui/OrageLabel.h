@@ -26,11 +26,10 @@ namespace reza {
             OrageLabel(string name, const WindowRef &window) : SuperCanvas(name, window){
                 cRand = Rand(ID++);
                 this->name = name;
-                
             }
             virtual ~OrageLabel(){
-                
             }
+            
             static OrageLabelRef create(string name){
                 return std::make_shared<OrageLabel>(name, ci::app::getWindow());
             }

@@ -632,8 +632,14 @@ namespace ISF {
             
             vsDeclarations.push_back("uniform int\t\tPASSINDEX;\n");
             fsDeclarations.push_back("uniform int\t\tPASSINDEX;\n");
-            vsDeclarations.push_back("uniform vec2\t\tRENDERSIZE;\n");
-            fsDeclarations.push_back("uniform vec2\t\tRENDERSIZE;\n");
+            vsDeclarations.push_back("uniform float\t\tWIDTH;\n");
+            fsDeclarations.push_back("uniform float\t\tWIDTH;\n");
+            vsDeclarations.push_back("uniform float\t\tHEIGHT;\n");
+            fsDeclarations.push_back("uniform float\t\tHEIGHT;\n");
+            vsDeclarations.push_back("uniform float\t\TIME;\n");
+            fsDeclarations.push_back("uniform float\t\tTIME;\n");
+            vsDeclarations.push_back("uniform float\t\tTIMEDELTA;\n");
+            fsDeclarations.push_back("uniform float\t\tTIMEDELTA;\n");
             
             switch (inGLVers)    {
                 case GLVersion_Unknown:

@@ -44,8 +44,6 @@ namespace reza {
                         double cMax = attr->maxVal().getDoubleVal();
                         
                         sliderRef->setValue(ci::lerp(cMin, cMax, InverseLerp(tMin, tMax, tVal)));
-                        
-                        
                     }
                 });
                 
@@ -54,6 +52,7 @@ namespace reza {
                     if(a != b){
                         getAttr()->setMin(std::min(a, b));
                         getAttr()->setMax(std::max(a, b));
+                        sliderRef->setMinAndMax(std::min(a, b), std::max(a, b), false);
                     }
                 });
             }

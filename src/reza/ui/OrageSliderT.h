@@ -120,8 +120,11 @@ namespace reza {
                 if(mLabelValueRef){
                     std::stringstream out;
                     out << (std::fixed) << (std::setfill( '0' )) << (std::setprecision( mFormat.mPrecision )) << (SliderT<T>::getValue());
+
                     string value = out.str();
-                     mLabelValueRef->setLabel( value );
+                    if(mLabelValueRef->getLabel() != value){
+                        mLabelValueRef->setLabel( value );
+                    }
                 }
             }
             

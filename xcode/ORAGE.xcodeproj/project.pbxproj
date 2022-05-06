@@ -220,6 +220,7 @@
 		88776C11273C83B600DD62C0 /* ISFStringUtils_2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFStringUtils_2.h; sourceTree = "<group>"; };
 		88776C13273C84EA00DD62C0 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
 		88776C14273C84EA00DD62C0 /* exprtk.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = exprtk.hpp; sourceTree = "<group>"; };
+		888402812812E0F700D71C8A /* ModuleUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleUI.h; sourceTree = "<group>"; };
 		888DA3B7276014D3002166FB /* ModuleOscServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleOscServer.h; sourceTree = "<group>"; };
 		888DA3EC27601BD8002166FB /* SpoutLibrary.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = SpoutLibrary.lib; sourceTree = "<group>"; };
 		888DA3ED27601BD8002166FB /* SpoutLibrary.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = SpoutLibrary.dll; sourceTree = "<group>"; };
@@ -241,6 +242,7 @@
 		88A7BF5A27695441001B47A6 /* duk_module_duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duk_module_duktape.c; sourceTree = "<group>"; };
 		88A7BF5B27695441001B47A6 /* duk_module_duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_module_duktape.h; sourceTree = "<group>"; };
 		88AC2C242743F51F00A2B39A /* ISFAttrWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISFAttrWrapper.h; sourceTree = "<group>"; };
+		88E601E4281AA6D3003CE9E1 /* ModuleSort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleSort.h; sourceTree = "<group>"; };
 		88E76C3B276CFC0D00CA8E07 /* OrageError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageError.h; sourceTree = "<group>"; };
 		88E76C3C276D00D700CA8E07 /* OrageJS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrageJS.h; sourceTree = "<group>"; };
 		88F37D60271899AB0095955A /* Fps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fps.h; sourceTree = "<group>"; };
@@ -556,6 +558,8 @@
 		888DA3B427601493002166FB /* video */ = {
 			isa = PBXGroup;
 			children = (
+				88E601E3281AA6BC003CE9E1 /* Sort */,
+				888402812812E0F700D71C8A /* ModuleUI.h */,
 				889CA6822764F7E900ADE229 /* SyphonSpout */,
 				88F37DD927189D0B0095955A /* ModuleISF.h */,
 				887373DB274536F00025E2F0 /* ModuleVideo.h */,
@@ -665,6 +669,14 @@
 			path = Menu;
 			sourceTree = "<group>";
 		};
+		88E601E3281AA6BC003CE9E1 /* Sort */ = {
+			isa = PBXGroup;
+			children = (
+				88E601E4281AA6D3003CE9E1 /* ModuleSort.h */,
+			);
+			path = Sort;
+			sourceTree = "<group>";
+		};
 		88F37D5D271899AB0095955A /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -764,12 +776,12 @@
 		88F37DC927189A230095955A /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				889CA6832764FB1400ADE229 /* Parameters */,
 				889CA6842764FB2300ADE229 /* Menu */,
 				88F37DCA27189A230095955A /* OrageCanvas.h */,
 				889CA687276520C000ADE229 /* OrageInputNumber.h */,
 				88F37DCB27189A230095955A /* OrageButton.h */,
 				88F37DCD27189A230095955A /* OrageSliderT.h */,
-				889CA6832764FB1400ADE229 /* Parameters */,
 				886208FF2805BBA10067D36F /* OrageLabel.h */,
 			);
 			path = ui;

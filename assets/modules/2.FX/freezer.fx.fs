@@ -75,7 +75,7 @@ void main()
 
 
   // vec3 color = mix(C, D, m);
-  // out0 = vec4(color, 1);
+  out0 = vec4(mix(A, B, V), 1);
 
 }
 

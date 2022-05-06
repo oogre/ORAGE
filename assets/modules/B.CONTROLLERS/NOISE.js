@@ -61,11 +61,11 @@ Base({
     timeCounterY += deltaTimeY * dir;
     timeCounterZ += deltaTimeZ * dir;
     this.setOutput("SIMPLEX3", Noise.simplex3(timeCounterX, timeCounterY, timeCounterZ));
-    this.setOutput("PERLIN3",  Noise.perlin3(timeCounterX, timeCounterY, timeCounterZ));
+    // this.setOutput("PERLIN3",  Noise.perlin3(timeCounterX, timeCounterY, timeCounterZ));
     return JSON.stringify([
       this.getInput("SPEED"),
       this.getOutput("SIMPLEX3"), 
-      this.getOutput("PERLIN3")
+      // this.getOutput("PERLIN3")
     ]); 
   }
 });

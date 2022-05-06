@@ -162,7 +162,13 @@ namespace ORAGE {
 //                        }
                         break;
                     case TYPES::INPUT :
-                        module = ModuleSyphonSpout::create(name, type);
+                        if(name == "SyphonSpout"){
+                            module = ModuleSyphonSpout::create(name, type);
+                        }else if(name == "UI"){
+                            module = ModuleUI::create(name, type);
+                        }else if(name == "SORT"){
+                            module = ModuleSort::create(name, type);
+                        }
                     break;
                     case TYPES::OSC :
                         if(name == "server"){
@@ -221,6 +227,7 @@ namespace ORAGE {
                 for(auto module : modules){
                     module->draw();
                 }
+                cables->draw();
             }
             
             void savePatch(){

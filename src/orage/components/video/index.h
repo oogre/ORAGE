@@ -7,4 +7,6 @@
 
 #include "ModuleISF.h"
 #include "ModuleSyphonSpout.h"
+#include "ModuleSort.h"
+#include "ModuleUI.h"
 
