@@ -27,7 +27,11 @@ namespace ogre {
         serverRef->setName(this->name);
 
         this->mMainWinCtx = mMainWinCtx;
-        format = qtime::MovieWriter::Format().codec( qtime::MovieWriter::H264 ).fileType( qtime::MovieWriter::MPEG4 );    }
+        format = qtime::MovieWriter::Format()
+                    .codec( qtime::MovieWriter::H264 )
+                    .fileType( qtime::MovieWriter::MPEG4 )
+                    .defaultFrameDuration(1/25.0f);
+    }
     
     void Output::setup(){
         ModuleVideo::setup();
