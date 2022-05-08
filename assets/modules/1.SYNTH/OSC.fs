@@ -18,6 +18,13 @@
 			"MAX" :	10.0
 	},
 	{
+			"NAME" :	"PASSTHROUGH",
+			"TYPE" :	"bool",
+			"DEFAULT" :	false,
+			"MIN" :	false,
+			"MAX" :	true
+	},
+	{
 			"NAME" :	"sync",
 			"TYPE" :	"float",
 			"DEFAULT" :	0.0,

@@ -564,6 +564,38 @@ namespace ISF {
                         }
                     }
                     //    else the attribute wasn't recognized- skip it
+                    else if (typeStringJ == "bool") {
+                        typeStringJ = ISFValType_Bool;
+                        ci::JsonTree tmpObj;
+                        ci::JsonTree tmpMinJ = input.hasChild("MIN") ? input.getChild("MIN") : ci::JsonTree();
+                        ci::JsonTree tmpMaxJ = input.hasChild("MAX") ? input.getChild("MAX") : ci::JsonTree();
+                        ci::JsonTree tmpDefJ = input.hasChild("DEFAULT") ? input.getChild("DEFAULT") : ci::JsonTree();
+                        ci::JsonTree tmpIdeJ = input.hasChild("IDENTITY") ? input.getChild("IDENTITY") : ci::JsonTree();
+                        minVal = ISFBoolVal(tmpMinJ.getValue<bool>());
+                        maxVal = ISFBoolVal(tmpMaxJ.getValue<bool>());
+                        defVal = ISFBoolVal(tmpDefJ.getValue<bool>());
+                        idenVal= ISFBoolVal(tmpIdeJ.getValue<bool>());
+                        
+                        if ((minVal.isNullVal() && !maxVal.isNullVal()) ||
+                            (!minVal.isNullVal() && maxVal.isNullVal())) {
+                            minVal = ISFNullVal();
+                            maxVal = ISFNullVal();
+                        }
+                        
+                        //    if i don't have a min/max val, default to a normalized range
+                        if (minVal.isNullVal() && maxVal.isNullVal()) {
+                            minVal = ISFBoolVal(false);
+                            maxVal = ISFBoolVal(true);
+                        }
+                        
+                        if (defVal.isNullVal()) {
+                            defVal = ISFBoolVal(false);
+                        }
+                        else {
+                            defVal = ISFBoolVal(false);
+                        }
+                        
+                    }
                     else
                         continue;
                     
