@@ -165,11 +165,11 @@ namespace ISF {
             cout<<"~ISFAttr : "<< name() << endl;
             removeEventListener(boost::bind(&ISFAttr::changeHandler, this, _1));
         }
-        static ISFAttrRef create(  const string & inName,
-                                 const string & inDesc,
-                                 const string & inLabel,
-                                 const ISFAttr_IO io,
-                                 const ISFValType & inType,
+        static ISFAttrRef create(  const string & inName="",
+                                 const string & inDesc="",
+                                 const string & inLabel="",
+                                 const ISFAttr_IO io=ISFAttr_IO::_IN,
+                                 const ISFValType & inType=ISFValType_None,
                                  const ISFVal & inMinVal=ISFNullVal(),
                                  const ISFVal & inMaxVal=ISFNullVal(),
                                  const ISFVal & inDefVal=ISFNullVal(),

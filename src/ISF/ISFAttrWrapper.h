@@ -67,8 +67,19 @@ namespace ISF {
         }
         
         
+        //!    ISFAttrRef instances describing only the Main receiver's image inputs.
+        int imageMainInputId() {
+            
+            for (int i = 0 ; i < _imageInputs.size() ; i++)    {
+                if (_imageInputs.at(i)->currentVal().isMainTexture())
+                    return i;
+            }
+            return -1;
+        }
+        
         //!    Returns a std::vector of ISFAttrRef instances describing only the receiver's image inputs.
         std::vector<ISFAttrRef> & imageInputs() { return _imageInputs; }
+        
         //!    Returns a std::vector of ISFAttrRef instances describing only the receiver's image outputs.
         std::vector<ISFAttrRef> & imageOutputs() { return _imageOutputs; }
         //!    Returns a std::vector of ISFAttrRef instances describing only the receiver's audio inputs.

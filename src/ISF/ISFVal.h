@@ -68,7 +68,7 @@ namespace ISF {
     class ISFVal{
         typedef shared_ptr<ISFVal> ISFValRef;
     private :
-        
+        bool _mainTexture = false;
         // this union stores the value of an ISFVal (the member of the union used depends on the ISFVal's 'type' member)
         union ISFValUnion {
             bool    boolVal;
@@ -375,6 +375,10 @@ namespace ISF {
             }
         }
         
+        void setMainTexture(bool flag = true){
+            _mainTexture = flag;
+        }
+        bool isMainTexture()const { return isImageVal() && _mainTexture; }
         //!    Returns true if the receiver is a null value.
         bool isNullVal() const { return (_type == ISFValType_None); }
         //!    Returns true if the receiver is an event value.

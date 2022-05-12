@@ -31,6 +31,7 @@ namespace ORAGE {
             vector<ci::signals::Connection> signalDrawHandlers;
             vector<ci::app::WindowRef> windows;
             ci::gl::FboRef _mFbo;
+            ci::gl::FboRef _outFbo;
             virtual void newWindowAction (Evt evt) {
                 if (evt.target->currentVal().getBoolVal()) {
                     createWindow();
@@ -115,6 +116,7 @@ namespace ORAGE {
                         i++;
                     }
                     _mFbo = ci::gl::Fbo::create( size.x, size.y, fFormatCurrent);
+                    _outFbo = ci::gl::Fbo::create( size.x, size.y, fFormatCurrent);
                 }
                 
                 for(auto outAttr : _attributes->imageOutputs()){
@@ -166,6 +168,9 @@ namespace ORAGE {
             }
             ci::gl::FboRef frameBuffer(){
                 return _mFbo;
+            }
+            ci::gl::FboRef outBuffer(){
+                return _outFbo;
             }
             
             mat4 projection(){

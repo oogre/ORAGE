@@ -131,53 +131,94 @@ namespace ORAGE {
                 ModuleVideo::update();
 
                 FboRef currentFbo = frameBuffer();
-                if(!currentFbo)return;
+                if(!frameBuffer())return;
+            
+                /*
+                    NEED AN IMPLEMENTATION OF MULTIPASS
+                    BASED ON PARAMETER PASSCOUNT & PASSINDEX
+                    PREVIOUS output become main input for the next pass
+                */
+                
+//                int mainTextureId = _attributes->imageMainInputId();
+//
+//                if(mainTextureId>-1){
+//                    pushProjectionMatrix();
+//                    setProjectionMatrix(projection());
+//                    //gl::ScopedProjectionMatrix matrix(projection());
+//                    ScopedFramebuffer fbScp( outBuffer() );
+//                    pushViewport(make_pair<ivec2, ivec2>(ivec2(0), outBuffer()->getSize()));
+//                    gl::clear( ColorA(0, 0, 0, 1));
+//                    gl::color(Color::white());
+//                    gl::draw(
+//                             _attributes->imageInputs()
+//                             .at(mainTextureId)->currentVal()
+//                             .imageBuffer(),
+//                             Area(vec2(0), defSize())
+//                    );
+//                    popViewport();
+//                    popProjectionMatrix();
+//                }
+                
+                
+                pushProjectionMatrix();
+                setProjectionMatrix(projection());
+                pushViewport(make_pair<ivec2, ivec2>(ivec2(0), frameBuffer()->getSize()));
+//                    gl::ScopedProjectionMatrix matrix(projection());
                 {
-                    gl::ScopedProjectionMatrix matrix(projection());
-                    {
-                        ScopedFramebuffer fbScp( currentFbo );
-                        pushViewport(make_pair<ivec2, ivec2>(ivec2(0), currentFbo->getSize()));
-                        gl::ScopedGlslProg glslProg( mShader );
-                        
-                        gl::clear( ColorA(0, 0, 0, 1));
-                        int i = 0 ;
-                        for(auto & input : _attributes->inputs()){
-                            auto inValue = input->currentVal();
-                            string name = input->name();
-//                            cout<<name << " " << input->type() << endl;
-                            switch(input->type()){
-                                case ISFValType::ISFValType_Bool :
-                                    mShader->uniform(name, (int) inValue.getBoolVal());
-                                    break;
-                                case ISFValType::ISFValType_Long :
-                                    mShader->uniform(name, (int) inValue.getLongVal());
-                                    break;
-                                case ISFValType::ISFValType_Float :
-                                    mShader->uniform(name, (float) inValue.getDoubleVal());
-                                    break;
-                                case ISFValType::ISFValType_Point2D :
-                                    mShader->uniform(name, vec2(inValue.getPointValByIndex(0), inValue.getPointValByIndex(1)));
-                                    break;
-                                case ISFValType::ISFValType_Image : {
-                                    string pName = "_"+name;
-                                    Texture2dRef inTex = inValue.imageBuffer();
-                                    inTex->bind(i);
-                                    mShader->uniform( name, i++ );
-                                    mShader->uniform( pName+"_imgRect", vec4(0, 0, 1, 1));
-                                    mShader->uniform( pName+"_imgSize", (vec2)inTex->getSize());
-                                    mShader->uniform( pName+"_flip",    !inTex->isTopDown());
-                                    mShader->uniform( pName+"_sample",  input->sample());
-                                }break;
-                                default :
-                                    break;
-                            }
+                    ScopedFramebuffer fbScp( frameBuffer() );
+                    
+                    gl::ScopedGlslProg glslProg( mShader );
+                    
+                    gl::clear( ColorA(0, 0, 0, 1));
+                    int i = 0 ;
+                    for(auto & input : _attributes->inputs()){
+                        auto inValue = input->currentVal();
+                        string name = input->name();
+                        switch(input->type()){
+                            case ISFValType::ISFValType_Bool :
+                                mShader->uniform(name, (int) inValue.getBoolVal());
+                                break;
+                            case ISFValType::ISFValType_Long :
+                                mShader->uniform(name, (int) inValue.getLongVal());
+                                break;
+                            case ISFValType::ISFValType_Float :
+                                mShader->uniform(name, (float) inValue.getDoubleVal());
+                                break;
+                            case ISFValType::ISFValType_Point2D :
+                                mShader->uniform(name, vec2(inValue.getPointValByIndex(0), inValue.getPointValByIndex(1)));
+                                break;
+                            case ISFValType::ISFValType_Image : {
+                                string pName = "_"+name;
+                                Texture2dRef inTex;
+//                                if(inValue.isMainTexture()){
+//                                    inTex = outBuffer()->getTexture2d(GL_COLOR_ATTACHMENT0);
+//                                    cout<< pName << " "
+//                                        << (vec2)inTex->getSize() << " "
+//                                        << !inTex->isTopDown() << " "
+//                                        << input->sample() << endl;
+//                                }else{
+                                    inTex = inValue.imageBuffer();
+//                                }
+//                                        cout<<pName<< " " << inValue.isMainTexture()<<endl;
+                                inTex->bind(i);
+                                mShader->uniform( name, i++ );
+                                mShader->uniform( pName+"_imgRect", vec4(0, 0, 1, 1));
+                                mShader->uniform( pName+"_imgSize", (vec2)inTex->getSize());
+                                mShader->uniform( pName+"_flip",    !inTex->isTopDown());
+                                mShader->uniform( pName+"_sample",  input->sample());
+                            }break;
+                            default :
+                                break;
                         }
-                        gl::color(Color::white());
-                        gl::drawSolidRect(Area(vec2(0), defSize()));
-                        
-                        popViewport();
                     }
+                    gl::color(Color::white());
+                    gl::drawSolidRect(Area(vec2(0), defSize()));
+                    
                 }
+                popViewport();
+                popProjectionMatrix();
+                    
+                
                 for (int i = 0 ; i < _attributes->imageOutputs().size() ; i++) {
                     sharesRef.at(i)->draw(_attributes->imageOutputs().at(i)->defaultVal().imageBuffer());
                 }

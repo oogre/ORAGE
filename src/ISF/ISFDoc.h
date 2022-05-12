@@ -492,6 +492,7 @@ namespace ISF {
                 vector<int32_t> valArray;
                 
                 for (auto input : inputs) {
+                    bool isMainTexture = false;
                     if(input.getNodeType() != ci::JsonTree::NodeType::NODE_OBJECT)
                         continue;
                     if(!input.hasChild("NAME"))
@@ -519,6 +520,7 @@ namespace ISF {
                     if (typeStringJ == "image") {
                         newAttribType = ISFValType_Image;
                         isImageInput = true;
+                        isMainTexture = input.hasChild("MAIN") ? input.getChild("MAIN").getValue<bool>() : false;
                     }
                     else if (typeStringJ == "audio") {
                         newAttribType = ISFValType_Audio;
@@ -599,7 +601,15 @@ namespace ISF {
                     else
                         continue;
                     
-                    _attrWrapper->addAttr(ISFAttr::create(inputKeyJ, descString, labelString, io, newAttribType, minVal, maxVal, defVal, idenVal, &labelArray, &valArray));
+                    auto attr = _attrWrapper->addAttr(ISFAttr::create(inputKeyJ, descString, labelString, io, newAttribType, minVal, maxVal, defVal, idenVal, &labelArray, &valArray));
+                    
+                    if(attr->isImage()){
+                        attr->minVal().setMainTexture(isMainTexture);
+                        attr->maxVal().setMainTexture(isMainTexture);
+                        attr->defaultVal().setMainTexture(isMainTexture);
+                        attr->identityVal().setMainTexture(isMainTexture);
+                        attr->currentVal().setMainTexture(isMainTexture);
+                    }
                 }
                 
                 for (auto ouput : outputs) {
