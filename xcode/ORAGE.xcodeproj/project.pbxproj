@@ -46,6 +46,7 @@
 		67EA672D4B4946B1921A7825 /* Responder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEC3683DB3FF4813BD55CCD9 /* Responder.cpp */; };
 		8033B0DAC6694F96BFD18A35 /* Dialer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5190331EDD4B5E843BD167 /* Dialer.cpp */; };
 		85D4B4812CA545008D1F624C /* Wires.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CEC55F32821410B87FEE541 /* Wires.cpp */; };
+		88002E1B283544CE0051C030 /* CDelay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88002E1A283544CE0051C030 /* CDelay.cpp */; };
 		8800562B1EF1C4090045248C /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880056291EF1C4090045248C /* Player.cpp */; };
 		880D788A244497CF00EC0D71 /* start.ORAGE.sh in Resources */ = {isa = PBXBuildFile; fileRef = 880D7889244497CF00EC0D71 /* start.ORAGE.sh */; };
 		88187B1124376BF20008F678 /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AEF24376BF20008F678 /* OscSender.cpp */; };
@@ -219,6 +220,8 @@
 		7B48A58A7A51483C93535F19 /* BSplineEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BSplineEditor.cpp; sourceTree = "<group>"; };
 		82E3B3A07EB24135BDB6BFCD /* Slider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Slider.h; sourceTree = "<group>"; };
 		858C69A657054A6F81797937 /* CocoaWindowCanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CocoaWindowCanvas.h; sourceTree = "<group>"; };
+		88002E19283544CE0051C030 /* CDelay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDelay.h; path = ../../../../../Blocks/Orage/src/Modules/Controllers/CDelay.h; sourceTree = "<group>"; };
+		88002E1A283544CE0051C030 /* CDelay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CDelay.cpp; path = ../../../../../Blocks/Orage/src/Modules/Controllers/CDelay.cpp; sourceTree = "<group>"; };
 		880056291EF1C4090045248C /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		8800562A1EF1C4090045248C /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		880D7889244497CF00EC0D71 /* start.ORAGE.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = start.ORAGE.sh; path = ../resources/start.ORAGE.sh; sourceTree = "<group>"; };
@@ -792,6 +795,8 @@
 		9ADF9E6C4AB24B10BEE8F830 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				88002E1A283544CE0051C030 /* CDelay.cpp */,
+				88002E19283544CE0051C030 /* CDelay.h */,
 				128130448FB0431A86A5095C /* Lfos.h */,
 				88B0FED31F06647900EBAD22 /* ProcessCV.h */,
 				4E8C327BE1994ACC8ED55BBC /* Lfos.cpp */,
@@ -1072,6 +1077,7 @@
 				8800562B1EF1C4090045248C /* Player.cpp in Sources */,
 				88187B1924376BF30008F678 /* NetworkingUtils.cpp in Sources */,
 				8843914F252521270052B44F /* RtMidi.cpp in Sources */,
+				88002E1B283544CE0051C030 /* CDelay.cpp in Sources */,
 				88187B1524376BF20008F678 /* OscPrintReceivedElements.cpp in Sources */,
 				EE5AFF62F8204B76AD8893E3 /* Spectrum.cpp in Sources */,
 				888AD3B51ECC828C00179240 /* SuperModule.cpp in Sources */,

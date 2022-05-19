@@ -26,6 +26,11 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         auto m = this->addLfos(pos, data);
         return m->id;
     }
+    if (type == "CDelay")
+    {
+        auto m = this->addCDelay(pos, data);
+        return m->id;
+    }
     if (type == "Oscillator")
     {
         auto m = this->addOscillator(pos, data);
@@ -304,6 +309,14 @@ LfosRef Orage::addLfos(vec2 origin, JsonTree data){
     return ref;
 }
 
+CDelayRef Orage::addCDelay(vec2 origin, JsonTree data){
+    CDelayRef ref = CDelay::create("CDELAY", origin, mMainWinCtx, data);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
+
+
 OscRef Orage::addOsc(vec2 origin, JsonTree data){
     OscRef ref = Osc::create("Osc", origin, mMainWinCtx, data);
     ref->setup();
@@ -458,6 +471,13 @@ void Orage::setup(){
                                                       [this](bool a) {
                                                           if(a){
                                                               addLfos(contextMenu->getOrigin());
+                                                          }
+                                                      });
+    
+    contextMenu->addButton("CDELAY", false)->setCallback(
+                                                      [this](bool a) {
+                                                          if(a){
+                                                              addCDelay(contextMenu->getOrigin());
                                                           }
                                                       });
     

@@ -116,6 +116,7 @@ class SliderT : public ControlWithLabel {
     
     
     std::vector<SliderfRef> slaves;
+    bool followOnHit = true;
     bool coin = false;
     
     void updateSlaveStack(T value, bool coin, std::vector<SliderfRef> stack);

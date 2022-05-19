@@ -246,11 +246,13 @@ void SliderT<T>::updateSlaveStack(T input, bool coin, std::vector<SliderfRef> st
         this->coin = ! this->coin;
         auto it = slaves.begin(), end = slaves.end();
         for( ; it != end ; it++){
-            mValue = input;
-            updateValueRef();
-            updateLabel();
-            setNeedsDisplay();
-            (*it)->updateSlaveStack(input, coin, (*it)->slaves);
+            if(followOnHit || !mHit){
+                mValue = input;
+                updateValueRef();
+                updateLabel();
+                setNeedsDisplay();
+                (*it)->updateSlaveStack(input, coin, (*it)->slaves);
+            }
         }
     }
 }

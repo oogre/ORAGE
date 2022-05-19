@@ -34,6 +34,7 @@
 #include "Kaleidoscope.h"
 
 #include "Lfos.h"
+#include "CDelay.h"
 #include "Osc.h"
 #include "NoteOnOff.h"
 #include "BeatStepPro.h"
