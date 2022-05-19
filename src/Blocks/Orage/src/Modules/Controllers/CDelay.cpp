@@ -25,15 +25,15 @@ namespace ogre {
         }
         this->mMainWinCtx = mMainWinCtx;
         this->typeName = "CDelay";
-        for(int i = 0 ; i < CDelay::maxMemoryLength ; i++){
-            memory[WCursor] = 0.0;
-        }
+        
     }
     
     void CDelay::setup(){
         ModuleCommon::setup();
         setupUI();
-        
+        for(int i = 0 ; i < CDelay::maxMemoryLength ; i++){
+            memory[i] = 0.0;
+        }
     }
     
     void CDelay::update(){

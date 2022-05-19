@@ -31,6 +31,12 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         auto m = this->addCDelay(pos, data);
         return m->id;
     }
+    if (type == "Euclidean")
+    {
+        auto m = this->addEuclidean(pos, data);
+        return m->id;
+    }
+    
     if (type == "Oscillator")
     {
         auto m = this->addOscillator(pos, data);
@@ -316,6 +322,12 @@ CDelayRef Orage::addCDelay(vec2 origin, JsonTree data){
     return ref;
 }
 
+EuclideanRef Orage::addEuclidean(vec2 origin, JsonTree data){
+    EuclideanRef ref = Euclidean::create("Euclidean", origin, mMainWinCtx, data);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
 
 OscRef Orage::addOsc(vec2 origin, JsonTree data){
     OscRef ref = Osc::create("Osc", origin, mMainWinCtx, data);
@@ -475,11 +487,18 @@ void Orage::setup(){
                                                       });
     
     contextMenu->addButton("CDELAY", false)->setCallback(
-                                                      [this](bool a) {
-                                                          if(a){
-                                                              addCDelay(contextMenu->getOrigin());
-                                                          }
-                                                      });
+                                                         [this](bool a) {
+                                                             if(a){
+                                                                 addCDelay(contextMenu->getOrigin());
+                                                             }
+                                                         });
+    
+    contextMenu->addButton("EUCLIDEAN", false)->setCallback(
+                                                         [this](bool a) {
+                                                             if(a){
+                                                                 addEuclidean(contextMenu->getOrigin());
+                                                             }
+                                                         });
     
     contextMenu->addButton("OSC", false)->setCallback(
                                                       [this](bool a) {

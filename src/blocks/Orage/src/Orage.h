@@ -62,6 +62,7 @@ namespace ogre {
             OutputRef addOutput(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             LfosRef addLfos(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             CDelayRef addCDelay(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
+            EuclideanRef addEuclidean(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             OscRef addOsc(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             BeatStepProRef addBeatStepPro(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             NanoKontrolRef addNanoKontrol(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());

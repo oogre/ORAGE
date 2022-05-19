@@ -82,6 +82,7 @@
 		88439151252521270052B44F /* MidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8843914B252521270052B44F /* MidiOut.cpp */; };
 		88439152252521270052B44F /* MidiHub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8843914C252521270052B44F /* MidiHub.cpp */; };
 		88439153252521270052B44F /* MidiIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8843914E252521270052B44F /* MidiIn.cpp */; };
+		885C8DB428364724007B788C /* Euclidean.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 885C8DB328364724007B788C /* Euclidean.cpp */; };
 		88790945257B0C9A0084AA2A /* CustomCC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88790944257B0C9A0084AA2A /* CustomCC.cpp */; };
 		888984BE2060028400488193 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 888984BC2060028400488193 /* Random.cpp */; };
 		888AD3B51ECC828C00179240 /* SuperModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 888AD3B31ECC828C00179240 /* SuperModule.cpp */; };
@@ -315,6 +316,8 @@
 		8843914C252521270052B44F /* MidiHub.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MidiHub.cpp; sourceTree = "<group>"; };
 		8843914D252521270052B44F /* MidiIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MidiIn.h; sourceTree = "<group>"; };
 		8843914E252521270052B44F /* MidiIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MidiIn.cpp; sourceTree = "<group>"; };
+		885C8DB228364724007B788C /* Euclidean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Euclidean.h; path = ../../../../../Blocks/Orage/src/Modules/Controllers/Euclidean.h; sourceTree = "<group>"; };
+		885C8DB328364724007B788C /* Euclidean.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Euclidean.cpp; path = ../../../../../Blocks/Orage/src/Modules/Controllers/Euclidean.cpp; sourceTree = "<group>"; };
 		88790943257B0C9A0084AA2A /* CustomCC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomCC.h; path = ../src/blocks/Orage/src/Modules/Controllers/CustomCC.h; sourceTree = SOURCE_ROOT; };
 		88790944257B0C9A0084AA2A /* CustomCC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomCC.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/CustomCC.cpp; sourceTree = SOURCE_ROOT; };
 		888984BC2060028400488193 /* Random.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Random.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/Random.cpp; sourceTree = SOURCE_ROOT; };
@@ -795,6 +798,8 @@
 		9ADF9E6C4AB24B10BEE8F830 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				885C8DB328364724007B788C /* Euclidean.cpp */,
+				885C8DB228364724007B788C /* Euclidean.h */,
 				88002E1A283544CE0051C030 /* CDelay.cpp */,
 				88002E19283544CE0051C030 /* CDelay.h */,
 				128130448FB0431A86A5095C /* Lfos.h */,
@@ -1084,6 +1089,7 @@
 				88439151252521270052B44F /* MidiOut.cpp in Sources */,
 				58B3C05F56494F6A8890AF64 /* SuperCanvas.cpp in Sources */,
 				889932C82523CF4000020C9F /* NoteOnOff.cpp in Sources */,
+				885C8DB428364724007B788C /* Euclidean.cpp in Sources */,
 				5A01B83A828443BF9AA18E7E /* TextInput.cpp in Sources */,
 				B5129B57B3EB4BBEB67A8B4F /* TextureView.cpp in Sources */,
 				88187B1624376BF30008F678 /* OscMessage.cpp in Sources */,
