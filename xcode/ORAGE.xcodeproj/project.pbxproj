@@ -82,6 +82,7 @@
 		88439151252521270052B44F /* MidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8843914B252521270052B44F /* MidiOut.cpp */; };
 		88439152252521270052B44F /* MidiHub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8843914C252521270052B44F /* MidiHub.cpp */; };
 		88439153252521270052B44F /* MidiIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8843914E252521270052B44F /* MidiIn.cpp */; };
+		884FF4092839249C004E6039 /* Passthrough.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 884FF4072839249B004E6039 /* Passthrough.cpp */; };
 		885C8DB428364724007B788C /* Euclidean.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 885C8DB328364724007B788C /* Euclidean.cpp */; };
 		88790945257B0C9A0084AA2A /* CustomCC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88790944257B0C9A0084AA2A /* CustomCC.cpp */; };
 		888984BE2060028400488193 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 888984BC2060028400488193 /* Random.cpp */; };
@@ -316,6 +317,8 @@
 		8843914C252521270052B44F /* MidiHub.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MidiHub.cpp; sourceTree = "<group>"; };
 		8843914D252521270052B44F /* MidiIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MidiIn.h; sourceTree = "<group>"; };
 		8843914E252521270052B44F /* MidiIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MidiIn.cpp; sourceTree = "<group>"; };
+		884FF4072839249B004E6039 /* Passthrough.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Passthrough.cpp; path = ../../../../../Blocks/Orage/src/Modules/Controllers/Passthrough.cpp; sourceTree = "<group>"; };
+		884FF4082839249B004E6039 /* Passthrough.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Passthrough.h; path = ../../../../../Blocks/Orage/src/Modules/Controllers/Passthrough.h; sourceTree = "<group>"; };
 		885C8DB228364724007B788C /* Euclidean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Euclidean.h; path = ../../../../../Blocks/Orage/src/Modules/Controllers/Euclidean.h; sourceTree = "<group>"; };
 		885C8DB328364724007B788C /* Euclidean.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Euclidean.cpp; path = ../../../../../Blocks/Orage/src/Modules/Controllers/Euclidean.cpp; sourceTree = "<group>"; };
 		88790943257B0C9A0084AA2A /* CustomCC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomCC.h; path = ../src/blocks/Orage/src/Modules/Controllers/CustomCC.h; sourceTree = SOURCE_ROOT; };
@@ -798,6 +801,8 @@
 		9ADF9E6C4AB24B10BEE8F830 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				884FF4072839249B004E6039 /* Passthrough.cpp */,
+				884FF4082839249B004E6039 /* Passthrough.h */,
 				885C8DB328364724007B788C /* Euclidean.cpp */,
 				885C8DB228364724007B788C /* Euclidean.h */,
 				88002E1A283544CE0051C030 /* CDelay.cpp */,
@@ -1061,6 +1066,7 @@
 				88A8896F1EDC308D007F4B0C /* SyphonNameboundClient.m in Sources */,
 				B3C1979E48F14B3BBA4B766C /* Graph.cpp in Sources */,
 				88AC2DA40BC4441CA9DF5B0B /* Label.cpp in Sources */,
+				884FF4092839249C004E6039 /* Passthrough.cpp in Sources */,
 				C57816A525934F949D35065F /* MultiSlider.cpp in Sources */,
 				E0360721089943EDB1ECA3A7 /* Plotter.cpp in Sources */,
 				4C0CAE91E0914873B0ECDBB4 /* QuaternionOrderer.cpp in Sources */,

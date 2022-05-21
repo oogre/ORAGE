@@ -36,6 +36,7 @@
 #include "Lfos.h"
 #include "CDelay.h"
 #include "Euclidean.h"
+#include "Passthrough.h"
 #include "Osc.h"
 #include "NoteOnOff.h"
 #include "BeatStepPro.h"

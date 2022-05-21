@@ -36,6 +36,11 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         auto m = this->addEuclidean(pos, data);
         return m->id;
     }
+    if (type == "Passthrough")
+    {
+        auto m = this->addPassthrough(pos, data);
+        return m->id;
+    }
     
     if (type == "Oscillator")
     {
@@ -167,8 +172,6 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         auto m = this->addCustomCC(pos, data);
         return m->id;
     }
-    
-    
     
     if (type == "ProcessCV")
     {
@@ -328,6 +331,15 @@ EuclideanRef Orage::addEuclidean(vec2 origin, JsonTree data){
     modules.push_back(ref);
     return ref;
 }
+
+PassthroughRef Orage::addPassthrough(vec2 origin, JsonTree data){
+    PassthroughRef ref = Passthrough::create("Passthrough", origin, mMainWinCtx, data);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
+
+
 
 OscRef Orage::addOsc(vec2 origin, JsonTree data){
     OscRef ref = Osc::create("Osc", origin, mMainWinCtx, data);
@@ -494,37 +506,44 @@ void Orage::setup(){
                                                          });
     
     contextMenu->addButton("EUCLIDEAN", false)->setCallback(
-                                                         [this](bool a) {
-                                                             if(a){
-                                                                 addEuclidean(contextMenu->getOrigin());
-                                                             }
-                                                         });
+                                                            [this](bool a) {
+                                                                if(a){
+                                                                    addEuclidean(contextMenu->getOrigin());
+                                                                }
+                                                            });
     
-    contextMenu->addButton("OSC", false)->setCallback(
-                                                      [this](bool a) {
-                                                          if(a){
-                                                              addOsc(contextMenu->getOrigin());
-                                                          }
-                                                      });
+    contextMenu->addButton("PASSTHROUGH", false)->setCallback(
+                                                            [this](bool a) {
+                                                                if(a){
+                                                                    addPassthrough(contextMenu->getOrigin());
+                                                                }
+                                                            });
     
-    contextMenu->addButton("BEAT_STEP_PRO", false)->setCallback(
-                                                                [this](bool a) {
-                                                                    if(a){
-                                                                        addBeatStepPro(contextMenu->getOrigin());
-                                                                    }
-                                                                });
-    contextMenu->addButton("NANO_KONTROL", false)->setCallback(
-                                                               [this](bool a) {
-                                                                   if(a){
-                                                                       addNanoKontrol(contextMenu->getOrigin());
-                                                                   }
-                                                               });
-    contextMenu->addButton("CUSTOM_CC", false)->setCallback(
-                                                               [this](bool a) {
-                                                                   if(a){
-                                                                       addCustomCC(contextMenu->getOrigin());
-                                                                   }
-                                                               });
+//    contextMenu->addButton("OSC", false)->setCallback(
+//                                                      [this](bool a) {
+//                                                          if(a){
+//                                                              addOsc(contextMenu->getOrigin());
+//                                                          }
+//                                                      });
+//
+//    contextMenu->addButton("BEAT_STEP_PRO", false)->setCallback(
+//                                                                [this](bool a) {
+//                                                                    if(a){
+//                                                                        addBeatStepPro(contextMenu->getOrigin());
+//                                                                    }
+//                                                                });
+//    contextMenu->addButton("NANO_KONTROL", false)->setCallback(
+//                                                               [this](bool a) {
+//                                                                   if(a){
+//                                                                       addNanoKontrol(contextMenu->getOrigin());
+//                                                                   }
+//                                                               });
+//    contextMenu->addButton("CUSTOM_CC", false)->setCallback(
+//                                                               [this](bool a) {
+//                                                                   if(a){
+//                                                                       addCustomCC(contextMenu->getOrigin());
+//                                                                   }
+//                                                               });
     
     
     contextMenu->addButton("RANDOM", false)->setCallback(

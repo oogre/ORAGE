@@ -31,7 +31,6 @@ namespace ogre {
     void Euclidean::setup(){
         ModuleCommon::setup();
         setupUI();
-        
     }
     
     void Euclidean::update(){
@@ -58,7 +57,6 @@ namespace ogre {
             stepCursor ++;
             stepCursor %= (int)data.steps;
         }
-        
         
         data.click = oldStepCursor == stepCursor ? 1 : 0;
        
