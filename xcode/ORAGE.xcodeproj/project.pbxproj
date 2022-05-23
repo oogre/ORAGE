@@ -48,6 +48,7 @@
 		85D4B4812CA545008D1F624C /* Wires.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CEC55F32821410B87FEE541 /* Wires.cpp */; };
 		88002E1B283544CE0051C030 /* CDelay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88002E1A283544CE0051C030 /* CDelay.cpp */; };
 		8800562B1EF1C4090045248C /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 880056291EF1C4090045248C /* Player.cpp */; };
+		88034DED283B9C250035C65C /* Rotate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88034DEB283B9C240035C65C /* Rotate.cpp */; };
 		880D788A244497CF00EC0D71 /* start.ORAGE.sh in Resources */ = {isa = PBXBuildFile; fileRef = 880D7889244497CF00EC0D71 /* start.ORAGE.sh */; };
 		88187B1124376BF20008F678 /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AEF24376BF20008F678 /* OscSender.cpp */; };
 		88187B1224376BF20008F678 /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187AF324376BF20008F678 /* OscOutboundPacketStream.cpp */; };
@@ -226,6 +227,8 @@
 		88002E1A283544CE0051C030 /* CDelay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CDelay.cpp; path = ../../../../../Blocks/Orage/src/Modules/Controllers/CDelay.cpp; sourceTree = "<group>"; };
 		880056291EF1C4090045248C /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		8800562A1EF1C4090045248C /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		88034DEB283B9C240035C65C /* Rotate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Rotate.cpp; path = ../../../../../Blocks/Orage/src/Modules/Videos/Rotate.cpp; sourceTree = "<group>"; };
+		88034DEC283B9C240035C65C /* Rotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Rotate.h; path = ../../../../../Blocks/Orage/src/Modules/Videos/Rotate.h; sourceTree = "<group>"; };
 		880D7889244497CF00EC0D71 /* start.ORAGE.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = start.ORAGE.sh; path = ../resources/start.ORAGE.sh; sourceTree = "<group>"; };
 		880D7A632444E95500EC0D71 /* StringTools.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StringTools.hpp; sourceTree = "<group>"; };
 		880D7A642444E95500EC0D71 /* App.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = App.hpp; sourceTree = "<group>"; };
@@ -564,6 +567,8 @@
 		6602E87D465242C5985734F5 /* Videos */ = {
 			isa = PBXGroup;
 			children = (
+				88034DEB283B9C240035C65C /* Rotate.cpp */,
+				88034DEC283B9C240035C65C /* Rotate.h */,
 				9360F4FA36CA4B03BABDFFEE /* Cloud.h */,
 				68EDD811FBD8482083F3E99C /* ColorAdjustement.h */,
 				8840E3AF1F0E5D9D0023CA5F /* TintCorrector.h */,
@@ -1024,6 +1029,7 @@
 				882840152433F6F500881911 /* Config.cpp in Sources */,
 				88B0FED41F06647900EBAD22 /* ProcessCV.cpp in Sources */,
 				5A69F0D64858448AB3D4B714 /* Lfos.cpp in Sources */,
+				88034DED283B9C250035C65C /* Rotate.cpp in Sources */,
 				88D0A08A1ECF2F1600BE6418 /* Output.cpp in Sources */,
 				1C52043D1A264452A862029F /* Cloud.cpp in Sources */,
 				097E12C374B2436080FF1BF7 /* ColorAdjustement.cpp in Sources */,

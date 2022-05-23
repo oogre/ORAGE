@@ -30,6 +30,7 @@
 
 #include "Delay.h"
 #include "Resize.h"
+#include "Rotate.h"
 #include "Blur.h"
 #include "Kaleidoscope.h"
 
@@ -37,6 +38,7 @@
 #include "CDelay.h"
 #include "Euclidean.h"
 #include "Passthrough.h"
+
 #include "Osc.h"
 #include "NoteOnOff.h"
 #include "BeatStepPro.h"

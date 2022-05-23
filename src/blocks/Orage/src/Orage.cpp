@@ -127,6 +127,11 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         auto m = this->addResize(pos, data);
         return m->id;
     }
+    if (type == "Rotate")
+    {
+        auto m = this->addRotate(pos, data);
+        return m->id;
+    }
     if (type == "Blur")
     {
         auto m = this->addBlur(pos, data);
@@ -278,6 +283,13 @@ DelayRef Orage::addDelay(vec2 origin, JsonTree data){
 
 ResizeRef Orage::addResize(vec2 origin, JsonTree data){
     ResizeRef ref = Resize::create("Resize", origin, mMainWinCtx, data);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
+
+RotateRef Orage::addRotate(vec2 origin, JsonTree data){
+    RotateRef ref = Rotate::create("Rotate", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
     return ref;
@@ -473,6 +485,13 @@ void Orage::setup(){
                                                          [this](bool a) {
                                                              if(a){
                                                                  addResize(contextMenu->getOrigin());
+                                                             }
+                                                         });
+    
+    contextMenu->addButton("Rotate", false)->setCallback(
+                                                         [this](bool a) {
+                                                             if(a){
+                                                                 addRotate(contextMenu->getOrigin());
                                                              }
                                                          });
     

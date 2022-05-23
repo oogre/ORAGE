@@ -56,6 +56,7 @@ namespace ogre {
             FreezerRef addFreezer(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             DelayRef addDelay(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             ResizeRef addResize(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
+            RotateRef addRotate(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             BlurRef addBlur(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             PlayerRef addPlayer(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             KaleidoscopeRef addKaleidoscope(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
