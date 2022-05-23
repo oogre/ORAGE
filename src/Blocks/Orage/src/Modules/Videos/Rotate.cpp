@@ -62,45 +62,40 @@ namespace ogre {
             return;
         }
         ModuleVideo::update();
-        
         gl::pushMatrices();
-        
-        gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
-        gl::setMatrices( ModuleVideo::CAM );
-        
-
-        
-        mFbo2->bindFramebuffer();
         {
-            gl::clear( ColorA(0, 0, 0, 1.0f));
-            gl::color( ColorA(1.0f,1.0f,1.0f,1.0f));
-            if(inputs['B']){
-                gl::draw(inputs['B'], Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
+            gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
+            gl::setMatrices( ModuleVideo::CAM );
+            mFbo2->bindFramebuffer();
+            {
+                gl::clear( ColorA(0, 0, 0, 1.0f));
+                gl::color( ColorA(1.0f,1.0f,1.0f,1.0f));
+                if(inputs['B']){
+                    gl::draw(inputs['B'], Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
+                }
+                if(inputs['A']){
+                    float _y = HALF_FBO_HEIGHT * posY;
+                    float _x = HALF_FBO_WIDTH * posX;
+                    float _z = HALF_FBO_HEIGHT * posZ;
+                    gl::pushMatrices();
+                    gl::translate( vec3(_x, _y , _z) );
+                    gl::rotate(rX, 1, 0, 0);
+                    gl::rotate(rY, 0, 1, 0);
+                    gl::rotate(rZ, 0, 1, 1);
+                    gl::translate( vec3(-1.f * _x, -1.f * _y , -1.f * _z) );
+                    gl::draw(inputs['A'], Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
+                    gl::popMatrices();
+                }
+                mFbo2->unbindFramebuffer();
+                
+                mFbo->bindFramebuffer();
+                {
+                    gl::clear( ColorA(0, 0, 0, 1.0f));
+                    gl::draw(mFbo2->getColorTexture(), Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
+                }
+                mFbo->unbindFramebuffer();
             }
-            if(inputs['A']){
-                float _y = HALF_FBO_HEIGHT * posY;
-                float _x = HALF_FBO_WIDTH * posX;
-                float _z = HALF_FBO_HEIGHT * posZ;
-                gl::pushMatrices();
-                gl::translate( vec3(_x, _y , _z) );
-                gl::rotate(rX, 1, 0, 0);
-                gl::rotate(rY, 0, 1, 0);
-                gl::rotate(rZ, 0, 1, 1);
-                gl::translate( vec3(-1.f * _x, -1.f * _y , -1.f * _z) );
-                gl::draw(inputs['A'], Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
-                gl::popMatrices();
-            }
-        mFbo2->unbindFramebuffer();
-        
-        mFbo->bindFramebuffer();
-        {
-            gl::clear( ColorA(0, 0, 0, 1.0f));
-            gl::draw(mFbo2->getColorTexture(), Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
         }
-        mFbo->unbindFramebuffer();
-            
-        }
-        
         gl::popMatrices();
     }
     

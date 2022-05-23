@@ -17,7 +17,7 @@ namespace ogre {
     const int           ModuleVideo::HALF_FBO_WIDTH = ModuleVideo::FBO_WIDTH * 0.5;
     const int           ModuleVideo::HALF_FBO_HEIGHT = ModuleVideo::FBO_HEIGHT * 0.5;
     const float         ModuleVideo::RATIO = (float)ModuleVideo::FBO_HEIGHT/(float)ModuleVideo::FBO_WIDTH;
-CameraPersp         ModuleVideo::CAM = CameraPersp(ModuleVideo::FBO_WIDTH, ModuleVideo::FBO_HEIGHT, -60.0f, 1, 1000 );
+    CameraPersp         ModuleVideo::CAM = CameraPersp(ModuleVideo::FBO_WIDTH, ModuleVideo::FBO_HEIGHT, -60.0f, 1, 1000 );
  
 cinder::gl::TextureRef    ModuleVideo::UP;
 cinder::gl::TextureRef    ModuleVideo::DOWN;
