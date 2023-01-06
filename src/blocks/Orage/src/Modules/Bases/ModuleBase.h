@@ -49,7 +49,7 @@ namespace ogre {
             id = ID++;
             this->name = name;
             if(!ModuleCommon::CLOSE){
-                ModuleCommon::CLOSE = gl::Texture::create(loadImage(loadAsset("/textures/close.png")));
+                ModuleCommon::CLOSE = gl::Texture::create(loadImage(loadAsset("textures/close.png")));
             }
             if(!ModuleCommon::mSimpleTexture){
                 TextLayout layout;

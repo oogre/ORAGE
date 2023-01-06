@@ -22,13 +22,13 @@ namespace ogre {
         
         float posX   = 0.5f;
         float posY   = 0.5f;
-        float posZ   = 0.5f;
+        float posZ   = 0.0f;
         
         float rX   = 0.0f;
         float rY   = 0.0f;
         float rZ   = 0.0f;
         
-        static float TWO_PI;
+        static float PI;
         
         gl::FboRef			mFbo, mFbo2;
         Rotate(string name, JsonTree data, vec2 origin, vec2 size, gl::Context * mMainWinCtx);

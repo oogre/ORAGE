@@ -1121,29 +1121,32 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CINDER_PATH = /Users/ogre/Frameworks/cinder_0.9.0_mac/;
+				CINDER_PATH = /Users/ogre/Frameworks/cinder_0.9.0_mac;
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
 				FRAMEWORK_SEARCH_PATHS = ../src/blocks/Syphon/lib;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ORAGE_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/include\"",
+					"/usr/local/opt/boost@1.69/include",
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"";
+				OTHER_LDFLAGS = "$(CINDER_PATH)/lib/libcinder.a";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libcinder.ORAGE;
 				PRODUCT_NAME = ORAGE;
 				SYMROOT = ./build;
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src ../blocks/OSC/src ../blocks/CLI ../blocks/MIDI2/src";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1151,13 +1154,13 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CINDER_PATH = /Users/ogre/Frameworks/cinder_0.9.0_mac/;
+				CINDER_PATH = /Users/ogre/Frameworks/cinder_0.9.0_mac;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = ../src/blocks/Syphon/lib;
 				GCC_FAST_MATH = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1167,14 +1170,19 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"\"$(CINDER_PATH)/include\"",
+					"/usr/local/opt/boost@1.69/include",
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/macosx/$(CONFIGURATION)/libcinder.a\"";
+				OTHER_LDFLAGS = "$(CINDER_PATH)/lib/libcinder.a";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libcinder.ORAGE;
 				PRODUCT_NAME = ORAGE;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = ./build;
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src ../blocks/OSC/src ../blocks/CLI ../blocks/MIDI2/src";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1182,16 +1190,16 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CINDER_PATH = ../../Desktop/cinder_master;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CINDER_PATH = /Users/ogre/Frameworks/cinder_0.9.0_mac;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
 				CLANG_CXX_LIBRARY = "libc++";
-				ENABLE_TESTABILITY = YES;
+				ENABLE_TESTABILITY = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src ../blocks/OSC/src ../blocks/CLI ../blocks/MIDI2/src";
 			};
@@ -1200,8 +1208,8 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CINDER_PATH = ../../Desktop/cinder_master;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CINDER_PATH = /Users/ogre/Frameworks/cinder_0.9.0_mac;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1223,7 +1231,7 @@
 				C01FCF4C08A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ORAGE" */ = {
 			isa = XCConfigurationList;
@@ -1232,7 +1240,7 @@
 				C01FCF5008A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

@@ -18,7 +18,7 @@ using namespace reza::ui;
 namespace ogre {
     
     int Rotate::COUNT = 0;
-    float Rotate::TWO_PI = 6.283185306f;
+    float Rotate::PI = 3.14159265359f;
     
     Rotate::Rotate( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleVideo(name+" "+ tools.to_roman(Rotate::COUNT), origin, size, 2, 1, true){
         if(jsonData.getNumChildren()!=0){
@@ -74,14 +74,14 @@ namespace ogre {
                     gl::draw(inputs['B'], Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
                 }
                 if(inputs['A']){
-                    float _y = HALF_FBO_HEIGHT * posY;
-                    float _x = HALF_FBO_WIDTH * posX;
-                    float _z = HALF_FBO_HEIGHT * posZ;
+                    float _y = FBO_HEIGHT * posY;
+                    float _x = FBO_WIDTH * posX;
+                    float _z = FBO_HEIGHT * posZ;
                     gl::pushMatrices();
                     gl::translate( vec3(_x, _y , _z) );
                     gl::rotate(rX, 1, 0, 0);
                     gl::rotate(rY, 0, 1, 0);
-                    gl::rotate(rZ, 0, 1, 1);
+                    gl::rotate(rZ, 0, 0, 1);
                     gl::translate( vec3(-1.f * _x, -1.f * _y , -1.f * _z) );
                     gl::draw(inputs['A'], Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
                     gl::popMatrices();
@@ -107,15 +107,15 @@ namespace ogre {
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addLabel("Rotation");
-        tools.addSlider(mUi, "rX", this->id, &(rX), 0, TWO_PI);
-        tools.addSlider(mUi, "rY", this->id, &(rY), 0, TWO_PI);
-        tools.addSlider(mUi, "rZ", this->id, &(rZ), 0, TWO_PI);
+        tools.addSlider(mUi, "rX", this->id, &(rX), 0, PI * 2);
+        tools.addSlider(mUi, "rY", this->id, &(rY), 0, PI * 2);
+        tools.addSlider(mUi, "rZ", this->id, &(rZ), 0, PI * 2);
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addLabel("Translation");
         tools.addSlider(mUi, "tX", this->id, &(posX), .0f, 1.0f);
         tools.addSlider(mUi, "tY", this->id, &(posY), .0f, 1.0f);
-        tools.addSlider(mUi, "tZ", this->id, &(posZ), .0f, 1.0f);
+        tools.addSlider(mUi, "tZ", this->id, &(posZ), -.25f, .25f);
         mUi->setMinified(false);
     }
     

@@ -62,7 +62,8 @@ namespace ogre {
        
         auto rythm_front = rythm.begin();
         std::advance(rythm_front, stepCursor);
-        data.output = (*rythm_front) ? 1 : 0;
+        data.out1 = (*rythm_front) ? 1 : 0;
+        data.out2 = 1 - data.out1;
     
         oldStepCursor =stepCursor;
         oldTime = data.time;
@@ -90,7 +91,8 @@ namespace ogre {
         mUi->addSpacer(false);
 
         tools.addSlider(mUi, "click "+id, this->id, &(data.click), 0.0f, 1.0f, 0, true);
-        tools.addSlider(mUi, "output "+id, this->id, &(data.output), 0.0f, 1.0f, 0, true);
+        tools.addSlider(mUi, "out1 "+id, this->id, &(data.out1), 0.0f, 1.0f, 0, true);
+        tools.addSlider(mUi, "out2 "+id, this->id, &(data.out2), 0.0f, 1.0f, 0, true);
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         

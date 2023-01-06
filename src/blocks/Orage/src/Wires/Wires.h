@@ -333,7 +333,7 @@ namespace ogre {
                 }
                 
                 try {
-                    mTexture = gl::Texture::create( loadImage( loadAsset( "/textures/pattern2.png") ) );
+                    mTexture = gl::Texture::create( loadImage( loadAsset( "textures/pattern2.png") ) );
                 }
                 catch( const std::exception &e ) {
                     console() << "Could not load texture:" << e.what() << std::endl;   

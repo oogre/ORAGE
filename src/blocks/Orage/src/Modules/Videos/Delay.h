@@ -19,8 +19,8 @@ using namespace std;
 namespace ogre {
     class Delay : public ModuleVideo{
         gl::Context * mMainWinCtx;
-        static const int MAX_TEX = 10;
-        static const int MAX_IMG_PER_TEX = 12;
+        static const int MAX_TEX = 15;
+        static const int MAX_IMG_PER_TEX = 6;
         static const int MAX_BUFFER = MAX_TEX * MAX_IMG_PER_TEX;
         float bufferLen = 1.f;
         float cursor = 0.f;

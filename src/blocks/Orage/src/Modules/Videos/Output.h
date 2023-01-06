@@ -12,7 +12,7 @@
 
 #include "cinderSyphon.h"
 #include "ModuleVideo.h"
-#include "cinder/qtime/AvfWriter.h"
+//#include "cinder/qtime/AvfWriter.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -29,8 +29,8 @@ namespace ogre {
         gl::FboRef            oFbo;
         
         Output(string name, JsonTree data, vec2 origin, vec2 size, gl::Context * mMainWinCtx);
-        qtime::MovieWriterRef mMovieExporter;
-        qtime::MovieWriter::Format format;
+//        qtime::MovieWriterRef mMovieExporter;
+//        qtime::MovieWriter::Format format;
         Surface8u	mInputImage;
     public:
         static int COUNT;
@@ -62,7 +62,7 @@ namespace ogre {
         void setupUI() override;
         void setup() override;
         void update() override;
-        void createOutputWindow();
+        void createOutputWindow(DisplayRef display, bool fullscreen = false);
     };
     
     typedef std::shared_ptr<class Output> OutputRef;

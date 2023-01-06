@@ -45,14 +45,16 @@ namespace ogre {
             float steps;
             float beats;
             float phase;
-            float output;
+            float out1;
+            float out2;
             float click;
             DATA():
                 time(0.0f),
                 steps(1.0f),
                 beats(1.0f),
                 phase(0.0f),
-                output(0.0f),
+                out1(0.0f),
+                out2(0.0f),
                 click(0.0f)
             {}
             DATA(JsonTree data):
@@ -60,7 +62,8 @@ namespace ogre {
                 steps(data.getChild("steps").getValue<float>()),
                 beats(data.getChild("beats").getValue<float>()),
                 phase(data.getChild("phase").getValue<float>()),
-                output(data.getChild("output").getValue<float>()),
+                out1(data.getChild("out1").getValue<float>()),
+                out2(data.getChild("out2").getValue<float>()),
                 click(data.getChild("click").getValue<float>())
             {}
         };
@@ -91,7 +94,8 @@ namespace ogre {
                 sub.addChild(JsonTree("steps", data.steps));
                 sub.addChild(JsonTree("beats", data.beats));
                 sub.addChild(JsonTree("phase", data.phase));
-                sub.addChild(JsonTree("output", data.output));
+                sub.addChild(JsonTree("out1", data.out1));
+                sub.addChild(JsonTree("out2", data.out2));
                 sub.addChild(JsonTree("click", data.click));
                 obj.pushBack(sub);
                 return obj;

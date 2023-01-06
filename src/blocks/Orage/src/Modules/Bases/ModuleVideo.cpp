@@ -12,8 +12,8 @@ namespace ogre {
     //1600 * 560
     
     
-    const int           ModuleVideo::FBO_WIDTH = 1280;//1080;//1541;//1600;//2400;//1280;//;
-    const int           ModuleVideo::FBO_HEIGHT = 720;//810;//720;//560;//600;//720;
+    const int           ModuleVideo::FBO_WIDTH = 1920;//1080;//1541;//1600;//2400;//1280;//;
+    const int           ModuleVideo::FBO_HEIGHT = 1080;//810;//720;//560;//600;//720;
     const int           ModuleVideo::HALF_FBO_WIDTH = ModuleVideo::FBO_WIDTH * 0.5;
     const int           ModuleVideo::HALF_FBO_HEIGHT = ModuleVideo::FBO_HEIGHT * 0.5;
     const float         ModuleVideo::RATIO = (float)ModuleVideo::FBO_HEIGHT/(float)ModuleVideo::FBO_WIDTH;
@@ -26,10 +26,10 @@ cinder::gl::TextureRef    ModuleVideo::DOWN;
 ModuleVideo::ModuleVideo(const std::string name, vec2 origin, vec2 size, const int & nInput ,  const int & nOutput , const bool & showPreview):
 ModuleBase<gl::Texture2dRef>(name, origin, size, nInput, nOutput){
     if(!ModuleVideo::UP){
-        ModuleVideo::UP = gl::Texture::create(loadImage(loadAsset( "/textures/arrowUp.png")));
+        ModuleVideo::UP = gl::Texture::create(loadImage(loadAsset( "textures/arrowUp.png")));
     }
     if(!ModuleVideo::DOWN){
-        ModuleVideo::DOWN = gl::Texture::create(loadImage(loadAsset( "/textures/arrowDown.png")));
+        ModuleVideo::DOWN = gl::Texture::create(loadImage(loadAsset( "textures/arrowDown.png")));
     }
     this->showPreview = showPreview;
     

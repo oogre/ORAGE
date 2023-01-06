@@ -15,13 +15,18 @@ WindowCanvas::WindowCanvas( std::string title )
 {
 }
 
+void WindowCanvas::setupFormat(const app::Window::Format & format)
+{
+    if( mWindowRef == nullptr ) {
+        setWindow( createWindow(format) );
+    }
+   
+}
+
 void WindowCanvas::setup()
 {
-	if( mWindowRef == nullptr ) {
-		setWindow( createWindow() );
-	}
-	setDrawBack( false );
-	View::setup();
+    setDrawBack( false );
+    View::setup();
 }
 
 void WindowCanvas::update()
@@ -31,9 +36,9 @@ void WindowCanvas::update()
 	}
 }
 
-app::WindowRef WindowCanvas::createWindow()
+app::WindowRef WindowCanvas::createWindow(const  app::Window::Format & format)
 {
-	app::WindowRef window = app::App::get()->createWindow( app::Window::Format().renderer( app::RendererGl::create( app::RendererGl::Options().msaa( 0 ) ) ).size( getSize() ) );
+	app::WindowRef window = app::App::get()->createWindow( format );
 	std::string name = getName();
 	std::transform( name.begin(), name.end(), name.begin(), ::toupper );
 	window->setTitle( name );
