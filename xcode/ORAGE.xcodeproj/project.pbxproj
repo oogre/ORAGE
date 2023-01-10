@@ -41,7 +41,7 @@
 		5A01B83A828443BF9AA18E7E /* TextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DCF92DA0D48441FDAE01B5F1 /* TextInput.cpp */; };
 		5A69F0D64858448AB3D4B714 /* Lfos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E8C327BE1994ACC8ED55BBC /* Lfos.cpp */; };
 		6248CC197E1B480BA467BF8A /* XYPad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E5CA0725D65649E1A60FCB74 /* XYPad.cpp */; };
-		65D6CF03F176483EA184F69B /* ORAGEApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6080E305157B437DB5EBDBEB /* ORAGEApp.cpp */; };
+		65D6CF03F176483EA184F69B /* ORAGEApp.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6080E305157B437DB5EBDBEB /* ORAGEApp.mm */; };
 		65EE9F225C0D475FA29AA34D /* BSplineEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B48A58A7A51483C93535F19 /* BSplineEditor.cpp */; };
 		67EA672D4B4946B1921A7825 /* Responder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEC3683DB3FF4813BD55CCD9 /* Responder.cpp */; };
 		8033B0DAC6694F96BFD18A35 /* Dialer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB5190331EDD4B5E843BD167 /* Dialer.cpp */; };
@@ -201,7 +201,7 @@
 		5B33C659014740B5A384C2A3 /* Controls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Controls.h; sourceTree = "<group>"; };
 		5CBE252C514B4B6E833A9D90 /* Plotter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Plotter.h; sourceTree = "<group>"; };
 		5ECB8CC08F374783B2CEA391 /* Spacer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Spacer.cpp; sourceTree = "<group>"; };
-		6080E305157B437DB5EBDBEB /* ORAGEApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ORAGEApp.cpp; path = ../src/src/ORAGEApp.cpp; sourceTree = "<group>"; };
+		6080E305157B437DB5EBDBEB /* ORAGEApp.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ORAGEApp.mm; path = src/ORAGEApp.mm; sourceTree = "<group>"; };
 		60E8313692FE470D86B7D43C /* Radio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Radio.cpp; sourceTree = "<group>"; };
 		6156ECAEA22A4993920D49E7 /* Colors.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Colors.cpp; sourceTree = "<group>"; };
 		63512DD2031743F79EDADF34 /* WireVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WireVideo.cpp; path = ../src/blocks/Orage/src/Wires/WireVideo.cpp; sourceTree = SOURCE_ROOT; };
@@ -447,7 +447,7 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				6080E305157B437DB5EBDBEB /* ORAGEApp.cpp */,
+				6080E305157B437DB5EBDBEB /* ORAGEApp.mm */,
 			);
 			name = Source;
 			path = ../src;
@@ -1011,7 +1011,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65D6CF03F176483EA184F69B /* ORAGEApp.cpp in Sources */,
+				65D6CF03F176483EA184F69B /* ORAGEApp.mm in Sources */,
 				882840162433F6F500881911 /* LastNoteExtractor.cpp in Sources */,
 				8840E3B01F0E5D9D0023CA5F /* TintCorrector.cpp in Sources */,
 				DA7E8EBFC13F4C1680A9CAE1 /* Orage.cpp in Sources */,

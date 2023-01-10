@@ -43,6 +43,14 @@ namespace ogre {
         
             cinder::gl::Texture2dRef debug;
         
+            void onOpenPath( const std::function<void( void )> &callback ){
+                mOpenPathFn = callback;
+            }
+            void trigOpenPath(){
+                mOpenPathFn();
+            }
+            std::function<void( void )> mOpenPathFn = [](){};
+        
             OscillatorRef addOscillator(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             TileRef addTile(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             MosherRef addMosher(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());

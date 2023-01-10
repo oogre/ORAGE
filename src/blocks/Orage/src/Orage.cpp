@@ -317,7 +317,7 @@ PlayerRef Orage::addPlayer(vec2 origin, JsonTree data){
 }
 
 RandomRef Orage::addRandom(vec2 origin, JsonTree data){
-    RandomRef ref = Random::create("RANDOM", origin, mMainWinCtx);
+    RandomRef ref = Random::create("RANDOM", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
     return ref;
@@ -602,9 +602,27 @@ void Orage::setup(){
                                                              }
                                                          });
     
+    contextMenu->addButton("Open", false)->setCallback(
+                                                         [this](bool a) {
+                                                             if(a){
+                                                                 trigOpenPath();
+                                                                 auto tmp = addSyphonInput(contextMenu->getOrigin());
+//                                                                 ci::signals::Connection id;
+//                                                                 id = tmp->serverDir->getServerAnnouncedSignal()->connect([tmp, &id](std::vector<syphonServerDescription> servers)->void{
+////                                                                     cout<<"Event : "<<endl;
+////                                                                     for(auto server = servers.begin() ; server != servers.end() ; server ++){
+////                                                                         cout<<server->serverName<<endl;
+////                                                                         tmp->setClient(*server);
+////                                                                     }
+//                                                                     id.disconnect();
+//                                                                     cout<<"DISCONNECT"<<endl;
+//                                                                 });
+//                                                                 cout<<id.isConnected()<<endl;
+                                                             }
+                                                         });
+    
     contextMenu->setVisible(false);
     
-    addOutput();
 //    addNanoKontrol()->onEvent([&](int channel, int control, int value){
 //        if(selectedModules.size() >= channel){
 //            auto cModule = selectedModules.at(channel-1);

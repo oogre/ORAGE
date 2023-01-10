@@ -39,7 +39,6 @@ namespace ogre {
         SuperCanvasRef mUi;
         
         virtual ~ModuleCommon(){
-            cout<<"destroy ModuleCommon"<<endl;
             wires.remove(name);
             mUi.reset();
             mUi = nullptr;
@@ -135,7 +134,6 @@ class ModuleBase : public ModuleCommon{
         
         ModuleBase(std::string name, vec2 origin, vec2 size, const int & nInput, const int & nOutput);
         virtual ~ModuleBase(){
-            cout<<"destroy ModuleBase"<<endl;
             auto itin = inputs.begin();
             while(itin != inputs.end()){
                 itin->second.reset();

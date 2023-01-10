@@ -16,14 +16,18 @@ using namespace reza::ui;
 namespace ogre {
     
     int Random::COUNT = 0;
-    Random::Random( std::string name, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleCommon(name+" "+ tools.to_roman(Random::COUNT), origin, size){
+    Random::Random( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleCommon(name+" "+ tools.to_roman(Random::COUNT), origin, size){
+        if(jsonData.getNumChildren()!=0){
+            data = DATA(jsonData);
+        }
         this->mMainWinCtx = mMainWinCtx;
+        this->typeName = "Random";
     }
     
     void Random::setup(){
         ModuleCommon::setup();
         setupUI();
-        p.setSeed(randomDatas.seed);
+        p.setSeed(data.seed);
     }
     
     void Random::update(){
@@ -31,18 +35,18 @@ namespace ogre {
             return;
         }
         ModuleCommon::update();
-        float dist = randomDatas.input - randomDatas.oldInput;
+        float dist = data.input - data.oldInput;
         if(abs(dist) > 0.5) dist = 1 - abs(dist);
-        randomDatas.counter += dist;
-        randomDatas.oldInput = randomDatas.input;
+        data.counter += dist;
+        data.oldInput = data.input;
         
         float multi = 0;
-        if(randomDatas.randomness >= 0.5 ){
-            multi = lerp(1, 10, (randomDatas.randomness - 0.5)*2);
+        if(data.randomness >= 0.5 ){
+            multi = lerp(1, 10, (data.randomness - 0.5)*2);
         }else{
-            multi = randomDatas.randomness * 2;
+            multi = data.randomness * 2;
         }
-        randomDatas.linear = fmod( multi * (p.noise(randomDatas.counter) + 1) * 0.5f , 1.0f);
+        data.linear = fmod( multi * (p.noise(data.counter) + 1) * 0.5f , 1.0f);
     }
     
     void Random::setupUI(){
@@ -52,11 +56,11 @@ namespace ogre {
         mUi->setColorFillHighlight(ColorAT<float>(vec4(.1f, .9f, 1.f, 1.f)));
         
         string id = toString(COUNT);
-        CanvasRef v = Canvas::create("LFO"+id, ci::app::getWindow());
+        CanvasRef v = Canvas::create("RANDOM"+id, ci::app::getWindow());
         
-        tools.addSlider(mUi, "input "+id, this->id, &(randomDatas.input), 0, 1, 0, true);
-        tools.addSlider(mUi, "rand "+id, this->id, &(randomDatas.randomness ), 0, 1, 0, true);
-        tools.addSlider(mUi, "linear "+id, this->id, &(randomDatas.linear), 0, 1, 0, true);
+        tools.addSlider(mUi, "input "+id, this->id, &(data.input), 0, 1, 0, true);
+        tools.addSlider(mUi, "rand "+id, this->id, &(data.randomness ), 0, 1, 0, true);
+        tools.addSlider(mUi, "linear "+id, this->id, &(data.linear), 0, 1, 0, true);
         
         mUi->setMinified(false);
     }

@@ -1,4 +1,6 @@
+
 #include "cinder/app/App.h"
+
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include <fstream>
@@ -10,7 +12,6 @@
 #include "Orage.h"
 #include "UI.h"
 
-
 #define PRINT(arg) #arg
 #define XPRINT(s) PRINT(s)
 
@@ -20,9 +21,6 @@ using namespace ci;
 using namespace ci::app;
 using namespace ogre;
 using namespace std;
-
-
-
 
 class ORAGEApp : public App {
     static CLI::App app;
@@ -38,12 +36,21 @@ class ORAGEApp : public App {
     gl::Context   * mMainWinCtx;
     
     vector<string> fileExtension = vector<string>(1, "rage");
-    string orageFilePath = getDocumentsDirectory().generic_string() + "/ORAGE";
+    static string orageFilePath;
     static vector<string>& getArgs() { static vector<string> args; return args; }
     
-  public:
+public:
     
     static void prepareSettings( Settings *settings ){
+        
+        orageFilePath = getDocumentsDirectory().generic_string() + "/ORAGE";
+        
+        std::string logFile = orageFilePath+"/orage.log";
+        std::string errorFile = orageFilePath+"/orage.err.log";
+        
+        std::freopen( &logFile[0], "w", stdout );
+        std::freopen( &errorFile[0], "w", stderr );
+        
         int frame_x{0};
         app.add_option("-x", frame_x, "Horizontal position of the main ORAGE frame");
         int frame_y{0};
@@ -75,6 +82,9 @@ class ORAGEApp : public App {
         settings->setWindowSize( frame_w, frame_h );
         settings->setWindowPos( frame_x, frame_y);
     };
+    
+    
+    
     void setup() override {
         if(!fs::exists( orageFilePath )){
             fs::create_directories(orageFilePath);
@@ -83,17 +93,38 @@ class ORAGEApp : public App {
         gl::clear(ColorAT<float>(0, 0, 0, 0));
         orage = Orage::create("ORAGE", mMainWinCtx);
         
-        fs::path fileToLoad(app.get_option("filename")->as<string>());
+        orage->onOpenPath([this](){
+            fs::path path = selectFile();
+            if(!path.empty()){
+                char result[256];   // array to hold the result.
+                strcpy(result, getAppPath().c_str());
+                strcat(result, "/ORAGE.app/Contents/MacOS/ORAGE");
+                strcat(result, " -x ");
+                strcat(result, std::to_string(getWindowPosX() + 20).c_str());
+                strcat(result, " -y ");
+                strcat(result, std::to_string(getWindowPosY() + 20).c_str());
+                strcat(result, " ");
+                strcat(result, path.c_str());
+                strcat(result, " &");
+                cout << std::system(result);
+            };
+        });
         
+        
+        fs::path fileToLoad(app.get_option("filename")->as<string>());
+        bool flag = false;
         if(fs::exists(fileToLoad)){
             string extension = fileToLoad.extension().generic_string<string>();
             extension.erase(0, 1);
             if(std::find(fileExtension.begin(), fileExtension.end(), extension) != fileExtension.end()){
-                orage->modules.clear();
                 open(fileToLoad);
+                flag = true;
             }
         }
-        
+        if(!flag){
+            orage->addOutput();
+        }
+       
     };
     void update() override {
         
@@ -120,15 +151,14 @@ class ORAGEApp : public App {
     fs::path selectFile();
 };
 
-
 CLI::App ORAGEApp::app{"This is ORAGE a visual modular synthetizer"};
+string ORAGEApp::orageFilePath = "";
 
 void ORAGEApp::mouseMove( MouseEvent event ) {
     if(mMainWinCtx != gl::Context::getCurrent()){
         return;
     }
     mMouseLoc = event.getPos();
-    
 }
 
 void ORAGEApp::mouseDown( MouseEvent event ) {
@@ -183,21 +213,7 @@ void ORAGEApp::keyDown( KeyEvent event){
         if(c == 's'){
             save();
         }else if (c == 'o'){
-            fs::path path = selectFile();
-            if(!path.empty()){
-                char result[256];   // array to hold the result.
-                strcpy(result, getAppPath().c_str());
-                strcat(result, "/ORAGE.app/Contents/MacOS/ORAGE");
-                strcat(result, " -x ");
-                strcat(result, std::to_string(getWindowPosX() + 20).c_str());
-                strcat(result, " -y ");
-                strcat(result, std::to_string(getWindowPosY() + 20).c_str());
-                strcat(result, " ");
-                strcat(result, path.c_str());
-                strcat(result, " &");
-                cout <<
-                std::system(result);
-            };
+            orage->trigOpenPath();
         }else if (c == 'n'){
             char result[256];   // array to hold the result.
             strcpy(result, getAppPath().c_str());
@@ -207,9 +223,7 @@ void ORAGEApp::keyDown( KeyEvent event){
             strcat(result, " -y ");
             strcat(result, std::to_string(getWindowPosY() + 20).c_str());
             strcat(result, " &");
-            cout <<
-            std::system(result);
-            
+            cout << std::system(result);
         }
     }
     
@@ -262,7 +276,6 @@ void ORAGEApp::save(){
         cmd = replaceAll(cmd, "[APP_ID]", toHex(XPRINT(PRODUCT_BUNDLE_IDENTIFIER)));
         std::cout << "on dbClick run : " << appPath << std::endl;
         system(&cmd[0]);
-        
     }
 }
 
@@ -294,24 +307,16 @@ void ORAGEApp::open(fs::path path){
             idDictionnary[module.getChild("id").getValue<int>()] = id;
         }
     }
-    auto it = idDictionnary.begin();
-    while(it != idDictionnary.end()){
-        cout << (*it).first << " : ";
-        cout << (*it).second << endl;
-        it++;
-    }
     
     if( content.hasChild( "wires" ) ){
         for( const auto &wire : content["wires"] ) {
             
-            if( !wire.hasChild("module_master_id") ||
+            if(!wire.hasChild("module_master_id") ||
                !wire.hasChild("module_slave_id") ||
                !wire.hasChild("wire_input_name") ||
                !wire.hasChild("wire_output_name")
-               ){
-                cout<<"NON VALID WIRE"<<endl;
+            ){
                 continue;
-                
             }
             int masterID = idDictionnary[wire.getChild("module_master_id").getValue<int>()];
             int slaveID = idDictionnary[wire.getChild("module_slave_id").getValue<int>()];
@@ -319,8 +324,6 @@ void ORAGEApp::open(fs::path path){
             string inputName = wire.getChild("wire_input_name").getValue<string>();
             ModuleRef master = orage->getModuleById(masterID);
             ModuleRef slave = orage->getModuleById(slaveID);
-            cout<<"master : "<<master->name<<" - output : "<<outputName<<endl;
-            cout<<"slave : "<<slave->name<<" - input : "<<inputName<<endl;
             
             
             ModuleVideoRef vMaster = dynamic_pointer_cast<ModuleVideo>(master);

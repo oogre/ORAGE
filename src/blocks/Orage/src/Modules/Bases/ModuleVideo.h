@@ -36,7 +36,7 @@ namespace ogre {
         
         ModuleVideo(std::string name, vec2 origin, vec2 size = vec2(100, 100), const int & nInput = 0 ,  const int & nOutput = 0 , const bool & showPreview = false);
         virtual ~ModuleVideo(){
-            cout<<"destroy ModuleVideo"<<endl;
+           
         }
 
         void setupFlip();

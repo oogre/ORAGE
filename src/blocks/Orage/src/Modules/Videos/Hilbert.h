@@ -37,7 +37,6 @@ namespace ogre {
         public:
         static int COUNT;
             virtual ~Hilbert(){
-                cout<<"destroy Hilbert"<<endl;
                 data.~DATA();
                 dataUbo.reset();
                 mFbo.reset();

@@ -26,14 +26,16 @@ namespace ogre {
         
         
         syphonClient * clientRef;
-        syphonServerDirectory * serverDir;
         int dirIdx;
         void keyDown( KeyEvent event );
         void nextClient();
-        void setClient(int _idx);
+        
+        bool flag;
         
         SyphonInput(string name, JsonTree data, vec2 origin, vec2 size, gl::Context * mMainWinCtx);
     public:
+        syphonServerDirectory * serverDir;
+        
         static int COUNT;
         static int winOutCOUNT;
         virtual ~SyphonInput(){
@@ -56,6 +58,9 @@ namespace ogre {
                 return obj;
             }
         };
+        int getLastClient();
+        void setClient(int _idx);
+        void setClient(syphonServerDescription desc);
         void setupShader() override;
         void setupUI() override;
         void setup() override;

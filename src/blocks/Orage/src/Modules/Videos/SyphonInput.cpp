@@ -41,9 +41,18 @@ namespace ogre {
         
         clientRef = new syphonClient();
         clientRef->setup();
+        
         serverDir = new syphonServerDirectory();
         serverDir->setup();
-
+        serverDir->getServerAnnouncedSignal()->connect([this](std::vector<syphonServerDescription> servers)->void{
+            for(auto server = servers.begin() ; server != servers.end() ; server ++){
+                if(! flag){
+                    flag = true;
+                    setClient(*server);
+                }
+             }
+        });
+        
     }
     
     void SyphonInput::update(){
@@ -94,16 +103,21 @@ namespace ogre {
         setClient(dirIdx);
     }
     
-    
     void SyphonInput::setClient(int _idx){
         if(serverDir->isValidIndex(_idx)){
             syphonServerDescription desc = serverDir->getDescription(_idx);
-            clientRef->set(desc);
-            clientRef->bind();
-            
+            setClient(desc);
         }
     }
-
+    
+    void SyphonInput::setClient(syphonServerDescription desc){
+            clientRef->set(desc);
+            clientRef->bind();
+    }
+    
+    int SyphonInput::getLastClient(){
+        return serverDir->size()-1;
+    }
     
     void SyphonInput::setupShader(){
         ModuleVideo::setupShader();

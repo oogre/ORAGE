@@ -29,8 +29,7 @@ SliderT<T>::SliderT( std::string name, T *value, T min, T max, Format format )
 template <typename T>
 SliderT<T>::~SliderT()
 {
-    cout<<"destroy slider"<<endl;
-	if( !mUseRef ) {
+    if( !mUseRef ) {
 		delete mValueRef;
 	}
 }

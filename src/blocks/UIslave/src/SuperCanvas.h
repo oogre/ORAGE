@@ -16,7 +16,7 @@ class SuperCanvas : public Canvas {
 	}
 
 	SuperCanvas( std::string title, const ci::app::WindowRef &window );
-    virtual ~SuperCanvas(){ std::cout<< "destroy SuperCanvas"<<std::endl;};
+    virtual ~SuperCanvas(){ };
 	const std::string getType() override { return "SuperCanvas"; }
 	void save( const ci::fs::path &path ) override;
 	void load( const ci::fs::path &path ) override;

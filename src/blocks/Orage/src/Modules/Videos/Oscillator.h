@@ -60,7 +60,6 @@ namespace ogre {
         public:
         static int COUNT;
             virtual ~Oscillator(){
-                cout<<"destroy osc"<<endl;
                 data.~DATA();
                 dataUbo.reset();
                 mFbo.reset();
