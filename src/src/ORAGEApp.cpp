@@ -20,6 +20,7 @@ using namespace std;
 
 
 class ORAGEApp : public App {
+    static CLI::App app;
     bool keyIsDown = false;
     SuperCanvasRef  mUi;
     OrageRef        orage;
@@ -38,23 +39,36 @@ class ORAGEApp : public App {
   public:
     
     static void prepareSettings( Settings *settings ){
-        vector<string> args =  settings->getCommandLineArgs();
-        
-        
-        CLI::App app{"App description"};
-        
-        std::string filename = "default";
-        
-        app.add_option("-f,--file", filename, "A help string");
-        
+        std::string filename = "";
+        app.add_option("-f", filename, "Open this ORAGE path (.rage) file");
+        int frame_x{0};
+        app.add_option("-x", frame_x, "Horizontal position of the main ORAGE frame");
+        int frame_y{0};
+        app.add_option("-y", frame_y, "Vertica position of the main ORAGE frame");
+        int frame_w{720};
+        app.add_option("--width", frame_w, "Horizontal position of the main ORAGE frame");
+        int frame_h{640};
+        app.add_option("--height", frame_h, "Vertical position of the main ORAGE frame");
         
         try {
-            app.parse(args);
-        } catch (const CLI::ParseError &e) {
+            vector<string> args =  settings->getCommandLineArgs();
+            auto itr = std::find(args.begin(), args.end(), "-NSDocumentRevisionsDebugMode");
+            if (itr != args.end()) args.erase(itr);
+            itr = std::find(args.begin(), args.end(), "YES");
+            if (itr != args.end()) args.erase(itr);
+            std::vector<char*> cstrings;
+            cstrings.reserve(args.size());
+            for(size_t i = 0; i < args.size(); ++i)
+                cstrings.push_back(const_cast<char*>(args[i].c_str()));
             
+            app.parse(cstrings.size(), &cstrings[0]);
+        } catch (const CLI::ParseError &e) {
+            cout<<"parsing error"<<endl;
+            app.exit(e);
         }
         
-        settings->setWindowSize( 720, 640 );
+        settings->setWindowSize( frame_w, frame_h );
+        settings->setWindowPos( frame_x, frame_y);
     };
     void setup() override {
         if(!fs::exists( orageFilePath )){
@@ -63,15 +77,18 @@ class ORAGEApp : public App {
         mMainWinCtx = gl::Context::getCurrent();
         gl::clear(ColorAT<float>(0, 0, 0, 0));
         orage = Orage::create("ORAGE", mMainWinCtx);
-        /*
-        auto lastArg = getArgs().end() - 1;
-        fs::path fileToLoad(*lastArg);
-        string extension = fileToLoad.extension().generic_string<string>();
-        extension.erase(0, 1);
-        if(std::find(fileExtension.begin(), fileExtension.end(), extension) != fileExtension.end()){
-            open(fileToLoad);
+        
+        fs::path fileToLoad(app.get_option("-f")->as<string>());
+        
+        if(fs::exists(fileToLoad)){
+            string extension = fileToLoad.extension().generic_string<string>();
+            extension.erase(0, 1);
+            if(std::find(fileExtension.begin(), fileExtension.end(), extension) != fileExtension.end()){
+                orage->modules.clear();
+                open(fileToLoad);
+            }
         }
-         */
+        
     };
     void update() override {
         
@@ -98,6 +115,8 @@ class ORAGEApp : public App {
     fs::path selectFile();
 };
 
+
+CLI::App ORAGEApp::app{"This is ORAGE a visual modular synthetizer"};
 
 void ORAGEApp::mouseMove( MouseEvent event ) {
     if(mMainWinCtx != gl::Context::getCurrent()){
@@ -161,26 +180,31 @@ void ORAGEApp::keyDown( KeyEvent event){
         }else if (c == 'o'){
             fs::path path = selectFile();
             if(!path.empty()){
-                fs::path appPath = getAppPath();
                 char result[256];   // array to hold the result.
-                
-                ;
-                strcpy(result, appPath.c_str());
+                strcpy(result, getAppPath().c_str());
                 strcat(result, "/ORAGE.app/Contents/MacOS/ORAGE");
                 strcat(result, " -x ");
                 strcat(result, std::to_string(getWindowPosX() + 20).c_str());
                 strcat(result, " -y ");
                 strcat(result, std::to_string(getWindowPosY() + 20).c_str());
-                strcat(result, " ");
+                strcat(result, " -f ");
                 strcat(result, path.c_str());
                 strcat(result, " &");
                 cout <<
                 std::system(result);
             };
         }else if (c == 'n'){
-            fs::path appPath = getAppPath();
-            appPath += "/ORAGE.app/Contents/MacOS/ORAGE bonjour &";
-            std::system(appPath.c_str());
+            char result[256];   // array to hold the result.
+            strcpy(result, getAppPath().c_str());
+            strcat(result, "/ORAGE.app/Contents/MacOS/ORAGE");
+            strcat(result, " -x ");
+            strcat(result, std::to_string(getWindowPosX() + 20).c_str());
+            strcat(result, " -y ");
+            strcat(result, std::to_string(getWindowPosY() + 20).c_str());
+            strcat(result, " &");
+            cout <<
+            std::system(result);
+            
         }
     }
     

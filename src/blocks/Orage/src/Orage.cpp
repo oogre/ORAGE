@@ -605,30 +605,30 @@ void Orage::setup(){
     contextMenu->setVisible(false);
     
     addOutput();
-    addNanoKontrol()->onEvent([&](int channel, int control, int value){
-        if(selectedModules.size() >= channel){
-            auto cModule = selectedModules.at(channel-1);
-            cModule->setData((control-1)/4, control%4, value * 0.00787402f);
-        }
-        //cout << channel << " " << control << " " << value << endl;
-    });
-    
-    
-    addCustomCC()->onEvent([&](int channel, int control, int value){
-        cout << channel << " " << control << " "  << value << endl;
-        
-         if(selectedModules.size() > channel){
-            auto cModule = selectedModules.at(channel);
-             if(value == 0){
-                 cModule->resetData(control);
-             }
-             else{
-                cModule->incData(control, value);
-            }
-        }
-        
-        //cout << channel << " " << control << " " << value << endl;
-    });
+//    addNanoKontrol()->onEvent([&](int channel, int control, int value){
+//        if(selectedModules.size() >= channel){
+//            auto cModule = selectedModules.at(channel-1);
+//            cModule->setData((control-1)/4, control%4, value * 0.00787402f);
+//        }
+//        //cout << channel << " " << control << " " << value << endl;
+//    });
+//    
+//    
+//    addCustomCC()->onEvent([&](int channel, int control, int value){
+//        cout << channel << " " << control << " "  << value << endl;
+//        
+//         if(selectedModules.size() > channel){
+//            auto cModule = selectedModules.at(channel);
+//             if(value == 0){
+//                 cModule->resetData(control);
+//             }
+//             else{
+//                cModule->incData(control, value);
+//            }
+//        }
+//        
+//        //cout << channel << " " << control << " " << value << endl;
+//    });
 }
 void Orage::selectModule(ModuleRef module){
     if(selectedModules.size()>0){
