@@ -10,6 +10,10 @@
 #include "Orage.h"
 #include "UI.h"
 
+
+#define PRINT(arg) #arg
+#define XPRINT(s) PRINT(s)
+
 namespace fs = boost::filesystem;
 
 using namespace ci;
@@ -40,8 +44,6 @@ class ORAGEApp : public App {
   public:
     
     static void prepareSettings( Settings *settings ){
-        std::string filename = "";
-        app.add_option("-f", filename, "Open this ORAGE path (.rage) file");
         int frame_x{0};
         app.add_option("-x", frame_x, "Horizontal position of the main ORAGE frame");
         int frame_y{0};
@@ -50,6 +52,8 @@ class ORAGEApp : public App {
         app.add_option("--width", frame_w, "Horizontal position of the main ORAGE frame");
         int frame_h{640};
         app.add_option("--height", frame_h, "Vertical position of the main ORAGE frame");
+        std::string filename = "";
+        app.add_option("filename", filename, "Open this ORAGE path (.rage) file");
         
         try {
             vector<string> args =  settings->getCommandLineArgs();
@@ -79,7 +83,7 @@ class ORAGEApp : public App {
         gl::clear(ColorAT<float>(0, 0, 0, 0));
         orage = Orage::create("ORAGE", mMainWinCtx);
         
-        fs::path fileToLoad(app.get_option("-f")->as<string>());
+        fs::path fileToLoad(app.get_option("filename")->as<string>());
         
         if(fs::exists(fileToLoad)){
             string extension = fileToLoad.extension().generic_string<string>();
@@ -188,7 +192,7 @@ void ORAGEApp::keyDown( KeyEvent event){
                 strcat(result, std::to_string(getWindowPosX() + 20).c_str());
                 strcat(result, " -y ");
                 strcat(result, std::to_string(getWindowPosY() + 20).c_str());
-                strcat(result, " -f ");
+                strcat(result, " ");
                 strcat(result, path.c_str());
                 strcat(result, " &");
                 cout <<
@@ -220,6 +224,25 @@ void ORAGEApp::fileDrop( FileDropEvent event ){
     orage->fileDrop(event);
 }
 
+std::string toHex(std::string s){
+    std::stringstream ss;
+    for(int i = 0; i < s.size(); i++) {
+        int character = int(s[i]); // converting each character to its ascii value
+        ss << std::hex << character; // basefield is now set to hex
+    }
+    return ss.str();
+}
+
+std::string replaceAll(std::string str, const std::string& from, const std::string& to) {
+    size_t start_pos = 0;
+    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
+    }
+    return str;
+}
+
+
 void ORAGEApp::save(){
     JsonTree obj = JsonTree::makeObject();
     obj.pushBack(orage->getData());
@@ -229,6 +252,17 @@ void ORAGEApp::save(){
         ofstream oStream(path.generic_string());
         oStream << obj.serialize();
         oStream.close();
+        
+        std::string cmd = "/usr/bin/Rez -append " + ci::app::getAssetPath("icns/icns.rsrc").generic_string() + " -o " + path.generic_string() + "; /usr/bin/SetFile -a C "+ path.generic_string() + " ; ";
+        system(&cmd[0]);
+        
+        std::string appPath = ci::app::Platform::get()->getExecutablePath().generic_string()+"/"+XPRINT(PRODUCT_NAME)+".app";
+        cmd = "xattr -wx com.apple.LaunchServices.OpenWith 62706C6973743030D30102030405065776657273696F6E54706174685F101062756E646C656964656E74696669657210005F1038[APP_PATH]5F1014[APP_ID]080F171C2F316C0000000000000101000000000000000700000000000000000000000000000083 " + path.generic_string();
+        cmd = replaceAll(cmd, "[APP_PATH]", toHex(appPath));
+        cmd = replaceAll(cmd, "[APP_ID]", toHex(XPRINT(PRODUCT_BUNDLE_IDENTIFIER)));
+        std::cout << "on dbClick run : " << appPath << std::endl;
+        system(&cmd[0]);
+        
     }
 }
 
