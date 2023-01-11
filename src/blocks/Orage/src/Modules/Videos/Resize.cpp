@@ -21,14 +21,7 @@ namespace ogre {
     
     Resize::Resize( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleVideo(name+" "+ tools.to_roman(Resize::COUNT), origin, size, 2, 1, true){
         if(jsonData.getNumChildren()!=0){
-            posX = jsonData.getChild("posX").getValue<float>();
-            posY = jsonData.getChild("posY").getValue<float>();
-            width = jsonData.getChild("width").getValue<float>();
-            height = jsonData.getChild("height").getValue<float>();
-            resX = jsonData.getChild("resX").getValue<float>();
-            resY = jsonData.getChild("resY").getValue<float>();
-            resW = jsonData.getChild("resW").getValue<float>();
-            resH = jsonData.getChild("resH").getValue<float>();
+            data = DATA(jsonData);
         }
         this->mMainWinCtx = mMainWinCtx;
     }
@@ -80,12 +73,12 @@ namespace ogre {
                 gl::draw(inputs['B'], Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
             }
             if(inputs['A']){
-                float _y = HALF_FBO_HEIGHT * (2 * posY - height + 1);
-                float _x = HALF_FBO_WIDTH * (2 * posX - width + 1);
+                float _y = HALF_FBO_HEIGHT * (2 * data.posY.value - data.height.value + 1);
+                float _x = HALF_FBO_WIDTH * (2 * data.posX.value - data.width.value + 1);
                 gl::pushMatrices();
                 gl::translate( vec3(_x, _y , 0) );
-                gl::scale( vec2(width ,height) );
-                gl::draw(inputs['A'], Area(resX*FBO_WIDTH, resY*FBO_HEIGHT, resW*FBO_WIDTH, resH*FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
+                gl::scale( vec2(data.width.value, data.height.value) );
+                gl::draw(inputs['A'], Area(data.resX.value*FBO_WIDTH, data.resY.value*FBO_HEIGHT, data.resW.value*FBO_WIDTH, data.resH.value*FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
                 gl::popMatrices();
             }
         mFbo2->unbindFramebuffer();
@@ -110,19 +103,19 @@ namespace ogre {
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addLabel("Crope");
-        tools.addSlider(mUi, "cX", this->id, &(resX), .0f, 1.0f);
-        tools.addSlider(mUi, "cY", this->id, &(resY), .0f, 1.0f);
+        tools.addSlider(mUi, "cX", this->id, &(data.resX.value), data.resX.min, data.resX.max, data.resX.low, data.resX.high);
+        tools.addSlider(mUi, "cY", this->id, &(data.resY.value), data.resY.min, data.resY.max, data.resY.low, data.resY.high);
         mUi->addSpacer(false);
         mUi->addSpacer(false);
-        tools.addSlider(mUi, "cW", this->id, &(resW), .0f, 1.0f);
-        tools.addSlider(mUi, "cH", this->id, &(resH), .0f, 1.0f);
+        tools.addSlider(mUi, "cW", this->id, &(data.resW.value), data.resW.min, data.resW.max, data.resW.low, data.resW.high);
+        tools.addSlider(mUi, "cH", this->id, &(data.resH.value), data.resH.min, data.resH.max, data.resH.low, data.resH.high);
         mUi->addLabel("Size");
-        tools.addSlider(mUi, "sX", this->id, &(posX), -1.0f, 1.0f);
-        tools.addSlider(mUi, "sY", this->id, &(posY), -1.0f, 1.0f);
+        tools.addSlider(mUi, "sX", this->id, &(data.posX.value), data.posX.min, data.posX.max, data.posX.low, data.posX.high);
+        tools.addSlider(mUi, "sY", this->id, &(data.posY.value), data.posY.min, data.posY.max, data.posY.low, data.posY.high);
         mUi->addSpacer(false);
         mUi->addSpacer(false);
-        tools.addSlider(mUi, "sW", this->id, &(width), -1.0f, 1.0f);
-        tools.addSlider(mUi, "sH", this->id, &(height), -1.0f, 1.0f);
+        tools.addSlider(mUi, "sW", this->id, &(data.width.value), data.width.min, data.width.max, data.width.low, data.width.high);
+        tools.addSlider(mUi, "sH", this->id, &(data.height.value), data.height.min, data.height.max, data.height.low, data.height.high);
 
         mUi->setMinified(false);
     }

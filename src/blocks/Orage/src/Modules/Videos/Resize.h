@@ -10,6 +10,7 @@
 #define Resize_hpp
 
 #include "ModuleVideo.h"
+#include "DataRange.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -20,15 +21,39 @@ namespace ogre {
     class Resize : public ModuleVideo{
         gl::Context * mMainWinCtx;
         
-        float posX    = 0.0f;
-        float posY    = 0.0f;
-        float width   = 1.0f;
-        float height  = 1.0f;
+        struct DATA {
+            RANGE posX;
+            RANGE posY;
+            RANGE width;
+            RANGE height;
+            
+            RANGE resX;
+            RANGE resY;
+            RANGE resW;
+            RANGE resH;
+            DATA():
+                posX(0.0f, -1.0f, 1.0f),
+                posY(0.0f, -1.0f, 1.0f),
+                width(1.0f, -1.0f, 1.0f),
+                height(1.0f, -1.0f, 1.0f),
+                resX(0.0f, 0.0f, 1.0f),
+                resY(0.0f, 0.0f, 1.0f),
+                resW(1.0f, 0.0f, 1.0f),
+                resH(1.0f, 0.0f, 1.0f)
+            {}
+            DATA(JsonTree data):
+                posX(data.getChild("posX")),
+                posY(data.getChild("posY")),
+                width(data.getChild("width")),
+                height(data.getChild("height")),
+                resX(data.getChild("resX")),
+                resY(data.getChild("resY")),
+                resW(data.getChild("resW")),
+                resH(data.getChild("resH"))
+            {}
+        };
+        DATA data;
         
-        float resX    = 0.0f;
-        float resY    = 0.0f;
-        float resW   = 1.0f;
-        float resH  = 1.0f;
         
         gl::FboRef			mFbo, mFbo2;
         Resize(string name, JsonTree data, vec2 origin, vec2 size, gl::Context * mMainWinCtx);
@@ -36,22 +61,12 @@ namespace ogre {
     public:
         static int COUNT;
         virtual ~Resize(){
-            // data.~DelayData();
+             data.~DATA();
             mFbo.reset();
             mMainWinCtx = nullptr;
         }
         
         virtual void setData(int id, int elem, float nValue) override {
-            switch(id){
-                case 0 : resX = lerp(.0f, 1.0f, nValue); break;
-                case 1 : resY = lerp(.0f, 1.0f, nValue); break;
-                case 2 : resW = lerp(0.0f, 1.0f, nValue); break;
-                case 3 : resH = lerp(.0f, 1.0f, nValue); break;
-                case 4 : posX = lerp(-1.0f, 1.0f, nValue); break;
-                case 5 : posY = lerp(-1.0f, 1.0f, nValue); break;
-                case 6 : width = lerp(-1.0f, 1.0f, nValue); break;
-                case 7 : height = lerp(-1.0f, 1.0f, nValue); break;
-            }
         }
         
         typedef std::shared_ptr<class Resize> ResizeRef;
@@ -67,14 +82,17 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "Resize"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(JsonTree("posX", posX));
-                sub.addChild(JsonTree("posY", posY));
-                sub.addChild(JsonTree("width", width));
-                sub.addChild(JsonTree("height", height));
-                sub.addChild(JsonTree("resX", resX));
-                sub.addChild(JsonTree("resY", resY));
-                sub.addChild(JsonTree("resW", resW));
-                sub.addChild(JsonTree("resH", resH));
+                
+                sub.addChild(data.resX.getData("resX", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("cX Limiter"))));
+                sub.addChild(data.resY.getData("resY", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("cY Limiter"))));
+                sub.addChild(data.resW.getData("resW", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("cW Limiter"))));
+                sub.addChild(data.resH.getData("resH", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("cH Limiter"))));
+                
+                sub.addChild(data.posX.getData("posX", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("sX Limiter"))));
+                sub.addChild(data.posY.getData("posY", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("sY Limiter"))));
+                sub.addChild(data.width.getData("width", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("sW Limiter"))));
+                sub.addChild(data.height.getData("height", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("sH Limiter"))));
+                
                 obj.pushBack(sub);
                 return obj;
             }

@@ -280,6 +280,7 @@
 		881A13601EEC1822003FF906 /* Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resize.h; sourceTree = "<group>"; };
 		881A13621EEC4157003FF906 /* Blur.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Blur.cpp; sourceTree = "<group>"; };
 		881A13631EEC4157003FF906 /* Blur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blur.h; sourceTree = "<group>"; };
+		882018E7296E44C4008D72FD /* DataRange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DataRange.h; path = ../../../../../Blocks/Orage/src/Modules/Data/DataRange.h; sourceTree = "<group>"; };
 		88272F252524DF100074A17D /* BeatStepPro.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeatStepPro.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/BeatStepPro.cpp; sourceTree = SOURCE_ROOT; };
 		88272F262524DF100074A17D /* BeatStepPro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BeatStepPro.h; path = ../src/blocks/Orage/src/Modules/Controllers/BeatStepPro.h; sourceTree = SOURCE_ROOT; };
 		88283FDC2433F40700881911 /* WirePiano.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WirePiano.h; path = ../src/blocks/Orage/src/Wires/WirePiano.h; sourceTree = SOURCE_ROOT; };
@@ -554,6 +555,7 @@
 		3D78B2923B9C4EBF9F664373 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				882018E6296E44B1008D72FD /* Data */,
 				E5A88721866B40FE9B26FB7E /* Bases */,
 				9ADF9E6C4AB24B10BEE8F830 /* Controllers */,
 				6602E87D465242C5985734F5 /* Videos */,
@@ -699,6 +701,14 @@
 				88187B0724376BF20008F678 /* UdpSocket.cpp */,
 			);
 			path = posix;
+			sourceTree = "<group>";
+		};
+		882018E6296E44B1008D72FD /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				882018E7296E44C4008D72FD /* DataRange.h */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		88283FFF2433F6F500881911 /* Piano */ = {
