@@ -12,6 +12,7 @@
 
 
 #include "ModuleVideo.h"
+#include "DataRange.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -23,29 +24,49 @@ namespace ogre {
         gl::Context * mMainWinCtx;
         
         struct DATA {
-            float bri  = 1.0f;
-            float sat  = 1.0f;
-            float con  = 1.0f;
-            float red  = 0.0f;
-            float green  = 0.0f;
-            float blue  = 0.0f;
-            float ssm  = 0.0f;
-            float ssM  = 1.0f;
-            int modifier = 0;
-            DATA(){};
+            RANGE bri;
+            RANGE sat;
+            RANGE con;
+            RANGE red;
+            RANGE green;
+            RANGE blue;
+            RANGE ssm;
+            RANGE ssM;
+            DATA():
+                bri(1.0f, 0.0f, 2.0f),
+                sat(1.0f, 0.0f, 2.0f),
+                con(1.0f, 0.0f, 2.0f),
+                red(0.0f, -1.0f, 1.0f),
+                green(0.0f, -1.0f, 1.0f),
+                blue(0.0f, -1.0f, 1.0f),
+                ssm(0.0f, 0.0f, 1.0f),
+                ssM(1.0f, 0.0f, 1.0f)
+            {};
             DATA(JsonTree data):
-                bri(data.getChild("bri").getValue<float>()),
-                sat(data.getChild("sat").getValue<float>()),
-                con(data.getChild("con").getValue<float>()),
-                red(data.getChild("red").getValue<float>()),
-                green(data.getChild("green").getValue<float>()),
-                blue(data.getChild("blue").getValue<float>()),
-                ssm(data.getChild("ssm").getValue<float>()),
-                ssM(data.getChild("ssM").getValue<float>()),
-                modifier(data.getChild("modifier").getValue<int>())
+                bri(data.getChild("bri")),
+                sat(data.getChild("sat")),
+                con(data.getChild("con")),
+                red(data.getChild("red")),
+                green(data.getChild("green")),
+                blue(data.getChild("blue")),
+                ssm(data.getChild("ssm")),
+                ssM(data.getChild("ssM"))
             {}
-        } ;
+        };
+        
         DATA data;
+        struct S_DATA {
+            float bri;
+            float sat;
+            float con;
+            float red;
+            float green;
+            float blue;
+            float ssm;
+            float ssM;
+            int modifier = 0;
+        } ;
+        S_DATA sData;
         
         gl::UboRef          dataUbo;
         gl::FboRef			mFbo, mFbo2;
@@ -58,24 +79,13 @@ namespace ogre {
         
         virtual ~ColorAdjustement(){
             data.~DATA();
+            sData.~S_DATA();
             dataUbo.reset();
             mFbo.reset();
             mShader.reset();
             mMainWinCtx = nullptr;
         }
         
-        virtual void setData(int id, int elem, float nValue) override {
-            switch(id){
-                case 0 : data.bri = lerp(0.0f, 2.0f, nValue); break;
-                case 1 : data.sat = lerp(0.0f, 2.0f, nValue); break;
-                case 2 : data.con = lerp(0.0f, 2.0f, nValue); break;
-                case 3 : data.red = lerp(-1.f, 1.0f, nValue); break;
-                case 4 : data.green = lerp(-1.f, 1.0f, nValue); break;
-                case 5 : data.blue = lerp(-1.f, 1.0f, nValue); break;
-                case 6 : data.ssm = lerp(0.f, 1.0f, nValue); break;
-                case 7 : data.ssM = lerp(1.f, 0.0f, nValue); break;
-            }
-        }
         
         typedef std::shared_ptr<class ColorAdjustement> ColorAdjustementRef;
         
@@ -89,15 +99,14 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "ColorAdjustement"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(JsonTree("bri", data.bri));
-                sub.addChild(JsonTree("sat", data.sat));
-                sub.addChild(JsonTree("con", data.con));
-                sub.addChild(JsonTree("red", data.red));
-                sub.addChild(JsonTree("green", data.green));
-                sub.addChild(JsonTree("blue", data.blue));
-                sub.addChild(JsonTree("ssm", data.ssm));
-                sub.addChild(JsonTree("ssM", data.ssM));
-                sub.addChild(JsonTree("modifier", data.modifier));
+                sub.addChild(data.bri.getData("bri", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("bri Limiter"))));
+                sub.addChild(data.sat.getData("sat", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("sat Limiter"))));
+                sub.addChild(data.con.getData("con", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("con Limiter"))));
+                sub.addChild(data.red.getData("red", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("red Limiter"))));
+                sub.addChild(data.green.getData("green", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("green Limiter"))));
+                sub.addChild(data.blue.getData("blue", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("blue Limiter"))));
+                sub.addChild(data.ssm.getData("ssm", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("ssm Limiter"))));
+                sub.addChild(data.ssM.getData("ssM", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("ssM Limiter"))));
                 obj.pushBack(sub);
                 return obj;
             }

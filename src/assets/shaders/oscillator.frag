@@ -6,8 +6,7 @@ uniform sampler2D tex0;
 uniform sampler2D tex1;
 uniform bool tex1active;
 
-layout (std140) uniform;
-uniform oscillator {
+layout (std140) uniform oscillator {
     float freq;
     float sync;
     float exp;

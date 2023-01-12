@@ -569,10 +569,12 @@
 		6602E87D465242C5985734F5 /* Videos */ = {
 			isa = PBXGroup;
 			children = (
-				88034DEB283B9C240035C65C /* Rotate.cpp */,
 				88034DEC283B9C240035C65C /* Rotate.h */,
+				88034DEB283B9C240035C65C /* Rotate.cpp */,
 				9360F4FA36CA4B03BABDFFEE /* Cloud.h */,
+				F8A43B337A574576B55CA68D /* Cloud.cpp */,
 				68EDD811FBD8482083F3E99C /* ColorAdjustement.h */,
+				00B627F32E2149C38E38DEA4 /* ColorAdjustement.cpp */,
 				8840E3AF1F0E5D9D0023CA5F /* TintCorrector.h */,
 				B7FD3A15D6AA450588FD214F /* Crossfader.h */,
 				C57A3337A861439E953E624E /* Matte.h */,
@@ -590,8 +592,6 @@
 				881A13631EEC4157003FF906 /* Blur.h */,
 				8800562A1EF1C4090045248C /* Player.h */,
 				8896F6B21FB231A800E9630A /* Kaleidoscope.h */,
-				F8A43B337A574576B55CA68D /* Cloud.cpp */,
-				00B627F32E2149C38E38DEA4 /* ColorAdjustement.cpp */,
 				8840E3AE1F0E5D9D0023CA5F /* TintCorrector.cpp */,
 				E08030CF1BFD4096938E26CF /* Crossfader.cpp */,
 				30FD17114D084C95AD0B7351 /* Matte.cpp */,

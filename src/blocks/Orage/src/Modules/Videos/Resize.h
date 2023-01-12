@@ -61,7 +61,7 @@ namespace ogre {
     public:
         static int COUNT;
         virtual ~Resize(){
-             data.~DATA();
+            data.~DATA();
             mFbo.reset();
             mMainWinCtx = nullptr;
         }

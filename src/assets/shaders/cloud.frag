@@ -21,9 +21,10 @@ layout (location = 1) out vec4 oColor1;
 
 layout (std140) uniform;
 uniform cloud {
-    float shiftx;
-    float shifty;
-    float alpha;
+    float octave;
+    float sizex;
+    float sizey;
+    float move;
     float redShift;
     float blueShift;
     float greenShift;
@@ -31,11 +32,10 @@ uniform cloud {
     float blueLvl;
     float greenLvl;
     float lvl;
-    float move;
     float u_time;
-    float sizex;
-    float sizey;
-    float octave;
+    float shiftx;
+    float shifty;
+    float alpha;
     float seedXX;
     float seedYX;
     float seedZX;

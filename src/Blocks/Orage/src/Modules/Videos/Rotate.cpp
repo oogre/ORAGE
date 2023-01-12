@@ -18,16 +18,11 @@ using namespace reza::ui;
 namespace ogre {
     
     int Rotate::COUNT = 0;
-    float Rotate::PI = 3.14159265359f;
+    
     
     Rotate::Rotate( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleVideo(name+" "+ tools.to_roman(Rotate::COUNT), origin, size, 2, 1, true){
         if(jsonData.getNumChildren()!=0){
-            posX = jsonData.getChild("posX").getValue<float>();
-            posY = jsonData.getChild("posY").getValue<float>();
-            posZ = jsonData.getChild("posZ").getValue<float>();
-            rX = jsonData.getChild("rX").getValue<float>();
-            rY = jsonData.getChild("rY").getValue<float>();
-            rZ = jsonData.getChild("rZ").getValue<float>();
+            data = DATA(jsonData);
         }
         this->mMainWinCtx = mMainWinCtx;
     }
@@ -74,14 +69,14 @@ namespace ogre {
                     gl::draw(inputs['B'], Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
                 }
                 if(inputs['A']){
-                    float _y = FBO_HEIGHT * posY;
-                    float _x = FBO_WIDTH * posX;
-                    float _z = FBO_HEIGHT * posZ;
+                    float _y = FBO_HEIGHT * data.posY.value;
+                    float _x = FBO_WIDTH * data.posX.value;
+                    float _z = FBO_HEIGHT * data.posZ.value;
                     gl::pushMatrices();
                     gl::translate( vec3(_x, _y , _z) );
-                    gl::rotate(rX, 1, 0, 0);
-                    gl::rotate(rY, 0, 1, 0);
-                    gl::rotate(rZ, 0, 0, 1);
+                    gl::rotate(data.rX.value, 1, 0, 0);
+                    gl::rotate(data.rY.value, 0, 1, 0);
+                    gl::rotate(data.rZ.value, 0, 0, 1);
                     gl::translate( vec3(-1.f * _x, -1.f * _y , -1.f * _z) );
                     gl::draw(inputs['A'], Area(0, 0, FBO_WIDTH, FBO_HEIGHT), Area(0, 0, FBO_WIDTH, FBO_HEIGHT));
                     gl::popMatrices();
@@ -107,15 +102,15 @@ namespace ogre {
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addLabel("Rotation");
-        tools.addSlider(mUi, "rX", this->id, &(rX), 0, PI * 2);
-        tools.addSlider(mUi, "rY", this->id, &(rY), 0, PI * 2);
-        tools.addSlider(mUi, "rZ", this->id, &(rZ), 0, PI * 2);
+        tools.addSlider(mUi, "rX", this->id, &(data.rX.value), data.rX.min, data.rX.max, data.rX.low, data.rX.high);
+        tools.addSlider(mUi, "rY", this->id, &(data.rY.value), data.rY.min, data.rY.max, data.rX.low, data.rY.high);
+        tools.addSlider(mUi, "rZ", this->id, &(data.rZ.value), data.rZ.min, data.rZ.max, data.rZ.low, data.rZ.high);
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addLabel("Translation");
-        tools.addSlider(mUi, "tX", this->id, &(posX), .0f, 1.0f);
-        tools.addSlider(mUi, "tY", this->id, &(posY), .0f, 1.0f);
-        tools.addSlider(mUi, "tZ", this->id, &(posZ), -.25f, .25f);
+        tools.addSlider(mUi, "tX", this->id, &(data.posX.value), data.posX.min, data.posX.max, data.posX.low, data.posX.high);
+        tools.addSlider(mUi, "tY", this->id, &(data.posY.value), data.posY.min, data.posY.max, data.posY.low, data.posY.high);
+        tools.addSlider(mUi, "tZ", this->id, &(data.posZ.value), data.posZ.min, data.posZ.max, data.posZ.low, data.posZ.high);
         mUi->setMinified(false);
     }
     

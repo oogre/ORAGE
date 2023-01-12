@@ -46,7 +46,7 @@ namespace ogre {
         setupUI();
         
         // allocate our UBO
-        dataUbo = gl::Ubo::create( sizeof( data ), &data, GL_DYNAMIC_DRAW );
+        dataUbo = gl::Ubo::create( sizeof( sData ), &sData, GL_DYNAMIC_DRAW );
         // and bind it to buffer base 0; this is analogous to binding it to texture unit 0
         dataUbo->bindBufferBase( id );
         // and finally tell the shaders that their uniform buffer 'FormulaParams' can be found at buffer base 0
@@ -61,6 +61,16 @@ namespace ogre {
             return;
         }
         ModuleVideo::update();
+        
+        sData.bri = data.bri.value;
+        sData.sat = data.sat.value;
+        sData.con = data.con.value;
+        sData.red = data.red.value;
+        sData.green = data.green.value;
+        sData.blue = data.blue.value;
+        sData.ssm = data.ssm.value;
+        sData.ssM = data.ssM.value;
+        
         gl::pushMatrices();
         gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
         gl::setMatrices( ModuleVideo::CAM );
@@ -68,7 +78,7 @@ namespace ogre {
         mFbo->bindFramebuffer();
         {
             gl::clear( ColorA(0, 0, 0, 0));
-            dataUbo->bufferSubData( 0, sizeof( data ), &data );
+            dataUbo->bufferSubData( 0, sizeof( sData ), &sData );
             gl::ScopedGlslProg glslProg( mShader );
             
             
@@ -79,9 +89,9 @@ namespace ogre {
             if(inputs['B']){
                 inputs['B']->bind(1);
                 mShader->uniform( "tex1", 1 );  // texunit 0
-                data.modifier = 1;
+                sData.modifier = 1;
             }else{
-                data.modifier = 0;
+                sData.modifier = 0;
             }
             
             gl::color(Color::white());
@@ -110,14 +120,14 @@ namespace ogre {
         //mUi->setColorFill(ColorAT<float>(vec4(.8f, .9f, 1.f, .6f)));
         mUi->setColorFillHighlight(ColorAT<float>(vec4(.3f, .9f, 1.f, 1.f)));
         
-        tools.addSlider(mUi, "bri", this->id, &(data.bri), 0.0f, 2.0f);
-        tools.addSlider(mUi, "sat", this->id, &(data.sat), 0.0f, 2.0f);
-        tools.addSlider(mUi, "con", this->id, &(data.con), 0.0f, 2.0f);
-        tools.addSlider(mUi, "red", this->id, &(data.red), -1.f, 1.0f);
-        tools.addSlider(mUi, "green", this->id, &(data.green), -1.f, 1.0f);
-        tools.addSlider(mUi, "blue", this->id, &(data.blue), -1.f, 1.0f);
-        tools.addSlider(mUi, "ssm", this->id, &(data.ssm), 0.f, 1.0f);
-        tools.addSlider(mUi, "ssM", this->id, &(data.ssM), 0.f, 1.0f);
+        tools.addSlider(mUi, "bri", this->id, &(data.bri.value), data.bri.min, data.bri.max, data.bri.low, data.bri.high);
+        tools.addSlider(mUi, "sat", this->id, &(data.sat.value), data.sat.min, data.sat.max, data.sat.low, data.sat.high);
+        tools.addSlider(mUi, "con", this->id, &(data.con.value), data.con.min, data.con.max, data.con.low, data.con.high);
+        tools.addSlider(mUi, "red", this->id, &(data.red.value), data.red.min, data.red.max, data.red.low, data.red.high);
+        tools.addSlider(mUi, "green", this->id, &(data.green.value), data.green.min, data.green.max, data.green.low, data.green.high);
+        tools.addSlider(mUi, "blue", this->id, &(data.blue.value), data.blue.min, data.blue.max, data.blue.low, data.blue.high);
+        tools.addSlider(mUi, "ssm", this->id, &(data.ssm.value), data.ssm.min, data.ssm.max, data.ssm.low, data.ssm.high);
+        tools.addSlider(mUi, "ssM", this->id, &(data.ssM.value), data.ssM.min, data.ssM.max, data.ssM.low, data.ssM.high);
         
         mUi->setMinified(true);
     }
