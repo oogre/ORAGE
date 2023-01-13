@@ -67,6 +67,11 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         auto m = this->addCrossfader(pos, data);
         return m->id;
     }
+    if (type == "Crossslider")
+    {
+        auto m = this->addCrossslider(pos, data);
+        return m->id;
+    }
     if (type == "Tile")
     {
         auto m = this->addTile(pos, data);
@@ -228,6 +233,12 @@ SpliterRef Orage::addSpliter(vec2 origin, JsonTree data){
 }
 CrossfaderRef Orage::addCrossfader(vec2 origin, JsonTree data){
     CrossfaderRef ref = Crossfader::create("Crossfader", origin, mMainWinCtx, data);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
+CrosssliderRef Orage::addCrossslider(vec2 origin, JsonTree data){
+    CrosssliderRef ref = Crossslider::create("Crossslider", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
     return ref;
@@ -441,6 +452,13 @@ void Orage::setup(){
                                                              [this](bool a) {
                                                                  if(a){
                                                                      addCrossfader(contextMenu->getOrigin());
+                                                                 }
+                                                             });
+    
+    contextMenu->addButton("Crossslider", false)->setCallback(
+                                                             [this](bool a) {
+                                                                 if(a){
+                                                                     addCrossslider(contextMenu->getOrigin());
                                                                  }
                                                              });
     

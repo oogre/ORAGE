@@ -1,12 +1,12 @@
 //
-//  Crossfader.cpp
+//  Crossslider.cpp
 //  orage
 //
 //  Created by Vincent Evrard on 2017-04-21.
 //
 //
 
-#include "Crossfader.h"
+#include "Crossslider.h"
 
 
 using namespace ogre;
@@ -16,20 +16,18 @@ using namespace std;
 using namespace reza::ui;
 
 
-
-
 namespace ogre {
     
-    int Crossfader::COUNT = 0;
+    int Crossslider::COUNT = 0;
     
-    Crossfader::Crossfader( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleVideo(name+" "+ tools.to_roman(Crossfader::COUNT), origin, size, 2, 1, true){
+    Crossslider::Crossslider( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleVideo(name+" "+ tools.to_roman(Crossslider::COUNT), origin, size, 2, 1, true){
         if(jsonData.getNumChildren()!=0){
             data = DATA(jsonData);
         }
         this->mMainWinCtx = mMainWinCtx;
     }
     
-    void Crossfader::setup(){
+    void Crossslider::setup(){
         ModuleVideo::setup();
         mFbo = gl::Fbo::create(FBO_WIDTH,
                                FBO_HEIGHT,
@@ -60,7 +58,7 @@ namespace ogre {
         mShader->uniformBlock("crossfader", id );
     }
     
-    void Crossfader::update(){
+    void Crossslider::update(){
         if(mMainWinCtx != gl::Context::getCurrent()){
             return;
         }
@@ -132,9 +130,9 @@ namespace ogre {
      
     }
     
-    void Crossfader::setupUI(){
+    void Crossslider::setupUI(){
         ModuleVideo::setupUI();
-        mUi->setColorBack(ColorAT<float>(vec4(.3f, .1f, .9f, .4f)));
+        mUi->setColorBack(ColorAT<float>(vec4(.9f, .3f, .1f, .4f)));
         //mUi->setColorFill(ColorAT<float>(vec4(.8f, .9f, 1.f, .6f)));
         mUi->setColorFillHighlight(ColorAT<float>(vec4(.1f, .9f, 1.f, 1.f)));
         
@@ -163,11 +161,11 @@ namespace ogre {
         mUi->setMinified(true);
     }
     
-    void Crossfader::setupShader(){
+    void Crossslider::setupShader(){
         ModuleVideo::setupShader();
         mShader = gl::GlslProg::create(
-                                       loadAsset( "shaders/crossfader.vert"),
-                                       loadAsset( "shaders/crossfader.frag")
+                                       loadAsset( "shaders/Crossslider.vert"),
+                                       loadAsset( "shaders/Crossslider.frag")
                                        );
     }
     

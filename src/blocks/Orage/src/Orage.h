@@ -57,6 +57,7 @@ namespace ogre {
             MatteRef addMatte(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             SpliterRef addSpliter(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             CrossfaderRef addCrossfader(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
+            CrosssliderRef addCrossslider(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             ColorAdjustementRef addColorAdjustement(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             TintCorrectorRef addTintCorrector(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             CloudRef addCloud(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());

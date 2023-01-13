@@ -100,6 +100,7 @@
 		88A8897D1EDC494E007F4B0C /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 88A8897C1EDC494D007F4B0C /* assets */; };
 		88AC2DA40BC4441CA9DF5B0B /* Label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E1089BA49DF4B3ABD6B9E92 /* Label.cpp */; };
 		88B0FED41F06647900EBAD22 /* ProcessCV.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88B0FED21F06647900EBAD22 /* ProcessCV.cpp */; };
+		88C964CB2971910900A2CB7C /* Crossslider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88C964CA2971910900A2CB7C /* Crossslider.cpp */; };
 		88D0A08A1ECF2F1600BE6418 /* Output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88D0A0881ECF2F1600BE6418 /* Output.cpp */; };
 		88E4AC2D1EE03B2000A9DA8C /* Delay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E4AC2B1EE03B2000A9DA8C /* Delay.cpp */; };
 		88F3CD362665833400B53D48 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A889631EDC308D007F4B0C /* Syphon.framework */; };
@@ -354,6 +355,8 @@
 		88A8897C1EDC494D007F4B0C /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../src/assets; sourceTree = "<group>"; };
 		88B0FED21F06647900EBAD22 /* ProcessCV.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProcessCV.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/ProcessCV.cpp; sourceTree = SOURCE_ROOT; };
 		88B0FED31F06647900EBAD22 /* ProcessCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProcessCV.h; path = ../src/blocks/Orage/src/Modules/Controllers/ProcessCV.h; sourceTree = SOURCE_ROOT; };
+		88C964C92971910900A2CB7C /* Crossslider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Crossslider.h; sourceTree = "<group>"; };
+		88C964CA2971910900A2CB7C /* Crossslider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Crossslider.cpp; sourceTree = "<group>"; };
 		88D0A0881ECF2F1600BE6418 /* Output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Output.cpp; sourceTree = "<group>"; };
 		88D0A0891ECF2F1600BE6418 /* Output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Output.h; sourceTree = "<group>"; };
 		88D8B45074CB4476BC6C4309 /* XYPad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYPad.h; sourceTree = "<group>"; };
@@ -579,6 +582,8 @@
 				8840E3AE1F0E5D9D0023CA5F /* TintCorrector.cpp */,
 				B7FD3A15D6AA450588FD214F /* Crossfader.h */,
 				E08030CF1BFD4096938E26CF /* Crossfader.cpp */,
+				88C964C92971910900A2CB7C /* Crossslider.h */,
+				88C964CA2971910900A2CB7C /* Crossslider.cpp */,
 				C57A3337A861439E953E624E /* Matte.h */,
 				30FD17114D084C95AD0B7351 /* Matte.cpp */,
 				E694CFC4215A4A08A486112F /* Mosher.h */,
@@ -816,28 +821,28 @@
 		9ADF9E6C4AB24B10BEE8F830 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				884FF4072839249B004E6039 /* Passthrough.cpp */,
 				884FF4082839249B004E6039 /* Passthrough.h */,
-				885C8DB328364724007B788C /* Euclidean.cpp */,
+				884FF4072839249B004E6039 /* Passthrough.cpp */,
 				885C8DB228364724007B788C /* Euclidean.h */,
-				88002E1A283544CE0051C030 /* CDelay.cpp */,
+				885C8DB328364724007B788C /* Euclidean.cpp */,
 				88002E19283544CE0051C030 /* CDelay.h */,
+				88002E1A283544CE0051C030 /* CDelay.cpp */,
 				128130448FB0431A86A5095C /* Lfos.h */,
-				88B0FED31F06647900EBAD22 /* ProcessCV.h */,
 				4E8C327BE1994ACC8ED55BBC /* Lfos.cpp */,
+				88B0FED31F06647900EBAD22 /* ProcessCV.h */,
 				88B0FED21F06647900EBAD22 /* ProcessCV.cpp */,
-				888984BC2060028400488193 /* Random.cpp */,
 				888984BD2060028400488193 /* Random.hpp */,
-				889932C62523CF3E00020C9F /* NoteOnOff.cpp */,
+				888984BC2060028400488193 /* Random.cpp */,
 				889932C72523CF4000020C9F /* NoteOnOff.h */,
-				88187B1E24376C3F0008F678 /* Osc.cpp */,
+				889932C62523CF3E00020C9F /* NoteOnOff.cpp */,
 				88187B1F24376C3F0008F678 /* Osc.h */,
-				889E456C256AA02A00C114CB /* NanoKontrol.cpp */,
+				88187B1E24376C3F0008F678 /* Osc.cpp */,
 				889E456B256AA02900C114CB /* NanoKontrol.h */,
-				88790944257B0C9A0084AA2A /* CustomCC.cpp */,
+				889E456C256AA02A00C114CB /* NanoKontrol.cpp */,
 				88790943257B0C9A0084AA2A /* CustomCC.h */,
-				88272F252524DF100074A17D /* BeatStepPro.cpp */,
+				88790944257B0C9A0084AA2A /* CustomCC.cpp */,
 				88272F262524DF100074A17D /* BeatStepPro.h */,
+				88272F252524DF100074A17D /* BeatStepPro.cpp */,
 			);
 			name = Controllers;
 			path = ../src/blocks/Orage/src/Modules/Controllers;
@@ -1084,6 +1089,7 @@
 				88AC2DA40BC4441CA9DF5B0B /* Label.cpp in Sources */,
 				884FF4092839249C004E6039 /* Passthrough.cpp in Sources */,
 				C57816A525934F949D35065F /* MultiSlider.cpp in Sources */,
+				88C964CB2971910900A2CB7C /* Crossslider.cpp in Sources */,
 				E0360721089943EDB1ECA3A7 /* Plotter.cpp in Sources */,
 				4C0CAE91E0914873B0ECDBB4 /* QuaternionOrderer.cpp in Sources */,
 				88439150252521270052B44F /* MidiMessage.cpp in Sources */,

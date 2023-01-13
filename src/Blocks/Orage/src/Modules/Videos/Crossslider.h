@@ -1,13 +1,13 @@
 //
-//  Crossfader.hpp
+//  Crossslider.hpp
 //  orage
 //
 //  Created by Vincent Evrard on 2017-04-21.
 //
 //
 
-#ifndef Crossfader_hpp
-#define Crossfader_hpp
+#ifndef Crossslider_hpp
+#define Crossslider_hpp
 
 #include "ModuleVideo.h"
 #include "DataRange.h"
@@ -18,7 +18,7 @@ using namespace ci::app;
 using namespace std;
 
 namespace ogre {
-    class Crossfader : public ModuleVideo{
+    class Crossslider : public ModuleVideo{
         gl::Context * mMainWinCtx;
         map<char, gl::Texture2dRef> oldInputs;
         TextureViewRef inputA;
@@ -31,7 +31,7 @@ namespace ogre {
             RANGE blend;
             DATA():
                 crossfade(0.0f, -1.0f, 1.0f),
-                blend(0.0f, 0.0f, 11.0f)
+                blend(0.0f, 0.0f, 6.0f)
             {};
             DATA(JsonTree data):
                 crossfade(data.getChild("crossfade")),
@@ -54,12 +54,12 @@ namespace ogre {
         gl::FboRef			mFbo, mFbo2;
         gl::GlslProgRef     mShader;
         
-        Crossfader(string name, JsonTree data, vec2 origin, vec2 size, gl::Context * mMainWinCtx);
+        Crossslider(string name, JsonTree data, vec2 origin, vec2 size, gl::Context * mMainWinCtx);
         
     public:
         static int COUNT;
         
-        virtual ~Crossfader(){
+        virtual ~Crossslider(){
             data.~DATA();
             sData.~S_DATA();
             
@@ -78,20 +78,18 @@ namespace ogre {
         }
         
         
-        typedef std::shared_ptr<class Crossfader> CrossfaderRef;
+        typedef std::shared_ptr<class Crossslider> CrosssliderRef;
         
-        static CrossfaderRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())
+        static CrosssliderRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())
         {
-            Crossfader::COUNT++;
-            return CrossfaderRef( new Crossfader( name, data, origin, vec2(WIDTH*2, 500), mMainWinCtx ) );
+            Crossslider::COUNT++;
+            return CrosssliderRef( new Crossslider( name, data, origin, vec2(WIDTH*2, 500), mMainWinCtx ) );
         }
-        
-        
         
         virtual JsonTree getData() override {
             {
                 JsonTree obj = ModuleCommon::getData();
-                obj.addChild(JsonTree("type", "Crossfader"));
+                obj.addChild(JsonTree("type", "Crossslider"));
                 JsonTree sub = JsonTree::makeObject("data");
                 sub.addChild(data.crossfade.getData("crossfade", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("crossfade Limiter"))));
                 sub.addChild(data.blend.getData("blend", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("blend Limiter"))));
@@ -106,7 +104,7 @@ namespace ogre {
         void update() override;
     };
     
-    typedef std::shared_ptr<class Crossfader> CrossfaderRef;
+    typedef std::shared_ptr<class Crossslider> CrosssliderRef;
 }
 
-#endif /* Crossfader_hpp */
+#endif /* Crossslider_hpp */

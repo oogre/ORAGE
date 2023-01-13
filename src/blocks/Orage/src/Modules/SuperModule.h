@@ -22,6 +22,7 @@
 #include "Mosher.h"
 #include "Spliter.h"
 #include "Crossfader.h"
+#include "Crossslider.h"
 
 #include "Tile.h"
 #include "Freezer.h"

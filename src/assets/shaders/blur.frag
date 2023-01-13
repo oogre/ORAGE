@@ -8,7 +8,7 @@ layout (std140) uniform;
 uniform blur {
     float amountX;
     float amountY;
-    bool blurActive;
+    int blurActive;
     float width;
     float height;
 };
@@ -32,7 +32,7 @@ void main()
 {
     vec4 color = vec4(0.0);
     vec2 blur  = vec2(amountX, amountY);
-    if(blurActive){
+    if(blurActive == 1){
         vec3 modifierValue = texture(tex1, vertTexCoord0).rgb;
         float modifierV = max(modifierValue.x, max(modifierValue.y, modifierValue.z)) * 0.20;
         blur = blur * modifierV;
