@@ -84,10 +84,9 @@ namespace ogre {
 //        mUi->setColorFillHighlight(ColorAT<float>(vec4(.3f, .9f, 1.f, 1.f)));
         
         
-        
-        sY = tools.addSlider(mUi, "Y", this->id, &(data.sY.value), data.sY.min, data.sY.max, data.sY.low, data.sY.high);
-        sPb = tools.addSlider(mUi, "Pb", this->id, &(data.sPb.value), data.sPb.min, data.sPb.max, data.sPb.low, data.sPb.high);
-        sPr = tools.addSlider(mUi, "Pr", this->id, &(data.sPr.value), data.sPr.min, data.sPr.max, data.sPr.low, data.sPr.high);
+        sY = tools.addSlider(mUi, "Y", this->id, &(data.sY));
+        sPb = tools.addSlider(mUi, "Pb", this->id, &(data.sPb));
+        sPr = tools.addSlider(mUi, "Pr", this->id, &(data.sPr));
        
         mUi->setMinified(false);
     }

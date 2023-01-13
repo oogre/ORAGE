@@ -45,7 +45,8 @@ namespace ogre {
             max(data.getChild("max").getValue<float>()),
             low(data.getChild("low").getValue<float>()),
             high(data.getChild("high").getValue<float>())
-        {}
+        {
+        }
         JsonTree getData(string name, RangefRef limiter){
             JsonTree sub = JsonTree::makeObject(name);
             sub.addChild(JsonTree("value", value));

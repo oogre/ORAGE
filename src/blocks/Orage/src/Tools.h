@@ -12,6 +12,7 @@
 
 #include "UI.h"
 #include "Wires.h"
+#include "DataRange.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -23,22 +24,20 @@ namespace ogre {
 
         public :
         
-        SliderfRef addSlider(SuperCanvasRef mUi, string name, int moduleId, float * data, float _min, float _max, float __min, float __max, int width = 0, bool constrain = false, bool addToHeader = false){
+        SliderfRef addSlider(SuperCanvasRef mUi, string name, int moduleId, float * data, float _min, float _max, float low, float high, int width = 0, bool constrain = false, bool addToHeader = false){
             Wires * _w = &wires;
             
             width = (int) (width != 0 ? width : mUi->getWidth() - 18 - mUi->mPadding.mRight - 2 * mUi->mPadding.mLeft);
             
-            SliderfRef s = Sliderf::create( name, data, _min, _max, Sliderf::Format().precision(2).label(true).crossFader(true));
-            s->setMinAndMax( min(__min, __max), max(__min, __max), false);
+            SliderfRef s = Sliderf::create( name, data, min(low, high), max(low, high), Sliderf::Format().precision(2).label(true).crossFader(true));
+
             s->setSize( vec2( width-5, 15 ) );
-            
-            
-            RangefRef r = Rangef::create(name+" Limiter",  __min, __max,  _min, _max, Rangef::Format().label(false));
+
+            RangefRef r = Rangef::create(name+" Limiter",  low, high,  _min, _max, Rangef::Format().label(false));
             r->setCallback(
                            [s, constrain](float a, float b) {
-                               s->setMinAndMax( min(a, b), max(a, b), false);
+                               s->setMinAndMax( min(a, b), max(a, b), true);
                            });
-            
             r->setSize( vec2( width-5, 10 ) );
             
             ButtonRef b = Button::create( name+" InputCV", false, Button::Format().label(false));
@@ -63,6 +62,12 @@ namespace ogre {
             
             
         }
+        SliderfRef addSlider(SuperCanvasRef mUi, string name, int moduleId, RANGE * data, int width = 0, bool constrain = false, bool addToHeader = false){
+            
+            return addSlider(mUi, name, moduleId, &(data->value), data->min, data->max,  data->low,  data->high, width, constrain, addToHeader);
+        }
+        
+        
         SliderfRef addSlider(SuperCanvasRef mUi, string name, int moduleId, float * data, float _min, float _max, int width = 0, bool constrain = false, bool addToHeader = false){
             return addSlider(mUi, name, moduleId, data, _min, _max, _min, _max, width, constrain, addToHeader);
         }

@@ -38,9 +38,9 @@ namespace ogre {
                 sPr(0.0f, -0.5f, 0.5f)
             {};
             DATA(JsonTree data):
-                sY(data.getChild("sY")),
-                sPb(data.getChild("sPb")),
-                sPr(data.getChild("sPr"))
+                sY(data.getChild("Y")),
+                sPb(data.getChild("Pb")),
+                sPr(data.getChild("Pr"))
             {}
         };
         DATA data;
@@ -76,9 +76,9 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "Matte"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(data.sY.getData("Y", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("sY Limiter"))));
-                sub.addChild(data.sPb.getData("Pb", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("sPb Limiter"))));
-                sub.addChild(data.sPr.getData("Pr", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("sPr Limiter"))));
+                sub.addChild(data.sY.getData("Y", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("Y Limiter"))));
+                sub.addChild(data.sPb.getData("Pb", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("Pb Limiter"))));
+                sub.addChild(data.sPr.getData("Pr", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("Pr Limiter"))));
                 obj.pushBack(sub);
                 return obj;
             }
