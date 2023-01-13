@@ -125,31 +125,31 @@ namespace ogre {
         mUi->addSpacer(false);
         
         
-        tools.addSlider(mUi, "octave", this->id, &(data.octave.value), data.octave.min, data.octave.max, data.octave.low, data.octave.high);
+        tools.addSlider(mUi, "octave", this->id, &(data.octave));
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addSpacer(false);
-        tools.addSlider(mUi, "sizex", this->id, &(data.sizex.value), data.sizex.min, data.sizex.max, data.sizex.low, data.sizex.high);
-        tools.addSlider(mUi, "sizey", this->id, &(data.sizey.value), data.sizey.min, data.sizey.max, data.sizey.low, data.sizey.high);
+        tools.addSlider(mUi, "sizex", this->id, &(data.sizex));
+        tools.addSlider(mUi, "sizey", this->id, &(data.sizey));
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addSpacer(false);
-        tools.addSlider(mUi, "move", this->id, &(data.move.value), data.move.min, data.move.max, data.move.low, data.move.high);
-        mUi->addSpacer(false);
-        mUi->addSpacer(false);
-        
-        tools.addSlider(mUi, "redShift", this->id, &(data.redShift.value), data.redShift.min, data.redShift.max, data.redShift.low, data.redShift.high);
-        tools.addSlider(mUi, "blueShift", this->id, &(data.blueShift.value), data.blueShift.min, data.blueShift.max, data.blueShift.low, data.blueShift.high);
-        tools.addSlider(mUi, "greenShift", this->id, &(data.greenShift.value), data.greenShift.min, data.greenShift.max, data.greenShift.low, data.greenShift.high);
+        tools.addSlider(mUi, "move", this->id, &(data.move));
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         
-        tools.addSlider(mUi, "redLvl", this->id, &(data.redLvl.value), data.redLvl.min, data.redLvl.max, data.redLvl.low, data.redLvl.high);
-        tools.addSlider(mUi, "blueLvl", this->id, &(data.blueLvl.value), data.blueLvl.min, data.blueLvl.max, data.blueLvl.low, data.blueLvl.high);
-        tools.addSlider(mUi, "greenLvl", this->id, &(data.greenLvl.value), data.greenLvl.min, data.greenLvl.max, data.greenLvl.low, data.greenLvl.high);
-        tools.addSlider(mUi, "lvl", this->id, &(data.lvl.value), data.lvl.min, data.lvl.max, data.lvl.low, data.lvl.high);
+        tools.addSlider(mUi, "redShift", this->id, &(data.redShift));
+        tools.addSlider(mUi, "blueShift", this->id, &(data.blueShift));
+        tools.addSlider(mUi, "greenShift", this->id, &(data.greenShift));
+        mUi->addSpacer(false);
+        mUi->addSpacer(false);
+        
+        tools.addSlider(mUi, "redLvl", this->id, &(data.redLvl));
+        tools.addSlider(mUi, "blueLvl", this->id, &(data.blueLvl));
+        tools.addSlider(mUi, "greenLvl", this->id, &(data.greenLvl));
+        tools.addSlider(mUi, "lvl", this->id, &(data.lvl));
     
         mUi->setMinified(true);
     }

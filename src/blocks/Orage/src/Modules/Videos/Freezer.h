@@ -11,6 +11,7 @@
 
 
 #include "ModuleVideo.h"
+#include "DataRange.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -22,19 +23,29 @@ namespace ogre {
         gl::Context * mMainWinCtx;
         
         struct DATA {
-            float amount  = 1.0f;
-            float black  = 0.0f;
-            float white  = 1.0f;
-            bool selectorActive = false;
-            DATA(){};
+            RANGE amount;
+            RANGE black;
+            RANGE white;
+            DATA() :
+                amount(1.0f, 0.0f, 1.0f),
+                black(0.0f, 0.0f, 1.0f),
+                white(1.0f, 0.0f, 1.0f)
+            {}
             DATA(JsonTree data):
-                amount(data.getChild("amount").getValue<float>()),
-                black(data.getChild("black").getValue<float>()),
-                white(data.getChild("white").getValue<float>()),
-                selectorActive(data.getChild("selectorActive").getValue<int>())
+                amount(data.getChild("amount")),
+                black(data.getChild("black")),
+                white(data.getChild("white"))
             {}
         };
         DATA data;
+        
+        struct S_DATA {
+            float amount;
+            float black;
+            float white;
+            int selectorActive;
+        };
+        S_DATA sData;
         
         gl::UboRef          dataUbo;
         gl::FboRef			mFbo, mFbo2;
@@ -53,13 +64,6 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
-        virtual void setData(int id, int elem, float nValue) override {
-            switch(id){
-                case 0 : data.amount = lerp(.0f, 1.0f, nValue); break;
-                case 1 : data.black = lerp(.0f, 1.0f, nValue); break;
-                case 2 : data.white = lerp(0.0f, 1.0f, nValue); break;
-            }
-        }
         
         typedef std::shared_ptr<class Freezer> FreezerRef;
         
@@ -74,10 +78,10 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "Freezer"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(JsonTree("amount", data.amount));
-                sub.addChild(JsonTree("black", data.black));
-                sub.addChild(JsonTree("white", data.white));
-                sub.addChild(JsonTree("selectorActive", data.selectorActive));
+                sub.addChild(data.amount.getData("amount", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("amount Limiter"))));
+                sub.addChild(data.black.getData("black", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("black Limiter"))));
+                sub.addChild(data.white.getData("white", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("white Limiter"))));
+                
                 obj.pushBack(sub);
                 return obj;
             }

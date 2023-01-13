@@ -60,7 +60,6 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
-        
         typedef std::shared_ptr<class Matte> MatteRef;
         
         static MatteRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())

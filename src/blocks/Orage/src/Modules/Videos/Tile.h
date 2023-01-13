@@ -10,6 +10,7 @@
 #define Tile_hpp
 
 #include "ModuleVideo.h"
+#include "DataRange.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -20,33 +21,55 @@ namespace ogre {
     class Tile : public ModuleVideo{
         float _tileSizeX = .0f;
         float _tileSizeY = .0f;
-
+        
         struct DATA {
-            float tileSizeX = .0f;
-            float tileSizeY = .0f;
-            float tileRotation = .0f;
-            float tileCenterX = .5f;
-            float tileCenterY = .5f;
-            float preRotation = .0f;
-            float postRotation = .0f;
-            float rotCenterX = .5f;
-            float rotCenterY = .5f;
-            int modifier = 0;
-            DATA(){};
+            RANGE tileSizeX;
+            RANGE tileSizeY;
+            RANGE tileRotation;
+            RANGE tileCenterX;
+            RANGE tileCenterY;
+            RANGE preRotation;
+            RANGE postRotation;
+            RANGE rotCenterX;
+            RANGE rotCenterY;
+            DATA():
+                tileSizeX(0.0f, -1.0f, 1.0f),
+                tileSizeY(0.0f, -1.0f, 1.0f),
+                tileRotation(0.0f, .0f, 1.0f),
+                tileCenterX(0.5f, .0f, 1.0f),
+                tileCenterY(0.5f, .0f, 1.0f),
+                preRotation(0.0f, .0f, 1.0f),
+                postRotation(0.0f, .0f, 1.0f),
+                rotCenterX(0.5f, .0f, 1.0f),
+                rotCenterY(0.5f, .0f, 1.0f)
+            {};
             DATA(JsonTree data):
-                tileSizeX(data.getChild("tileSizeX").getValue<float>()),
-                tileSizeY(data.getChild("tileSizeY").getValue<float>()),
-                tileRotation(data.getChild("tileRotation").getValue<float>()),
-                tileCenterX(data.getChild("tileCenterX").getValue<float>()),
-                tileCenterY(data.getChild("tileCenterY").getValue<float>()),
-                preRotation(data.getChild("preRotation").getValue<float>()),
-                postRotation(data.getChild("postRotation").getValue<float>()),
-                rotCenterX(data.getChild("rotCenterX").getValue<float>()),
-                rotCenterY(data.getChild("rotCenterY").getValue<float>()),
-                modifier(data.getChild("modifier").getValue<int>())
+                tileSizeX(data.getChild("tileSizeX")),
+                tileSizeY(data.getChild("tileSizeY")),
+                tileRotation(data.getChild("tileRotation")),
+                tileCenterX(data.getChild("tileCenterX")),
+                tileCenterY(data.getChild("tileCenterY")),
+                preRotation(data.getChild("preRotation")),
+                postRotation(data.getChild("postRotation")),
+                rotCenterX(data.getChild("rotCenterX")),
+                rotCenterY(data.getChild("rotCenterY"))
             {}
         };
         DATA data;
+        
+        struct S_DATA {
+            float tileSizeX;
+            float tileSizeY;
+            float tileRotation;
+            float tileCenterX;
+            float tileCenterY;
+            float preRotation;
+            float postRotation;
+            float rotCenterX;
+            float rotCenterY;
+            int modifier = 0;
+        };
+        S_DATA sData;
         
         
         gl::UboRef          dataUbo;
@@ -68,20 +91,6 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
-        virtual void setData(int id, int elem, float nValue) override {
-            switch(id){
-                case 0 : data.tileSizeX = lerp(-1.0f, 1.0f, nValue); break;
-                case 1 : data.tileSizeY = lerp(-1.0f, 1.0f, nValue); break;
-                case 2 : data.tileRotation = lerp(0.0f, 1.0f, nValue); break;
-                case 3 : data.tileCenterX = lerp(.0f, 1.0f, nValue); break;
-                case 4 : data.tileCenterY = lerp(.0f, 1.0f, nValue); break;
-                case 5 : data.preRotation = lerp(.0f, 1.0f, nValue); break;
-                case 6 : data.postRotation = lerp(.0f, 1.0f, nValue); break;
-                case 7 : data.rotCenterX = lerp(.0f, 1.0f, nValue); break;
-                case 8 : data.rotCenterY = lerp(.0f, 1.0f, nValue); break;
-            }
-        }
-        
         typedef std::shared_ptr<class Tile> TileRef;
         gl::Context * mMainWinCtx;
         static TileRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())
@@ -94,16 +103,16 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "Tile"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(JsonTree("tileSizeX", data.tileSizeX));
-                sub.addChild(JsonTree("tileSizeY", data.tileSizeY));
-                sub.addChild(JsonTree("tileRotation", data.tileRotation));
-                sub.addChild(JsonTree("tileCenterX", data.tileCenterX));
-                sub.addChild(JsonTree("tileCenterY", data.tileCenterY));
-                sub.addChild(JsonTree("preRotation", data.preRotation));
-                sub.addChild(JsonTree("postRotation", data.postRotation));
-                sub.addChild(JsonTree("rotCenterX", data.rotCenterX));
-                sub.addChild(JsonTree("rotCenterY", data.rotCenterY));
-                sub.addChild(JsonTree("modifier", data.modifier));
+                sub.addChild(data.tileSizeX.getData("tileSizeX", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("X Tile Limiter"))));
+                sub.addChild(data.tileSizeY.getData("tileSizeY", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("Y Tile Limiter"))));
+                sub.addChild(data.tileRotation.getData("tileRotation", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("Mirror Limiter"))));
+                sub.addChild(data.tileCenterX.getData("tileCenterX", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("X center Limiter"))));
+                sub.addChild(data.tileCenterY.getData("tileCenterY", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("Y center Limiter"))));
+                sub.addChild(data.preRotation.getData("preRotation", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("Tile Rot Limiter"))));
+                sub.addChild(data.postRotation.getData("postRotation", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("All Rot Limiter"))));
+                sub.addChild(data.rotCenterX.getData("rotCenterX", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("X Rot Center Limiter"))));
+                sub.addChild(data.rotCenterY.getData("rotCenterY", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("Y Rot Center Limiter"))));
+                
                 obj.pushBack(sub);
                 return obj;
             }

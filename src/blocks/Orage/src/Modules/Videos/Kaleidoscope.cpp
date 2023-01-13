@@ -48,7 +48,7 @@ namespace ogre {
         setupUI();
         
         // allocate our UBO
-        dataUbo = gl::Ubo::create( sizeof( data ), &data, GL_DYNAMIC_DRAW );
+        dataUbo = gl::Ubo::create( sizeof( sData ), &sData, GL_DYNAMIC_DRAW );
         // and bind it to buffer base 0; this is analogous to binding it to texture unit 0
         dataUbo->bindBufferBase( id );
         // and finally tell the shaders that their uniform buffer 'FormulaParams' can be found at buffer base 0
@@ -61,7 +61,12 @@ namespace ogre {
         }
         ModuleVideo::update();
         
-        data.segments = floor(data.segments);
+        sData.segments = floor(data.segments.value);
+        sData.offset = data.offset.value;
+        sData.rotation = data.rotation.value;
+        sData.scale = data.scale.value;
+        sData.x = data.x.value;
+        sData.y = data.y.value;
         
         gl::pushMatrices();
         gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
@@ -70,7 +75,7 @@ namespace ogre {
         mFbo->bindFramebuffer();
         {
             gl::clear( ColorA(0, 0, 0, 0));
-            dataUbo->bufferSubData( 0, sizeof( data ), &data );
+            dataUbo->bufferSubData( 0, sizeof( sData ), &sData );
             gl::ScopedGlslProg glslProg( mShader );
             if(inputs['A']){
                 inputs['A']->bind(0);
@@ -81,9 +86,9 @@ namespace ogre {
             if(inputs['B']){
                 inputs['B']->bind(1);
                 mShader->uniform( "tex1", 1 );  // texunit
-                data.kaleidoscopeActive = true;
+                sData.kaleidoscopeActive = 1;
             }else{
-                data.kaleidoscopeActive = false;
+                sData.kaleidoscopeActive = 0;
             }
             
             gl::color(Color::white());
@@ -118,12 +123,12 @@ namespace ogre {
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         
-        tools.addSlider(mUi, "segments", this->id, &(data.segments), 0.f, 20);
-        tools.addSlider(mUi, "rotation", this->id, &(data.rotation), 0.f, 1.0f);
-        tools.addSlider(mUi, "scale", this->id, &(data.scale), 1.f, 10.0f);
-        tools.addSlider(mUi, "x", this->id, &(data.x), 0.f, 1.0f);
-        tools.addSlider(mUi, "y", this->id, &(data.y), 0.f, 1.0f);
-        tools.addSlider(mUi, "offset", this->id, &(data.offset), 0.f, 1.0f);
+        tools.addSlider(mUi, "segments", this->id, &(data.segments));
+        tools.addSlider(mUi, "rotation", this->id, &(data.rotation));
+        tools.addSlider(mUi, "scale", this->id, &(data.scale));
+        tools.addSlider(mUi, "x", this->id, &(data.x));
+        tools.addSlider(mUi, "y", this->id, &(data.y));
+        tools.addSlider(mUi, "offset", this->id, &(data.offset));
         
         mUi->setMinified(true);
     }

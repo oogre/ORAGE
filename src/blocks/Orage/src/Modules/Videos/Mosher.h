@@ -10,6 +10,7 @@
 #define Mosher_hpp
 
 #include "ModuleVideo.h"
+#include "DataRange.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -21,21 +22,32 @@ namespace ogre {
         gl::Context * mMainWinCtx;
         
         struct DATA {
-            float gainX  = .0f; //gain3
-            float gainY  = .0f; //gain3
-            float x     = .0f;
-            float y     = .0f;
-            bool mirror = false;
-            DATA(){};
+            RANGE gainX;
+            RANGE gainY;
+            RANGE x;
+            RANGE y;
+            DATA():
+                gainX(0.0f, -1.0f, 1.0f),
+                gainY(0.0f, -1.0f, 1.0f),
+                x(0.0f, -1.0f, 1.0f),
+                y(0.0f, -1.0f, 1.0f)
+            {};
             DATA(JsonTree data):
-            gainX(data.getChild("gainX").getValue<float>()),
-            gainY(data.getChild("gainY").getValue<float>()),
-            x(data.getChild("x").getValue<float>()),
-                y(data.getChild("y").getValue<float>()),
-                mirror(data.getChild("mirror").getValue<bool>())
+                gainX(data.getChild("gainX")),
+                gainY(data.getChild("gainY")),
+                x(data.getChild("x")),
+                y(data.getChild("y"))
             {}
-        } ;
+        };
         DATA data;
+        
+        struct S_DATA {
+            float gainX;
+            float gainY;
+            float x;
+            float y;
+        };
+        S_DATA sData;
         
         gl::UboRef          dataUbo;
         gl::FboRef			mFbo, mFbo2;
@@ -54,14 +66,6 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
-        virtual void setData(int id, int elem, float nValue) override {
-            switch(id){
-                case 0 : data.gainX = lerp(-1.0f, 1.0f, nValue); break;
-                case 1 : data.gainY = lerp(-1.0f, 1.0f, nValue); break;
-                case 2 : data.x = lerp(-1.0f, 1.0f, nValue); break;
-                case 3 : data.y = lerp(-1.f, 1.0f, nValue); break;
-            }
-        }
         
         typedef std::shared_ptr<class Mosher> MosherRef;
         
@@ -77,11 +81,10 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "Mosher"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(JsonTree("gainX", data.gainX));
-                sub.addChild(JsonTree("gainY", data.gainY));
-                sub.addChild(JsonTree("x", data.x));
-                sub.addChild(JsonTree("y", data.y));
-                sub.addChild(JsonTree("mirror", data.mirror));
+                sub.addChild(data.gainX.getData("gainX", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("gainX Limiter"))));
+                sub.addChild(data.gainY.getData("gainY", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("gainY Limiter"))));
+                sub.addChild(data.x.getData("x", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("x Limiter"))));
+                sub.addChild(data.y.getData("y", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("y Limiter"))));
                 obj.pushBack(sub);
                 return obj;
             }

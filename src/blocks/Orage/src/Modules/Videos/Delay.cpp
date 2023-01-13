@@ -66,7 +66,7 @@ namespace ogre {
         setupUI();
         
         // allocate our UBO
-        dataUbo = gl::Ubo::create( sizeof( data ), &data, GL_DYNAMIC_DRAW );
+        dataUbo = gl::Ubo::create( sizeof( sData ), &sData, GL_DYNAMIC_DRAW );
         // and bind it to buffer base 0; this is analogous to binding it to texture unit 0
         dataUbo->bindBufferBase( id );
         // and finally tell the shaders that their uniform buffer 'FormulaParams' can be found at buffer base 0
@@ -80,14 +80,17 @@ namespace ogre {
         }
         ModuleVideo::update();
         
+        
+        sData.bufferLen = (int)data.bufferLen.value;
+        
         if(inputs['A']){
             gl::pushMatrices();
             gl::ScopedViewport scpVp( ivec2( 0 ), vec2(MAX_IMG_PER_TEX*FBO_WIDTH, FBO_HEIGHT) );
             gl::setMatrices( CAM2 );
             
             
-            int y = (int)(data.cursor/MAX_IMG_PER_TEX);
-            int x = (int)(data.cursor%MAX_IMG_PER_TEX);
+            int y = (int)(sData.cursor/MAX_IMG_PER_TEX);
+            int x = (int)(sData.cursor%MAX_IMG_PER_TEX);
             gl::FboRef current = mFboBuffer.at(y);
             
             current->bindFramebuffer();
@@ -107,7 +110,7 @@ namespace ogre {
         mFbo->bindFramebuffer();
         {
             gl::clear( ColorA(0, 0, 0, 0));
-            dataUbo->bufferSubData( 0, sizeof( data ), &data );
+            dataUbo->bufferSubData( 0, sizeof( sData ), &sData );
             gl::ScopedGlslProg glslProg( mShader );
             
             
@@ -119,9 +122,9 @@ namespace ogre {
             if(inputs['B']){
                 inputs['B']->bind(MAX_TEX);
                 mShader->uniform( "modifier", MAX_TEX );  // texunit 0
-                data.modifierActive = true;
+                sData.modifierActive = 1;
             }else{
-                data.modifierActive = false;
+                sData.modifierActive = 0;
             }
             
             gl::enableAlphaBlendingPremult();
@@ -148,9 +151,8 @@ namespace ogre {
         gl::popMatrices();
         
         
-        data.bufferLen = int(bufferLen);
-        data.cursor += 1;
-        data.cursor %= data.bufferLen;
+        sData.cursor ++;
+        sData.cursor %= sData.bufferLen;
         
     }
     
@@ -160,7 +162,7 @@ namespace ogre {
         //mUi->setColorFill(ColorAT<float>(vec4(.8f, .9f, 1.f, .6f)));
         mUi->setColorFillHighlight(ColorAT<float>(vec4(.3f, .9f, 1.f, 1.f)));
         
-        tools.addSlider(mUi, "Length", this->id, &(bufferLen), 1, MAX_BUFFER);
+        tools.addSlider(mUi, "Length", this->id, &(data.bufferLen));
         /*
             BTN RESET
             BTN RECORD

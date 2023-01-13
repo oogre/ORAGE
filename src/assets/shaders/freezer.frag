@@ -9,7 +9,7 @@ uniform freezer {
  float amount;
     uniform float black;
     uniform float white;
-    uniform bool selectorActive;
+    uniform int selectorActive;
 };
 
 
@@ -20,7 +20,7 @@ void main()
 {
     vec2 n_fragCoord = vertTexCoord0;
 
-    if(selectorActive){
+    if(selectorActive == 1){
         oColor = vec4(mix(texture(tex0, n_fragCoord).rgb, texture(tex2, n_fragCoord).rgb, amount * smoothstep(black, white, texture(tex1, n_fragCoord).rgb)), 1);
     }else{
         oColor = vec4(mix(texture(tex0, n_fragCoord).rgb, texture(tex2, n_fragCoord).rgb, amount * smoothstep(black, white, vec3(1))), 1);

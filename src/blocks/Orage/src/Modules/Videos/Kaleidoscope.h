@@ -10,6 +10,7 @@
 #define Kaleidoscope_hpp
 
 #include "ModuleVideo.h"
+#include "DataRange.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -20,25 +21,41 @@ namespace ogre {
     class Kaleidoscope : public ModuleVideo{
         
         struct DATA {
-            float segments = 6.0f;
-            float offset = .0f;
-            float rotation = 0.0f;
-            float scale = 1.0f;
-            float x = .5f;
-            float y = .5f;
-            bool kaleidoscopeActive = false;
-            DATA(){};
+            RANGE segments;
+            RANGE offset;
+            RANGE rotation;
+            RANGE scale;
+            RANGE x;
+            RANGE y;
+            DATA():
+                segments(6.0f, 0.f, 20.0f),
+                rotation(.0f, 0.f, 1.0f),
+                scale(1.0f, 1.f, 10.0f),
+                x(0.5f, 0.f, 1.0f),
+                y(0.5f, 0.f, 1.0f),
+                offset(0.0f, 0.f, 1.0f)
+            {};
             DATA(JsonTree data):
-                segments(data.getChild("segments").getValue<float>()),
-                offset(data.getChild("offset").getValue<float>()),
-                rotation(data.getChild("rotation").getValue<float>()),
-                scale(data.getChild("scale").getValue<float>()),
-                x(data.getChild("x").getValue<float>()),
-                y(data.getChild("y").getValue<float>()),
-                kaleidoscopeActive(data.getChild("kaleidoscopeActive").getValue<bool>())
+                segments(data.getChild("segments")),
+                offset(data.getChild("offset")),
+                rotation(data.getChild("rotation")),
+                scale(data.getChild("scale")),
+                x(data.getChild("x")),
+                y(data.getChild("y"))
             {}
         };
         DATA data;
+        
+        struct S_DATA {
+            float segments;
+            float offset;
+            float rotation;
+            float scale;
+            float x;
+            float y;
+            int kaleidoscopeActive = 0;
+        };
+        S_DATA sData;
         
         gl::UboRef          dataUbo;
         gl::FboRef			mFbo, mFbo2;
@@ -58,16 +75,6 @@ namespace ogre {
             mMainWinCtx = nullptr;
         }
         
-        virtual void setData(int id, int elem, float nValue) override {
-            switch(id){
-                case 0 : data.segments = lerp(0.0f, 20.0f, nValue); break;
-                case 1 : data.rotation = lerp(.0f, 1.0f, nValue); break;
-                case 2 : data.scale = lerp(1.0f, 10.0f, nValue); break;
-                case 3 : data.x = lerp(0.f, 1.f, nValue); break;
-                case 4 : data.y = lerp(.0f, 1.0f, nValue); break;
-                case 5 : data.offset = lerp(.0f, 1.0f, nValue); break;
-            }
-        }
         
         typedef std::shared_ptr<class Kaleidoscope> KaleidoscopeRef;
         gl::Context * mMainWinCtx;
@@ -81,13 +88,12 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "Kaleidoscope"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(JsonTree("segments", data.segments));
-                sub.addChild(JsonTree("offset", data.offset));
-                sub.addChild(JsonTree("rotation", data.rotation));
-                sub.addChild(JsonTree("scale", data.scale));
-                sub.addChild(JsonTree("x", data.x));
-                sub.addChild(JsonTree("y", data.y));
-                sub.addChild(JsonTree("kaleidoscopeActive", data.kaleidoscopeActive));
+                sub.addChild(data.segments.getData("segments", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("segments Limiter"))));
+                sub.addChild(data.offset.getData("offset", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("offset Limiter"))));
+                sub.addChild(data.rotation.getData("rotation", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("rotation Limiter"))));
+                sub.addChild(data.scale.getData("scale", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("scale Limiter"))));
+                sub.addChild(data.x.getData("x", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("x Limiter"))));
+                sub.addChild(data.y.getData("y", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("y Limiter"))));
                 obj.pushBack(sub);
                 return obj;
             }

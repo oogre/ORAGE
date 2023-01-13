@@ -50,7 +50,7 @@ namespace ogre {
         setupUI();
         
         // allocate our UBO
-        dataUbo = gl::Ubo::create( sizeof( data ), &data, GL_DYNAMIC_DRAW );
+        dataUbo = gl::Ubo::create( sizeof( sData ), &sData, GL_DYNAMIC_DRAW );
         // and bind it to buffer base 0; this is analogous to binding it to texture unit 0
         dataUbo->bindBufferBase( id );
         // and finally tell the shaders that their uniform buffer 'FormulaParams' can be found at buffer base 0
@@ -66,6 +66,10 @@ namespace ogre {
         }
         ModuleVideo::update();
         
+        sData.amount = data.amount.value;
+        sData.black = data.black.value;
+        sData.white = data.white.value;
+        
         gl::pushMatrices();
         gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
         gl::setMatrices( ModuleVideo::CAM );
@@ -74,7 +78,7 @@ namespace ogre {
         mFbo->bindFramebuffer();
         {
             gl::clear( ColorA(0, 0, 0, 0));
-            dataUbo->bufferSubData( 0, sizeof( data ), &data );
+            dataUbo->bufferSubData( 0, sizeof( sData ), &sData );
             gl::ScopedGlslProg glslProg( mShader );
             
             if(inputs['A']){
@@ -83,11 +87,11 @@ namespace ogre {
                 outputs['A']->bind(1);
                 mShader->uniform( "tex2", 1 );  // texunit
                 if(inputs['B']){
-                    data.selectorActive = true;
+                    sData.selectorActive = 1;
                     inputs['B']->bind(2);
                     mShader->uniform( "tex1", 2 );  // texunit
                 }else{
-                    data.selectorActive = false;
+                    sData.selectorActive = 0;
                 }
             }
             
@@ -125,9 +129,9 @@ namespace ogre {
         mUi->addSpacer(false);
       
         
-        tools.addSlider(mUi, "amount", this->id, &(data.amount), 0, 1.0f);
-        tools.addSlider(mUi, "black", this->id, &(data.black), 0, 1.0f);
-        tools.addSlider(mUi, "white", this->id, &(data.white), 0, 1.0f);
+        tools.addSlider(mUi, "amount", this->id, &(data.amount));
+        tools.addSlider(mUi, "black", this->id, &(data.black));
+        tools.addSlider(mUi, "white", this->id, &(data.white));
         
         
         mUi->setMinified(false);

@@ -116,9 +116,9 @@ namespace ogre {
         //mUi->setColorFill(ColorAT<float>(vec4(.8f, .9f, 1.f, .6f)));
         mUi->setColorFillHighlight(ColorAT<float>(vec4(.3f, .9f, 1.f, 1.f)));
         
-        tools.addSlider(mUi, "hue", this->id, &(data.hue.value), data.hue.min, data.hue.max, data.hue.low, data.hue.high);
-        tools.addSlider(mUi, "sat", this->id, &(data.sat.value), data.sat.min, data.sat.max, data.sat.low, data.sat.high);
-        tools.addSlider(mUi, "light", this->id, &(data.light.value), data.light.min, data.light.max, data.light.low, data.light.high);
+        tools.addSlider(mUi, "hue", this->id, &(data.hue));
+        tools.addSlider(mUi, "sat", this->id, &(data.sat));
+        tools.addSlider(mUi, "light", this->id, &(data.light));
         
         mUi->setMinified(true);
     }

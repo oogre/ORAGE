@@ -45,7 +45,7 @@ namespace ogre {
         setupUI();
         
         // allocate our UBO
-        dataUbo = gl::Ubo::create( sizeof( data ), &data, GL_DYNAMIC_DRAW );
+        dataUbo = gl::Ubo::create( sizeof( sData ), &sData, GL_DYNAMIC_DRAW );
         // and bind it to buffer base 0; this is analogous to binding it to texture unit 0
         dataUbo->bindBufferBase( id );
         // and finally tell the shaders that their uniform buffer 'FormulaParams' can be found at buffer base 0
@@ -58,8 +58,15 @@ namespace ogre {
         }
         ModuleVideo::update();
         
-        data.tileSizeX = (1.0 + pow(_tileSizeX, 3) * ((_tileSizeX >= 0 ) ? 9.0 : 1.0));
-        data.tileSizeY = (1.0 + pow(_tileSizeY, 3) * ((_tileSizeY >= 0 ) ? 9.0 : 1.0));
+        sData.tileSizeX = (1.0 + pow(data.tileSizeX.value, 3) * ((data.tileSizeX.value >= 0 ) ? 9.0 : 1.0));
+        sData.tileSizeY = (1.0 + pow(data.tileSizeY.value, 3) * ((data.tileSizeY.value >= 0 ) ? 9.0 : 1.0));
+        sData.tileRotation = data.tileRotation.value;
+        sData.tileCenterX = data.tileCenterX.value;
+        sData.tileCenterY = data.tileCenterY.value;
+        sData.preRotation = data.preRotation.value;
+        sData.postRotation = data.postRotation.value;
+        sData.rotCenterX = data.rotCenterX.value;
+        sData.rotCenterY = data.rotCenterY.value;
         
         gl::pushMatrices();
         gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
@@ -68,18 +75,18 @@ namespace ogre {
         mFbo->bindFramebuffer();
         {
             gl::clear( ColorA(0, 0, 0, 0));
-            dataUbo->bufferSubData( 0, sizeof( data ), &data );
+            dataUbo->bufferSubData( 0, sizeof( sData ), &sData );
             gl::ScopedGlslProg glslProg( mShader );
             if(inputs['A']){
                 inputs['A']->bind(0);
                 mShader->uniform( "tex0", 0 );  // texunit 0
             }
             if(inputs['B']){
-                data.modifier = 1;
+                sData.modifier = 1;
                 inputs['B']->bind(1);
                 mShader->uniform( "tex1", 1 );  // texunit 0
             }else{
-                data.modifier = 0;
+                sData.modifier = 0;
             }
             gl::color(Color::white());
             gl::drawSolidRect(Area( 0, 0, mFbo->getWidth(), mFbo->getHeight() ));
@@ -114,23 +121,23 @@ namespace ogre {
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         
-        tools.addSlider(mUi, "X Tile", this->id, &(_tileSizeX), -1.0f, 1.0f);
-        tools.addSlider(mUi, "Y Tile", this->id, &(_tileSizeY), -1.0f, 1.0f);
+        tools.addSlider(mUi, "X Tile", this->id, &(data.tileSizeX));
+        tools.addSlider(mUi, "Y Tile", this->id, &(data.tileSizeY));
         
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         
-        tools.addSlider(mUi, "Mirror", this->id, &(data.tileRotation), .0f, 1.0f);
-        tools.addSlider(mUi, "X center", this->id, &(data.tileCenterX), .0f, 1.0f);
-        tools.addSlider(mUi, "Y center", this->id, &(data.tileCenterY), .0f, 1.0f);
+        tools.addSlider(mUi, "Mirror", this->id, &(data.tileRotation));
+        tools.addSlider(mUi, "X center", this->id, &(data.tileCenterX));
+        tools.addSlider(mUi, "Y center", this->id, &(data.tileCenterY));
         
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         
-        tools.addSlider(mUi, "Tile Rot", this->id, &(data.preRotation), 0.0f, 1.0f);
-        tools.addSlider(mUi, "All Rot", this->id, &(data.postRotation), 0.0f, 1.0f);
-        tools.addSlider(mUi, "X Rot Center", this->id, &(data.rotCenterX), .0f, 1.0f);
-        tools.addSlider(mUi, "Y Rot Center", this->id, &(data.rotCenterY), .0f, 1.0f);
+        tools.addSlider(mUi, "Tile Rot", this->id, &(data.preRotation));
+        tools.addSlider(mUi, "All Rot", this->id, &(data.postRotation));
+        tools.addSlider(mUi, "X Rot Center", this->id, &(data.rotCenterX));
+        tools.addSlider(mUi, "Y Rot Center", this->id, &(data.rotCenterY));
         
         mUi->setMinified(true);
     }

@@ -120,14 +120,14 @@ namespace ogre {
         //mUi->setColorFill(ColorAT<float>(vec4(.8f, .9f, 1.f, .6f)));
         mUi->setColorFillHighlight(ColorAT<float>(vec4(.3f, .9f, 1.f, 1.f)));
         
-        tools.addSlider(mUi, "bri", this->id, &(data.bri.value), data.bri.min, data.bri.max, data.bri.low, data.bri.high);
-        tools.addSlider(mUi, "sat", this->id, &(data.sat.value), data.sat.min, data.sat.max, data.sat.low, data.sat.high);
-        tools.addSlider(mUi, "con", this->id, &(data.con.value), data.con.min, data.con.max, data.con.low, data.con.high);
-        tools.addSlider(mUi, "red", this->id, &(data.red.value), data.red.min, data.red.max, data.red.low, data.red.high);
-        tools.addSlider(mUi, "green", this->id, &(data.green.value), data.green.min, data.green.max, data.green.low, data.green.high);
-        tools.addSlider(mUi, "blue", this->id, &(data.blue.value), data.blue.min, data.blue.max, data.blue.low, data.blue.high);
-        tools.addSlider(mUi, "ssm", this->id, &(data.ssm.value), data.ssm.min, data.ssm.max, data.ssm.low, data.ssm.high);
-        tools.addSlider(mUi, "ssM", this->id, &(data.ssM.value), data.ssM.min, data.ssM.max, data.ssM.low, data.ssM.high);
+        tools.addSlider(mUi, "bri", this->id, &(data.bri));
+        tools.addSlider(mUi, "sat", this->id, &(data.sat));
+        tools.addSlider(mUi, "con", this->id, &(data.con));
+        tools.addSlider(mUi, "red", this->id, &(data.red));
+        tools.addSlider(mUi, "green", this->id, &(data.green));
+        tools.addSlider(mUi, "blue", this->id, &(data.blue));
+        tools.addSlider(mUi, "ssm", this->id, &(data.ssm));
+        tools.addSlider(mUi, "ssM", this->id, &(data.ssM));
         
         mUi->setMinified(true);
     }

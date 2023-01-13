@@ -11,7 +11,7 @@ layout (std140) uniform;
 
 uniform delay {
     int bufferLen;
-    bool modifierActive;
+    int modifierActive;
     int cursor;
     float part;
     float width;
@@ -28,7 +28,7 @@ void main()
     vec4 color = vec4(0.0);
     int c = int(mod(cursor + 1, bufferLen));
     
-    if(modifierActive){
+    if(modifierActive == 1){
         vec3 modifierValue = texture(modifier, vertTexCoord0).rgb;
         float modifierV = max(modifierValue.x, max(modifierValue.y, modifierValue.z));
         c = int(mod(c + int(bufferLen * modifierV), bufferLen));

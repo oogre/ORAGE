@@ -10,6 +10,7 @@
 #define Blur_hpp
 
 #include "ModuleVideo.h"
+#include "DataRange.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -20,19 +21,27 @@ namespace ogre {
     class Blur : public ModuleVideo{
 
         struct DATA {
-            float amountX = .0f;
-            float amountY = .0f;
-            bool blurActive = false;
-            float width = 1.0f/FBO_WIDTH;
-            float height = 1.0f/FBO_HEIGHT;
-            DATA(){};
+            RANGE amountX;
+            RANGE amountY;
+            DATA():
+                amountX(0.0f, 0.0f, 20.0f),
+                amountY(0.0f, 0.0f, 20.0f)
+            {};
             DATA(JsonTree data):
-                amountX(data.getChild("amountX").getValue<float>()),
-                amountY(data.getChild("amountY").getValue<float>()),
-                blurActive(data.getChild("blurActive").getValue<bool>())
+                amountX(data.getChild("amountX")),
+                amountY(data.getChild("amountY"))
             {}
         };
         DATA data;
+        
+        struct S_DATA {
+            float amountX;
+            float amountY;
+            int blurActive;
+            float width = 1.0f/FBO_WIDTH;
+            float height = 1.0f/FBO_HEIGHT;
+        };
+        S_DATA sData;
         
         
         gl::UboRef          dataUbo;
@@ -54,14 +63,6 @@ namespace ogre {
         }
         
         
-        virtual void setData(int id, int elem, float nValue) override {
-            switch(id){
-                case 0 : data.amountX = lerp(.0f, 20.f, nValue); break;
-                case 1 : data.amountY = lerp(.0f, 20.f, nValue); break;
-            }
-        }
-        
-        
         typedef std::shared_ptr<class Blur> BlurRef;
         gl::Context * mMainWinCtx;
         static BlurRef create( const std::string name, vec2 origin, gl::Context * mMainWinCtx, JsonTree data = JsonTree())
@@ -75,9 +76,8 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "Blur"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(JsonTree("amountX", data.amountX));
-                sub.addChild(JsonTree("amountY", data.amountY));
-                sub.addChild(JsonTree("blurActive", data.blurActive));
+                sub.addChild(data.amountX.getData("amountX", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("X Blur Limiter"))));
+                sub.addChild(data.amountY.getData("amountY", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("Y Blur Limiter"))));
                 obj.pushBack(sub);
                 return obj;
             }

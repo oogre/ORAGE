@@ -22,7 +22,6 @@ int Oscillator::COUNT = 0;
 Oscillator::Oscillator( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleVideo(name+" "+ tools.to_roman(Oscillator::COUNT), origin, size, 2, 2, true){
     if(jsonData.getNumChildren()!=0){
         data = DATA(jsonData);
-        trail = jsonData.getChild("trail").getValue<float>();
     }
     this->mMainWinCtx = mMainWinCtx;
 }
@@ -50,7 +49,7 @@ void Oscillator::setup(){
     setupUI();
     
     // allocate our UBO
-    dataUbo = gl::Ubo::create( sizeof( data ), &data, GL_DYNAMIC_DRAW );
+    dataUbo = gl::Ubo::create( sizeof( sData ), &sData, GL_DYNAMIC_DRAW );
     // and bind it to buffer base 0; this is analogous to binding it to texture unit 0
     dataUbo->bindBufferBase( id );
     // and finally tell the shaders that their uniform buffer 'FormulaParams' can be found at buffer base 0
@@ -64,13 +63,26 @@ void Oscillator::update(){
         return;
     }
     ModuleVideo::update();
+    
+    sData.freq = data.freq.value;
+    sData.sync = data.sync.value;
+    sData.exp = data.exp.value;
+    sData.phaseDx = data.phaseDx.value;
+    sData.phaseDy = data.phaseDy.value;
+    sData.modifier = data.modifier.value;
+    sData.sine = data.sine.value;
+    sData.rect = data.rect.value;
+    sData.saw = data.saw.value;
+    sData.tri = data.tri.value;
+    sData.noise = data.noise.value;
+    
     gl::pushMatrices();
     gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
     gl::setMatrices( ModuleVideo::CAM );
     mFbo->bindFramebuffer();
     {
         gl::clear( ColorA(0, 0, 0, 0));
-        dataUbo->bufferSubData( 0, sizeof( data ), &data );
+        dataUbo->bufferSubData( 0, sizeof( sData ), &sData );
         gl::ScopedGlslProg glslProg( mShader );
         if(inputs['A']){
             inputs['A']->bind(0);
@@ -99,7 +111,7 @@ void Oscillator::update(){
     mFbo2->bindFramebuffer();
     {
         gl::enableAlphaBlendingPremult();
-        gl::color( ColorA(trail, trail, trail, trail));
+        gl::color( ColorA(data.trail.value, data.trail.value, data.trail.value, data.trail.value));
         gl::draw(mFbo->getColorTexture(), Area(0, 0, mFbo2->getWidth(), mFbo2->getHeight()));
     }
     mFbo2->unbindFramebuffer();
@@ -117,8 +129,8 @@ void Oscillator::setupUI(){
     mUi->addSpacer(false);
     mUi->addSpacer(false);
     
-    tools.addSlider(mUi, "Hz", this->id, &(data.freq), 0.0125f, 600.0f);
-    tools.addSlider(mUi, "Sync", this->id, &(data.sync), 0.0f, 1.0f);
+    tools.addSlider(mUi, "Hz", this->id, &(data.freq));
+    tools.addSlider(mUi, "Sync", this->id, &(data.sync));
     
     mUi->addSpacer(false);
     mUi->addSpacer(false);
@@ -126,27 +138,21 @@ void Oscillator::setupUI(){
     
     //mUi->addXYPad("offset", vec2(data.phaseDx, data.phaseDy), XYPad::Format().label(false));
     
-    tools.addSlider(mUi, "Dx", this->id, &(data.phaseDx), 0.0f, 1.0f);
-    tools.addSlider(mUi, "Dy", this->id, &(data.phaseDy), -1.0f, 1.0f);
-    tools.addSlider(mUi, "Mod", this->id, &(data.modifier), 0.0f, 1.0f);
-    tools.addSlider(mUi, "Trail", this->id, &(trail), 0.0f, 1.0f);
+    tools.addSlider(mUi, "Dx", this->id, &(data.phaseDx));
+    tools.addSlider(mUi, "Dy", this->id, &(data.phaseDy));
+    tools.addSlider(mUi, "Mod", this->id, &(data.modifier));
+    tools.addSlider(mUi, "Trail", this->id, &(data.trail));
     
     mUi->addSpacer(false);
     mUi->addSpacer(false);
     
-    tools.addSlider(mUi, "Sine", this->id, &(data.sine), -1.0f, 1.0f);
-    tools.addSlider(mUi, "Rect", this->id, &(data.rect),  -1.0f, 1.0f);
-    tools.addSlider(mUi, "Saw", this->id, &(data.saw),  -1.0f, 1.0f);
-    tools.addSlider(mUi, "Tri", this->id, &(data.tri),  -1.0f, 1.0f);
-    tools.addSlider(mUi, "Noise", this->id, &(data.noise),  -1.0f, 1.0f);
-    tools.addSlider(mUi, "Exp", this->id, &(data.exp), 0.064f, 10.0f);
+    tools.addSlider(mUi, "Sine", this->id, &(data.sine));
+    tools.addSlider(mUi, "Rect", this->id, &(data.rect));
+    tools.addSlider(mUi, "Saw", this->id, &(data.saw));
+    tools.addSlider(mUi, "Tri", this->id, &(data.tri));
+    tools.addSlider(mUi, "Noise", this->id, &(data.noise));
+    tools.addSlider(mUi, "Exp", this->id, &(data.exp));
     
-    mUi->addSpacer(false);
-    mUi->addSpacer(false);
-    
-    mUi->addToggle("Reverse", &data.reverse);
-
-    mUi->setMinified(true);
 }
 
     void Oscillator::setupShader(){

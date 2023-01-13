@@ -103,19 +103,19 @@ namespace ogre {
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addLabel("Crope");
-        tools.addSlider(mUi, "cX", this->id, &(data.resX.value), data.resX.min, data.resX.max, data.resX.low, data.resX.high);
-        tools.addSlider(mUi, "cY", this->id, &(data.resY.value), data.resY.min, data.resY.max, data.resY.low, data.resY.high);
+        tools.addSlider(mUi, "cX", this->id, &(data.resX));
+        tools.addSlider(mUi, "cY", this->id, &(data.resY));
         mUi->addSpacer(false);
         mUi->addSpacer(false);
-        tools.addSlider(mUi, "cW", this->id, &(data.resW.value), data.resW.min, data.resW.max, data.resW.low, data.resW.high);
-        tools.addSlider(mUi, "cH", this->id, &(data.resH.value), data.resH.min, data.resH.max, data.resH.low, data.resH.high);
+        tools.addSlider(mUi, "cW", this->id, &(data.resW));
+        tools.addSlider(mUi, "cH", this->id, &(data.resH));
         mUi->addLabel("Size");
-        tools.addSlider(mUi, "sX", this->id, &(data.posX.value), data.posX.min, data.posX.max, data.posX.low, data.posX.high);
-        tools.addSlider(mUi, "sY", this->id, &(data.posY.value), data.posY.min, data.posY.max, data.posY.low, data.posY.high);
+        tools.addSlider(mUi, "sX", this->id, &(data.posX));
+        tools.addSlider(mUi, "sY", this->id, &(data.posY));
         mUi->addSpacer(false);
         mUi->addSpacer(false);
-        tools.addSlider(mUi, "sW", this->id, &(data.width.value), data.width.min, data.width.max, data.width.low, data.width.high);
-        tools.addSlider(mUi, "sH", this->id, &(data.height.value), data.height.min, data.height.max, data.height.low, data.height.high);
+        tools.addSlider(mUi, "sW", this->id, &(data.width));
+        tools.addSlider(mUi, "sH", this->id, &(data.height));
 
         mUi->setMinified(false);
     }

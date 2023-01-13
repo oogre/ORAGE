@@ -22,11 +22,11 @@ uniform tile {
 in vec2         vertTexCoord0;
 out vec4		oColor;
 
-vec2 rotate2D(vec2 _st, float _angle){
-    _st -= vec2(rotCenterX, rotCenterY);
+vec2 rotate2D(vec2 _st, float _angle, vec2 center){
+    _st -= center;
     _st =  mat2(cos(_angle), -sin(_angle),
                 sin(_angle),  cos(_angle) ) * _st;
-    _st += vec2(rotCenterX, rotCenterY);
+    _st += center;
     return _st;
 }
 
@@ -64,13 +64,13 @@ vec2 mirrorTilePattern(vec2 _st){
     
     if(index == 1.0)
     {
-        _st = rotate2D(_st, tileRotation * PI/2);
+        _st = rotate2D(_st, tileRotation * PI/2, vec2(0.5));
     } else if(index == 2.0)
     {
-        _st = rotate2D(_st, tileRotation * -PI/2.0);
+        _st = rotate2D(_st, tileRotation * -PI/2.0, vec2(0.5));
     } else if(index == 3.0)
     {
-        _st = rotate2D(_st, tileRotation * PI);
+        _st = rotate2D(_st, tileRotation * PI, vec2(0.5));
     }
     return _st;
 }
@@ -83,9 +83,9 @@ void main()
     if(modifier!=1){
         s = 1;
     }
-    n_fragCoord = s * rotate2D(n_fragCoord, postRotation * TWO_PI) + (1.0-s) * vertTexCoord0;
+    n_fragCoord = s * rotate2D(n_fragCoord, postRotation * TWO_PI, vec2(rotCenterX, rotCenterY)) + (1.0-s) * vertTexCoord0;
     n_fragCoord = s * mirrorTilePattern(n_fragCoord) + (1.0-s) * vertTexCoord0 ;
-    n_fragCoord = s * rotate2D(n_fragCoord, preRotation * TWO_PI) + (1.0-s) * vertTexCoord0;
+    n_fragCoord = s * rotate2D(n_fragCoord, preRotation * TWO_PI, vec2(rotCenterX, rotCenterY)) + (1.0-s) * vertTexCoord0;
     oColor = texture(tex0, n_fragCoord);
 }
 

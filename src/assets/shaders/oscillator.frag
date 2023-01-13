@@ -13,7 +13,6 @@ layout (std140) uniform oscillator {
     float phaseDx;
     float phaseDy;
     float modifier;
-    bool reverse;
     float sine;
     float rect;
     float saw;
@@ -121,9 +120,7 @@ void main(){
     
     value = pow(value, exp);
     
-    if(reverse == true){
-        value = 1.0-value;
-    }
+    
     if(tex1active){
         oColor = vec4(texture(tex1, vertTexCoord0).rgb * value, 1);
     }

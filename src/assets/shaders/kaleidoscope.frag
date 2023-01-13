@@ -12,7 +12,7 @@ uniform kaleidoscope {
     float scale;
     float x;
     float y;
-    bool kaleidoscopeActive;
+    int kaleidoscopeActive;
 };
 
 in vec2         vertTexCoord0;
@@ -27,7 +27,7 @@ void main()
     vec4 color = vec4(0.0);
     float kalei  = segments;
     
-    if(kaleidoscopeActive){
+    if(kaleidoscopeActive == 1){
         vec3 modifierValue = texture(tex1, vertTexCoord0).rgb;
         float modifierV = max(modifierValue.x, max(modifierValue.y, modifierValue.z));
         kalei = kalei * modifierV;

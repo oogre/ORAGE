@@ -47,7 +47,7 @@ namespace ogre {
         setupUI();
         
         // allocate our UBO
-        dataUbo = gl::Ubo::create( sizeof( data ), &data, GL_DYNAMIC_DRAW );
+        dataUbo = gl::Ubo::create( sizeof( sData ), &sData, GL_DYNAMIC_DRAW );
         // and bind it to buffer base 0; this is analogous to binding it to texture unit 0
         dataUbo->bindBufferBase( id );
         // and finally tell the shaders that their uniform buffer 'FormulaParams' can be found at buffer base 0
@@ -60,6 +60,9 @@ namespace ogre {
         }
         ModuleVideo::update();
         
+        sData.amountX = data.amountX.value;
+        sData.amountY = data.amountY.value;
+        
         gl::pushMatrices();
         gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
         gl::setMatrices( ModuleVideo::CAM );
@@ -67,7 +70,7 @@ namespace ogre {
         mFbo->bindFramebuffer();
         {
             gl::clear( ColorA(0, 0, 0, 0));
-            dataUbo->bufferSubData( 0, sizeof( data ), &data );
+            dataUbo->bufferSubData( 0, sizeof( sData ), &sData );
             gl::ScopedGlslProg glslProg( mShader );
             if(inputs['A']){
                 inputs['A']->bind(0);
@@ -78,9 +81,9 @@ namespace ogre {
             if(inputs['B']){
                 inputs['B']->bind(1);
                 mShader->uniform( "tex1", 1 );  // texunit
-                data.blurActive = true;
+                sData.blurActive = 1;
             }else{
-                data.blurActive = false;
+                sData.blurActive = 0;
             }
             
             gl::color(Color::white());
@@ -116,8 +119,8 @@ namespace ogre {
         mUi->addSpacer(false);
         
 
-        tools.addSlider(mUi, "X Blur", this->id, &(data.amountX), 0.f, 20);
-        tools.addSlider(mUi, "Y Blur", this->id, &(data.amountY), 0.f, 20);
+        tools.addSlider(mUi, "X Blur", this->id, &(data.amountX));
+        tools.addSlider(mUi, "Y Blur", this->id, &(data.amountY));
         
 
         

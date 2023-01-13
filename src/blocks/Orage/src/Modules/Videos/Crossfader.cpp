@@ -174,8 +174,8 @@ namespace ogre {
         }
 
         
-        tools.addSlider(mUi, "blend", this->id, &(data.blend.value), data.blend.min, data.blend.max, data.blend.low, data.blend.high, 260);
-        tools.addSlider(mUi, "crossfade", this->id, &(data.crossfade.value), data.crossfade.min, data.crossfade.max, data.crossfade.low, data.crossfade.high, 260);
+        tools.addSlider(mUi, "blend", this->id, &(data.blend), 260);
+        tools.addSlider(mUi, "crossfade", this->id, &(data.crossfade), 260);
         
         
         mUi->setMinified(true);

@@ -12,7 +12,6 @@ uniform mosher {
     float gainY; //gain3
     float x   ;
     float y   ;
-    bool mirror;
 };
 
 
@@ -52,30 +51,16 @@ void main()
     n_fragCoord = n_fragCoord * 2.0 - 1.0;
     n_fragCoord += pos;
     
-    //n_fragCoord = rotate2D(n_fragCoord, TWO_PI * (1 - (gain * modifierV)));
     n_fragCoord.x *= (1 - (gainX * modifierV)); //pow(modifierV, modifierV);
     n_fragCoord.y *= (1 - (gainY * modifierV)); //pow(modifierV, modifierV);
     n_fragCoord -= pos;
     n_fragCoord = (n_fragCoord + 1.0) * 0.5;
     
-    if(mirror){
-        if(n_fragCoord.x < 0 || n_fragCoord.x > 1){
-            n_fragCoord.x = 1 - n_fragCoord.x;
-        }
-        if(n_fragCoord.y < 0 || n_fragCoord.y > 1){
-            n_fragCoord.y = 1 - n_fragCoord.y;
-        }
-        n_fragCoord = fract(n_fragCoord);
-        
-        oColor = vec4(texture(tex0, n_fragCoord).rgb, 1);
-    }
-    else{
-        if(n_fragCoord.x < 0.01 || n_fragCoord.x > 0.99 || n_fragCoord.y < 0.01 || n_fragCoord.y > 0.99){
+        if(n_fragCoord.x < 0 || n_fragCoord.x > 1 || n_fragCoord.y < 0 || n_fragCoord.y > 1){
             oColor = vec4(vec3(0), 1);
         }else{
             oColor = vec4(texture(tex0, n_fragCoord).rgb, 1);
         }
     
-    }
     
 }

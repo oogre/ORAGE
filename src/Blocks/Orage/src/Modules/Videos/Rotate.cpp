@@ -102,15 +102,15 @@ namespace ogre {
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addLabel("Rotation");
-        tools.addSlider(mUi, "rX", this->id, &(data.rX.value), data.rX.min, data.rX.max, data.rX.low, data.rX.high);
-        tools.addSlider(mUi, "rY", this->id, &(data.rY.value), data.rY.min, data.rY.max, data.rX.low, data.rY.high);
-        tools.addSlider(mUi, "rZ", this->id, &(data.rZ.value), data.rZ.min, data.rZ.max, data.rZ.low, data.rZ.high);
+        tools.addSlider(mUi, "rX", this->id, &(data.rX));
+        tools.addSlider(mUi, "rY", this->id, &(data.rY));
+        tools.addSlider(mUi, "rZ", this->id, &(data.rZ));
         mUi->addSpacer(false);
         mUi->addSpacer(false);
         mUi->addLabel("Translation");
-        tools.addSlider(mUi, "tX", this->id, &(data.posX.value), data.posX.min, data.posX.max, data.posX.low, data.posX.high);
-        tools.addSlider(mUi, "tY", this->id, &(data.posY.value), data.posY.min, data.posY.max, data.posY.low, data.posY.high);
-        tools.addSlider(mUi, "tZ", this->id, &(data.posZ.value), data.posZ.min, data.posZ.max, data.posZ.low, data.posZ.high);
+        tools.addSlider(mUi, "tX", this->id, &(data.posX));
+        tools.addSlider(mUi, "tY", this->id, &(data.posY));
+        tools.addSlider(mUi, "tZ", this->id, &(data.posZ));
         mUi->setMinified(false);
     }
     
