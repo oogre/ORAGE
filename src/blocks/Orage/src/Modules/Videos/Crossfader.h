@@ -10,6 +10,7 @@
 #define Crossfader_hpp
 
 #include "ModuleVideo.h"
+#include "DataRange.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -24,6 +25,32 @@ namespace ogre {
         TextureViewRef inputB;
         float crossfade = 0 ;
         float blend = 0;
+        
+        struct DATA {
+            RANGE crossfade;
+            RANGE blend;
+            DATA():
+                crossfade(0.0f, -1.0f, 1.0f),
+                blend(0.0f, 0.0f, 15.0f)
+            {};
+            DATA(JsonTree data):
+                crossfade(data.getChild("crossfade")),
+                blend(data.getChild("blend"))
+            {}
+        };
+        DATA data;
+        
+        struct S_DATA {
+            float alpha0;
+            float alpha1;
+            float crossfade;
+            float blend;
+            int modifierA = 0;
+            int modifierB = 0;
+        };
+        S_DATA sData;
+        
+        gl::UboRef          dataUbo;
         gl::FboRef			mFbo, mFbo2;
         gl::GlslProgRef     mShader;
         
@@ -33,6 +60,9 @@ namespace ogre {
         static int COUNT;
         
         virtual ~Crossfader(){
+            data.~DATA();
+            sData.~S_DATA();
+            
             inputA.reset();
             inputB.reset();
             auto itin = oldInputs.begin();
@@ -45,14 +75,6 @@ namespace ogre {
             mFbo2.reset();
             mShader.reset();
             mMainWinCtx = nullptr;
-        }
-        
-        
-        virtual void setData(int id, int elem, float nValue) override {
-            switch(id){
-                case 0 : blend = lerp(0, 13, nValue); break;
-                case 1 : crossfade = lerp(-1.0f, 1.0f, nValue); break;
-            }
         }
         
         
@@ -71,8 +93,8 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "Crossfader"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(JsonTree("crossfade", crossfade));
-                sub.addChild(JsonTree("blend", blend));
+                sub.addChild(data.crossfade.getData("crossfade", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("crossfade Limiter"))));
+                sub.addChild(data.blend.getData("blend", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("blend Limiter"))));
                 obj.pushBack(sub);
                 return obj;
             }

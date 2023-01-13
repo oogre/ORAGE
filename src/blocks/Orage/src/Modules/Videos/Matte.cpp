@@ -21,9 +21,7 @@ namespace ogre {
     
     Matte::Matte( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleVideo(name+" "+ tools.to_roman(Matte::COUNT), origin, size, 0, 1, false){
         if(jsonData.getNumChildren()!=0){
-            YPbPr.x = jsonData.getChild("sY").getValue<float>();
-            YPbPr.y = jsonData.getChild("sPb").getValue<float>();
-            YPbPr.z = jsonData.getChild("sPr").getValue<float>();
+            data = DATA(jsonData);
         }
         this->mMainWinCtx = mMainWinCtx;
     }
@@ -52,12 +50,9 @@ namespace ogre {
         if(mMainWinCtx != gl::Context::getCurrent())
             return;
         ModuleVideo::update();
+
         
-        if(YPbPrOld == YPbPr)
-            return;
-        YPbPrOld = YPbPr;
-        
-        color = YPbPr2Color(YPbPr);
+        color = YPbPr2Color(vec3(data.sY.value, data.sPb.value, data.sPr.value));
         color.r = glm::clamp<float>(color.r, 0, 1);
         color.g = glm::clamp<float>(color.g, 0, 1);
         color.b = glm::clamp<float>(color.b, 0, 1);
@@ -90,9 +85,9 @@ namespace ogre {
         
         
         
-        sY = tools.addSlider(mUi, "Y", this->id, &(YPbPr.x), .0f, 1.f);
-        sPb = tools.addSlider(mUi, "Pb", this->id, &(YPbPr.y), -0.5f, 0.5f);
-        sPr = tools.addSlider(mUi, "Pr", this->id, &(YPbPr.z), -0.5f, 0.5f);
+        sY = tools.addSlider(mUi, "Y", this->id, &(data.sY.value), data.sY.min, data.sY.max, data.sY.low, data.sY.high);
+        sPb = tools.addSlider(mUi, "Pb", this->id, &(data.sPb.value), data.sPb.min, data.sPb.max, data.sPb.low, data.sPb.high);
+        sPr = tools.addSlider(mUi, "Pr", this->id, &(data.sPr.value), data.sPr.min, data.sPr.max, data.sPr.low, data.sPr.high);
        
         mUi->setMinified(false);
     }

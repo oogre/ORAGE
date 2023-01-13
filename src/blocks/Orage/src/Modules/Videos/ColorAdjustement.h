@@ -53,8 +53,8 @@ namespace ogre {
                 ssM(data.getChild("ssM"))
             {}
         };
-        
         DATA data;
+        
         struct S_DATA {
             float bri;
             float sat;

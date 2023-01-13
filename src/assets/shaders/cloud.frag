@@ -19,8 +19,7 @@ out vec4        oColor;
 layout (location = 0) out vec4 oColor0;
 layout (location = 1) out vec4 oColor1;
 
-layout (std140) uniform;
-uniform cloud {
+layout (std140) uniform cloud {
     float octave;
     float sizex;
     float sizey;

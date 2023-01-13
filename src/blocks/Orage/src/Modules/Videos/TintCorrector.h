@@ -10,6 +10,8 @@
 #define TintCorrector_hpp
 
 #include "ModuleVideo.h"
+#include "DataRange.h"
+
 
 using namespace reza::ui;
 using namespace ci;
@@ -21,19 +23,29 @@ namespace ogre {
         gl::Context * mMainWinCtx;
         
         struct DATA {
-            float hue  = 0.0f;
-            float sat  = 0.0f;
-            float light  = 0.0f;
-            int modifier = 0;
-            DATA(){};
+            RANGE hue;
+            RANGE sat;
+            RANGE light;
+            DATA() :
+                hue(0.0f, -1.0f, 1.0f),
+                sat(0.0f, -1.0f, 1.0f),
+                light(0.0f, -1.0f, 1.0f)
+            {};
             DATA(JsonTree data):
-                hue(data.getChild("hue").getValue<float>()),
-                sat(data.getChild("sat").getValue<float>()),
-                light(data.getChild("light").getValue<float>()),
-                modifier(data.getChild("modifier").getValue<int>())
+                hue(data.getChild("hue")),
+                sat(data.getChild("sat")),
+                light(data.getChild("light"))
             {}
         } ;
         DATA data;
+        
+        struct S_DATA {
+            float hue;
+            float sat;
+            float light;
+            int modifier = 0;
+        } ;
+        S_DATA sData;
         
         
         
@@ -48,18 +60,11 @@ namespace ogre {
         
         virtual ~TintCorrector(){
             data.~DATA();
+            sData.~S_DATA();
             dataUbo.reset();
             mFbo.reset();
             mShader.reset();
             mMainWinCtx = nullptr;
-        }
-        
-        virtual void setData(int id, int elem, float nValue) override {
-            switch(id){
-                case 0 : data.hue = lerp(-1.0f, 1.0f, nValue); break;
-                case 1 : data.sat = lerp(-1.0f, 1.0f, nValue); break;
-                case 2 : data.light = lerp(-1.0f, 1.0f, nValue); break;
-            }
         }
         
         typedef std::shared_ptr<class TintCorrector> TintCorrectorRef;
@@ -75,10 +80,9 @@ namespace ogre {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "TintCorrector"));
                 JsonTree sub = JsonTree::makeObject("data");
-                sub.addChild(JsonTree("hue", data.hue));
-                sub.addChild(JsonTree("sat", data.sat));
-                sub.addChild(JsonTree("light", data.light));
-                sub.addChild(JsonTree("modifier", data.modifier));
+                sub.addChild(data.hue.getData("hue", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("hue Limiter"))));
+                sub.addChild(data.sat.getData("sat", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("sat Limiter"))));
+                sub.addChild(data.light.getData("light", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("light Limiter"))));
                 obj.pushBack(sub);
                 return obj;
             }

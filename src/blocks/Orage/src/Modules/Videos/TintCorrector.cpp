@@ -45,7 +45,7 @@ namespace ogre {
         setupUI();
         
         // allocate our UBO
-        dataUbo = gl::Ubo::create( sizeof( data ), &data, GL_DYNAMIC_DRAW );
+        dataUbo = gl::Ubo::create( sizeof( sData ), &sData, GL_DYNAMIC_DRAW );
         // and bind it to buffer base 0; this is analogous to binding it to texture unit 0
         dataUbo->bindBufferBase( id );
         // and finally tell the shaders that their uniform buffer 'FormulaParams' can be found at buffer base 0
@@ -60,6 +60,11 @@ namespace ogre {
             return;
         }
         ModuleVideo::update();
+        
+        sData.hue = data.hue.value;
+        sData.sat = data.sat.value;
+        sData.light = data.light.value;
+        
         gl::pushMatrices();
         gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
         gl::setMatrices( ModuleVideo::CAM );
@@ -67,7 +72,7 @@ namespace ogre {
         mFbo->bindFramebuffer();
         {
             gl::clear( ColorA(0, 0, 0, 0));
-            dataUbo->bufferSubData( 0, sizeof( data ), &data );
+            dataUbo->bufferSubData( 0, sizeof( sData ), &sData );
             gl::ScopedGlslProg glslProg( mShader );
             
             
@@ -78,9 +83,9 @@ namespace ogre {
             if(inputs['B']){
                 inputs['B']->bind(1);
                 mShader->uniform( "tex1", 1 );  // texunit 0
-                data.modifier = 1;
+                sData.modifier = 1;
             }else{
-                data.modifier = 0;
+                sData.modifier = 0;
             }
             
             gl::color(Color::white());
@@ -111,9 +116,9 @@ namespace ogre {
         //mUi->setColorFill(ColorAT<float>(vec4(.8f, .9f, 1.f, .6f)));
         mUi->setColorFillHighlight(ColorAT<float>(vec4(.3f, .9f, 1.f, 1.f)));
         
-        tools.addSlider(mUi, "hue", this->id, &(data.hue), -1.0f, 1.0f);
-        tools.addSlider(mUi, "sat", this->id, &(data.sat), -1.0f, 1.0f);
-        tools.addSlider(mUi, "light", this->id, &(data.light), -1.0f, 1.0f);
+        tools.addSlider(mUi, "hue", this->id, &(data.hue.value), data.hue.min, data.hue.max, data.hue.low, data.hue.high);
+        tools.addSlider(mUi, "sat", this->id, &(data.sat.value), data.sat.min, data.sat.max, data.sat.low, data.sat.high);
+        tools.addSlider(mUi, "light", this->id, &(data.light.value), data.light.min, data.light.max, data.light.low, data.light.high);
         
         mUi->setMinified(true);
     }

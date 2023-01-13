@@ -15,14 +15,34 @@ using namespace cinder::gl;
 using namespace std;
 using namespace reza::ui;
 
+
+struct DATA {
+    RANGE crossfade;
+    RANGE blend;
+    DATA():
+    crossfade(0.0f, -1.0f, 1.0f),
+    blend(0.0f, 0.0f, 13.0f)
+    {};
+    DATA(JsonTree data):
+    crossfade(data.getChild("crossfade")),
+    blend(data.getChild("blend"))
+    {}
+};
+DATA data;
+
+struct S_DATA {
+    float alpha0;
+    float alpha1;
+    float blend;
+};
+
 namespace ogre {
     
     int Crossfader::COUNT = 0;
     
     Crossfader::Crossfader( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleVideo(name+" "+ tools.to_roman(Crossfader::COUNT), origin, size, 2, 1, true){
         if(jsonData.getNumChildren()!=0){
-            crossfade = jsonData.getChild("crossfade").getValue<float>();
-            blend = jsonData.getChild("blend").getValue<float>();
+            data = DATA(jsonData);
         }
         this->mMainWinCtx = mMainWinCtx;
     }
@@ -49,6 +69,13 @@ namespace ogre {
         
         setupShader();
         setupUI();
+        
+        // allocate our UBO
+        dataUbo = gl::Ubo::create( sizeof( sData ), &sData, GL_DYNAMIC_DRAW );
+        // and bind it to buffer base 0; this is analogous to binding it to texture unit 0
+        dataUbo->bindBufferBase( id );
+        // and finally tell the shaders that their uniform buffer 'FormulaParams' can be found at buffer base 0
+        mShader->uniformBlock("crossfader", id );
     }
     
     void Crossfader::update(){
@@ -66,6 +93,11 @@ namespace ogre {
             oldInputs['B'] = inputs['B'];
         }
 
+        sData.blend = data.blend.value;
+        sData.alpha0 = inputs['A'] ? 1.f - glm::clamp<float>(data.crossfade.value, 0, 1) : 0.0f;;
+        sData.alpha1 = inputs['B'] ? 1.f - (-1 * glm::clamp<float>(data.crossfade.value, -1, 0)) : 0.0f;;
+        sData.crossfade = data.crossfade.value;
+        
         gl::pushMatrices();
         gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
         gl::setMatrices( ModuleVideo::CAM );
@@ -74,28 +106,25 @@ namespace ogre {
         {
             
             gl::clear( ColorA(0, 0, 0, 0));
+            dataUbo->bufferSubData( 0, sizeof( sData ), &sData );
             
             gl::ScopedGlslProg glslProg( mShader );
             
             if(inputs['A']){
                 inputs['A']->bind(0);
                 mShader->uniform( "tex0", 0 );  // texunit 0
-                float a = 1.f - glm::clamp<float>(crossfade, 0, 1);
-                mShader->uniform( "alpha0", a );  // texunit
+                sData.modifierA = 1;
             }else{
-                mShader->uniform( "alpha0", 0.f );  // texunit
+                sData.modifierA = 0;
             }
             if(inputs['B']){
                 inputs['B']->bind(1);
                 mShader->uniform( "tex1", 1 );  // texunit
-                float b = 1.f - (-1 * glm::clamp<float>(crossfade, -1, 0));
-                mShader->uniform( "alpha1", b );  // texunit
-             
+                sData.modifierB = 1;
             }else{
-                mShader->uniform( "alpha1", 0.f );  // texunit
+                sData.modifierB = 0;
             }
             
-            mShader->uniform( "blend", blend);
             gl::color(Color::white());
             gl::drawSolidRect(Area( 0, 0, mFbo->getWidth(), mFbo->getHeight() ));
                  
@@ -106,7 +135,6 @@ namespace ogre {
             if(inputs['B']){
                 inputs['B']->unbind(1);
             }
-
         }
         mFbo->unbindFramebuffer();
         
@@ -146,8 +174,8 @@ namespace ogre {
         }
 
         
-        tools.addSlider(mUi, "BLEND", this->id, &(blend), 0, 13, 260);
-        tools.addSlider(mUi, "Crossfade", this->id, &(crossfade), -1.f, 1.f, 260);
+        tools.addSlider(mUi, "blend", this->id, &(data.blend.value), data.blend.min, data.blend.max, data.blend.low, data.blend.high, 260);
+        tools.addSlider(mUi, "crossfade", this->id, &(data.crossfade.value), data.crossfade.min, data.crossfade.max, data.crossfade.low, data.crossfade.high, 260);
         
         
         mUi->setMinified(true);
