@@ -55,6 +55,9 @@
 #include "Player.h"
 #include "Output.h"
 
+#include "MidiFighter.h"
+#include "MidiIn.h"
+
 using namespace reza::ui;
 using namespace ci;
 using namespace ci::app;

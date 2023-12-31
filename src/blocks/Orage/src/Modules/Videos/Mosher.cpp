@@ -132,7 +132,7 @@ namespace ogre {
         tools.addSlider(mUi, "y", this->id, &(data.y));
         
         
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Mosher::setupShader(){

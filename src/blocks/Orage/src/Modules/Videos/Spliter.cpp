@@ -82,7 +82,7 @@ namespace ogre {
         //mUi->setColorFill(ColorAT<float>(vec4(.8f, .9f, 1.f, .6f)));
         mUi->setColorFillHighlight(ColorAT<float>(vec4(.1f, .9f, 1.f, 1.f)));
         
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Spliter::setupShader(){

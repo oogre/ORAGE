@@ -24,7 +24,9 @@ namespace ogre {
     int Output::winOutCOUNT = 0;
     time_t t;
     Output::Output( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleVideo(name+" "+ tools.to_roman(Output::COUNT) + " " + to_string(time(&t)), origin, size, 1, 1, true){
-        
+        if(name != "Output"){
+            this->setName(name);
+        }
         serverRef = new syphonServer();
         serverRef->setName(this->name);
 

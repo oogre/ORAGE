@@ -69,7 +69,7 @@ namespace ogre {
             BlurRef addBlur(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             PlayerRef addPlayer(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             KaleidoscopeRef addKaleidoscope(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
-            OutputRef addOutput(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
+            OutputRef addOutput(vec2 origin = vec2(0, 0), JsonTree data = JsonTree(), string name="");
             LfosRef addLfos(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             CDelayRef addCDelay(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             EuclideanRef addEuclidean(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
@@ -77,6 +77,8 @@ namespace ogre {
             OscRef addOsc(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             BeatStepProRef addBeatStepPro(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             NanoKontrolRef addNanoKontrol(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
+            MidiFighterRef addMidiFighter(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
+            MidiInRef addMidiIn(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             CustomCCRef addCustomCC(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());;
             HilbertRef addHilbert(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());;
         
@@ -104,7 +106,7 @@ namespace ogre {
                 return nullptr;
             }
         
-            int injectModule(string type, vec2 pos, JsonTree data = JsonTree());
+            int injectModule(string type, vec2 pos, JsonTree data = JsonTree(), string name=NULL);
             void setup();
             void update(vec2 mouseLoc, bool mouseDown);
             void draw();

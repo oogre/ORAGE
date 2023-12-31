@@ -90,7 +90,7 @@ void Hilbert::setupUI(){
     mUi->addSpacer(false);
     mUi->addSpacer(false);
     
-    mUi->setMinified(true);
+    mUi->setMinified(false);
 }
 
 void Hilbert::setupShader(){

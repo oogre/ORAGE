@@ -11,6 +11,8 @@
 #include "CLI.hpp"
 #include "Orage.h"
 #include "UI.h"
+#include <regex>
+
 
 #define PRINT(arg) #arg
 #define XPRINT(s) PRINT(s)
@@ -21,6 +23,8 @@ using namespace ci;
 using namespace ci::app;
 using namespace ogre;
 using namespace std;
+
+string windowTitle = "O R A G E";
 
 class ORAGEApp : public App {
     static CLI::App app;
@@ -80,7 +84,9 @@ public:
         }
         
         settings->setWindowSize( frame_w, frame_h );
-        settings->setWindowPos( frame_x, frame_y);
+        settings->setWindowPos( 0, 0);
+        
+        settings->setTitle(windowTitle);
     };
     
     
@@ -96,6 +102,11 @@ public:
         orage->onOpenPath([this](){
             fs::path path = selectFile();
             if(!path.empty()){
+                
+                string p =path.c_str();
+                string wrap = "\"";
+                p =wrap + p + wrap;
+                
                 char result[256];   // array to hold the result.
                 strcpy(result, getAppPath().c_str());
                 strcat(result, "/ORAGE.app/Contents/MacOS/ORAGE");
@@ -104,14 +115,20 @@ public:
                 strcat(result, " -y ");
                 strcat(result, std::to_string(getWindowPosY() + 20).c_str());
                 strcat(result, " ");
-                strcat(result, path.c_str());
+                strcat(result, p.c_str() );
                 strcat(result, " &");
+                cout << result << endl;
                 cout << std::system(result);
+                
+                
             };
         });
         
         
         fs::path fileToLoad(app.get_option("filename")->as<string>());
+        
+        cout<<fileToLoad<<endl;
+        
         bool flag = false;
         if(fs::exists(fileToLoad)){
             string extension = fileToLoad.extension().generic_string<string>();
@@ -258,11 +275,16 @@ std::string replaceAll(std::string str, const std::string& from, const std::stri
 
 
 void ORAGEApp::save(){
-    JsonTree obj = JsonTree::makeObject();
-    obj.pushBack(orage->getData());
-    obj.pushBack(wires.getData());
+    
     fs::path path = getSaveFilePath(orageFilePath, fileExtension);
     if( ! path.empty() ) {
+        
+        JsonTree obj = JsonTree::makeObject();
+        JsonTree sub = JsonTree::makeObject();
+        obj.pushBack(JsonTree("appName", path.filename().generic_string()));
+        obj.pushBack(orage->getData());
+        obj.pushBack(wires.getData());
+        
         ofstream oStream(path.generic_string());
         oStream << obj.serialize();
         oStream.close();
@@ -287,26 +309,45 @@ fs::path ORAGEApp::selectFile(){
 void ORAGEApp::open(fs::path path){
     JsonTree content = JsonTree( loadFile(path) );
     map<int, int> idDictionnary;
+    
+    if(content.hasChild( "appName" )){
+        windowTitle = windowTitle + " : " + content.getChild( "appName" ).getValue<string>();
+    }
+    
     if( content.hasChild( "modules" ) ){
         for( const auto &module : content["modules"] ) {
             if( !module.hasChild("type") ||
                !module.hasChild("id")
                ) continue;
             string type = module.getChild("type").getValue<string>();
+            
+            if(type == "Output")
+            {
+                windowTitle = windowTitle + " & " + module.getChild("name").getValue<string>();
+            }
             vec2 pos(
                      module.getChild("pos.x").getValue<int>(),
                      module.getChild("pos.y").getValue<int>()
                      );
             int id = 0;
+            JsonTree data;
+            string name;
+            
             if(module.hasChild( "data" )){
-                id = orage->injectModule(type, pos, module.getChild("data"));
-                
-            }else{
-                id = orage->injectModule(type, pos);
+                data = module.getChild("data");
             }
+            if(module.hasChild( "name" )){
+                name = module.getChild("name").getValue<string>();
+            }
+            
+            id = orage->injectModule(type, pos, data, name);
+            
             idDictionnary[module.getChild("id").getValue<int>()] = id;
         }
+        ci::app::getWindow()->setTitle(windowTitle);
     }
+    
+    
     
     if( content.hasChild( "wires" ) ){
         for( const auto &wire : content["wires"] ) {
@@ -325,9 +366,17 @@ void ORAGEApp::open(fs::path path){
             ModuleRef master = orage->getModuleById(masterID);
             ModuleRef slave = orage->getModuleById(slaveID);
             
-            
             ModuleVideoRef vMaster = dynamic_pointer_cast<ModuleVideo>(master);
             ModuleVideoRef vSlave = dynamic_pointer_cast<ModuleVideo>(slave);
+            
+            SliderfRef input = dynamic_pointer_cast<Sliderf>(slave->mUi->getSubView(inputName.substr(0,inputName.size()-8)));
+            SliderfRef output = dynamic_pointer_cast<Sliderf>(master->mUi->getSubView(outputName.substr(0,outputName.size()-8)));
+            
+            if(input && output){
+                wires.clickOnLinker(slave->name, input, slave->mUi->getSubView(inputName), slaveID);
+                wires.clickOnLinker(master->name, output, master->mUi->getSubView(outputName), masterID);
+                continue;
+            }
             
             if(vMaster && vSlave){
                 gl::Texture2dRef * tMaster = vMaster->getOutputTexture(outputName[0]);
@@ -335,14 +384,6 @@ void ORAGEApp::open(fs::path path){
                 
                 wires.clickOnVideoLinker(slave->name, tSlave, slave->mUi->getSubView(inputName), true, slaveID);
                 wires.clickOnVideoLinker(master->name, tMaster, master->mUi->getSubView(outputName), false, masterID);
-            }else{
-                SliderfRef input = dynamic_pointer_cast<Sliderf>(slave->mUi->getSubView(inputName.substr(0,inputName.size()-8)));
-                SliderfRef output = dynamic_pointer_cast<Sliderf>(master->mUi->getSubView(outputName.substr(0,outputName.size()-8)));
-                
-                if(input && output){
-                    wires.clickOnLinker(slave->name, input, slave->mUi->getSubView(inputName), slaveID);
-                    wires.clickOnLinker(master->name, output, master->mUi->getSubView(outputName), masterID);
-                }
             }
         }
     }

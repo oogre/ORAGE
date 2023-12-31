@@ -20,7 +20,7 @@ Orage::Orage(string name, gl::Context * mMainWinCtx){
     this->mMainWinCtx = mMainWinCtx;
 }
 
-int Orage::injectModule(string type, vec2 pos, JsonTree data){
+int Orage::injectModule(string type, vec2 pos, JsonTree data, string name){
     if (type == "Lfos")
     {
         auto m = this->addLfos(pos, data);
@@ -104,7 +104,7 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
     }
     if (type == "Output")
     {
-        auto m = this->addOutput(pos, data);
+        auto m = this->addOutput(pos, data, name);
         return m->id;
     }
     if (type == "SyphonInput")
@@ -189,6 +189,21 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data){
         return m->id;
     }
     
+    if (type == "MidiFighter")
+    {
+        auto m = this->addMidiFighter(pos, data);
+        return m->id;
+    }
+    
+    if (type == "MidiIn")
+    {
+        auto m = this->addMidiIn(pos, data);
+        return m->id;
+    }
+    
+    
+    
+    
     
     
     return 0;
@@ -264,8 +279,9 @@ CloudRef Orage::addCloud(vec2 origin, JsonTree data){
     modules.push_back(ref);
     return ref;
 }
-OutputRef Orage::addOutput(vec2 origin, JsonTree data){
-    OutputRef ref = Output::create("Output", origin, mMainWinCtx, data);
+OutputRef Orage::addOutput(vec2 origin, JsonTree data, string name){
+    
+    OutputRef ref = Output::create(name == "" ? "Output" : name, origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
     return ref;
@@ -398,6 +414,23 @@ ProcessCVRef Orage::addProcessCV(vec2 origin, JsonTree data){
     modules.push_back(ref);
     return ref;
 }
+
+MidiFighterRef Orage::addMidiFighter(vec2 origin, JsonTree data){
+    MidiFighterRef ref = MidiFighter::create("Cyclone", origin, mMainWinCtx);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
+
+MidiInRef Orage::addMidiIn(vec2 origin, JsonTree data){
+    MidiInRef ref = MidiIn::create("Bave Noire", origin, mMainWinCtx);
+    ref->setup();
+    modules.push_back(ref);
+    return ref;
+}
+
+
+
 
 void Orage::setup(){
     contextMenu = SuperCanvas::create("context menu");
@@ -591,11 +624,29 @@ void Orage::setup(){
                                                       });
     
     contextMenu->addButton("PROCESS CV", false)->setCallback(
-                                                      [this](bool a) {
-                                                          if(a){
-                                                              addProcessCV(contextMenu->getOrigin());
-                                                          }
-                                                      });
+                                                             [this](bool a) {
+                                                                 if(a){
+                                                                     addProcessCV(contextMenu->getOrigin());
+                                                                 }
+                                                             });
+    
+    contextMenu->addButton("MIDI FIGHTER", false)->setCallback(
+                                                               [this](bool a) {
+                                                                   if(a){
+                                                                       addMidiFighter(contextMenu->getOrigin());
+                                                                       closeContextMenu();
+                                                                   }
+                                                               });
+    
+    contextMenu->addButton("MIDI IN", false)->setCallback(
+                                                               [this](bool a) {
+                                                                   if(a){
+                                                                       addMidiIn(contextMenu->getOrigin());
+                                                                       closeContextMenu();
+                                                                   }
+                                                               });
+    
+    
    
     contextMenu->addSpacer();
     

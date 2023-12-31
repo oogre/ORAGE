@@ -101,7 +101,7 @@ namespace ogre {
                 mMovies.back()->setRate(f);
             }
         });
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Player::loadMovieFile( const fs::path &moviePath )

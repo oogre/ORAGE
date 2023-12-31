@@ -151,7 +151,7 @@ namespace ogre {
         tools.addSlider(mUi, "greenLvl", this->id, &(data.greenLvl));
         tools.addSlider(mUi, "lvl", this->id, &(data.lvl));
     
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Cloud::setupShader(){

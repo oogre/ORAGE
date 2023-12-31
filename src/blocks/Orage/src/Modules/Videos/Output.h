@@ -55,6 +55,7 @@ namespace ogre {
             {
                JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "Output"));
+                obj.addChild(JsonTree("name", this->name));
                 return obj;
             }
         };

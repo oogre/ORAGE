@@ -208,7 +208,7 @@ namespace ogre {
                     cvAndVideoWiresBuilder = Wire::create(btn);
             }
         
-        void clickOnVideoLinker(string name, gl::Texture2dRef * tex, ViewRef btn, bool input, int moduleId){
+        bool clickOnVideoLinker(string name, gl::Texture2dRef * tex, ViewRef btn, bool input, int moduleId){
             if(input){
                 setVideoSlave(name, tex, btn, moduleId);
             }
@@ -217,7 +217,9 @@ namespace ogre {
             }
             if(statusVideo ==  COMPLETE_STATUS){
                 addVideoWire();
+                return true;
             }
+            return false;
         }
         
         WireRef addPianoWire(){

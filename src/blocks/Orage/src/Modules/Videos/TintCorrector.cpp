@@ -120,7 +120,7 @@ namespace ogre {
         tools.addSlider(mUi, "sat", this->id, &(data.sat));
         tools.addSlider(mUi, "light", this->id, &(data.light));
         
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void TintCorrector::setupShader(){

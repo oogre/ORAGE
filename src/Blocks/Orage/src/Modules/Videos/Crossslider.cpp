@@ -158,7 +158,7 @@ namespace ogre {
         tools.addSlider(mUi, "crossfade", this->id, &(data.crossfade), 260);
         
         
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Crossslider::setupShader(){

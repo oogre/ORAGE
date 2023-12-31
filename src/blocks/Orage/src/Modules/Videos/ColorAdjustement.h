@@ -30,8 +30,8 @@ namespace ogre {
             RANGE red;
             RANGE green;
             RANGE blue;
-            RANGE ssm;
-            RANGE ssM;
+            RANGE black;
+            RANGE white;
             DATA():
                 bri(1.0f, 0.0f, 2.0f),
                 sat(1.0f, 0.0f, 2.0f),
@@ -39,8 +39,8 @@ namespace ogre {
                 red(0.0f, -1.0f, 1.0f),
                 green(0.0f, -1.0f, 1.0f),
                 blue(0.0f, -1.0f, 1.0f),
-                ssm(0.0f, 0.0f, 1.0f),
-                ssM(1.0f, 0.0f, 1.0f)
+                black(0.0f, 0.0f, 1.0f),
+                white(1.0f, 0.0f, 1.0f)
             {};
             DATA(JsonTree data):
                 bri(data.getChild("bri")),
@@ -49,8 +49,8 @@ namespace ogre {
                 red(data.getChild("red")),
                 green(data.getChild("green")),
                 blue(data.getChild("blue")),
-                ssm(data.getChild("ssm")),
-                ssM(data.getChild("ssM"))
+                black(data.getChild("black")),
+                white(data.getChild("white"))
             {}
         };
         DATA data;
@@ -62,8 +62,8 @@ namespace ogre {
             float red;
             float green;
             float blue;
-            float ssm;
-            float ssM;
+            float black;
+            float white;
             int modifier = 0;
         } ;
         S_DATA sData;
@@ -105,8 +105,8 @@ namespace ogre {
                 sub.addChild(data.red.getData("red", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("red Limiter"))));
                 sub.addChild(data.green.getData("green", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("green Limiter"))));
                 sub.addChild(data.blue.getData("blue", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("blue Limiter"))));
-                sub.addChild(data.ssm.getData("ssm", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("ssm Limiter"))));
-                sub.addChild(data.ssM.getData("ssM", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("ssM Limiter"))));
+                sub.addChild(data.black.getData("black", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("black Limiter"))));
+                sub.addChild(data.white.getData("white", std::dynamic_pointer_cast<Rangef>(mUi->getSubView("white Limiter"))));
                 obj.pushBack(sub);
                 return obj;
             }

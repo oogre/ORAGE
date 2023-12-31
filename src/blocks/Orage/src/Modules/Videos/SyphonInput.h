@@ -24,8 +24,9 @@ namespace ogre {
         map <string, WindowCanvasRef> windowCanvas;
         gl::FboRef			mFbo;
         
-        
+        std::vector<string> availableServers;
         syphonClient * clientRef;
+        string serverName = "";
         int dirIdx;
         void keyDown( KeyEvent event );
         void nextClient();
@@ -55,6 +56,9 @@ namespace ogre {
             {
                 JsonTree obj = ModuleCommon::getData();
                 obj.addChild(JsonTree("type", "SyphonInput"));
+                JsonTree sub = JsonTree::makeObject("data");
+                sub.addChild(JsonTree("serverName", serverName));
+                obj.pushBack(sub);
                 return obj;
             }
         };

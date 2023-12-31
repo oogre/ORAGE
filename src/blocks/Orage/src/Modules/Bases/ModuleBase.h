@@ -59,6 +59,7 @@ namespace ogre {
                 ModuleCommon::mSimpleTexture = gl::Texture2d::create( layout.render( true, false ) );
             }
             mUi = SuperCanvas::create(name);
+            
             mUi->setSize(size);
             mUi->setOrigin(origin);
             
@@ -73,6 +74,11 @@ namespace ogre {
             b->setColorOutlineHighlight(ColorA(0, 0, 0, 0));
             mUi->addSubViewRight(b, Alignment::RIGHT);
             mUi->addSubViewToHeader(b);
+        }
+        
+        void setName(string name){
+            this->name = name;
+            mUi->setName(name);
         }
         
         virtual JsonTree getData(){

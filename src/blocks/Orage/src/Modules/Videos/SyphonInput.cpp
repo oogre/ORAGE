@@ -22,6 +22,9 @@ namespace ogre {
     SyphonInput::SyphonInput( std::string name, JsonTree jsonData, vec2 origin, vec2 size, gl::Context * mMainWinCtx ) : ModuleVideo(name+" "+ tools.to_roman(SyphonInput::COUNT), origin, size, 0, 1, true){
         
         this->mMainWinCtx = mMainWinCtx;
+        if(jsonData.hasChild("serverName")){
+            serverName = jsonData.getChild("serverName").getValue<string>();
+        }
     }
     
     void SyphonInput::setup(){
@@ -44,15 +47,16 @@ namespace ogre {
         
         serverDir = new syphonServerDirectory();
         serverDir->setup();
-        serverDir->getServerAnnouncedSignal()->connect([this](std::vector<syphonServerDescription> servers)->void{
-            for(auto server = servers.begin() ; server != servers.end() ; server ++){
-                if(! flag){
-                    flag = true;
-                    setClient(*server);
-                }
-             }
-        });
         
+        if(this->serverName != ""){
+            std::vector<syphonServerDescription> servers = serverDir->getServerList();
+            for(auto server = servers.begin() ; server != servers.end() ; server ++){
+                cout<<server->serverName<<endl;
+                if(serverName != server->serverName) continue;
+                this->setClient(*server);
+                break;
+            }
+        }
     }
     
     void SyphonInput::update(){
@@ -111,8 +115,11 @@ namespace ogre {
     }
     
     void SyphonInput::setClient(syphonServerDescription desc){
+        try{
+            serverName = desc.serverName;
             clientRef->set(desc);
             clientRef->bind();
+        } catch (...) {}
     }
     
     int SyphonInput::getLastClient(){

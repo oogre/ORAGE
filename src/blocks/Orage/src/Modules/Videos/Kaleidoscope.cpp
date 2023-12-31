@@ -130,7 +130,7 @@ namespace ogre {
         tools.addSlider(mUi, "y", this->id, &(data.y));
         tools.addSlider(mUi, "offset", this->id, &(data.offset));
         
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Kaleidoscope::setupShader(){

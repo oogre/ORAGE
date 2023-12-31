@@ -170,7 +170,7 @@ namespace ogre {
             SPEED
           */
         
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Delay::setupShader(){

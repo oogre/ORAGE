@@ -16,8 +16,8 @@ uniform coloradjustement {
     float red;
     float green;
     float blue;
-    float ssm;
-    float ssM;
+    float black;
+    float white;
     int modifier;
 };
 
@@ -35,7 +35,7 @@ void main()
     vec3 color = texture(tex0, vertTexCoord0).rgb;
     vec3 corrected = ContrastSaturationBrightness(abs(color - nega) + (color * fader), bri, sat, con);
     vec3 c = s * corrected + (1 - s)*color;
-    c = smoothstep(vec3(ssm), vec3(ssM), c);
+    c = smoothstep(vec3(black), vec3(white), c);
     oColor = vec4(c , 1.0 );
     
     

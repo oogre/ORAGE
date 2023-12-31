@@ -139,7 +139,7 @@ namespace ogre {
         tools.addSlider(mUi, "X Rot Center", this->id, &(data.rotCenterX));
         tools.addSlider(mUi, "Y Rot Center", this->id, &(data.rotCenterY));
         
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Tile::setupShader(){

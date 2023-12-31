@@ -12,8 +12,8 @@ namespace ogre {
     //1600 * 560
     
     
-    const int           ModuleVideo::FBO_WIDTH = 1920;//1080;//1541;//1600;//2400;//1280;//;
-    const int           ModuleVideo::FBO_HEIGHT = 1080;//810;//720;//560;//600;//720;
+    const int           ModuleVideo::FBO_WIDTH = 1280;///1920;//1080;//1541;//1600;//2400;//1280;//;
+    const int           ModuleVideo::FBO_HEIGHT = 720;//1080;//810;//720;//560;//600;//720;
     const int           ModuleVideo::HALF_FBO_WIDTH = ModuleVideo::FBO_WIDTH * 0.5;
     const int           ModuleVideo::HALF_FBO_HEIGHT = ModuleVideo::FBO_HEIGHT * 0.5;
     const float         ModuleVideo::RATIO = (float)ModuleVideo::FBO_HEIGHT/(float)ModuleVideo::FBO_WIDTH;

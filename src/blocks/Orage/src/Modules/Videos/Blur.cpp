@@ -124,7 +124,7 @@ namespace ogre {
         
 
         
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void Blur::setupShader(){

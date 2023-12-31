@@ -68,8 +68,8 @@ namespace ogre {
         sData.red = data.red.value;
         sData.green = data.green.value;
         sData.blue = data.blue.value;
-        sData.ssm = data.ssm.value;
-        sData.ssM = data.ssM.value;
+        sData.black = data.black.value;
+        sData.white = data.white.value;
         
         gl::pushMatrices();
         gl::ScopedViewport scpVp( ivec2( 0 ), mFbo->getSize() );
@@ -126,10 +126,10 @@ namespace ogre {
         tools.addSlider(mUi, "red", this->id, &(data.red));
         tools.addSlider(mUi, "green", this->id, &(data.green));
         tools.addSlider(mUi, "blue", this->id, &(data.blue));
-        tools.addSlider(mUi, "ssm", this->id, &(data.ssm));
-        tools.addSlider(mUi, "ssM", this->id, &(data.ssM));
+        tools.addSlider(mUi, "black", this->id, &(data.black));
+        tools.addSlider(mUi, "white", this->id, &(data.white));
         
-        mUi->setMinified(true);
+        mUi->setMinified(false);
     }
     
     void ColorAdjustement::setupShader(){
