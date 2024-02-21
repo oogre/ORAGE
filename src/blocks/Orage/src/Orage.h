@@ -20,15 +20,21 @@
 #include "SuperModule.h"
 #include <typeinfo>
 
+#include "BasicEvent.h"
+
 //#include "cinder/audio/audio.h"
 namespace ogre {
     typedef std::shared_ptr<class Orage> OrageRef;
     
-    class Orage/* : public Canvas */{
+    class Orage/* : public Canvas */ : public BasicEvent{
         float lastTapTime;
         gl::Context * mMainWinCtx;
         Orage(string name, gl::Context * mMainWinCtx);
         public:
+            virtual ~Orage(){
+                cout<< "kill orage" << endl;
+                
+            }
             static OrageRef create( std::string name, gl::Context * mMainWinCtx)
             {
                 OrageRef ref = OrageRef( new Orage( name, mMainWinCtx ) );
@@ -76,11 +82,8 @@ namespace ogre {
             PassthroughRef addPassthrough(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             OscRef addOsc(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             BeatStepProRef addBeatStepPro(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
-            NanoKontrolRef addNanoKontrol(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
-            MidiFighterRef addMidiFighter(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
-            MidiInRef addMidiIn(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
+            MidiInputRef addMidiInput(vec2 origin = vec2(0, 0), JsonTree data = JsonTree(), string name="");
             CustomCCRef addCustomCC(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());;
-            HilbertRef addHilbert(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());;
         
             RandomRef addRandom(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());
             ProcessCVRef addProcessCV(vec2 origin = vec2(0, 0), JsonTree data = JsonTree());

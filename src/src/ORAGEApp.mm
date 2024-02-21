@@ -12,10 +12,13 @@
 #include "Orage.h"
 #include "UI.h"
 #include <regex>
-
+#include <thread>
+//#include <future>
 
 #define PRINT(arg) #arg
 #define XPRINT(s) PRINT(s)
+
+
 
 namespace fs = boost::filesystem;
 
@@ -38,12 +41,15 @@ class ORAGEApp : public App {
     bool            mMouseWasDown = false;
     bool            mMouseDrag = false;
     gl::Context   * mMainWinCtx;
-    
     vector<string> fileExtension = vector<string>(1, "rage");
     static string orageFilePath;
     static vector<string>& getArgs() { static vector<string> args; return args; }
     
+    fs::path        currentPath;
 public:
+    virtual ~ORAGEApp(){
+        cout << "kill ~ORAGEApp" << endl;
+    }
     
     static void prepareSettings( Settings *settings ){
         
@@ -95,6 +101,14 @@ public:
         if(!fs::exists( orageFilePath )){
             fs::create_directories(orageFilePath);
         }
+        
+        // TO DO
+        // test : xcode-select -p
+        // install : xcode-select --install
+        
+        
+        
+        currentPath = fs::path(orageFilePath+"/Untitled.rage");
         mMainWinCtx = gl::Context::getCurrent();
         gl::clear(ColorAT<float>(0, 0, 0, 0));
         orage = Orage::create("ORAGE", mMainWinCtx);
@@ -135,13 +149,27 @@ public:
             extension.erase(0, 1);
             if(std::find(fileExtension.begin(), fileExtension.end(), extension) != fileExtension.end()){
                 open(fileToLoad);
+                currentPath = fileToLoad;
                 flag = true;
             }
         }
         if(!flag){
             orage->addOutput();
         }
-       
+        
+//        wires.onChanged({
+//            [this](std::string evt){
+//                ci::app::getWindow()->setTitle(windowTitle + " : S A V I N G . . .");
+//                saveProcess(currentPath.generic_string()+".autosave.rage");
+//            }
+//        });
+
+        orage->onChanged({
+            [this](std::string evt){
+                ci::app::getWindow()->setTitle(windowTitle + " : S A V I N G . . .");
+                saveProcess(currentPath.generic_string()+".autosave.rage");
+            }
+        });
     };
     void update() override {
         
@@ -163,7 +191,8 @@ public:
     void fileDrop( FileDropEvent event ) override;
     void keyUp( KeyEvent event) override;
     void keyDown( KeyEvent event) override;
-    void save();
+    void save(fs::path path = fs::path());
+    void saveProcess(string path);
     void open(fs::path path);
     fs::path selectFile();
 };
@@ -225,10 +254,15 @@ void ORAGEApp::keyDown( KeyEvent event){
         orage->tapTempo();
     }
     mCTRLDown = event.isControlDown();
+    
     if(event.isMetaDown()){
         char c = event.getChar();
-        if(c == 's'){
-            save();
+        if(c == 's' || c == 'S'){
+            ci::app::getWindow()->setTitle(windowTitle + " : S A V I N G . . .");
+            if(event.isShiftDown() || !currentPath.has_filename() || "Untitled.rage" == currentPath.filename().generic_string()){
+                currentPath = getSaveFilePath(currentPath, fileExtension);
+            }
+            saveProcess(currentPath.generic_string());
         }else if (c == 'o'){
             orage->trigOpenPath();
         }else if (c == 'n'){
@@ -274,31 +308,47 @@ std::string replaceAll(std::string str, const std::string& from, const std::stri
 }
 
 
-void ORAGEApp::save(){
+
+void ORAGEApp::saveProcess(string path){
+    try{
+        std::thread saveThread (&ORAGEApp::save, this, fs::path(path));
+        saveThread.detach();
+    }
+    catch (const std::exception &ex){
+        std::cout << "Thread exited with exception: " << ex.what() << "\n";
+    }
+}
+
+
+void ORAGEApp::save(fs::path path){
     
-    fs::path path = getSaveFilePath(orageFilePath, fileExtension);
     if( ! path.empty() ) {
-        
         JsonTree obj = JsonTree::makeObject();
         JsonTree sub = JsonTree::makeObject();
-        obj.pushBack(JsonTree("appName", path.filename().generic_string()));
+        
+        string appName = path.filename().generic_string();
+        obj.pushBack(JsonTree("appName", appName));
         obj.pushBack(orage->getData());
         obj.pushBack(wires.getData());
         
         ofstream oStream(path.generic_string());
         oStream << obj.serialize();
         oStream.close();
-        
-        std::string cmd = "/usr/bin/Rez -append " + ci::app::getAssetPath("icns/icns.rsrc").generic_string() + " -o " + path.generic_string() + "; /usr/bin/SetFile -a C "+ path.generic_string() + " ; ";
+        // NEED xcode-select --install
+        std::string cmd = ci::app::getAssetPath("../Rez").generic_string() + " -append " + ci::app::getAssetPath("icns/icns.rsrc").generic_string() + " -o " + path.generic_string() + "; /usr/bin/SetFile -a C "+ path.generic_string() + " ; ";
         system(&cmd[0]);
         
         std::string appPath = ci::app::Platform::get()->getExecutablePath().generic_string()+"/"+XPRINT(PRODUCT_NAME)+".app";
         cmd = "xattr -wx com.apple.LaunchServices.OpenWith 62706C6973743030D30102030405065776657273696F6E54706174685F101062756E646C656964656E74696669657210005F1038[APP_PATH]5F1014[APP_ID]080F171C2F316C0000000000000101000000000000000700000000000000000000000000000083 " + path.generic_string();
         cmd = replaceAll(cmd, "[APP_PATH]", toHex(appPath));
         cmd = replaceAll(cmd, "[APP_ID]", toHex(XPRINT(PRODUCT_BUNDLE_IDENTIFIER)));
-        std::cout << "on dbClick run : " << appPath << std::endl;
+        
         system(&cmd[0]);
+        
+        ci::app::getWindow()->setTitle(windowTitle + " : " + appName);
+        return;
     }
+    ci::app::getWindow()->setTitle(windowTitle);
 }
 
 fs::path ORAGEApp::selectFile(){
@@ -307,6 +357,7 @@ fs::path ORAGEApp::selectFile(){
 }
 
 void ORAGEApp::open(fs::path path){
+    
     JsonTree content = JsonTree( loadFile(path) );
     map<int, int> idDictionnary;
     

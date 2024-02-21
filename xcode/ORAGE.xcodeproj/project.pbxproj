@@ -62,6 +62,7 @@
 		88187B1A24376BF30008F678 /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187B0724376BF20008F678 /* UdpSocket.cpp */; };
 		88187B1B24376BF30008F678 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187B0C24376BF20008F678 /* IpEndpointName.cpp */; };
 		88187B2024376C3F0008F678 /* Osc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88187B1E24376C3F0008F678 /* Osc.cpp */; };
+		881957072B863EEC00628578 /* Rez in Resources */ = {isa = PBXBuildFile; fileRef = 881957062B863EEB00628578 /* Rez */; };
 		881A13611EEC1822003FF906 /* Resize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 881A135F1EEC1822003FF906 /* Resize.cpp */; };
 		881A13641EEC4157003FF906 /* Blur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 881A13621EEC4157003FF906 /* Blur.cpp */; };
 		88272F272524DF100074A17D /* BeatStepPro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88272F252524DF100074A17D /* BeatStepPro.cpp */; };
@@ -90,7 +91,6 @@
 		888AD3B51ECC828C00179240 /* SuperModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 888AD3B31ECC828C00179240 /* SuperModule.cpp */; };
 		8896F6B31FB231A800E9630A /* Kaleidoscope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8896F6B11FB231A800E9630A /* Kaleidoscope.cpp */; };
 		889932C82523CF4000020C9F /* NoteOnOff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 889932C62523CF3E00020C9F /* NoteOnOff.cpp */; };
-		889E456D256AA02A00C114CB /* NanoKontrol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 889E456C256AA02A00C114CB /* NanoKontrol.cpp */; };
 		88A8896F1EDC308D007F4B0C /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A889651EDC308D007F4B0C /* SyphonNameboundClient.m */; };
 		88A889701EDC308D007F4B0C /* syphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88A889691EDC308D007F4B0C /* syphonClient.mm */; };
 		88A889711EDC308D007F4B0C /* syphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88A8896B1EDC308D007F4B0C /* syphonServer.mm */; };
@@ -100,13 +100,11 @@
 		88A8897D1EDC494E007F4B0C /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 88A8897C1EDC494D007F4B0C /* assets */; };
 		88AC2DA40BC4441CA9DF5B0B /* Label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E1089BA49DF4B3ABD6B9E92 /* Label.cpp */; };
 		88B0FED41F06647900EBAD22 /* ProcessCV.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88B0FED21F06647900EBAD22 /* ProcessCV.cpp */; };
-		88C717682B0B903F0095C256 /* MidiIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88C717672B0B903F0095C256 /* MidiIn.cpp */; };
 		88C964CB2971910900A2CB7C /* Crossslider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88C964CA2971910900A2CB7C /* Crossslider.cpp */; };
-		88C9912429A6340A004CE592 /* MidiFighter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88C9912329A6340A004CE592 /* MidiFighter.cpp */; };
+		88C9912429A6340A004CE592 /* MidiInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88C9912329A6340A004CE592 /* MidiInput.cpp */; };
 		88D0A08A1ECF2F1600BE6418 /* Output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88D0A0881ECF2F1600BE6418 /* Output.cpp */; };
 		88E4AC2D1EE03B2000A9DA8C /* Delay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E4AC2B1EE03B2000A9DA8C /* Delay.cpp */; };
 		88F3CD362665833400B53D48 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A889631EDC308D007F4B0C /* Syphon.framework */; };
-		88F3CD382665848600B53D48 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F3CD372665848600B53D48 /* Syphon.framework */; };
 		88F3CD392665848600B53D48 /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 88F3CD372665848600B53D48 /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		9AC02B2DEE2745F0AED3D7A9 /* WindowCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3BF6AED054104899B1DA04A3 /* WindowCanvas.cpp */; };
@@ -279,6 +277,7 @@
 		88187B0D24376BF20008F678 /* NetworkingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkingUtils.h; sourceTree = "<group>"; };
 		88187B1E24376C3F0008F678 /* Osc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Osc.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/Osc.cpp; sourceTree = SOURCE_ROOT; };
 		88187B1F24376C3F0008F678 /* Osc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Osc.h; path = ../src/blocks/Orage/src/Modules/Controllers/Osc.h; sourceTree = SOURCE_ROOT; };
+		881957062B863EEB00628578 /* Rez */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = Rez; sourceTree = "<group>"; };
 		881A135F1EEC1822003FF906 /* Resize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resize.cpp; sourceTree = "<group>"; };
 		881A13601EEC1822003FF906 /* Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resize.h; sourceTree = "<group>"; };
 		881A13621EEC4157003FF906 /* Blur.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Blur.cpp; sourceTree = "<group>"; };
@@ -326,6 +325,7 @@
 		8843914E252521270052B44F /* MidiIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MidiIn.cpp; sourceTree = "<group>"; };
 		884FF4072839249B004E6039 /* Passthrough.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Passthrough.cpp; path = ../../../../../Blocks/Orage/src/Modules/Controllers/Passthrough.cpp; sourceTree = "<group>"; };
 		884FF4082839249B004E6039 /* Passthrough.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Passthrough.h; path = ../../../../../Blocks/Orage/src/Modules/Controllers/Passthrough.h; sourceTree = "<group>"; };
+		885732522B4B130E00CD8A70 /* BasicEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BasicEvent.h; path = ../src/Blocks/Orage/src/BasicEvent.h; sourceTree = "<group>"; };
 		885C8DB228364724007B788C /* Euclidean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Euclidean.h; path = ../../../../../Blocks/Orage/src/Modules/Controllers/Euclidean.h; sourceTree = "<group>"; };
 		885C8DB328364724007B788C /* Euclidean.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Euclidean.cpp; path = ../../../../../Blocks/Orage/src/Modules/Controllers/Euclidean.cpp; sourceTree = "<group>"; };
 		88790943257B0C9A0084AA2A /* CustomCC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomCC.h; path = ../src/blocks/Orage/src/Modules/Controllers/CustomCC.h; sourceTree = SOURCE_ROOT; };
@@ -338,8 +338,6 @@
 		8896F6B21FB231A800E9630A /* Kaleidoscope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kaleidoscope.h; sourceTree = "<group>"; };
 		889932C62523CF3E00020C9F /* NoteOnOff.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = NoteOnOff.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/NoteOnOff.cpp; sourceTree = SOURCE_ROOT; };
 		889932C72523CF4000020C9F /* NoteOnOff.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NoteOnOff.h; path = ../src/blocks/Orage/src/Modules/Controllers/NoteOnOff.h; sourceTree = SOURCE_ROOT; };
-		889E456B256AA02900C114CB /* NanoKontrol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NanoKontrol.h; path = ../src/blocks/Orage/src/Modules/Controllers/NanoKontrol.h; sourceTree = SOURCE_ROOT; };
-		889E456C256AA02A00C114CB /* NanoKontrol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NanoKontrol.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/NanoKontrol.cpp; sourceTree = SOURCE_ROOT; };
 		88A889631EDC308D007F4B0C /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = ../src/blocks/Syphon/lib/Syphon.framework; sourceTree = SOURCE_ROOT; };
 		88A889641EDC308D007F4B0C /* SyphonNameboundClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
 		88A889651EDC308D007F4B0C /* SyphonNameboundClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyphonNameboundClient.m; sourceTree = "<group>"; };
@@ -357,12 +355,10 @@
 		88A8897C1EDC494D007F4B0C /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../src/assets; sourceTree = "<group>"; };
 		88B0FED21F06647900EBAD22 /* ProcessCV.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProcessCV.cpp; path = ../src/blocks/Orage/src/Modules/Controllers/ProcessCV.cpp; sourceTree = SOURCE_ROOT; };
 		88B0FED31F06647900EBAD22 /* ProcessCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProcessCV.h; path = ../src/blocks/Orage/src/Modules/Controllers/ProcessCV.h; sourceTree = SOURCE_ROOT; };
-		88C717642B0B8F380095C256 /* MidiFighter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MidiFighter.h; sourceTree = "<group>"; };
-		88C717672B0B903F0095C256 /* MidiIn.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MidiIn.cpp; sourceTree = "<group>"; };
+		88C717642B0B8F380095C256 /* MidiInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MidiInput.h; sourceTree = "<group>"; };
 		88C964C92971910900A2CB7C /* Crossslider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Crossslider.h; sourceTree = "<group>"; };
 		88C964CA2971910900A2CB7C /* Crossslider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Crossslider.cpp; sourceTree = "<group>"; };
-		88C9912229A6340A004CE592 /* MidiIn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MidiIn.h; sourceTree = "<group>"; };
-		88C9912329A6340A004CE592 /* MidiFighter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MidiFighter.cpp; sourceTree = "<group>"; };
+		88C9912329A6340A004CE592 /* MidiInput.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MidiInput.cpp; sourceTree = "<group>"; };
 		88D0A0881ECF2F1600BE6418 /* Output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Output.cpp; sourceTree = "<group>"; };
 		88D0A0891ECF2F1600BE6418 /* Output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Output.h; sourceTree = "<group>"; };
 		88D8B45074CB4476BC6C4309 /* XYPad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYPad.h; sourceTree = "<group>"; };
@@ -432,7 +428,6 @@
 				00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */,
 				00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */,
 				00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */,
-				88F3CD382665848600B53D48 /* Syphon.framework in Frameworks */,
 				00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */,
 				00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */,
 			);
@@ -535,6 +530,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				881957062B863EEB00628578 /* Rez */,
 				880D7889244497CF00EC0D71 /* start.ORAGE.sh */,
 				B5990141F5264552AD499BD4 /* CinderApp.icns */,
 				1C1624A7C5DE4256BD67460C /* Info.plist */,
@@ -820,6 +816,7 @@
 				C666D6F50D8F48888D43F10B /* Tools.cpp */,
 				A9BD20EE4F334FF38E31DA8C /* Wires */,
 				3D78B2923B9C4EBF9F664373 /* Modules */,
+				885732522B4B130E00CD8A70 /* BasicEvent.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -843,12 +840,8 @@
 				889932C62523CF3E00020C9F /* NoteOnOff.cpp */,
 				88187B1F24376C3F0008F678 /* Osc.h */,
 				88187B1E24376C3F0008F678 /* Osc.cpp */,
-				889E456B256AA02900C114CB /* NanoKontrol.h */,
-				889E456C256AA02A00C114CB /* NanoKontrol.cpp */,
-				88C9912229A6340A004CE592 /* MidiIn.h */,
-				88C717642B0B8F380095C256 /* MidiFighter.h */,
-				88C9912329A6340A004CE592 /* MidiFighter.cpp */,
-				88C717672B0B903F0095C256 /* MidiIn.cpp */,
+				88C717642B0B8F380095C256 /* MidiInput.h */,
+				88C9912329A6340A004CE592 /* MidiInput.cpp */,
 				88790943257B0C9A0084AA2A /* CustomCC.h */,
 				88790944257B0C9A0084AA2A /* CustomCC.cpp */,
 				88272F262524DF100074A17D /* BeatStepPro.h */,
@@ -998,6 +991,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 1010;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ORAGE" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1023,6 +1017,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				881957072B863EEC00628578 /* Rez in Resources */,
 				22BC718BEB5A4BEE849CDB67 /* CinderApp.icns in Resources */,
 				880D788A244497CF00EC0D71 /* start.ORAGE.sh in Resources */,
 				88A8897D1EDC494E007F4B0C /* assets in Resources */,
@@ -1066,7 +1061,7 @@
 				88187B1B24376BF30008F678 /* IpEndpointName.cpp in Sources */,
 				AC8D5313C89F4A1F831CE152 /* Oscillator.cpp in Sources */,
 				13B87B07196A47B8A2AFDF76 /* Spliter.cpp in Sources */,
-				88C9912429A6340A004CE592 /* MidiFighter.cpp in Sources */,
+				88C9912429A6340A004CE592 /* MidiInput.cpp in Sources */,
 				88187B1324376BF20008F678 /* OscTypes.cpp in Sources */,
 				88790945257B0C9A0084AA2A /* CustomCC.cpp in Sources */,
 				E0DF72E0445C443C937226B6 /* Tile.cpp in Sources */,
@@ -1104,7 +1099,6 @@
 				E0360721089943EDB1ECA3A7 /* Plotter.cpp in Sources */,
 				4C0CAE91E0914873B0ECDBB4 /* QuaternionOrderer.cpp in Sources */,
 				88439150252521270052B44F /* MidiMessage.cpp in Sources */,
-				88C717682B0B903F0095C256 /* MidiIn.cpp in Sources */,
 				4F033FAA39434E0580FC90FD /* Radio.cpp in Sources */,
 				C48D6AA6B1A546FA96BE6187 /* Range.cpp in Sources */,
 				88187B1424376BF20008F678 /* OscReceivedElements.cpp in Sources */,
@@ -1114,7 +1108,6 @@
 				88439152252521270052B44F /* MidiHub.cpp in Sources */,
 				8896F6B31FB231A800E9630A /* Kaleidoscope.cpp in Sources */,
 				882840182433F6F500881911 /* Structs.cpp in Sources */,
-				889E456D256AA02A00C114CB /* NanoKontrol.cpp in Sources */,
 				882840132433F6F500881911 /* ClusterAnalyser.cpp in Sources */,
 				BDDC05F87FB74584AC294398 /* Slider.cpp in Sources */,
 				88187B1724376BF30008F678 /* OscListener.cpp in Sources */,
@@ -1150,6 +1143,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CINDER_PATH = /Users/ogre/Frameworks/cinder_0.9.0_mac;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				COPY_PHASE_STRIP = YES;
@@ -1183,6 +1177,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CINDER_PATH = /Users/ogre/Frameworks/cinder_0.9.0_mac;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1220,14 +1215,38 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CINDER_PATH = /Users/ogre/Frameworks/cinder_0.9.0_mac;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
 				CLANG_CXX_LIBRARY = "libc++";
-				ENABLE_TESTABILITY = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../blocks/Orage/src ../blocks/Orage/src/Wires ../blocks/Orage/src/Modules ../blocks/Orage/src/Modules/Bases ../blocks/Orage/src/Modules/Controllers ../blocks/Orage/src/Modules/Controllers/Piano ../blocks/Orage/src/Modules/Videos ../blocks/UIslave/src ../blocks/OSC/src ../blocks/CLI ../blocks/MIDI2/src";
 			};
@@ -1238,9 +1257,33 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CINDER_PATH = /Users/ogre/Frameworks/cinder_0.9.0_mac;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;

@@ -82,10 +82,16 @@ void main()
     st = audela(d * (gl_FragCoord.xy + vec2(0.0, -closest.y)));
     color += 4.0 * texture(tex0, st);
 
-    st = audela(d * (gl_FragCoord.xy + vec2(amountX, amountY)));
+    st = audela(d * (gl_FragCoord.xy + vec2(-amountX, 0)));
+    color += 10.0 * texture(tex0, st);
+    st = audela(d * (gl_FragCoord.xy + vec2(amountX, 0)));
+    color += 10.0 * texture(tex0, st);
+    st = audela(d * (gl_FragCoord.xy + vec2(0, amountY)));
+    color += 10.0 * texture(tex0, st);
+    st = audela(d * (gl_FragCoord.xy + vec2(0, -amountY)));
     color += 10.0 * texture(tex0, st);
     
-    color *= 0.02;
+    color *= 0.0125;
     
     oColor = color;
 }

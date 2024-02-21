@@ -57,7 +57,7 @@ namespace ogre {
             return sub;
         }
         void print(){
-            cout << value << " " << min << " " << max << " " << low << " " << high << endl;
+            cout << value << " " << min << " " << max << " " << low << " " << high << endl;
         }
     };
     

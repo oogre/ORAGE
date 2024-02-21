@@ -43,7 +43,6 @@
 #include "Osc.h"
 #include "NoteOnOff.h"
 #include "BeatStepPro.h"
-#include "NanoKontrol.h"
 #include "CustomCC.h"
 #include "Hilbert.h"
 
@@ -55,8 +54,7 @@
 #include "Player.h"
 #include "Output.h"
 
-#include "MidiFighter.h"
-#include "MidiIn.h"
+#include "MidiInput.h"
 
 using namespace reza::ui;
 using namespace ci;

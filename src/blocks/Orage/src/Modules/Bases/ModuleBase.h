@@ -74,11 +74,13 @@ namespace ogre {
             b->setColorOutlineHighlight(ColorA(0, 0, 0, 0));
             mUi->addSubViewRight(b, Alignment::RIGHT);
             mUi->addSubViewToHeader(b);
+            
         }
         
         void setName(string name){
             this->name = name;
             mUi->setName(name);
+            mUi->getLabel()->setLabel(name);
         }
         
         virtual JsonTree getData(){
@@ -99,6 +101,7 @@ namespace ogre {
                 gl::color( Color( 1.f, 1.f, 1.f ) );
                 gl::draw( ModuleCommon::mSimpleTexture, mUi->getBounds().getUpperLeft() - vec2(0, 15) );
                 gl::drawStrokedRect( mUi->getBounds() );
+                
             }
         }
         

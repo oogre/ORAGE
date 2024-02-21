@@ -13,6 +13,7 @@
 #include "WireCV.h"
 #include "WireVideo.h"
 #include "WirePiano.h"
+#include "../BasicEvent.h"
 
 using namespace reza::ui;
 using namespace ci;
@@ -22,7 +23,7 @@ using namespace std;
 namespace ogre {
     class ModuleCommon;
     typedef std::shared_ptr<class ModuleCommon> ModuleRef;
-    class Wires{
+    class Wires : public BasicEvent {
         static boost::dynamic_bitset<> status;
         static boost::dynamic_bitset<> statusVideo;
         static boost::dynamic_bitset<> statusPiano;
@@ -30,7 +31,6 @@ namespace ogre {
         static boost::dynamic_bitset<> SLAVE_STATUS;
         static boost::dynamic_bitset<> MASTER_STATUS;
         static boost::dynamic_bitset<> COMPLETE_STATUS;
-        
         
         std::pair<string,string> cvNames = std::make_pair("", "");;
         SliderfRef _slave = nullptr;
@@ -53,8 +53,6 @@ namespace ogre {
         NotesetRef * _masterPiano = nullptr;
         ViewRef _slaveBtnPiano = nullptr;
         ViewRef _masterBtnPiano = nullptr;
-
-        
         
         gl::GlslProgRef     mShader;
         gl::TextureRef      mTexture;
@@ -64,30 +62,34 @@ namespace ogre {
         float mLimit;
         
         public :
+        virtual ~Wires(){
+            cout<< "kill Wires" << endl;
+        }
         
-            Wires(){
-                mRadius = 2.0f;
-                mThickness = 2.0f;
-                mLimit = 0.5f;
-            }
-            virtual ~Wires(){}
+        Wires()
+        : BasicEvent() {
+            mRadius = 2.0f;
+            mThickness = 2.0f;
+            mLimit = 0.5f;
+        }
         
-            WireCVRef reset(){
-                resetVideo();
-                resetPiano();
-                return resetCV();
-            }
         
-            WireCVRef resetCV(){
-                _slave = nullptr;
-                _master = nullptr;
-                _slaveBtn = nullptr;
-                _masterBtn = nullptr;
-                status.reset();
-                cvAndVideoWiresBuilder.reset();
-                cvNames = std::make_pair("", "");
-                return nullptr;
-            }
+        WireCVRef reset(){
+            resetVideo();
+            resetPiano();
+            return resetCV();
+        }
+
+        WireCVRef resetCV(){
+            _slave = nullptr;
+            _master = nullptr;
+            _slaveBtn = nullptr;
+            _masterBtn = nullptr;
+            status.reset();
+            cvAndVideoWiresBuilder.reset();
+            cvNames = std::make_pair("", "");
+            return nullptr;
+        }
         
         WireCVRef resetVideo(){
             _slaveVideo = nullptr;
@@ -120,6 +122,7 @@ namespace ogre {
                 WireCVRef ref = WireCV::create(_slave, _master, _slaveBtn, _masterBtn, id_slave, id_master);
                 cvAndVideoWires[cvNames.first+"|"+cvNames.second] = ref;
                 reset();
+                trigChanged("addCVWire");
                 return ref;
             }
         
@@ -183,6 +186,7 @@ namespace ogre {
                 WireRef ref = WireVideo::create(_slaveVideo, _masterVideo, _slaveBtnVideo, _masterBtnVideo, id_slave, id_master);
                 cvAndVideoWires[videoNames.first+"|"+videoNames.second] = ref;
                 reset();
+                trigChanged("addVideoWire");
                 return ref;
             }
 
@@ -232,6 +236,7 @@ namespace ogre {
             WireRef ref = WirePiano::create(_slavePiano, _masterPiano, _slaveBtnPiano, _masterBtnPiano, id_slave, id_master);
             cvAndVideoWires[pianoNames.first+"|"+pianoNames.second] = ref;
             reset();
+            trigChanged("addPianoWire");
             return ref;
         }
         
@@ -372,6 +377,7 @@ namespace ogre {
                         while(it != cvAndVideoWires.end()){
                             if((*it).second->over){
                                 it = cvAndVideoWires.erase(it);
+                                trigChanged("KEY_BACKSPACE cvAndVideoWires");
                             }else{
                                 it++;
                             }
@@ -385,12 +391,15 @@ namespace ogre {
                 while(it != cvAndVideoWires.end()){
                     if((*it).first.find(name+spliter)!=std::string::npos){
                         it = cvAndVideoWires.erase(it);
+                        trigChanged("remove cvAndVideoWires");
                         if(flag)return;
                     }else{
                         it++;
                     }
                 }
             }
+        
+
         protected :
             static map<string, WireRef> cvAndVideoWires;
             static WireRef cvAndVideoWiresBuilder;

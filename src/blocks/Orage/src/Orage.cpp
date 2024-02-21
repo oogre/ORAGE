@@ -16,9 +16,10 @@ using namespace std;
 
 
 
-Orage::Orage(string name, gl::Context * mMainWinCtx){
-    this->mMainWinCtx = mMainWinCtx;
-}
+Orage::Orage(string name, gl::Context * mMainWinCtx)
+    : BasicEvent(){
+        this->mMainWinCtx = mMainWinCtx;
+    }
 
 int Orage::injectModule(string type, vec2 pos, JsonTree data, string name){
     if (type == "Lfos")
@@ -122,11 +123,7 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data, string name){
         auto m = this->addDelay(pos, data);
         return m->id;
     }
-    if (type == "Hilbert")
-    {
-        auto m = this->addHilbert(pos, data);
-        return m->id;
-    }
+    
     if (type == "Resize")
     {
         auto m = this->addResize(pos, data);
@@ -172,11 +169,7 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data, string name){
         auto m = this->addBeatStepPro(pos, data);
         return m->id;
     }
-    if (type == "NanoKontrol")
-    {
-        auto m = this->addNanoKontrol(pos, data);
-        return m->id;
-    }
+    
     if (type == "CustomCC")
     {
         auto m = this->addCustomCC(pos, data);
@@ -189,23 +182,11 @@ int Orage::injectModule(string type, vec2 pos, JsonTree data, string name){
         return m->id;
     }
     
-    if (type == "MidiFighter")
+    if (type == "MidiInput")
     {
-        auto m = this->addMidiFighter(pos, data);
+        auto m = this->addMidiInput(pos, data, name);
         return m->id;
     }
-    
-    if (type == "MidiIn")
-    {
-        auto m = this->addMidiIn(pos, data);
-        return m->id;
-    }
-    
-    
-    
-    
-    
-    
     return 0;
 }
 
@@ -213,6 +194,7 @@ OscillatorRef Orage::addOscillator(vec2 origin, JsonTree data){
     OscillatorRef ref = Oscillator::create("Oscillator", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addOscillator");
     return ref;
 }
 
@@ -220,48 +202,50 @@ TileRef Orage::addTile(vec2 origin, JsonTree data){
     TileRef ref = Tile::create("Tile", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addTile");
     return ref;
 }
-HilbertRef Orage::addHilbert(vec2 origin, JsonTree data){
-    HilbertRef ref = Hilbert::create("Hilbert", origin, mMainWinCtx, data);
-    ref->setup();
-    modules.push_back(ref);
-    return ref;
-}
+
 MosherRef Orage::addMosher(vec2 origin, JsonTree data){
     MosherRef ref = Mosher::create("Mosher", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addMosher");
     return ref;
 }
 MatteRef Orage::addMatte(vec2 origin, JsonTree data){
     MatteRef ref = Matte::create("Matte", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addMatte");
     return ref;
 }
 SpliterRef Orage::addSpliter(vec2 origin, JsonTree data){
     SpliterRef ref = Spliter::create("Spliter", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addSpliter");
     return ref;
 }
 CrossfaderRef Orage::addCrossfader(vec2 origin, JsonTree data){
     CrossfaderRef ref = Crossfader::create("Crossfader", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addCrossfader");
     return ref;
 }
 CrosssliderRef Orage::addCrossslider(vec2 origin, JsonTree data){
     CrosssliderRef ref = Crossslider::create("Crossslider", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addCrossslider");
     return ref;
 }
 ColorAdjustementRef Orage::addColorAdjustement(vec2 origin, JsonTree data){
     ColorAdjustementRef ref = ColorAdjustement::create("BriSatCon", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addColorAdjustement");
     return ref;
 }
 
@@ -269,6 +253,7 @@ TintCorrectorRef Orage::addTintCorrector(vec2 origin, JsonTree data){
     TintCorrectorRef ref = TintCorrector::create("Tint Corrector", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addTintCorrector");
     return ref;
 }
 
@@ -277,13 +262,14 @@ CloudRef Orage::addCloud(vec2 origin, JsonTree data){
     CloudRef ref = Cloud::create("Cloud", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addCloud");
     return ref;
 }
 OutputRef Orage::addOutput(vec2 origin, JsonTree data, string name){
-    
     OutputRef ref = Output::create(name == "" ? "Output" : name, origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addOutput");
     return ref;
 }
 
@@ -291,6 +277,7 @@ SyphonInputRef Orage::addSyphonInput(vec2 origin, JsonTree data){
     SyphonInputRef ref = SyphonInput::create("Syphon", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addSyphonInput");
     return ref;
 }
 
@@ -298,6 +285,7 @@ FreezerRef Orage::addFreezer(vec2 origin, JsonTree data){
     FreezerRef ref = Freezer::create("Freezer", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addFreezer");
     return ref;
 }
 
@@ -305,6 +293,7 @@ DelayRef Orage::addDelay(vec2 origin, JsonTree data){
     DelayRef ref = Delay::create("Delay", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addDelay");
     return ref;
 }
 
@@ -312,6 +301,7 @@ ResizeRef Orage::addResize(vec2 origin, JsonTree data){
     ResizeRef ref = Resize::create("Resize", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addResize");
     return ref;
 }
 
@@ -319,6 +309,7 @@ RotateRef Orage::addRotate(vec2 origin, JsonTree data){
     RotateRef ref = Rotate::create("Rotate", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addRotate");
     return ref;
 }
 
@@ -326,6 +317,7 @@ BlurRef Orage::addBlur(vec2 origin, JsonTree data){
     BlurRef ref = Blur::create("Blur", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addBlur");
     return ref;
 }
 
@@ -333,6 +325,7 @@ KaleidoscopeRef Orage::addKaleidoscope(vec2 origin, JsonTree data){
     KaleidoscopeRef ref = Kaleidoscope::create("Kaleidoscope", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addKaleidoscope");
     return ref;
 }
 
@@ -340,6 +333,7 @@ PlayerRef Orage::addPlayer(vec2 origin, JsonTree data){
     PlayerRef ref = Player::create("Player", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addPlayer");
     return ref;
 }
 
@@ -347,6 +341,7 @@ RandomRef Orage::addRandom(vec2 origin, JsonTree data){
     RandomRef ref = Random::create("RANDOM", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addRandom");
     return ref;
 }
 
@@ -354,6 +349,7 @@ LfosRef Orage::addLfos(vec2 origin, JsonTree data){
     LfosRef ref = Lfos::create("LFOS", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addLfos");
     return ref;
 }
 
@@ -361,6 +357,7 @@ CDelayRef Orage::addCDelay(vec2 origin, JsonTree data){
     CDelayRef ref = CDelay::create("CDELAY", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addCDelay");
     return ref;
 }
 
@@ -368,6 +365,7 @@ EuclideanRef Orage::addEuclidean(vec2 origin, JsonTree data){
     EuclideanRef ref = Euclidean::create("Euclidean", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addEuclidean");
     return ref;
 }
 
@@ -375,6 +373,7 @@ PassthroughRef Orage::addPassthrough(vec2 origin, JsonTree data){
     PassthroughRef ref = Passthrough::create("Passthrough", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addPassthrough");
     return ref;
 }
 
@@ -384,6 +383,7 @@ OscRef Orage::addOsc(vec2 origin, JsonTree data){
     OscRef ref = Osc::create("Osc", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addOsc");
     return ref;
 }
 
@@ -391,13 +391,7 @@ BeatStepProRef Orage::addBeatStepPro(vec2 origin, JsonTree data){
     BeatStepProRef ref = BeatStepPro::create("A_BSP", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
-    return ref;
-}
-
-NanoKontrolRef Orage::addNanoKontrol(vec2 origin, JsonTree data){
-    NanoKontrolRef ref = NanoKontrol::create("NANOK", origin, mMainWinCtx, data);
-    ref->setup();
-    modules.push_back(ref);
+    trigChanged("addBeatStepPro");
     return ref;
 }
 
@@ -405,6 +399,7 @@ CustomCCRef Orage::addCustomCC(vec2 origin, JsonTree data){
     CustomCCRef ref = CustomCC::create("CCC", origin, mMainWinCtx, data);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addCustomCC");
     return ref;
 }
 
@@ -412,20 +407,15 @@ ProcessCVRef Orage::addProcessCV(vec2 origin, JsonTree data){
     ProcessCVRef ref = ProcessCV::create("PROCESS CV", origin, mMainWinCtx);
     ref->setup();
     modules.push_back(ref);
+    trigChanged("addProcessCV");
     return ref;
 }
 
-MidiFighterRef Orage::addMidiFighter(vec2 origin, JsonTree data){
-    MidiFighterRef ref = MidiFighter::create("Cyclone", origin, mMainWinCtx);
+MidiInputRef Orage::addMidiInput(vec2 origin, JsonTree data, string name){
+    MidiInputRef ref = MidiInput::create(name == "" ? "Midi-in" : name, origin, mMainWinCtx);
     ref->setup();
     modules.push_back(ref);
-    return ref;
-}
-
-MidiInRef Orage::addMidiIn(vec2 origin, JsonTree data){
-    MidiInRef ref = MidiIn::create("Bave Noire", origin, mMainWinCtx);
-    ref->setup();
-    modules.push_back(ref);
+    trigChanged("addMidiInput");
     return ref;
 }
 
@@ -461,12 +451,6 @@ void Orage::setup(){
     contextMenu->addSpacer(false);
     contextMenu->addSpacer(false);
     
-//    contextMenu->addButton("Hilbert", false)->setCallback(
-//                                                         [this](bool a) {
-//                                                             if(a){
-//                                                                 addHilbert(contextMenu->getOrigin());
-//                                                             }
-//                                                         });
     contextMenu->addButton("Mosher", false)->setCallback(
                                                          [this](bool a) {
                                                              if(a){
@@ -630,24 +614,14 @@ void Orage::setup(){
                                                                  }
                                                              });
     
-    contextMenu->addButton("MIDI FIGHTER", false)->setCallback(
+    contextMenu->addButton("MIDI INPUT", false)->setCallback(
                                                                [this](bool a) {
                                                                    if(a){
-                                                                       addMidiFighter(contextMenu->getOrigin());
+                                                                       addMidiInput(contextMenu->getOrigin());
                                                                        closeContextMenu();
                                                                    }
                                                                });
     
-    contextMenu->addButton("MIDI IN", false)->setCallback(
-                                                               [this](bool a) {
-                                                                   if(a){
-                                                                       addMidiIn(contextMenu->getOrigin());
-                                                                       closeContextMenu();
-                                                                   }
-                                                               });
-    
-    
-   
     contextMenu->addSpacer();
     
     contextMenu->addButton("Syphon", false)->setCallback(
@@ -692,30 +666,6 @@ void Orage::setup(){
     
     contextMenu->setVisible(false);
     
-//    addNanoKontrol()->onEvent([&](int channel, int control, int value){
-//        if(selectedModules.size() >= channel){
-//            auto cModule = selectedModules.at(channel-1);
-//            cModule->setData((control-1)/4, control%4, value * 0.00787402f);
-//        }
-//        //cout << channel << " " << control << " " << value << endl;
-//    });
-//    
-//    
-//    addCustomCC()->onEvent([&](int channel, int control, int value){
-//        cout << channel << " " << control << " "  << value << endl;
-//        
-//         if(selectedModules.size() > channel){
-//            auto cModule = selectedModules.at(channel);
-//             if(value == 0){
-//                 cModule->resetData(control);
-//             }
-//             else{
-//                cModule->incData(control, value);
-//            }
-//        }
-//        
-//        //cout << channel << " " << control << " " << value << endl;
-//    });
 }
 void Orage::selectModule(ModuleRef module){
     if(selectedModules.size()>0){
@@ -734,8 +684,10 @@ void Orage::update(vec2 mouseLoc, bool mouseDown){
     auto it = modules.begin();
     for(; it != modules.end() ; ){
         if((*it)->shouldDestroy){
+            std::string name = (*it)->name;
             (*it).reset();
             it = modules.erase(it);
+            trigChanged("remove "+ name);
         }else{
             (*it)->update();
             it ++;
